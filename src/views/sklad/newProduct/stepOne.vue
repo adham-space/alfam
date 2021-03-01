@@ -84,6 +84,18 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.name = ''
+      this.types = []
+      this.editing = {
+        status: false,
+        id: null
+      }
+      this.typeObject = {
+        name: ''
+      }
+      this.editedType = ''
+    },
     nameChanging(e) {
       console.log(e)
       this.$store.commit('newProduct/SET_NAME', e)

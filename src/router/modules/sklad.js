@@ -14,22 +14,29 @@ const skladRouter = {
   children: [
     {
       path: 'newproduct',
-      component: () => import('@/views/sklad/newProduct'),
+      component: () => import('@/views/sklad/newProduct/index'),
       name: 'NewProduct',
-      meta: { title: 'New product', noCache: true }
+      meta: { title: 'New product', noCache: false }
+    },
+    {
+      path: 'storetproduct',
+      component: () => import('@/views/sklad/storeProducts/index'),
+      name: 'Store',
+      meta: { title: 'Store to sklad', noCache: false }
     },
     {
       path: 'allproducts',
-      component: () => import('@/views/sklad/allProducts'),
+      component: () => import('@/views/sklad/allProducts/index'),
       name: 'AllProducts',
-      meta: { title: 'All products', noCache: true }
+      meta: { title: 'All products', noCache: false }
+    },
+    {
+      path: 'packing-list',
+      component: () => import('@/views/sklad/packingList/index'),
+      name: 'PackingList',
+      meta: { title: 'Packing List', noCache: false }
     }
-    // {
-    //   path: 'mix-chart',
-    //   component: () => import('@/views/charts/mix-chart'),
-    //   name: 'MixChart',
-    //   meta: { title: 'Mix Chart', noCache: true }
-    // }
+
   ]
 }
 
