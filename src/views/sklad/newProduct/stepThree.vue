@@ -1,5 +1,8 @@
 <template>
   <el-row>
+    <el-col :span="24" class="step-header">
+      <h2>Nilufar</h2>
+    </el-col>
     <el-col :md="{ offset: 6, span: 12 }">
       <el-table width="100%" :data="types">
         <el-table-column
@@ -68,4 +71,9 @@ export default {
 </script>
 
 <style>
+
+.step-header {
+  display: flex;
+  justify-content: center;
+}
 </style>

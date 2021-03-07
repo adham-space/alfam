@@ -1,5 +1,8 @@
 <template>
   <el-row :gutter="10" class="stepOne">
+    <el-col :span="24" class="step-header">
+      <h2>Nilufar</h2>
+    </el-col>
     <el-col class="selectType" :md="{ offset: 6, span: 12 }">
       <el-select
         v-model="currentType"
@@ -29,12 +32,12 @@
 
         <el-form-item>
           <el-col :span="12">
-            <el-form-item label="Height">
+            <el-form-item label="Height (cm)">
               <el-input v-model="formTwo.height" placeholder="Code" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Width">
+            <el-form-item label="Width (cm)">
               <el-input v-model="formTwo.width" placeholder="Code" />
             </el-form-item>
           </el-col>
@@ -162,5 +165,10 @@ export default {
   display: flex;
   justify-content: center;
   border-bottom: 1px solid rgb(228, 228, 228);
+}
+
+.step-header {
+  display: flex;
+  justify-content: center;
 }
 </style>

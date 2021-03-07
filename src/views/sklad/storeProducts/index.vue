@@ -1,11 +1,7 @@
 <template>
   <el-row>
     <el-col class="toolbar-store" :md="{ offset: 6, span: 12 }">
-      <el-cascader
-        :options="options"
-        clearable
-        @change="typeChoosen"
-      />
+      <el-cascader :options="options" clearable @change="typeChoosen" />
     </el-col>
     <el-col
       class="store-bdy"
@@ -21,7 +17,7 @@
                   style="color: darkgray; margin-right: 1rem"
                 >AREA OF ONE ITEM: </span>{{
                   Object.keys(currentType).length > 0
-                    ? (currentType.height * currentType.width) / 10000.0
+                    ? areaOfOneItem()
                     : "_"
                 }}
             <span style="color: darkgray">M<sup>2</sup></span></span>
@@ -60,10 +56,7 @@
            >AREA OF ONE PACKET: </span>{{
              numberOfItems === ""
                ? "_"
-               : (currentType.height *
-                 currentType.width *
-                 parseFloat(numberOfItems)) /
-                 10000.0
+               : areaOfOnePacket()
            }}
             <span style="color: darkgray">M<sup>2</sup></span></span>
 
@@ -74,12 +67,10 @@
            >WEIGHT OF AN ITEM: </span>{{
              weightOfPacket === ""
                ? "_"
-               : (parseFloat(weightOfPacket) / numberOfItems).toFixed(2)
+               : wightOfOneItem()
            }}
             <span style="color: darkgray">Kg</span></span>
-
         </div>
-
       </el-card>
 
       <el-card shadow="hover" class="box-card" style="margin-top: 1rem">
@@ -99,36 +90,42 @@
             /></span>
           <span
             style="margin-top: 1rem"
-          ><span
-            style="color: darkgray;"
-          >TOTAL NUMBER OF ITEMS: </span>{{
-            Object.keys(currentType).length > 0 && totalArea !== ''
-              ? (totalArea / ((currentType.height * currentType.width) / 10000.0)).toFixed(3)
+          ><span style="color: darkgray">TOTAL NUMBER OF ITEMS: </span>{{
+            Object.keys(currentType).length > 0 && totalArea !== ""
+              ? totalNumberOfItems()
               : "_"
-          }} dona</span>
+          }}
+            dona</span>
 
           <span
             style="margin-top: 1rem"
-          ><span
-            style="color: darkgray;"
-          >TOTAL NUMBER OF PACKETS: </span>{{
-            Object.keys(currentType).length > 0 && totalArea !== ''
-              ? (totalArea / ((currentType.height * currentType.width) / 10000.0)).toFixed(3) / numberOfItems
-              : "_"
-          }} dona</span>
+          ><span style="color: darkgray">TOTAL NUMBER OF PACKETS: </span><span :style="{'color' : errorOccured ? 'red': 'black'}">
+            {{
+              Object.keys(currentType).length > 0 && totalArea !== ""
+                ? numberOfPackets() + ' / ' + notCompletePacketItems() + ' dona'
+                : "_"
+            }}
+          </span>
+
+            <el-tooltip v-if="errorOccured" class="item" effect="dark" content="(m2) MA'LUMOTI XATO KIRITILGAN" placement="top">
+              <i style="color: red" class="el-icon-circle-close"> XATO</i>
+            </el-tooltip>
+
+          </span>
 
           <span
             style="margin-top: 1rem"
-          ><span
-            style="color: darkgray;"
-          >TOTAL WEIGHT OF PACKETS: </span>{{
-            Object.keys(currentType).length > 0 && totalArea !== ''
-              ? (totalArea / ((currentType.height * currentType.width) / 10000.0)).toFixed(3) / numberOfItems * weightOfPacket
+          ><span style="color: darkgray">TOTAL WEIGHT OF PACKETS: </span>{{
+            Object.keys(currentType).length > 0 && totalArea !== ""
+              ? totalWeight()
               : "_"
-          }} Kg</span>
+          }}
+            Kg</span>
         </div>
       </el-card>
-      <el-button style="color: green; margin-top: 1rem">Store to sklad</el-button>
+      <el-button
+        style="color: green; margin-top: 1rem"
+      >Store to sklad</el-button>
     </el-col>
   </el-row>
 </template>
@@ -143,34 +140,34 @@ export default {
       currentType: {},
       options: [
         {
-          label: 'Adham',
+          label: 'Nilufar',
           value: 0,
           children: [
             {
               value: 0,
-              label: 'Decor',
-              code: 'D-001',
+              label: 'Ochi',
+              code: '1191A',
+              height: 30,
+              width: 80,
+              photo: {
+                status: 'fail',
+                name: 'image_2021-02-19_10-50-53.png',
+                size: 54827,
+                percentage: 100,
+                uid: 1613977212930,
+                raw: '[object File]',
+                url:
+                  'blob:http://localhost:9527/1b4b5fcb-600c-4a7c-8027-31ab63e0d148'
+              }
+            },
+            {
+              value: 1,
+              label: "To'qi",
+              code: '1191B',
               height: 30,
               width: 90,
               photo: {
                 status: 'fail',
-                name: 'image_2021-02-19_10-50-53.png',
-                size: 54827,
-                percentage: 100,
-                uid: 1613977212930,
-                raw: '[object File]',
-                url:
-                  'blob:http://localhost:9527/1b4b5fcb-600c-4a7c-8027-31ab63e0d148'
-              }
-            },
-            {
-              value: 1,
-              label: 'Pol',
-              code: 'P-001',
-              height: 23,
-              width: 54,
-              photo: {
-                status: 'fail',
                 name: 'image_2021-02-18_10-52-12.png',
                 size: 44762,
                 percentage: 100,
@@ -181,11 +178,11 @@ export default {
               }
             },
             {
-              value: 2,
-              label: 'Freez',
-              code: 'F-001',
-              height: 45,
-              width: 12,
+              value: 3,
+              label: 'Decor',
+              code: '1191C',
+              height: 30,
+              width: 90,
               photo: {
                 status: 'fail',
                 name: 'image_2021-02-19_13-32-15.png',
@@ -196,53 +193,13 @@ export default {
                 url:
                   'blob:http://localhost:9527/b1a02b1a-4778-4ab9-9674-d8f418de214d'
               }
-            }
-          ]
-        },
-        {
-          label: 'Akbar',
-          value: 1,
-          children: [
-            {
-              value: 0,
-              label: 'Decor',
-              code: 'D-001',
-              height: 30,
-              width: 80,
-              photo: {
-                status: 'fail',
-                name: 'image_2021-02-19_10-50-53.png',
-                size: 54827,
-                percentage: 100,
-                uid: 1613977212930,
-                raw: '[object File]',
-                url:
-                  'blob:http://localhost:9527/1b4b5fcb-600c-4a7c-8027-31ab63e0d148'
-              }
             },
             {
-              value: 1,
+              value: 4,
               label: 'Pol',
-              code: 'P-001',
-              height: 23,
-              width: 54,
-              photo: {
-                status: 'fail',
-                name: 'image_2021-02-18_10-52-12.png',
-                size: 44762,
-                percentage: 100,
-                uid: 1613977232481,
-                raw: '[object File]',
-                url:
-                  'blob:http://localhost:9527/0ce56dd8-8004-47c5-b194-cabe40f4e34e'
-              }
-            },
-            {
-              value: 2,
-              label: 'Freez',
-              code: 'F-001',
-              height: 45,
-              width: 12,
+              code: '1191D',
+              height: 30,
+              width: 30,
               photo: {
                 status: 'fail',
                 name: 'image_2021-02-19_13-32-15.png',
@@ -253,53 +210,13 @@ export default {
                 url:
                   'blob:http://localhost:9527/b1a02b1a-4778-4ab9-9674-d8f418de214d'
               }
-            }
-          ]
-        },
-        {
-          label: 'Sardor',
-          value: 2,
-          children: [
-            {
-              value: 0,
-              label: 'Decor',
-              code: 'D-001',
-              height: 30,
-              width: 80,
-              photo: {
-                status: 'fail',
-                name: 'image_2021-02-19_10-50-53.png',
-                size: 54827,
-                percentage: 100,
-                uid: 1613977212930,
-                raw: '[object File]',
-                url:
-                  'blob:http://localhost:9527/1b4b5fcb-600c-4a7c-8027-31ab63e0d148'
-              }
             },
             {
-              value: 1,
-              label: 'Pol',
-              code: 'P-001',
-              height: 23,
-              width: 54,
-              photo: {
-                status: 'fail',
-                name: 'image_2021-02-18_10-52-12.png',
-                size: 44762,
-                percentage: 100,
-                uid: 1613977232481,
-                raw: '[object File]',
-                url:
-                  'blob:http://localhost:9527/0ce56dd8-8004-47c5-b194-cabe40f4e34e'
-              }
-            },
-            {
-              value: 2,
-              label: 'Freez',
-              code: 'F-001',
-              height: 45,
-              width: 12,
+              value: 5,
+              label: 'Friz',
+              code: '1191F',
+              height: 6,
+              width: 30,
               photo: {
                 status: 'fail',
                 name: 'image_2021-02-19_13-32-15.png',
@@ -310,53 +227,13 @@ export default {
                 url:
                   'blob:http://localhost:9527/b1a02b1a-4778-4ab9-9674-d8f418de214d'
               }
-            }
-          ]
-        },
-        {
-          value: 3,
-          label: 'Alisher',
-          children: [
-            {
-              value: 0,
-              label: 'Decor',
-              code: 'D-001',
-              height: 30,
-              width: 80,
-              photo: {
-                status: 'fail',
-                name: 'image_2021-02-19_10-50-53.png',
-                size: 54827,
-                percentage: 100,
-                uid: 1613977212930,
-                raw: '[object File]',
-                url:
-                  'blob:http://localhost:9527/1b4b5fcb-600c-4a7c-8027-31ab63e0d148'
-              }
             },
             {
-              value: 1,
-              label: 'Pol',
-              code: 'P-001',
-              height: 23,
-              width: 54,
-              photo: {
-                status: 'fail',
-                name: 'image_2021-02-18_10-52-12.png',
-                size: 44762,
-                percentage: 100,
-                uid: 1613977232481,
-                raw: '[object File]',
-                url:
-                  'blob:http://localhost:9527/0ce56dd8-8004-47c5-b194-cabe40f4e34e'
-              }
-            },
-            {
-              value: 2,
-              label: 'Freez',
-              code: 'F-001',
-              height: 45,
-              width: 12,
+              value: 6,
+              label: 'Sigara',
+              code: '1191S',
+              height: 2,
+              width: 30,
               photo: {
                 status: 'fail',
                 name: 'image_2021-02-19_13-32-15.png',
@@ -373,6 +250,13 @@ export default {
       ]
     }
   },
+  computed: {
+    errorOccured() {
+      const checkNum = this.notCompletePacketItems()
+      const errorInNum = checkNum - parseInt(checkNum)
+      return errorInNum > 0.0
+    }
+  },
   methods: {
     typeChoosen(typ) {
       console.log('type: ', typ[1])
@@ -384,7 +268,33 @@ export default {
         this.weightOfPacket = ''
         this.numberOfItems = ''
       }
+    },
+
+    areaOfOneItem() {
+      return this.currentType.height * this.currentType.width / 10000.0
+    },
+    areaOfOnePacket() {
+      return this.currentType.height * this.currentType.width / 10000.0 * this.numberOfItems
+    },
+    wightOfOneItem() {
+      return (this.weightOfPacket / this.numberOfItems).toFixed(2)
+    },
+
+    totalWeight() {
+      return (this.wightOfOneItem() * this.totalNumberOfItems()).toFixed(2)
+    },
+
+    totalNumberOfItems() {
+      return (this.totalArea / this.areaOfOneItem()).toFixed(3)
+    },
+    numberOfPackets() {
+      return parseInt(this.totalNumberOfItems() / this.numberOfItems)
+    },
+
+    notCompletePacketItems() {
+      return this.totalNumberOfItems() % this.numberOfItems
     }
+
   }
 }
 </script>
@@ -412,7 +322,7 @@ export default {
 }
 
 .box-card {
-    width: 100%;
+  width: 100%;
 }
 
 .amountAndWeight {
