@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     newListEditing() {
-      this.$emit('newAreChanging', { code: this.code, newValue: this.newArea })
+      this.$emit('newAreaChanging', { code: this.code, newValue: this.newArea })
     }
   }
 }

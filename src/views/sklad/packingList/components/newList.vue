@@ -63,7 +63,7 @@
             <template slot-scope="scope">
               <calcNewItem
                 :code="scope.row.code"
-                @newAreChanging="calculateNewList"
+                @newAreaChanging="calculateNewList"
               />
             </template>
           </el-table-column>
