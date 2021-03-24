@@ -1,17 +1,14 @@
 <template>
-  <el-tabs type="card" @tab-click="handleClick">
-    <el-tab-pane label="New list">
+  <el-tabs class="pack-tabs" type="card" @tab-click="handleClick">
+    <el-tab-pane class="tab-cnt" label="New list">
       <newList />
     </el-tab-pane>
-    <el-tab-pane label="Current products">
+    <el-tab-pane class="tab-cnt" label="Current products">
       <arxiv />
     </el-tab-pane>
-    <el-tab-pane label="Arxiv">
+    <el-tab-pane class="tab-cnt" label="Arxiv">
       <arxiv />
     </el-tab-pane>
-    <!-- <el-tab-pane label="Task">
-      <arxiv />
-    </el-tab-pane> -->
   </el-tabs>
 </template>
 <script>
@@ -34,3 +31,17 @@ export default {
   }
 }
 </script>
+
+<style>
+  .pack-tabs {
+    /* border: 1px solid red; */
+    height: calc(100vh - 84px);
+    margin: 0 !important;
+  }
+
+  .tab-cnt {
+    margin: 0 !important;
+    height: calc(100vh - 127px);
+    /* border: 1px dashed orange; */
+  }
+</style>

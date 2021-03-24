@@ -1,18 +1,38 @@
 <template>
-  <el-row>
-    <el-col class="header-section" :span="24">
+  <el-row style="height: 100px">
+    <el-col
+      style="height: 3rem; border: 0px solid green"
+      class="header-section"
+      :span="24"
+    >
       <h3 style="color: darkgray">УПАКОВАЧНЫЙ ЛИСТ</h3>
     </el-col>
-    <el-col class="header-section" :span="24">
-      <h4>Nilufar</h4>
+    <el-col
+      style="height: 3rem; border: 0px solid red"
+      class="toolbar-list"
+      :span="24"
+    >
+      <!-- <h4>Nilufar</h4> -->
+      <el-select v-model="currentProduct" placeholder="Choose a product">
+        <el-option
+          v-for="(pr, i) in products"
+          :key="i"
+          :label="pr.label"
+          :value="pr.value"
+        />
+      </el-select>
+      <el-button
+        style="margin-left: 0.5em"
+        icon="el-icon-check"
+      >Save</el-button>
     </el-col>
     <el-col
       ref="mainPartRef"
       :span="24"
-      style="height: calc(100vh - 132px); border: 0px solid red"
+      style="height: calc(100vh - 225px); border: 0px solid blue"
     >
       <el-table
-
+        height="100%"
         style="width: 100%"
         size="small"
         :data="tableData"
@@ -47,6 +67,7 @@
             style="width: 30px; height: 30px"
             src="https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80"
             fit="scale-down"
+            @click="openImg('https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80')"
           />
         </el-table-column>
         <el-table-column
@@ -155,6 +176,13 @@
         </el-table-column>
       </el-table>
     </el-col>
+    <el-dialog title="" :visible.sync="showImageDilog" width="40%">
+      <el-image
+        style="width: 90%; height: 90%"
+        :src="imageUrl"
+        fit="scale-down"
+      />
+    </el-dialog>
   </el-row>
 </template>
 
@@ -170,9 +198,18 @@ export default {
   },
   data() {
     return {
-      maxHeight: 800,
+      showImageDilog: false,
+      imageUrl: '',
+      maxHeight: 600,
       newArea: '',
       whatIsInserting: [0, 0, 0],
+      products: [
+        {
+          label: 'Nilufar',
+          value: 1
+        }
+      ],
+      currentProduct: '',
       tableData: [
         {
           code: '1191A',
@@ -274,6 +311,10 @@ export default {
     }
   },
   methods: {
+    openImg(url) {
+      this.showImageDilog = true
+      this.imageUrl = url
+    },
     calculateNewList({ code, newValue }) {
       this.whatIsInserting[0] = true
       this.whatIsInserting[1] = false
@@ -338,7 +379,8 @@ export default {
       console.log('Current product: ', currentProduct)
       if (pack > 0 && pack - parseInt(pack) <= 0.0) {
         currentProduct.item_num = currentProduct.pack_content_num * pack + ''
-        currentProduct.packTotalArea = parseFloat((pack * currentProduct.packArea).toFixed(4)) + ''
+        currentProduct.packTotalArea =
+          parseFloat((pack * currentProduct.packArea).toFixed(4)) + ''
         currentProduct.pack_num = pack + ''
       } else {
         currentProduct.item_num = 'XATO'
@@ -349,7 +391,9 @@ export default {
       if (overPack > 0) {
         currentProduct.item_num = parseInt(currentProduct.item_num) + overPack
         currentProduct.packTotalArea =
-         parseFloat((currentProduct.item_num * currentProduct.itemArea).toFixed(4)) + ''
+          parseFloat(
+            (currentProduct.item_num * currentProduct.itemArea).toFixed(4)
+          ) + ''
         currentProduct.over_pack_num = overPack + ''
       } else {
         currentProduct.over_pack_num = 0
@@ -413,7 +457,7 @@ export default {
     },
     setTableHeight() {
       console.log('a: ', this.maxHeight)
-      this.maxHeight = this.$refs.mainPartRef.$el.clientHeight
+      this.maxHeight = this.$refs.mainPartRef.$el.clientHeight - 100
       console.log('b: ', this.maxHeight)
     }
   }
@@ -425,5 +469,21 @@ export default {
   height: 3em;
   display: flex;
   justify-content: center;
+  margin: 0 !important;
+}
+
+.list-main {
+  /* border: 1px solid green; */
+  height: calc(100% - 105px);
+  margin: 0 !important;
+}
+.el-tabs__header {
+  margin: 0 !important;
+}
+
+.toolbar-list {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5em;
 }
 </style>

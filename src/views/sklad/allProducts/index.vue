@@ -1,6 +1,6 @@
 <template>
   <el-row
-    style="height: calc(100vh - 86px); border: 0px solid red; padding: 1em"
+    style="height: 100%; border: 2px solid blue; padding: 1em"
   >
     <el-col
       class="sizes"
