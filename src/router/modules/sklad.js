@@ -1,5 +1,4 @@
 /** When your routing table is too long, you can split it into small modules**/
-
 import Layout from '@/layout'
 
 const skladRouter = {
@@ -25,19 +24,18 @@ const skladRouter = {
       meta: { title: 'Store to sklad', noCache: false }
     },
     {
-      path: 'allproducts',
-      component: () => import('@/views/sklad/allProducts/index'),
-      name: 'AllProducts',
-      meta: { title: 'All products', noCache: false }
-    },
-    {
       path: 'packing-list',
       component: () => import('@/views/sklad/packingList/index'),
       name: 'PackingList',
       meta: { title: 'Packing List', noCache: false }
+    },
+    {
+      path: 'orders',
+      component: () => import('@/views/sklad/ordersPage/index'),
+      name: 'Orders',
+      meta: { title: 'Orders', noCache: false }
     }
 
   ]
 }
-
 export default skladRouter

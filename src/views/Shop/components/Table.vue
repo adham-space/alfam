@@ -1,36 +1,5 @@
 <template>
-  <el-row style="height: 100px">
-    <el-col
-      style="height: 3rem; border: 0px solid green"
-      class="header-section"
-      :span="24"
-    >
-      <h3 style="color: darkgray">УПАКОВАЧНЫЙ ЛИСТ</h3>
-    </el-col>
-    <el-col
-      style="height: 3rem; border: 0px solid red"
-      class="toolbar-list"
-      :span="24"
-    >
-      <!-- <h4>Nilufar</h4> -->
-      <el-select v-model="currentProduct" placeholder="Choose a product">
-        <el-option
-          v-for="(pr, i) in products"
-          :key="i"
-          :label="pr.label"
-          :value="pr.value"
-        />
-      </el-select>
-      <el-button
-        style="margin-left: 0.5em"
-        icon="el-icon-check"
-      >Save</el-button>
-    </el-col>
-    <el-col
-      ref="mainPartRef"
-      :span="24"
-      style="height: calc(100vh - 225px); border: 0px solid blue"
-    >
+    <div style="height: calc(100vh - 86px)">
       <el-table
         height="100%"
         style="width: 100%"
@@ -175,7 +144,6 @@
           />
         </el-table-column>
       </el-table>
-    </el-col>
     <el-dialog title="" :visible.sync="showImageDilog" width="40%">
       <el-image
         style="width: 90%; height: 90%"
@@ -183,7 +151,7 @@
         fit="scale-down"
       />
     </el-dialog>
-  </el-row>
+    </div>
 </template>
 
 <script>
@@ -194,7 +162,7 @@ export default {
   components: {
     calcNewItem,
     newItemNum,
-    newPackInserting
+    newPackInserting,
   },
   data() {
     return {
@@ -203,13 +171,6 @@ export default {
       maxHeight: 600,
       newArea: '',
       whatIsInserting: [0, 0, 0],
-      products: [
-        {
-          label: 'Nilufar',
-          value: 1
-        }
-      ],
-      currentProduct: '',
       tableData: [
         {
           code: '1191A',
@@ -398,62 +359,13 @@ export default {
       } else {
         currentProduct.over_pack_num = 0
       }
-      // currentProduct.item_num = pack ==
     },
 
     newListEditing(row) {
       console.log('Log: ', row)
     },
     getHeaderCellStyle({ row, column, rowIndex, columnIndex }) {
-      //   console.log("Col: ", column);
-      //   if (
-      //     column.label == "КАФЕЛНИ КОДИ" ||
-      //     column.label == "СПЕЦИФИКАЦИЯСИ" ||
-      //     column.label == "ТОВАРНИ РАЗМЕРИ" ||
-      //     column.label == "ТОВАРНИ РАЗМЕРИ" ||
-      //     column.label == "ТОВАРНИ РАСМИ" ||
-      //     column.label == "ПОЧКАСИДИГИ (м2)" ||
-      //     column.label == "1-ДОНАСИНИ (м2)"
-      //   ) {
-      //     return { "background-color": "yellow", color: "black" };
-      //   } else if (
-      //     column.label == "УМУМИЙ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ" ||
-      //     column.label == "УМУМИЙ (м2)" ||
-      //     column.label == "УМУМИЙ (ДОНАСИ)"  ||
-      //     column.label == 'УМУМИЙ ДОНАСИ'
-      //   ) {
-      //     return { "background-color": "#dadada", color: "black" };
-      //   } else if (
-      //     column.label == "ТОВАРНИ УМУМИЙ ПОЧКАСИНИ (МИҚДОРИ)" ||
-      //     column.label == "ТОВАРНИ УМУМИЙ ДОНАСИНИ (МИҚДОРИ)"||
-      //     column.label == 'ПОЧКАСИДИГИ (КГ)' ||
-      //     column.label == '1-ДОНАСИНИ  (КГ)'
-      //   ) {
-      //     return {
-      //       "background-color": "#ffe48a",
-      //       color: "black",
-      //     };
-      //   } else if (
-      //     column.label == "ТОВАРНИ УМУМИЙ ПОЧКАСИНИ (КИЛОГРАММИ)" ||
-      //     column.label == "ТОВАРНИ УМУМИЙ ДОНАСИНИ (КИЛОГРАММИ)"
-      //   ) {
-      //     return {
-      //       "background-color": "#97ffb9",
-      //       color: "black",
-      //     };
-      //   } else if (
-      //     column.label == "1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"  ) {
-      //     return {
-      //       "background-color": "#65d3ff",
-      //       color: "black",
-      //     };
-      //   } else if (
-      //     column.label == "1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"  ) {
-      //     return {
-      //       "background-color": "#65d3ff",
-      //       color: "black",
-      //     };
-      //   }
+
     },
     setTableHeight() {
       console.log('a: ', this.maxHeight)

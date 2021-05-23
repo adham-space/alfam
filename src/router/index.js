@@ -10,6 +10,7 @@ import Layout from '@/layout'
 // import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
 import skaladRouter from './modules/sklad'
+import shop from './modules/shop'
 
 // import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
@@ -190,6 +191,7 @@ export const asyncRoutes = [
   // componentsRouter,
   // chartsRouter,
   skaladRouter,
+  shop,
   // nestedRouter,
   // tableRouter,
 

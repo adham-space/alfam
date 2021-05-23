@@ -143,7 +143,7 @@ export default {
 .stepOne {
   /* border: 1px solid red; */
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .newType {
   display: flex;
