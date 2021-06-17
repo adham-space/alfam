@@ -52,7 +52,7 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Nilufar', 'Nimadur1', 'Nimadur-2']
+          data: ['Birinchi dokon', 'Ali', 'Vali']
         },
         series: [
           {
@@ -62,9 +62,9 @@ export default {
             radius: [15, 95],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Nilufar' },
-              { value: 240, name: 'Nimadur1' },
-              { value: 149, name: 'Nimadur-2' },
+              { value: 320, name: 'Birinchi dokon' },
+              { value: 240, name: 'Ali' },
+              { value: 149, name: 'Vali' },
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

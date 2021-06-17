@@ -1,9 +1,9 @@
 <template>
   <el-row style="height: calc(100vh - 86px)">
-    <el-col :span="24" style="height: 3rem;">
+    <!-- <el-col :span="24" style="height: 3rem;">
       <tools />
-    </el-col>
-    <el-col :span="9" style="height: calc(100vh - 86px - 3rem);">
+    </el-col> -->
+    <el-col :span="9" style="height: calc(100vh - 86px);">
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -49,7 +49,7 @@
         </el-table-column>
       </el-table>
     </el-col>
-    <el-col :span="15" style="height: calc(100vh - 86px - 3rem); border: 1px solid blue;">
+    <el-col :span="15" style="height: calc(100vh - 86px)">
       <el-table
         height="100%"
         style="width: 100%"

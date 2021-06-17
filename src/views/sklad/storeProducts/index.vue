@@ -11,6 +11,7 @@
       <el-card shadow="hover" class="box-card">
         <div slot="header" class="clearfix">
           <span>Create one packet</span>
+           
         </div>
         <div class="one-packet">
           <span><span
@@ -76,6 +77,7 @@
       <el-card shadow="hover" class="box-card" style="margin-top: 1rem">
         <div slot="header" class="clearfix">
           <span>Store to sklad</span>
+            <el-checkbox style="margin-left: 1rem" v-model="singan">Singan</el-checkbox>
         </div>
         <div class="one-packet">
           <span><span
@@ -137,6 +139,7 @@ export default {
       totalArea: '',
       numberOfItems: '',
       weightOfPacket: '',
+      singan: false,
       currentType: {},
       options: [
         {
@@ -331,4 +334,6 @@ export default {
   justify-content: flex-start;
   align-items: center;
 }
+
+
 </style>

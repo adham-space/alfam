@@ -28,17 +28,22 @@
               <el-input v-model="formTwo.code" placeholder="Code" />
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="A">
+              <el-input v-model="formTwo.code" placeholder="Code" />
+            </el-form-item>
+          </el-col>
         </el-form-item>
 
         <el-form-item>
           <el-col :span="12">
             <el-form-item label="Height (cm)">
-              <el-input v-model="formTwo.height" placeholder="Code" />
+              <el-input v-model="formTwo.height" placeholder="Height (cm)" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Width (cm)">
-              <el-input v-model="formTwo.width" placeholder="Code" />
+              <el-input v-model="formTwo.width" placeholder="Width (cm)" />
             </el-form-item>
           </el-col>
         </el-form-item>

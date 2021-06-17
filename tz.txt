@@ -1,0 +1,61 @@
+- Dashboard
+	( ichidagi bo'ladigan narsalar)
+	- Bazada kancha kvadrat maxsulot bor
+	- Har bir turdagi maxsulot bo'yicha m2 va summasi
+	- Sotuvchilar kesimida kim kancha sotuv qilyotganini ko'rsatish
+	- Ko'pdan beri sotilmagan maxsulotlar haqida ma'lumot
+	
+- Baza (SKLAD)
+	1. Yangi maxsulot qo'shish (bu maxsulot turini yaratib olish)
+		- Dastlab maxsulot nomini va uning turlarini kiritish
+		- 1-qisimda kiritilgan maxsulotning turlarini o'lcham va narxini kiritish va singanlik statusini berish olish mumkinligi
+		- va uchunchi bosqichda kiritlgan ma'lumotlani ko'rish va saqlash
+	2. Bazaga, programmaga kiritilgan turdagi maxsulotni kirgizish (yangi molni kirgizish)
+		- maxsulotni tanlash ( turi bilan)
+		- Tanlangan maxsulotni packetlarini yani bir pochkasini ma'lumotlarini kiritish
+		- skaldga saqalsh shu yerda Keltirilgan maxsulotlar bazaga kiritilgan hisoblanadi
+	3. Yangi Jarayon
+		(ichki jarayonlar)
+		- Maxsulotni tanlash
+		- Nima qilishni tanlash	
+			- Abrazets
+			- Sotib olish	
+			- Almashtirish (Barter)
+			- Qaytarib berish
+		- Xaridorni yoki begana do'konni tanlash
+		- Ma'lumotlarni kiritsh calculatordan foydalangan xolda
+		- Proporsiyani aytib turish
+		- Singalrini ham kirgizmoqchi bo'lsangiz, siniqlari bilan degan joni belgilang
+	4. Buyurtmalar (Statusi ichida bo'ladi)
+		- Buyutma statusi
+		- Buyurtma kimdanligi
+		- Buyurtma kimga berilishi kerakligi
+		- Buyurtma sanasi va vaqti
+		- Buyurtma qatori tanlab u haqidagi to'liq ma'lumotni olish
+		- Buyurtmani qabul qilish yoki bekor qilish
+- Do'kon
+	1. Yangi jarayon
+		- Maxsulotni tanlash
+                - Nima qilishni tanlash
+                        - Abrazets
+                        - Sotib olish
+                        - Almashtirish (Barter)
+                        - Qaytarib berish
+                - Xaridorni yoki begana do'konni tanlash
+                - Ma'lumotlarni kiritsh calculatordan foydalangan xolda ( Pulini kiritishi mumkin har bir turini
+                - Proporsiyani aytib turish
+                - Singalrini ham kirgizmoqchi bo'lsangiz, siniqlari bilan degan joni belgilang
+	2. Inventarizatsiya
+		- Bazada qancha maxsulot qoldi
+
+- Ma'lumotnomalar
+	1. Xodimlar || Do'konlar
+		-  Begonalar ham bo'lishi mumkin
+	2. Foydalanuvchilar
+		
+	3. Xaridorlar
+              	
+	4. Xaydovchilar
+
+
+

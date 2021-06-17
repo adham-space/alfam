@@ -1,5 +1,6 @@
 <template>
   <div class="tools-wrapper">
+    <p>List №: ALFAM-001 </p>
     <el-select
       v-model="currentProduct"
       style="width: 100%"
@@ -26,9 +27,9 @@
       />
     </el-select>
     <el-select
-        class="tools-wrapper-item"
       v-model="currentConsumer"
-            style="width: 100%"
+      class="tools-wrapper-item"
+      style="width: 100%"
 
       placeholder="Choose a consumer"
     >
@@ -39,8 +40,29 @@
         :value="pr.value"
       />
     </el-select>
+    <el-select
+      v-model="currentConsumer"
+      class="tools-wrapper-item"
+      style="width: 100%"
+
+      placeholder="Choose a Driver"
+    >
+      <el-option
+        v-for="(pr, i) in consumers"
+        :key="i"
+        :label="pr.label"
+        :value="pr.value"
+      />
+    </el-select>
+    <el-input
+      class="tools-wrapper-item"
+      placeholder="Cost to upload (so'm)"
+      v-model="costOfUpload"
+    >
+
+    </el-input>
     <el-button
-     class="tools-wrapper-item"
+      class="tools-wrapper-item"
       style="color: white; background-color: green"
       icon="el-icon-check"
     >Save</el-button>
@@ -52,6 +74,7 @@ export default {
     currentProduct: '',
     currentStatus: '',
     currentConsumer: '',
+    costOfUpload: '',
     products: [
       {
         label: 'Nilufar',
@@ -59,33 +82,33 @@ export default {
       }
     ],
     Procedures: [
-        {
-            label: 'Sotib olish',
-            value: 1
-        },
-        {
-            label: 'Barter (Almashtirish)',
-            value: 2
-        },
-         {
-            label: 'Qaytarib berish',
-            value: 3
-        }
+      {
+        label: 'Sotib olish',
+        value: 1
+      },
+      {
+        label: 'Barter (Almashtirish)',
+        value: 2
+      },
+      {
+        label: 'Qaytarib berish',
+        value: 3
+      }
     ],
     consumers: [
-        {
-            label: 'A',
-            value: 1
-        },
-        {
-            label: 'B',
-            value: 2
-        },
-         {
-            label: 'Q',
-            value: 3
-        }
-    ],
+      {
+        label: 'A',
+        value: 1
+      },
+      {
+        label: 'B',
+        value: 2
+      },
+      {
+        label: 'Q',
+        value: 3
+      }
+    ]
   })
 }
 </script>
