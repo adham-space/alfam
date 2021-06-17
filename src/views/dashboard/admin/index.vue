@@ -25,13 +25,8 @@
 <script>
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
-import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import PieChart2 from './components/PieChart2'
-import BarChart from './components/BarChart'
-import TransactionTable from './components/TransactionTable'
-import TodoList from './components/TodoList'
-import BoxCard from './components/BoxCard'
 
 const lineChartData = {
   newVisitis: {
@@ -57,13 +52,8 @@ export default {
   components: {
     PanelGroup,
     LineChart,
-    RaddarChart,
     PieChart,
-    PieChart2,
-    BarChart,
-    TransactionTable,
-    TodoList,
-    BoxCard
+    PieChart2
   },
   data() {
     return {

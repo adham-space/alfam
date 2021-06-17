@@ -36,7 +36,7 @@
           fixed="right"
           label="Action"
         >
-          <template slot-scope="scope">
+          <template slot-scope="">
             <div class="action-btns">
               <el-tooltip style="width: 50%" effect="dark" content="Top Left prompts info" placement="left-start">
                 <el-button type="text" icon="el-icon-check" class="action-btn" />
@@ -138,12 +138,12 @@
   </el-row>
 </template>
 <script>
-import tools from './components/tools'
+// import tools from './components/tools'
 export default {
   name: 'OrdersPage',
-  components: {
-    tools
-  },
+  // components: {
+  //   tools
+  // },
   data: () => ({
     tableData: [
       {

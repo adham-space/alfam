@@ -1,7 +1,7 @@
 <template>
   <div>
     Tools ASA
-  </div> 
+  </div>
 </template>
 
 <script>

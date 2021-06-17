@@ -55,12 +55,10 @@
       />
     </el-select>
     <el-input
+      v-model="costOfUpload"
       class="tools-wrapper-item"
       placeholder="Cost to upload (so'm)"
-      v-model="costOfUpload"
-    >
-
-    </el-input>
+    />
     <el-button
       class="tools-wrapper-item"
       style="color: white; background-color: green"

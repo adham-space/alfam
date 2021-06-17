@@ -64,7 +64,7 @@ export default {
             data: [
               { value: 320, name: 'Birinchi dokon' },
               { value: 240, name: 'Ali' },
-              { value: 149, name: 'Vali' },
+              { value: 149, name: 'Vali' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

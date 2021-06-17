@@ -64,7 +64,7 @@ export default {
             data: [
               { value: 320, name: 'Nilufar' },
               { value: 240, name: 'Nimadur1' },
-              { value: 149, name: 'Nimadur-2' },
+              { value: 149, name: 'Nimadur-2' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
