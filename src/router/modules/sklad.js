@@ -8,7 +8,7 @@ const skladRouter = {
   name: 'Skald',
   meta: {
     title: 'Sklad',
-    icon: 'chart'
+    icon: 'el-icon-school'
   },
   children: [
     {

@@ -8,7 +8,7 @@ const skladRouter = {
   name: 'Shop',
   meta: {
     title: 'Shop',
-    icon: 'chart'
+    icon: 'el-icon-shopping-cart-full'
   },
   children: [
     {
@@ -16,6 +16,12 @@ const skladRouter = {
       component: () => import('@/views/Shop/index'),
       name: 'PackingList',
       meta: { title: 'Packing List', noCache: false }
+    },
+    {
+      path: 'my-orders',
+      component: () => import('@/views/Shop/index'),
+      name: 'MyOrders',
+      meta: { title: 'My Orders', noCache: false }
     }
   ]
 }

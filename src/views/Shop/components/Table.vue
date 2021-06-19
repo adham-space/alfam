@@ -55,7 +55,7 @@
               :key="whatIsInserting[0] === false ? scope.row.item_num : ''"
               :code="scope.row.code"
               :init="scope.row.packTotalArea + ''"
-              @newAreaChanging="calculateNewList"
+              @newAreaChanging="calculateArea"
             />
           </template>
         </el-table-column>
@@ -72,7 +72,7 @@
               "
               :init="scope.row.item_num + ''"
               :code="scope.row.code"
-              @newItemNumChanging="insertingItemNum"
+              @newItemNumChanging="calculateTotalNumOfItems"
             />
           </template>
         </el-table-column>
@@ -107,13 +107,17 @@
         label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"
         prop="weight"
         align="center"
-      />
+      >
+        <!-- <template slot-scope="scope">
+          {{  }}
+        </template> -->
+      </el-table-column>
       <el-table-column
         label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
         align="center"
       >
         <el-table-column
-          width="140"
+          width="160"
           label="ПОЧКАСИДИГИ (м2)"
           align="center"
           prop="packArea"
@@ -131,7 +135,7 @@
           label="УМУМИЙ ДОНАСИ"
         />
         <el-table-column
-          width="140"
+          width="160"
           label="ПОЧКАСИДИГИ (КГ)"
           align="center"
           prop="pack_weight"
@@ -276,20 +280,20 @@ export default {
       this.showImageDilog = true
       this.imageUrl = url
     },
-    calculateNewList({ code, newValue }) {
+    calculateArea({ code, newValue }) { // calculate new area
       this.whatIsInserting[0] = true
       this.whatIsInserting[1] = false
       this.whatIsInserting[2] = false
-      const currentProduct = this.tableData.find((item) => item.code === code)
+      const currentProduct = this.tableData.find((item) => item.code === code) // find the current product which is calculating
       const totalNumberOfItems = (newValue / currentProduct.itemArea).toFixed(
         4
       )
-      let errorInNumer = totalNumberOfItems - parseInt(totalNumberOfItems)
+      let errorInNumer = totalNumberOfItems - parseInt(totalNumberOfItems) // whether wrong number of are (m2) entered
       errorInNumer =
         errorInNumer === 0.0
           ? errorInNumer
           : parseFloat(1 - errorInNumer).toFixed(4)
-      if (parseFloat(errorInNumer) <= 0.0001) {
+      if (parseFloat(errorInNumer) <= 0.0001) { // if error is less or equal to 0.0001 is ok else it should be fixed
         currentProduct.item_num = Math.ceil(totalNumberOfItems)
         currentProduct.pack_num = Math.floor(
           currentProduct.item_num / currentProduct.pack_content_num
@@ -297,14 +301,17 @@ export default {
         currentProduct.packTotalArea = newValue
         currentProduct.over_pack_num =
           currentProduct.item_num % currentProduct.pack_content_num
-      } else {
+        currentProduct.weight = currentProduct.item_num * currentProduct.one_item_weight // find weight using all items multipled by weight of single item
+      } else { // else give user feedback about error
         currentProduct.item_num = 'XATO'
         currentProduct.pack_num = 'XATO'
         currentProduct.packTotalArea = ''
         currentProduct.over_pack_num = ''
+        currentProduct.weight = ''
       }
     },
-    insertingItemNum({ code, newItemNum }) {
+
+    calculateTotalNumOfItems({ code, newItemNum }) {
       this.whatIsInserting[0] = false
       this.whatIsInserting[1] = true
       this.whatIsInserting[2] = false
@@ -324,12 +331,15 @@ export default {
         )
         currentProduct.over_pack_num =
           currentProduct.item_num % currentProduct.pack_content_num
+        currentProduct.weight = currentProduct.item_num * currentProduct.one_item_weight
       } else {
         currentProduct.item_num = 'XATO'
         currentProduct.packTotalArea = 'XATO'
         currentProduct.pack_num = 'XATO'
+        currentProduct.weight = ''
       }
     },
+
     newPackChanging_({ code, pack, overPack }) {
       this.whatIsInserting[0] = false
       this.whatIsInserting[1] = false
@@ -343,10 +353,12 @@ export default {
         currentProduct.packTotalArea =
           parseFloat((pack * currentProduct.packArea).toFixed(4)) + ''
         currentProduct.pack_num = pack + ''
+        currentProduct.weight = currentProduct.item_num * currentProduct.one_item_weight
       } else {
         currentProduct.item_num = 'XATO'
         currentProduct.packTotalArea = 'XATO'
         currentProduct.pack_num = ''
+        currentProduct.weight = ''
       }
 
       if (overPack > 0) {
@@ -356,8 +368,10 @@ export default {
             (currentProduct.item_num * currentProduct.itemArea).toFixed(4)
           ) + ''
         currentProduct.over_pack_num = overPack + ''
+        currentProduct.weight = currentProduct.item_num * currentProduct.one_item_weight
       } else {
         currentProduct.over_pack_num = 0
+        currentProduct.weight = ''
       }
     },
 
