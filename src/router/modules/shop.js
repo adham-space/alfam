@@ -19,7 +19,7 @@ const shopRouter = {
     },
     {
       path: 'my-orders',
-      component: () => import('@/views/Shop/index'),
+      component: () => import('@/views/Shop/ordersList/index'),
       name: 'MyOrders',
       meta: { title: 'My Orders', noCache: false }
     }
