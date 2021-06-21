@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            M <sup>2</sup>
+            Kafel M<sup>2</sup>
           </div>
           <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
         </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Oylik tushum (mln so'm)
+            Oylik tushum
           </div>
           <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
         </div>
@@ -160,22 +160,22 @@ export default {
   }
 }
 
-@media (max-width:550px) {
-  .card-panel-description {
-    display: none;
-  }
+// @media (max-width:550px) {
+//   .card-panel-description {
+//     display: none;
+//   }
 
-  .card-panel-icon-wrapper {
-    float: none !important;
-    width: 100%;
-    height: 100%;
-    margin: 0 !important;
+//   .card-panel-icon-wrapper {
+//     float: none !important;
+//     width: 100%;
+//     height: 100%;
+//     margin: 0 !important;
 
-    .svg-icon {
-      display: block;
-      margin: 14px auto !important;
-      float: none !important;
-    }
-  }
-}
+//     .svg-icon {
+//       display: block;
+//       margin: 14px auto !important;
+//       float: none !important;
+//     }
+//   }
+// }
 </style>

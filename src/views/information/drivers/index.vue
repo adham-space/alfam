@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-row :gutter="10" class="customers-body">
-      <el-col :span="24" class="customers-page-tools">
+    <el-row :gutter="10" class="drivers-body">
+      <el-col :span="24" class="drivers-page-tools">
         <div style="display: flex">
           <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Search for user">
             <el-select slot="prepend" v-model="search_type" :style="search_type == 1 || search_type == 2 ? {'width': '5.5rem'} : {'width': '10rem'} " placeholder="Select">
@@ -21,7 +21,7 @@
           <el-button style="border: 1px solid transparent; color: red" icon="el-icon-delete" />
         </div>
       </el-col>
-      <el-col :span="24" class="customers-page-body">
+      <el-col :span="24" class="drivers-page-body">
         <el-table
           style="width: 100%;"
           height="calc(100% - 3.5rem)"
@@ -186,7 +186,7 @@ export default {
 </script>
 
 <style>
-    .customers-body {
+    .drivers-body {
         background-color: rgb(243, 243, 243);
         height: calc(100vh - 89px);
         width: 100%;
@@ -196,12 +196,12 @@ export default {
     .el-input-group__append, .el-input-group__prepend {
         background-color: white;
     }
-    .customers-page-tools, .customers-page-body {
+    .drivers-page-tools, .drivers-page-body {
         background-color: white;
         border-radius: 8px;
     }
 
-    .customers-page-tools {
+    .drivers-page-tools {
         height: 3rem;
         /* border: 1px solid red; */
         display: flex;
@@ -209,7 +209,7 @@ export default {
         justify-content: space-between;
     }
 
-    .customers-page-body {
+    .drivers-page-body {
         margin-top: 1rem;
         height: calc(100vh - 6rem - 89px);
     }
