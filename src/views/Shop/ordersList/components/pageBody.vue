@@ -12,7 +12,7 @@
       <el-table-column width="130" align="center" prop="order_num" label="Order No" />
       <el-table-column width="170" align="center" prop="shop" label="Shop" />
       <el-table-column width="170" align="center" prop="product" label="Product" />
-      <el-table-column width="170" align="center" prop="area" label="Area (㎡)" />
+      <el-table-column width="170" align="center" prop="area" label="Area ㎡" />
       <el-table-column width="170" align="center" prop="price" label="Price" />
       <el-table-column width="180" align="center" prop="customer" label="Customer">
         <template slot-scope="scope">

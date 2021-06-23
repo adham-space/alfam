@@ -13,7 +13,7 @@
     <editBody ref="editBodyRef">
       <span style="margin-top: 1rem" class="dialog-footer">
         <el-button @click="cancel()">Cancel</el-button>
-        <el-button type="primary" @click="save()">Save</el-button>
+        <el-button :loading="saving" type="primary" @click="save()">Save</el-button>
       </span>
     </editBody>
 
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-
+      saving: false
     }
   },
   computed: {
@@ -52,8 +52,12 @@ export default {
       this.$emit('closeDialog')
     },
     save() {
-      this.$refs.editBodyRef.callSave()
-      this.$emit('closeDialog')
+      this.saving = true
+      setTimeout(() => {
+        this.saving = false
+        this.$refs.editBodyRef.callSave()
+        this.$emit('closeDialog')
+      }, 2000)
     }
   }
 }

@@ -71,6 +71,7 @@
   </div>
 </template>
 <script>
+import { Message } from 'element-ui'
 export default {
   data: () => ({
     currentProduct: '',
@@ -114,7 +115,11 @@ export default {
   }),
   methods: {
     save() {
-      alert('saving')
+      Message({
+        message: 'Saved',
+        type: 'success',
+        duration: 2000
+      })
     }
   }
 }
