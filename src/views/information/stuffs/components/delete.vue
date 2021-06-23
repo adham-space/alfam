@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Delete driver"
+    title="Delete stuff"
     :visible.sync="dialogVisible"
     width="50%"
     align="center"
@@ -9,7 +9,7 @@
     :show-close="false"
     :destroy-on-close="true"
   >
-    <p v-if="!!currentDriver">Do you want to delete driver: {{ `${currentDriver.firstName} ${currentDriver.lastName} with an ID: ${currentDriver.id}` }} </p>
+    <p v-if="!!currentStuff">Do you want to delete driver: {{ `${currentStuff.firstName} ${currentStuff.lastName} with an ID: ${currentStuff.id}` }} </p>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel()">No</el-button>
       <el-button type="danger" @click="save()">Yes</el-button>
@@ -32,10 +32,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('drivers', ['currentDriver'])
+    ...mapState('stuffs', ['currentStuff'])
   },
   methods: {
-    ...mapMutations('drivers', ['DELETE']),
+    ...mapMutations('stuffs', ['DELETE']),
     cancel() {
       this.$emit('closeDialog')
     },

@@ -1,13 +1,12 @@
 export default {
   data() {
     return {
-      newDriver: {
+      newStuff: {
         firstName: '',
         lastName: '',
         address: '',
         phone: '',
-        car_type: '',
-        car_num: ''
+        registered_date: ''
       },
       rules: {
         firstName: [{

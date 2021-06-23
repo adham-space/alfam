@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row :gutter="10" class="drivers-body">
+    <el-row :gutter="10" class="stuffs-body">
       <Tools />
       <page-body />
     </el-row>
@@ -21,18 +21,18 @@ export default {
 </script>
 
 <style>
-    .drivers-body {
+    .stuffs-body {
         background-color: rgb(243, 243, 243);
         height: calc(100vh - 89px);
         width: 100%;
         padding: 1rem;
     }
 
-    .drivers-page-body {
+    .stuffs-page-body {
         background-color: white;
         border-radius: 8px;
     }
-    .drivers-page-body {
+    .stuffs-page-body {
         margin-top: 1rem;
         height: calc(100vh - 6rem - 89px);
     }

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Edit driver"
+    title="Edit stuff"
     :visible.sync="dialogVisible"
     width="40%"
     align="center"
@@ -9,41 +9,28 @@
     :show-close="false"
     @open="dialogOpened"
   >
-    <el-form ref="newDriverRef" :model="newDriver" :rules="rules">
+    <el-form ref="newStuffRef" :model="newStuff" :rules="rules">
       <el-form-item>
         <el-col :span="12">
           <el-form-item prop="firstName">
-            <el-input v-model="newDriver.firstName" placeholder="First name" />
+            <el-input v-model="newStuff.firstName" placeholder="First name" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="lastName">
-            <el-input v-model="newDriver.lastName" placeholder="Last name" />
+            <el-input v-model="newStuff.lastName" placeholder="Last name" />
           </el-form-item>
         </el-col>
       </el-form-item>
       <el-form-item>
         <el-col :span="12">
           <el-form-item prop="address">
-            <el-input v-model="newDriver.address" placeholder="Address" />
+            <el-input v-model="newStuff.address" placeholder="Address" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="phon">
-            <el-input v-model="newDriver.phone" placeholder="Phone" />
-          </el-form-item>
-        </el-col>
-      </el-form-item>
-
-      <el-form-item>
-        <el-col :span="12">
-          <el-form-item prop="car_type">
-            <el-input v-model="newDriver.car_type" placeholder="Car type" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="car_num">
-            <el-input v-model="newDriver.car_num" placeholder="Car number" />
+            <el-input v-model="newStuff.phone" placeholder="Phone" />
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -72,35 +59,34 @@ export default {
     }
   },
   computed: {
-    ...mapState('drivers', ['currentDriver'])
+    ...mapState('stuffs', ['currentStuff'])
   },
   methods: {
-    ...mapMutations('drivers', ['EDIT_DRIVER']),
+    ...mapMutations('stuffs', ['EDIT_STUFF']),
     dialogOpened() {
-      this.newDriver = {
-        ...this.currentDriver
+      this.newStuff = {
+        ...this.currentStuff
       }
     },
     cancel() {
       this.$emit('closeDialog')
-      this.$refs.newDriverRef.resetFields()
-      this.newDriver = {
+      this.$refs.newStuffRef.resetFields()
+      this.newStuff = {
         firstName: '',
         lastName: '',
-        address: ''
+        address: '',
+        phone: ''
       }
     },
     save() {
-      this.$refs.newDriverRef.validate(valid => {
+      this.$refs.newStuffRef.validate(valid => {
         if (valid) {
-          this.EDIT_DRIVER({
-            firstName: this.newDriver.firstName,
-            lastName: this.newDriver.lastName,
-            address: this.newDriver.address,
-            phone: this.newDriver.phone,
-            car_type: this.newDriver.car_type,
-            car_num: this.newDriver.car_num,
-            id: this.newDriver.id
+          this.EDIT_STUFF({
+            firstName: this.newStuff.firstName,
+            lastName: this.newStuff.lastName,
+            address: this.newStuff.address,
+            phone: this.newStuff.phone,
+            id: this.newStuff.id
           })
           this.cancel()
         } else {

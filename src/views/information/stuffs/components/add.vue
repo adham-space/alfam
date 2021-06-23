@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Add new driver"
+    title="Add new stuff"
     :visible.sync="dialogVisible"
     width="50%"
     align="center"
@@ -8,41 +8,28 @@
     :close-on-press-escape="false"
     :show-close="false"
   >
-    <el-form ref="newDriverRef" :model="newDriver" :rules="rules">
+    <el-form ref="newStuffRef" :model="newStuff" :rules="rules">
       <el-form-item>
         <el-col :span="12">
           <el-form-item prop="firstName">
-            <el-input v-model="newDriver.firstName" placeholder="First name" />
+            <el-input v-model="newStuff.firstName" placeholder="First name" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="lastName">
-            <el-input v-model="newDriver.lastName" placeholder="Last name" />
+            <el-input v-model="newStuff.lastName" placeholder="Last name" />
           </el-form-item>
         </el-col>
       </el-form-item>
       <el-form-item>
         <el-col :span="12">
           <el-form-item prop="address">
-            <el-input v-model="newDriver.address" placeholder="Address" />
+            <el-input v-model="newStuff.address" placeholder="Address" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="phone">
-            <el-input v-model="newDriver.phone" placeholder="Phone" />
-          </el-form-item>
-        </el-col>
-      </el-form-item>
-
-      <el-form-item>
-        <el-col :span="12">
-          <el-form-item prop="car_type">
-            <el-input v-model="newDriver.car_type" placeholder="Car type" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="car_num">
-            <el-input v-model="newDriver.car_num" placeholder="Car number" />
+            <el-input v-model="newStuff.phone" placeholder="Phone" />
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -72,31 +59,29 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('drivers', ['CREATE_NEWDRIVER']),
+    ...mapMutations('drivers', ['CREATE_NEWSTUFF']),
     cancel() {
       this.$emit('closeDialog')
-      this.$refs.newDriverRef.resetFields()
-      this.newDriver = {
+      this.$refs.newStuffRef.resetFields()
+      this.newStuff = {
         firstName: '',
         lastName: '',
         address: '',
-        phone: '',
-        car_num: '',
-        car_type: ''
+        phone: ''
       }
     },
     save() {
-      this.$refs.newDriverRef.validate(valid => {
+      this.$refs.newStuffRef.validate(valid => {
         if (valid) {
-          this.CREATE_NEWDRIVER({
-            firstName: this.newDriver.firstName,
-            lastName: this.newDriver.lastName,
-            address: this.newDriver.address,
+          this.CREATE_NEWSTUFF({
+            firstName: this.newStuff.firstName,
+            lastName: this.newStuff.lastName,
+            address: this.newStuff.address,
             id: Math.floor(Math.random() * 1000),
-            phone: this.newDriver.phone,
+            phone: this.newStuff.phone,
             createdAt: new Date().toLocaleDateString(),
-            car_num: this.newDriver.car_num,
-            car_type: this.newDriver.car_type
+            car_num: this.newStuff.car_num,
+            car_type: this.newStuff.car_type
           })
           this.cancel()
         } else {
