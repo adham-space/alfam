@@ -2,51 +2,38 @@ export default {
   data() {
     return {
       newDriver: {
-        firstName: '',
-        lastName: '',
-        address: '',
-        phone: '',
-        car_type: '',
-        car_num: ''
+        stuff: '',
+        username: '',
+        role: ''
       },
       rules: {
-        phone: [{
+        stuff: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {
               return cb()
             } else {
-              return cb(new Error('Phone should not be empty'))
+              return cb(new Error('Stuff should not be empty'))
             }
           }
         }],
-        firstName: [{
+        username: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {
               return cb()
             } else {
-              return cb(new Error('First should not be empty'))
+              return cb(new Error('Username should not be empty'))
             }
           }
         }],
-        lastName: [{
+        role: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {
               return cb()
             } else {
-              return cb(new Error('Last name should not be empty'))
-            }
-          }
-        }],
-        address: [{
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (value) {
-              return cb()
-            } else {
-              return cb(new Error('Address should not be empty'))
+              return cb(new Error('Role should not be empty'))
             }
           }
         }]
