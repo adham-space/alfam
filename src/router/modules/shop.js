@@ -12,9 +12,9 @@ const shopRouter = {
   },
   children: [
     {
-      path: 'packing-list',
+      path: 'shop-packing-list',
       component: () => import('@/views/Shop/index'),
-      name: 'PackingList',
+      name: 'ShopPackingList',
       meta: { title: 'Packing List', noCache: false }
     },
     {
@@ -22,6 +22,13 @@ const shopRouter = {
       component: () => import('@/views/Shop/ordersList/index'),
       name: 'MyOrders',
       meta: { title: 'My Orders', noCache: false }
+    },
+    {
+      path: 'edit-order/:order_id',
+      component: () => import('@/views/Shop/editOrder/index'),
+      name: 'EditOrder',
+      hidden: true,
+      meta: { title: 'Edit Order', noCache: true }
     }
   ]
 }

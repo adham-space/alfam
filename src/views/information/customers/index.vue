@@ -11,6 +11,7 @@
 import Tools from './components/tools.vue'
 import pageBody from './components/pageBody.vue'
 export default {
+  name: 'Customers',
   components: {
     Tools,
     pageBody

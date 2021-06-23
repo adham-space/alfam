@@ -13,7 +13,7 @@
 import Table from './components/Table'
 import Tools from './components/Tools'
 export default {
-  name: 'ShopPackingList',
+  name: 'Shop',
   components: {
     Table,
     Tools

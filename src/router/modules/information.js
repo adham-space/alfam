@@ -14,31 +14,31 @@ const informationRouter = {
     {
       path: 'users',
       component: () => import('@/views/information/users/index'),
-      name: 'UsersList',
+      name: 'Users',
       meta: { title: 'Users ', noCache: false }
     },
     {
       path: 'stuff',
       component: () => import('@/views/information/stuffs/index'),
-      name: 'StuffList',
-      meta: { title: 'Stuff ', noCache: false }
+      name: 'Stuffs',
+      meta: { title: 'Stuffs', noCache: false }
     },
     {
       path: 'shops',
       component: () => import('@/views/information/shops/index'),
-      name: 'ShopsList',
+      name: 'Shops',
       meta: { title: 'Shops ', noCache: false }
     },
     {
       path: 'drivers',
       component: () => import('@/views/information/drivers/index'),
-      name: 'DriversList',
+      name: 'Drivers',
       meta: { title: 'Drivers ', noCache: false }
     },
     {
       path: 'customers',
       component: () => import('@/views/information/customers/index'),
-      name: 'CustomersList',
+      name: 'Customers',
       meta: { title: 'Customers ', noCache: false }
     }
   ]
