@@ -382,9 +382,9 @@ export default {
 
     },
     setTableHeight() {
-      console.log('a: ', this.maxHeight)
-      this.maxHeight = this.$refs.mainPartRef.$el.clientHeight - 100
-      console.log('b: ', this.maxHeight)
+      // console.log('a: ', this.maxHeight)
+      // this.maxHeight = this.$refs.mainPartRef.$el.clientHeight - 100
+      // console.log('b: ', this.maxHeight)
     }
   }
 }

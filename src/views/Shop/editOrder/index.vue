@@ -1,10 +1,12 @@
 <template>
-  <el-row style="height: calc(100vh - 86px); ">
+  <el-row style="height: calc(100vh - 96px); ">
     <el-col :span="19" style="height: calc(100vh - 96px);">
       <Table />
     </el-col>
     <el-col :span="5" style="height: calc(100vh - 86px); ">
-      <Tools />
+      <Tools ref="calculatorRef">
+        <slot />
+      </Tools>
     </el-col>
   </el-row>
 </template>
@@ -17,6 +19,11 @@ export default {
   components: {
     Table,
     Tools
+  },
+  methods: {
+    callSave() {
+      this.$refs.calculatorRef.save()
+    }
   }
 }
 </script>

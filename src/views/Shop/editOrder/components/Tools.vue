@@ -3,6 +3,7 @@
     <p>List №: ALFAM-001 </p>
     <el-select
       v-model="currentProduct"
+      disabled
       style="width: 100%"
       placeholder="Choose a product"
     >
@@ -15,6 +16,7 @@
     </el-select>
     <el-select
       v-model="currentStatus"
+      disabled
       style="width: 100%"
       class="tools-wrapper-item"
       placeholder="Choose action"
@@ -28,9 +30,9 @@
     </el-select>
     <el-select
       v-model="currentConsumer"
+      disabled
       class="tools-wrapper-item"
       style="width: 100%"
-
       placeholder="Choose a consumer"
     >
       <el-option
@@ -42,6 +44,7 @@
     </el-select>
     <el-select
       v-model="currentConsumer"
+      disabled
       class="tools-wrapper-item"
       style="width: 100%"
 
@@ -59,11 +62,12 @@
       class="tools-wrapper-item"
       placeholder="Cost to upload (so'm)"
     />
-    <el-button
+    <!-- <el-button
       class="tools-wrapper-item"
       style="color: white; background-color: green"
       icon="el-icon-check"
-    >Save</el-button>
+    >Save</el-button> -->
+    <slot />
   </div>
 </template>
 <script>
@@ -107,7 +111,12 @@ export default {
         value: 3
       }
     ]
-  })
+  }),
+  methods: {
+    save() {
+      alert('saving')
+    }
+  }
 }
 </script>
 

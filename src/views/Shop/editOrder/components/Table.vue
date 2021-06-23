@@ -148,7 +148,7 @@
         />
       </el-table-column>
     </el-table>
-    <el-dialog title="" :visible.sync="showImageDilog" width="40%">
+    <el-dialog title="" :visible.sync="showImageDilog" width="40%" append-to-body>
       <el-image
         style="width: 90%; height: 90%"
         :src="imageUrl"
@@ -382,9 +382,9 @@ export default {
 
     },
     setTableHeight() {
-      console.log('a: ', this.maxHeight)
-      this.maxHeight = this.$refs.mainPartRef.$el.clientHeight - 100
-      console.log('b: ', this.maxHeight)
+      // console.log('a: ', this.maxHeight)
+      // this.maxHeight = this.$refs.mainPartRef.$el.clientHeight - 100
+      // console.log('b: ', this.maxHeight)
     }
   }
 }
@@ -399,7 +399,7 @@ export default {
 }
 
 .list-main {
-  /* border: 1px solid green; */
+  border: 1px solid green;
   height: calc(100% - 105px);
   margin: 0 !important;
 }
