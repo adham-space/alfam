@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Edit driver"
+    title="Edit shop"
     :visible.sync="dialogVisible"
     width="40%"
     align="center"
@@ -9,44 +9,20 @@
     :show-close="false"
     @open="dialogOpened"
   >
-    <el-form ref="newDriverRef" :model="newDriver" :rules="rules">
+    <el-form ref="newShopRef" :model="newShop" :rules="rules">
       <el-form-item>
         <el-col :span="12">
-          <el-form-item prop="firstName">
-            <el-input v-model="newDriver.firstName" placeholder="First name" />
+          <el-form-item prop="name">
+            <el-input v-model="newShop.name" placeholder="Name" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="lastName">
-            <el-input v-model="newDriver.lastName" placeholder="Last name" />
-          </el-form-item>
-        </el-col>
-      </el-form-item>
-      <el-form-item>
-        <el-col :span="12">
-          <el-form-item prop="address">
-            <el-input v-model="newDriver.address" placeholder="Address" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="phon">
-            <el-input v-model="newDriver.phone" placeholder="Phone" />
+          <el-form-item prop="owner">
+            <el-input v-model="newShop.owner" placeholder="Ownership" />
           </el-form-item>
         </el-col>
       </el-form-item>
 
-      <el-form-item>
-        <el-col :span="12">
-          <el-form-item prop="car_type">
-            <el-input v-model="newDriver.car_type" placeholder="Car type" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="car_num">
-            <el-input v-model="newDriver.car_num" placeholder="Car number" />
-          </el-form-item>
-        </el-col>
-      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel()">Cancel</el-button>
@@ -72,35 +48,31 @@ export default {
     }
   },
   computed: {
-    ...mapState('drivers', ['currentDriver'])
+    ...mapState('shops', ['currentShop'])
   },
   methods: {
-    ...mapMutations('drivers', ['EDIT_DRIVER']),
+    ...mapMutations('shops', ['EDIT_SHOP']),
     dialogOpened() {
-      this.newDriver = {
-        ...this.currentDriver
+      this.newShop = {
+        ...this.currentShop
       }
     },
     cancel() {
       this.$emit('closeDialog')
-      this.$refs.newDriverRef.resetFields()
-      this.newDriver = {
+      this.$refs.newShopRef.resetFields()
+      this.newShop = {
         firstName: '',
         lastName: '',
         address: ''
       }
     },
     save() {
-      this.$refs.newDriverRef.validate(valid => {
+      this.$refs.newShopRef.validate(valid => {
         if (valid) {
-          this.EDIT_DRIVER({
-            firstName: this.newDriver.firstName,
-            lastName: this.newDriver.lastName,
-            address: this.newDriver.address,
-            phone: this.newDriver.phone,
-            car_type: this.newDriver.car_type,
-            car_num: this.newDriver.car_num,
-            id: this.newDriver.id
+          this.EDIT_SHOP({
+            name: this.newShop.name,
+            owner: this.newShop.owner,
+            id: this.newShop.id
           })
           this.cancel()
         } else {

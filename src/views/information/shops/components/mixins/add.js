@@ -1,52 +1,28 @@
 export default {
   data() {
     return {
-      newDriver: {
-        firstName: '',
-        lastName: '',
-        address: '',
-        phone: '',
-        car_type: '',
-        car_num: ''
+      newShop: {
+        name: '',
+        owner: ''
       },
       rules: {
-        phone: [{
+        name: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {
               return cb()
             } else {
-              return cb(new Error('Phone should not be empty'))
+              return cb(new Error('Name should not be empty'))
             }
           }
         }],
-        firstName: [{
+        owner: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {
               return cb()
             } else {
-              return cb(new Error('First should not be empty'))
-            }
-          }
-        }],
-        lastName: [{
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (value) {
-              return cb()
-            } else {
-              return cb(new Error('Last name should not be empty'))
-            }
-          }
-        }],
-        address: [{
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (value) {
-              return cb()
-            } else {
-              return cb(new Error('Address should not be empty'))
+              return cb(new Error('Ownership should not be empty'))
             }
           }
         }]

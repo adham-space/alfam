@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="24" class="drivers-page-tools">
+  <el-col :span="24" class="shops-page-tools">
     <div style="display: flex">
       <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Search for driver">
         <el-select
@@ -21,8 +21,8 @@
     <div style="display: flex">
       <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
       <el-button style="border: 1px solid transparent" icon="el-icon-plus" @click="addDialog = true" />
-      <el-button :disabled="!!!currentDriver" style="border: 1px solid transparent" icon="el-icon-edit" @click="editDialog = true" />
-      <el-button :disabled="!!!currentDriver" style="border: 1px solid transparent; color: red" icon="el-icon-delete" @click="delete_Dialog = true" />
+      <el-button :disabled="!!!currentShop" style="border: 1px solid transparent" icon="el-icon-edit" @click="editDialog = true" />
+      <el-button :disabled="!!!currentShop" style="border: 1px solid transparent; color: red" icon="el-icon-delete" @click="delete_Dialog = true" />
       <add :dialog-visible="addDialog" @closeDialog="addDialog = false" />
       <edit :dialog-visible="editDialog" @closeDialog="editDialog = false" />
       <delete_ :dialog-visible="delete_Dialog" @closeDialog="delete_Dialog = false" />
@@ -49,10 +49,10 @@ export default {
     delete_Dialog: false
   }),
   computed: {
-    ...mapState('drivers', ['currentDriver'])
+    ...mapState('shops', ['currentShop'])
   },
   methods: {
-    ...mapMutations('drivers', ['SET_QUERY']),
+    ...mapMutations('shops', ['SET_QUERY']),
     searchTypeChanged(t) {
       this.SET_QUERY({
         key: 'search_input',
@@ -64,12 +64,12 @@ export default {
 </script>
 
 <style>
-     .drivers-page-tools {
+     .shops-page-tools {
          background-color: white;
         border-radius: 8px;
     }
 
-    .drivers-page-tools {
+    .shops-page-tools {
         height: 3rem;
         /* border: 1px solid red; */
         display: flex;
