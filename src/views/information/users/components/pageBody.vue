@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="24" class="drivers-page-body">
+  <el-col :span="24" class="users-page-body">
     <el-table
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
@@ -9,16 +9,9 @@
       @row-click="driverChosed"
     >
       <el-table-column width="100" align="center" prop="id" label="ID" />
-      <el-table-column align="center" prop="name" label="Name">
-        <template slot-scope="scope">
-          {{ `${scope.row.firstName} ${scope.row.lastName}` }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="address" label="Address" />
-      <el-table-column width="260" align="center" prop="phone" label="Phone number" />
-      <el-table-column width="180" align="center" prop="car_type" label="Car type" />
-      <el-table-column width="160" align="center" prop="car_num" label="Car num" />
-      <el-table-column width="150" align="center" prop="createdAt" label="Registred date" />
+      <el-table-column align="center" prop="stuffId" label="Stuff" />
+      <el-table-column align="center" prop="username" label="Username" />
+      <el-table-column align="center" prop="roleId" label="Role" />
     </el-table>
     <div class="pgntion">
       <Pagination
@@ -41,15 +34,15 @@ export default {
   data: () => ({
   }),
   computed: {
-    ...mapState('drivers', ['tableData'])
+    ...mapState('users', ['tableData'])
   },
   beforeDestroy() {
-    this.SET_DRIVER(null)
+    this.SET_USER(null)
   },
   methods: {
-    ...mapMutations('drivers', ['SET_DRIVER']),
+    ...mapMutations('users', ['SET_USER']),
     driverChosed(row, column, event) {
-      this.SET_DRIVER(row)
+      this.SET_USER(row)
     }
   }
 

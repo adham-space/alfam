@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Add new driver"
+    title="Add new user"
     :visible.sync="dialogVisible"
     width="50%"
     align="center"
@@ -8,45 +8,34 @@
     :close-on-press-escape="false"
     :show-close="false"
   >
-    <el-form ref="newDriverRef" :model="newDriver" :rules="rules">
+    <el-form ref="newUserRef" :model="newUser" :rules="rules">
       <el-form-item>
         <el-col :span="12">
-          <el-form-item prop="firstName">
-            <el-input v-model="newDriver.firstName" placeholder="First name" />
+          <el-form-item prop="stuffId">
+            <el-select v-model="newUser.stuffId" style="width: 100%" placeholder="Stuff">
+              <el-option label="Adham Muhammadjonov" value="231"></el-option>
+              <el-option label="Alisher Rahimov" value="651"></el-option>
+              <el-option label="Sardor Rahimov" value="432"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="lastName">
-            <el-input v-model="newDriver.lastName" placeholder="Last name" />
+          <el-form-item prop="roleId">
+              <el-select v-model="newUser.roleId" style="width: 100%" placeholder="Role">
+              <el-option label="admin" value="231"></el-option>
+              <el-option label="zav. sklad" value="651"></el-option>
+              <el-option label="seller" value="432"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-form-item>
       <el-form-item>
         <el-col :span="12">
-          <el-form-item prop="address">
-            <el-input v-model="newDriver.address" placeholder="Address" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="phone">
-            <el-input v-model="newDriver.phone" placeholder="Phone" />
+          <el-form-item prop="username">
+            <el-input v-model="newUser.username" placeholder="Username" />
           </el-form-item>
         </el-col>
       </el-form-item>
-
-      <el-form-item>
-        <el-col :span="12">
-          <el-form-item prop="car_type">
-            <el-input v-model="newDriver.car_type" placeholder="Car type" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="car_num">
-            <el-input v-model="newDriver.car_num" placeholder="Car number" />
-          </el-form-item>
-        </el-col>
-      </el-form-item>
-
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel()">Cancel</el-button>
@@ -72,31 +61,24 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('drivers', ['CREATE_NEWDRIVER']),
+    ...mapMutations('users', ['CREATE_NEWUSER']),
     cancel() {
       this.$emit('closeDialog')
-      this.$refs.newDriverRef.resetFields()
-      this.newDriver = {
-        firstName: '',
-        lastName: '',
-        address: '',
-        phone: '',
-        car_num: '',
-        car_type: ''
+      this.$refs.newUserRef.resetFields()
+      this.newUser = {
+        stuffId: '',
+        roleId: '',
+        username: '',
       }
     },
     save() {
-      this.$refs.newDriverRef.validate(valid => {
+      this.$refs.newUserRef.validate(valid => {
         if (valid) {
-          this.CREATE_NEWDRIVER({
-            firstName: this.newDriver.firstName,
-            lastName: this.newDriver.lastName,
-            address: this.newDriver.address,
+          this.CREATE_NEWUSER({
+            stuffId: this.newUser.stuffId,
+            roleId: this.newUser.roleId,
+            username: this.newUser.username,
             id: Math.floor(Math.random() * 1000),
-            phone: this.newDriver.phone,
-            createdAt: new Date().toLocaleDateString(),
-            car_num: this.newDriver.car_num,
-            car_type: this.newDriver.car_type
           })
           this.cancel()
         } else {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <span>{{ init === 'XATO' ? 'XATO':'' }}</span>
-    <el-input v-model="newItemNum" pattern="\d+" step.native="1" type="number" @input="newListEditing()" />
+    <el-input :value="newItemNum" pattern="[0-9]" step.native="1" type="number" @input="newListEditing($event)" />
   </div>
 </template>
 
@@ -18,9 +18,9 @@ export default {
     }
   },
   methods: {
-    newListEditing() {
+    newListEditing(event) {
       console.log('1-code: ', this.code)
-      this.newItemNum = (this.newItemNum + '').replace('.', '')
+      this.newItemNum = (event + '')[(event + '').length - 1] === '.' || (event + '')[(event + '').length - 1] === ',' ? this.newItemNum : event 
       this.$emit('newItemNumChanging', { code: this.code, newItemNum: this.newItemNum })
     }
   }

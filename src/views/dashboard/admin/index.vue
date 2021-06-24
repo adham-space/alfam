@@ -18,6 +18,17 @@
           <pie-chart2 />
         </div>
       </el-col>
+
+      <el-col :span="24">
+        <ul>
+          <li>Proporsiya</li>
+          <li>Ishchilarni xatolarini teshkirish, baxo berish</li>
+          <li>Skladchidan pulni yashiri, do'konchiga ko'rsatish</li>
+          <li>Jarayonlar ketma ketligini sotish, barter, vazvrat</li>
+          <li>Loglar</li>
+          <li>Pulini o'zgartirish</li>
+        </ul>
+      </el-col>
     </el-row>
   </div>
 </template>

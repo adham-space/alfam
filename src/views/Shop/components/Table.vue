@@ -5,7 +5,6 @@
       style="width: 100%"
       size="small"
       :data="tableData"
-      :header-cell-style="getHeaderCellStyle"
     >
       <el-table-column type="index" label="№" align="center" width="100" />
       <el-table-column
@@ -51,12 +50,18 @@
           prop="packTotalArea"
         >
           <template slot-scope="scope">
-            <calcNewItem
-              :key="whatIsInserting[0] === false ? scope.row.item_num : ''"
-              :code="scope.row.code"
-              :init="scope.row.packTotalArea + ''"
-              @newAreaChanging="calculateArea"
-            />
+            <div class="two-fields">
+              <el-input
+                size="small"
+                type="number"
+                :min="0"
+                :value="scope.row.packTotalArea"
+                @input="areaIsChanging($event, scope.row)"
+              >
+              </el-input>
+            </div>
+
+
           </template>
         </el-table-column>
         <el-table-column
@@ -66,14 +71,14 @@
           align="center"
         >
           <template slot-scope="scope">
-            <newItemNum
-              :key="
-                whatIsInserting[1] === false ? scope.row.packTotalArea : ''
-              "
-              :init="scope.row.item_num + ''"
-              :code="scope.row.code"
-              @newItemNumChanging="calculateTotalNumOfItems"
-            />
+           <div class="two-fields">
+              <el-input
+                size="small"
+                :value="scope.row.item_num"
+                @input="item_numIsChanging($event, scope.row)"
+              >
+              </el-input>
+           </div>
           </template>
         </el-table-column>
       </el-table-column>
@@ -90,27 +95,59 @@
           label="ТОВАРНИ УМУМИЙ ДОНАСИНИ (МИҚДОРИ)"
         >
           <template slot-scope="scope">
-            <!-- {{ scope.row.pack_num }} / {{ scope.row.over_pack_num }} -->
-            <newPackInserting
-              :key="whatIsInserting[2] === false ? scope.row.item_num : ''"
-              :init_pack="scope.row.pack_num + ''"
-              :init_over_pack="scope.row.over_pack_num + ''"
-              :code="scope.row.code"
-              :max_num="scope.row.pack_content_num"
-              @newPackChanging="newPackChanging_"
-            />
+            <div class="two-fields">
+              <div class="two-fields">
+              <el-input
+                size="small"
+                :value="scope.row.pack_num"
+                @input="pack_numIsChanging($event, scope.row)"
+              >
+              </el-input>
+           </div> 
+           
+           <div class="two-fields">
+              <el-input
+                size="small"
+                :value="scope.row.over_pack_num"
+                @input="over_pack_numIsChanging($event, scope.row)"
+              >
+              </el-input>
+           </div>
+            </div>
           </template>
         </el-table-column>
       </el-table-column>
       <el-table-column
         width="160"
+        label="ТАН НАРХИ"
+        prop="basePrice"
+        align="center"
+      >
+        <template slot-scope="scope">
+              <el-input
+                size="small"
+                :value="scope.row.basePrice"
+                @input="basePriceIsChanging($event, scope.row)"
+              >
+              </el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        width="160"
+        label="СУММАСИ"
+        prop="sum"
+        align="center"
+      >
+        <template slot-scope="scope">
+          {{scope.row.sum}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        width="150"
         label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"
         prop="weight"
         align="center"
       >
-        <!-- <template slot-scope="scope">
-          {{  }}
-        </template> -->
       </el-table-column>
       <el-table-column
         label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
@@ -150,7 +187,7 @@
     </el-table>
     <el-dialog title="" :visible.sync="showImageDilog" width="40%">
       <el-image
-        style="width: 90%; height: 90%"
+        style="width: 100%; height: 90%"
         :src="imageUrl"
         fit="scale-down"
       />
@@ -162,123 +199,32 @@
 import calcNewItem from './calcNewItem'
 import newItemNum from './insertNewItem_num'
 import newPackInserting from './insertNewpac_num'
+import data_ from './mixins/data_.js'
+import methods_ from './mixins/methods_.js'
 export default {
   components: {
     calcNewItem,
     newItemNum,
     newPackInserting
   },
+  mixins: [data_, methods_ ],
   data() {
     return {
-      showImageDilog: false,
-      imageUrl: '',
-      maxHeight: 600,
-      newArea: '',
-      whatIsInserting: [0, 0, 0],
-      tableData: [
-        {
-          code: '1191A',
-          spec: 'Ochi',
-          size: '30 * 60',
-          packTotalArea: '',
-          item_num: '',
-          pack_num: '',
-          over_pack_num: '',
-          pack_weight: 25,
-          one_item_weight: 3.125,
-          weight: '',
-          packArea: 1.44,
-          itemArea: 0.18,
-          pack_content_num: 8
-        },
-        {
-          code: '1191B',
-          spec: "To'qi",
-          size: '30 * 60',
-          packTotalArea: '',
-          item_num: '',
-          pack_num: '',
-          over_pack_num: '',
-          pack_weight: 25,
-          one_item_weight: 3.125,
-          weight: '',
-          packArea: 1.44,
-          itemArea: 0.18,
-          pack_content_num: 8
-        },
-        {
-          code: '1191C',
-          spec: 'Dekor',
-          size: '30 * 60',
-          packTotalArea: '',
-          item_num: '',
-          pack_num: '',
-          over_pack_num: '',
-          pack_weight: 25,
-          one_item_weight: 3.125,
-          weight: '',
-          packArea: 1.44,
-          itemArea: 0.18,
-          pack_content_num: 8
-        },
-        {
-          code: '1191D',
-          spec: 'Pol',
-          size: '30 * 30',
-          packTotalArea: '',
-          item_num: '',
-          pack_num: '',
-          over_pack_num: '',
-          pack_weight: 21,
-          one_item_weight: 1.4,
-          weight: '',
-          packArea: 1.35,
-          itemArea: 0.09,
-          pack_content_num: 15
-        },
-        {
-          code: '1191F',
-          spec: 'Friz',
-          size: '30 * 6 ',
-          packTotalArea: '',
-          item_num: '',
-          pack_num: '',
-          over_pack_num: '',
-          pack_weight: 21,
-          one_item_weight: 1.4,
-          weight: '',
-          packArea: 0.72,
-          itemArea: 0.018,
-          pack_content_num: 40
-        },
-        {
-          code: '1191S',
-          spec: 'Sigara',
-          size: '30 * 2 ',
-          packTotalArea: '',
-          item_num: '',
-          pack_num: '',
-          over_pack_num: '',
-          pack_weight: 10,
-          one_item_weight: 0.1,
-          weight: '',
-          packArea: 0.6,
-          itemArea: 0.006,
-          pack_content_num: 100
-        }
-      ]
-    }
-  },
-  mounted() {
-    this.setTableHeight()
-    window.onresize = () => {
-      this.setTableHeight()
     }
   },
   methods: {
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
+    },
+    basePriceChanged(event, row) {
+      const currentProduct = this.tableData.find((item) => item.code === row.code)
+      currentProduct.basePrice = event;
+      if(event && currentProduct.packTotalArea) {
+        currentProduct.sum = (event * parseFloat(currentProduct.packTotalArea).toFixed(4)).toFixed(1)
+      } else {
+        currentProduct.sum = 0;
+      }
     },
     calculateArea({ code, newValue }) { // calculate new area
       this.whatIsInserting[0] = true
@@ -293,12 +239,13 @@ export default {
         errorInNumer === 0.0
           ? errorInNumer
           : parseFloat(1 - errorInNumer).toFixed(4)
-      if (parseFloat(errorInNumer) <= 0.0001) { // if error is less or equal to 0.0001 is ok else it should be fixed
+      if (parseFloat(errorInNumer) <= 0.0001 && newValue) { // if error is less or equal to 0.0001 is ok else it should be fixed
         currentProduct.item_num = Math.ceil(totalNumberOfItems)
         currentProduct.pack_num = Math.floor(
           currentProduct.item_num / currentProduct.pack_content_num
         )
         currentProduct.packTotalArea = newValue
+        currentProduct.sum = (currentProduct.basePrice * parseFloat(currentProduct.packTotalArea).toFixed(4)).toFixed(1)
         currentProduct.over_pack_num =
           currentProduct.item_num % currentProduct.pack_content_num
         currentProduct.weight = currentProduct.item_num * currentProduct.one_item_weight // find weight using all items multipled by weight of single item
@@ -308,9 +255,10 @@ export default {
         currentProduct.packTotalArea = ''
         currentProduct.over_pack_num = ''
         currentProduct.weight = ''
+        currentProduct.sum = 0;
+
       }
     },
-
     calculateTotalNumOfItems({ code, newItemNum }) {
       this.whatIsInserting[0] = false
       this.whatIsInserting[1] = true
@@ -324,7 +272,7 @@ export default {
         newItemNum = parseFloat(newItemNum)
         currentProduct.packTotalArea =
           parseFloat((newItemNum * currentProduct.itemArea).toFixed(4)) + ''
-
+        currentProduct.sum = (currentProduct.basePrice * parseFloat(currentProduct.packTotalArea).toFixed(4)).toFixed(1)
         currentProduct.item_num = newItemNum
         currentProduct.pack_num = Math.floor(
           currentProduct.item_num / currentProduct.pack_content_num
@@ -337,9 +285,9 @@ export default {
         currentProduct.packTotalArea = 'XATO'
         currentProduct.pack_num = 'XATO'
         currentProduct.weight = ''
+        currentProduct.sum = 0
       }
     },
-
     newPackChanging_({ code, pack, overPack }) {
       this.whatIsInserting[0] = false
       this.whatIsInserting[1] = false
@@ -352,6 +300,7 @@ export default {
         currentProduct.item_num = currentProduct.pack_content_num * pack + ''
         currentProduct.packTotalArea =
           parseFloat((pack * currentProduct.packArea).toFixed(4)) + ''
+        currentProduct.sum = (currentProduct.basePrice * parseFloat(currentProduct.packTotalArea).toFixed(4)).toFixed(1)
         currentProduct.pack_num = pack + ''
         currentProduct.weight = currentProduct.item_num * currentProduct.one_item_weight
       } else {
@@ -359,33 +308,26 @@ export default {
         currentProduct.packTotalArea = 'XATO'
         currentProduct.pack_num = ''
         currentProduct.weight = ''
+        currentProduct.sum = 0;
       }
-
       if (overPack > 0) {
         currentProduct.item_num = parseInt(currentProduct.item_num) + overPack
         currentProduct.packTotalArea =
           parseFloat(
             (currentProduct.item_num * currentProduct.itemArea).toFixed(4)
           ) + ''
+        currentProduct.sum = (currentProduct.basePrice * parseFloat(currentProduct.packTotalArea).toFixed(4)).toFixed(1)
         currentProduct.over_pack_num = overPack + ''
         currentProduct.weight = currentProduct.item_num * currentProduct.one_item_weight
       } else {
         currentProduct.over_pack_num = 0
         currentProduct.weight = ''
+        currentProduct.sum = 0;
       }
     },
-
     newListEditing(row) {
       console.log('Log: ', row)
     },
-    getHeaderCellStyle({ row, column, rowIndex, columnIndex }) {
-
-    },
-    setTableHeight() {
-      // console.log('a: ', this.maxHeight)
-      // this.maxHeight = this.$refs.mainPartRef.$el.clientHeight - 100
-      // console.log('b: ', this.maxHeight)
-    }
   }
 }
 </script>
@@ -411,5 +353,10 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 0.5em;
+}
+
+.two-fields {
+  display: flex;
+  flex-flow: column;
 }
 </style>

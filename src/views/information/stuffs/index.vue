@@ -6,7 +6,6 @@
     </el-row>
   </div>
 </template>
-
 <script>
 import Tools from './components/tools.vue'
 import pageBody from './components/pageBody.vue'
@@ -16,10 +15,8 @@ export default {
     Tools,
     pageBody
   }
-
 }
 </script>
-
 <style>
     .stuffs-body {
         background-color: rgb(243, 243, 243);

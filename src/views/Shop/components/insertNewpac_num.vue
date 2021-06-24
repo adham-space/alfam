@@ -11,9 +11,12 @@
       </el-form-item>
       <el-form-item prop="over_pac">
         <el-input
-          v-model="pack_form.over_pac"
           type="number"
-          @input="newListEditing()"
+          :value="pack_form.over_pac"
+          pattern="[0-9]"
+          step.native="1"
+          placeholder=""
+          @input="newListEditingNumOnly($event)"
         />
       </el-form-item>
     </el-form>
@@ -57,12 +60,16 @@ export default {
     }
   },
   methods: {
+    newListEditingNumOnly(event) {
+      console.log('check: ',(event + '')[(event + '').length - 1])
+      this.pack_form.over_pac = (event + '')[(event + '').length - 1] === '.' || (event + '')[(event + '').length - 1] === ',' ? this.pack_form.over_pac : event
+       this.newListEditing()
+    },
     newListEditing() {
-      console.log('2-code: ', this.code)
       this.$emit('newPackChanging', {
         code: this.code,
         pack: this.pack_form.pack,
-        overPack: this.pack_form.over_pac
+        overPack: !!this.pack_form.over_pac ? this.pack_form.over_pac: 0
       })
     }
   }
