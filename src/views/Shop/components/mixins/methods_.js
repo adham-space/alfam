@@ -16,7 +16,7 @@ export default {
         // then set total item number also
         this.currentProduct.item_num = totalNumberOfItems
         // then set number of complete packets
-        this.currentProduct.pack_num = totalNumberOfItems / this.currentProduct.pack_content_num
+        this.currentProduct.pack_num = parseInt(totalNumberOfItems / this.currentProduct.pack_content_num)
         // then set bumber of over full packet numbers
         this.currentProduct.over_pack_num = totalNumberOfItems % this.currentProduct.pack_content_num
         // calculate price of product according to basePrice
