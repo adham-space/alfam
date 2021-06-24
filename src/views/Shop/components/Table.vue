@@ -201,7 +201,7 @@ export default {
     }
   },
   methods: {
-    
+
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url

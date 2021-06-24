@@ -1,4 +1,4 @@
-import {toThousandFilter} from '@/filters/index'
+import { toThousandFilter } from '@/filters/index'
 export default {
   methods: {
     // area value is changing
@@ -21,7 +21,6 @@ export default {
         this.currentProduct.over_pack_num = totalNumberOfItems % this.currentProduct.pack_content_num
         // calculate price of product according to basePrice
         this.currentProduct.sum = toThousandFilter(parseInt(this.currentProduct.basePrice * newArea))
-        console.log('1000:', this.currentProduct.sum)
         // set weight
         this.currentProduct.weight = this.currentProduct.item_num * this.currentProduct.one_item_weight
       } else {
