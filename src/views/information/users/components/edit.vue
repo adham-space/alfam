@@ -10,22 +10,22 @@
     @open="dialogOpened"
   >
     <el-form ref="newUserRef" :model="newUser" :rules="rules">
-        <el-form-item>
+      <el-form-item>
         <el-col :span="12">
           <el-form-item prop="stuffId">
             <el-select v-model="newUser.stuffId" style="width: 100%" placeholder="Stuff">
-              <el-option label="Adham Muhammadjonov" value="231"></el-option>
-              <el-option label="Alisher Rahimov" value="651"></el-option>
-              <el-option label="Sardor Rahimov" value="432"></el-option>
+              <el-option label="Adham Muhammadjonov" value="231" />
+              <el-option label="Alisher Rahimov" value="651" />
+              <el-option label="Sardor Rahimov" value="432" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="roleId">
-              <el-select v-model="newUser.roleId" style="width: 100%" placeholder="Role">
-              <el-option label="admin" value="231"></el-option>
-              <el-option label="zav. sklad" value="651"></el-option>
-              <el-option label="seller" value="432"></el-option>
+            <el-select v-model="newUser.roleId" style="width: 100%" placeholder="Role">
+              <el-option label="admin" value="231" />
+              <el-option label="zav. sklad" value="651" />
+              <el-option label="seller" value="432" />
             </el-select>
           </el-form-item>
         </el-col>

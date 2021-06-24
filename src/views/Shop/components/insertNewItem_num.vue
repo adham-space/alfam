@@ -20,7 +20,7 @@ export default {
   methods: {
     newListEditing(event) {
       console.log('1-code: ', this.code)
-      this.newItemNum = (event + '')[(event + '').length - 1] === '.' || (event + '')[(event + '').length - 1] === ',' ? this.newItemNum : event 
+      this.newItemNum = (event + '')[(event + '').length - 1] === '.' || (event + '')[(event + '').length - 1] === ',' ? this.newItemNum : event
       this.$emit('newItemNumChanging', { code: this.code, newItemNum: this.newItemNum })
     }
   }

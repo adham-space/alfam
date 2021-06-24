@@ -1,5 +1,6 @@
 <template>
   <div class="tools-wrapper">
+    <p>List №: ALFAM-001 </p>
     <el-select
       v-model="currentProduct"
       style="width: 100%"
@@ -53,6 +54,11 @@
         :value="pr.value"
       />
     </el-select>
+    <el-input
+      v-model="costOfUpload"
+      class="tools-wrapper-item"
+      placeholder="Cost to upload (so'm)"
+    />
     <el-button
       class="tools-wrapper-item"
       style="color: white; background-color: green"
@@ -66,6 +72,7 @@ export default {
     currentProduct: '',
     currentStatus: '',
     currentConsumer: '',
+    costOfUpload: '',
     products: [
       {
         label: 'Nilufar',

@@ -61,15 +61,15 @@ export default {
   },
   methods: {
     newListEditingNumOnly(event) {
-      console.log('check: ',(event + '')[(event + '').length - 1])
+      console.log('check: ', (event + '')[(event + '').length - 1])
       this.pack_form.over_pac = (event + '')[(event + '').length - 1] === '.' || (event + '')[(event + '').length - 1] === ',' ? this.pack_form.over_pac : event
-       this.newListEditing()
+      this.newListEditing()
     },
     newListEditing() {
       this.$emit('newPackChanging', {
         code: this.code,
         pack: this.pack_form.pack,
-        overPack: !!this.pack_form.over_pac ? this.pack_form.over_pac: 0
+        overPack: this.pack_form.over_pac ? this.pack_form.over_pac : 0
       })
     }
   }
