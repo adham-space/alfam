@@ -132,9 +132,9 @@
         prop="sum"
         align="center"
       >
-        <!-- <template slot-scope="scope">
-          {{ toThousands(scope.row.sum )}}
-        </template> -->
+        <template slot-scope="scope">
+          {{ scope.row.sum }}
+        </template>
       </el-table-column>
       <el-table-column
         width="150"
@@ -178,7 +178,7 @@
         />
       </el-table-column>
     </el-table>
-    <el-dialog title="" :visible.sync="showImageDilog" width="40%">
+    <el-dialog title="" :visible.sync="showImageDilog" append-to-body width="40%">
       <el-image
         style="width: 100%; height: 90%"
         :src="imageUrl"
@@ -201,7 +201,6 @@ export default {
     }
   },
   methods: {
-
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url

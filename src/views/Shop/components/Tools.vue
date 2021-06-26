@@ -59,11 +59,7 @@
       class="tools-wrapper-item"
       placeholder="Cost to upload (so'm)"
     />
-    <el-button
-      class="tools-wrapper-item"
-      style="color: white; background-color: green"
-      icon="el-icon-check"
-    >Save</el-button>
+    <slot></slot>
   </div>
 </template>
 <script>
