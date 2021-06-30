@@ -1,6 +1,8 @@
 <template>
   <div class="tools-wrapper">
     <p>List №: ALFAM-001 </p>
+
+    <el-checkbox v-model="withBorken" style="margin-bottom: 1em">Include borkens</el-checkbox>
     <el-select
       v-model="currentProduct"
       style="width: 100%"
@@ -59,12 +61,16 @@
       class="tools-wrapper-item"
       placeholder="Cost to upload (so'm)"
     />
-    <slot></slot>
+    <div class="order-action-btn">
+      <el-button type="primary">Save</el-button>
+      <el-button type="danger">Cancel</el-button>
+    </div>
   </div>
 </template>
 <script>
 export default {
   data: () => ({
+    withBorken: false,
     currentProduct: '',
     currentStatus: '',
     currentConsumer: '',
@@ -117,5 +123,15 @@ export default {
 
     .tools-wrapper-item {
         margin-top: .5rem;
+        margin-bottom: .5rem;
+    }
+
+    .notificationTable {
+      width: 230px;
+      border-spacing: 5px;
+    }
+
+    .order-action-btn {
+
     }
 </style>

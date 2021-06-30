@@ -5,10 +5,68 @@ export default {
       imageUrl: '',
       maxHeight: 600,
       newArea: '',
+      currentNotification: null,
       currentProduct: {},
-      whatIsInserting: [0, 0, 0],
+      brokenPropotionArr: [],
       tableData: [
         {
+          propotion: 53.33,
+          code: '1191A',
+          spec: 'Ochi',
+          size: '30 * 90',
+          basePrice: 3000,
+          sum: 0,
+          packTotalArea: '',
+          item_num: '',
+          pack_num: '',
+          over_pack_num: '',
+          pack_weight: 28,
+          one_item_weight: 4.6,
+          weight: '',
+          packArea: 1.62,
+          itemArea: 0.27,
+          pack_content_num: 6
+        },
+        {
+          propotion: 26.67,
+          code: '1191D',
+          spec: 'Decor',
+          size: '30 * 90',
+          basePrice: 3000,
+          sum: 0,
+          packTotalArea: '',
+          item_num: '',
+          pack_num: '',
+          over_pack_num: '',
+          pack_weight: 28,
+          one_item_weight: 4.6,
+          weight: '',
+          packArea: 1.62,
+          itemArea: 0.27,
+          pack_content_num: 6
+        },
+        {
+          propotion: 20,
+          code: '1191C',
+          spec: 'Pol',
+          size: '30 * 30',
+          basePrice: 3000,
+          sum: 0,
+          packTotalArea: '',
+          item_num: '',
+          pack_num: '',
+          over_pack_num: '',
+          pack_weight: 25,
+          one_item_weight: 2.28,
+          weight: '',
+          packArea: 0.99,
+          itemArea: 0.09,
+          pack_content_num: 11
+        }
+      ],
+      tableData1: [
+        {
+          propotion: 49,
           code: '1191A',
           spec: 'Ochi',
           size: '30 * 60',
@@ -26,6 +84,7 @@ export default {
           pack_content_num: 8
         },
         {
+          propotion: 25.2,
           code: '1191B',
           spec: "To'qi",
           size: '30 * 60',
@@ -43,6 +102,7 @@ export default {
           pack_content_num: 8
         },
         {
+          propotion: 5.3,
           code: '1191C',
           spec: 'Dekor',
           size: '30 * 60',
@@ -60,6 +120,7 @@ export default {
           pack_content_num: 8
         },
         {
+          propotion: 14.85,
           code: '1191D',
           spec: 'Pol',
           size: '30 * 30',
@@ -77,9 +138,10 @@ export default {
           pack_content_num: 15
         },
         {
+          propotion: 1.65,
           code: '1191F',
           spec: 'Friz',
-          size: '30 * 6 ',
+          size: '30 * 6',
           packTotalArea: '',
           item_num: '',
           pack_num: '',
@@ -94,9 +156,10 @@ export default {
           pack_content_num: 40
         },
         {
+          propotion: 1.1,
           code: '1191S',
           spec: 'Sigara',
-          size: '30 * 2 ',
+          size: '30 * 2',
           packTotalArea: '',
           item_num: '',
           basePrice: 3401,
@@ -109,6 +172,24 @@ export default {
           packArea: 0.6,
           itemArea: 0.006,
           pack_content_num: 100
+        },
+        {
+          propotion: 2.76,
+          code: '1191P',
+          spec: 'Plintus',
+          size: '30 * 10',
+          packTotalArea: '',
+          item_num: '',
+          basePrice: 3401,
+          pack_num: '',
+          sum: 0,
+          over_pack_num: '',
+          pack_weight: 20,
+          one_item_weight: 0.1,
+          weight: '',
+          packArea: 18.6,
+          itemArea: 0.03,
+          pack_content_num: 620
         }
       ]
     }

@@ -22,7 +22,7 @@ export default {
         this.currentProduct.sum = parseInt(this.currentProduct.basePrice * newArea)
         // set weight
         this.currentProduct.weight = this.currentProduct.item_num * this.currentProduct.one_item_weight
-        this.currentProduct.sum =  (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
+        this.currentProduct.sum = (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
       } else {
         // if wrong are then set to empty field
         this.currentProduct.item_num = ''
@@ -38,11 +38,10 @@ export default {
       if (newItemNum) {
         this.currentProduct.item_num = parseInt(newItemNum)
         this.areaIsChanging(this.currentProduct.item_num * this.currentProduct.itemArea, this.currentProduct)
-        this.currentProduct.sum =  (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
+        this.currentProduct.sum = (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
       } else {
         this.currentProduct.item_num = newItemNum
-        this.currentProduct.sum =  ''
-
+        this.currentProduct.sum = ''
       }
     },
 
@@ -55,12 +54,12 @@ export default {
                     this.currentProduct.over_pack_num)
         console.log(typeof this.currentProduct.item_num)
         this.currentProduct.packTotalArea = parseFloat((this.currentProduct.item_num * this.currentProduct.itemArea).toFixed(4))
-        this.currentProduct.sum =  (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
+        this.currentProduct.sum = (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
       } else {
         this.currentProduct.pack_num = newPacketNum
         this.currentProduct.item_num = ''
         this.currentProduct.packTotalArea = ''
-        this.currentProduct.sum =  ''
+        this.currentProduct.sum = ''
       }
     },
     over_pack_numIsChanging(newOverPacketNum, currentRow) { // over_packet items num calculation
@@ -73,8 +72,7 @@ export default {
                     this.currentProduct.over_pack_num)
         // calc area
         this.currentProduct.packTotalArea = parseFloat((this.currentProduct.item_num * this.currentProduct.itemArea).toFixed(4))
-        this.currentProduct.sum =  (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
-
+        this.currentProduct.sum = (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
       } else {
         this.currentProduct.over_pack_num = newOverPacketNum
         this.currentProduct.item_num = ''
@@ -84,9 +82,9 @@ export default {
     },
     basePriceIsChanging(basePrice, currentRow) { // area value is changing
       this.currentProduct = this.tableData.find((item) => item.code === currentRow.code)
-      if(basePrice) {
+      if (basePrice) {
         this.currentProduct.basePrice = parseFloat(basePrice) // set new area to its object
-        this.currentProduct.sum =  (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
+        this.currentProduct.sum = (this.currentProduct.basePrice * this.currentProduct.packTotalArea).toFixed(0)
       } else {
         this.currentProduct.sum = 0
       }

@@ -59,7 +59,7 @@
       class="tools-wrapper-item"
       placeholder="Cost to upload (so'm)"
     />
-    <slot></slot>
+    <slot />
   </div>
 </template>
 <script>
