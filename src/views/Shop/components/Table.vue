@@ -4,7 +4,7 @@
       height="100%"
       style="width: 100%"
       size="small"
-      :data="tableData"
+      :data="tableDataComputed"
     >
       <el-table-column type="index" label="№" align="center" width="100" />
       <el-table-column
@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column
         width="300"
-        label="УМУМИЙ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
+        label="УМУМИЙ МИҚДОРНИ ЎЛЧОВ БИРЛИГИ"
         align="center"
       >
         <el-table-column
@@ -81,16 +81,23 @@
       </el-table-column>
       <el-table-column
         width="155"
-        label="ТОВАРНИ УМУМИЙ ПОЧКАСИНИ (МИҚДОРИ)"
-        prop=""
         align="center"
       >
+        <template slot="header" slot-scope="">
+          <span>ТОВАРНИ УМУМИЙ</span><br>
+          <span>ПОЧКАСИНИЙ</span><br>
+          <span>(МИҚДОРИ)</span><br>
+        </template>
         <el-table-column
           width="178"
           align="center"
           prop="pack_num"
-          label="ТОВАРНИ УМУМИЙ ДОНАСИНИ (МИҚДОРИ)"
         >
+          <template slot="header" slot-scope="">
+            <span>ТОВАРНИ УМУМИЙ</span><br>
+            <span>ДОНАСИНИ</span><br>
+            <span>(МИҚДОРИ)</span><br>
+          </template>
           <template slot-scope="scope">
             <div class="two-fields">
               <div class="two-fields">
@@ -112,6 +119,23 @@
           </template>
         </el-table-column>
       </el-table-column>
+
+      <el-table-column
+        width="100"
+        prop="basePrice"
+        align="center"
+      >
+        <template slot="header" slot-scope="">
+          <span>ТАН НАРХИ</span><br>
+          <span>m2 / Dona</span>
+        </template>
+        <template slot-scope="scope">
+          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.byItemNum ? 'Price by item number' : 'Price by area (m2)'" placement="left">
+            <el-switch :value="scope.row.byItemNum" active-color="#13ce66" inactive-color="" @change="calcPriceByItemNumChanged($event, scope.row)" />
+          </el-tooltip>
+        </template>
+      </el-table-column>
+
       <el-table-column
         width="160"
         label="ТАН НАРХИ"
@@ -119,9 +143,22 @@
         align="center"
       >
         <template slot-scope="scope">
+          <!-- <el-tooltip style="margin-right: 1em" effect="dark" content="Price by item number" placement="left">
+            <el-checkbox :value="scope.row.byItemNum" @change="calcPriceByItemNumChanged($event, scope.row)" />
+          </el-tooltip> -->
+          <span>{{ scope.row.basePrice }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        width="170"
+        label="ЎЗГАРГАН ТАН НАРХИ"
+        prop="basePrice_changed"
+        align="center"
+      >
+        <template slot-scope="scope">
           <el-input
             size="small"
-            :value="scope.row.basePrice"
+            :value="scope.row.basePrice_changed"
             @input="basePriceIsChanging($event, scope.row)"
           />
         </template>

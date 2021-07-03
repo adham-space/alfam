@@ -1,4 +1,10 @@
 export default {
+  props: {
+    broken: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       showImageDilog: false,
@@ -8,14 +14,18 @@ export default {
       currentNotification: null,
       currentProduct: {},
       brokenPropotionArr: [],
+      totalPrice: 0,
       tableData: [
         {
           propotion: 53.33,
           code: '1191A',
           spec: 'Ochi',
           size: '30 * 90',
-          basePrice: 3000,
+          basePrice: 2,
+          basePrice_changed: 2,
           sum: 0,
+          byItemNum: false,
+          broken: false,
           packTotalArea: '',
           item_num: '',
           pack_num: '',
@@ -32,8 +42,32 @@ export default {
           code: '1191D',
           spec: 'Decor',
           size: '30 * 90',
-          basePrice: 3000,
+          broken: false,
+          basePrice: 4,
+          basePrice_changed: 4,
           sum: 0,
+          byItemNum: false,
+          packTotalArea: '',
+          item_num: '',
+          pack_num: '',
+          over_pack_num: '',
+          pack_weight: 28,
+          one_item_weight: 4.6,
+          weight: '',
+          packArea: 1.62,
+          itemArea: 0.27,
+          pack_content_num: 6
+        },
+        {
+          propotion: 53.33,
+          broken: true,
+          code: '1191BR',
+          spec: 'Ochi (Singan)',
+          size: '30 * 90',
+          basePrice: 2,
+          basePrice_changed: 2,
+          sum: 0,
+          byItemNum: false,
           packTotalArea: '',
           item_num: '',
           pack_num: '',
@@ -50,11 +84,14 @@ export default {
           code: '1191C',
           spec: 'Pol',
           size: '30 * 30',
-          basePrice: 3000,
+          basePrice: 6,
+          basePrice_changed: 6,
           sum: 0,
           packTotalArea: '',
           item_num: '',
           pack_num: '',
+          broken: false,
+          byItemNum: false,
           over_pack_num: '',
           pack_weight: 25,
           one_item_weight: 2.28,
@@ -63,6 +100,7 @@ export default {
           itemArea: 0.09,
           pack_content_num: 11
         }
+       
       ],
       tableData1: [
         {
@@ -192,6 +230,14 @@ export default {
           pack_content_num: 620
         }
       ]
+    }
+  },
+  computed: {
+    tableDataComputed() {
+      if(this.broken) {
+        return this.tableData;
+      }
+      return this.tableData.filter(item => item.broken === this.broken  );
     }
   }
 }

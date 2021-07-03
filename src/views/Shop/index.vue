@@ -1,10 +1,10 @@
 <template>
   <el-row style="height: calc(100vh - 86px); ">
     <el-col :span="19" style="height: calc(100vh - 96px);">
-      <Table />
+      <Table ref="packingListTableRef" @calculateTotalPrice="calculateTotalPrice" :broken="broken" />
     </el-col>
     <el-col :span="5" style="height: calc(100vh - 86px); ">
-      <Tools />
+      <Tools :total-price="totalPrice" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
     </el-col>
   </el-row>
 </template>
@@ -17,6 +17,24 @@ export default {
   components: {
     Table,
     Tools
+  },
+  data() {
+    return {
+      totalPrice: 0,
+      broken: false
+    }
+  },
+  methods: {
+    calculateTotalPrice(val) {
+      this.totalPrice = val
+    },
+    totalPriceChanged(val) {
+      this.totalPrice = val
+      this.$refs.packingListTableRef.calculateBasePrices(val)
+    },
+    changedBrokenState(val) {
+      this.broken = val
+    }
   }
 }
 </script>
