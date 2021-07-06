@@ -14,7 +14,7 @@
         :value="pr.value"
       />
     </el-select>
-    <el-checkbox v-model="withBorken" @change="brokenStateChanged" style="margin-bottom: 1em">Include borkens</el-checkbox>
+    <el-checkbox v-model="withBorken" style="margin: 1em 0" @change="brokenStateChanged">Include borkens</el-checkbox>
     <el-select
       v-model="currentStatus"
       style="width: 100%"
@@ -68,6 +68,27 @@
       placeholder="Discount price"
       @input="changeBasePrice"
     />
+    <div style="margin-bottom: 1em">
+      <el-switch
+        v-model="isDebt"
+        active-color="#13ce66"
+        inactive-color=""
+      />
+      Is debt?
+    </div>
+    <el-date-picker
+      v-if="isDebt"
+      v-model="debtDate"
+      style="margin-bottom: 1em"
+      placeholder="Debt back date"
+    />
+    <el-input
+      v-if="isDebt"
+      v-model="debtDescription"
+      style="margin-bottom: 1em"
+      type="textarea"
+      rows="4"
+    />
     <div class="order-action-btn">
       <el-button type="primary">Save</el-button>
       <el-button type="danger">Cancel</el-button>
@@ -89,6 +110,9 @@ export default {
     currentConsumer: '',
     costOfUpload: '',
     discountPrice: 0,
+    debtDescription: '',
+    debtDate: '',
+    isDebt: false,
     products: [
       {
         label: 'Nilufar',
@@ -146,6 +170,7 @@ export default {
         flex-direction: column;
         align-items: flex-start;
         padding: .5rem;
+        overflow-y: auto;
     }
 
     .tools-wrapper-item {

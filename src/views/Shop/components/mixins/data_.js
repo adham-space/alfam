@@ -24,6 +24,7 @@ export default {
           basePrice: 2,
           basePrice_changed: 2,
           sum: 0,
+          sum_kassa: 0,
           byItemNum: false,
           broken: false,
           packTotalArea: '',
@@ -45,6 +46,7 @@ export default {
           broken: false,
           basePrice: 4,
           basePrice_changed: 4,
+          sum_kassa: 0,
           sum: 0,
           byItemNum: false,
           packTotalArea: '',
@@ -67,6 +69,7 @@ export default {
           basePrice: 2,
           basePrice_changed: 2,
           sum: 0,
+          sum_kassa: 0,
           byItemNum: false,
           packTotalArea: '',
           item_num: '',
@@ -86,6 +89,7 @@ export default {
           size: '30 * 30',
           basePrice: 6,
           basePrice_changed: 6,
+          sum_kassa: 0,
           sum: 0,
           packTotalArea: '',
           item_num: '',
@@ -100,7 +104,7 @@ export default {
           itemArea: 0.09,
           pack_content_num: 11
         }
-       
+
       ],
       tableData1: [
         {
@@ -234,10 +238,10 @@ export default {
   },
   computed: {
     tableDataComputed() {
-      if(this.broken) {
-        return this.tableData;
+      if (this.broken) {
+        return this.tableData
       }
-      return this.tableData.filter(item => item.broken === this.broken  );
+      return this.tableData.filter(item => item.broken === this.broken)
     }
   }
 }

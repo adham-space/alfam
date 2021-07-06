@@ -1,9 +1,9 @@
 <template>
   <el-row style="height: calc(100vh - 86px); ">
-    <el-col :span="19" style="height: calc(100vh - 96px);">
-      <Table ref="packingListTableRef" @calculateTotalPrice="calculateTotalPrice" :broken="broken" />
+    <el-col :span="18" style="height: calc(100vh - 96px);">
+      <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
-    <el-col :span="5" style="height: calc(100vh - 86px); ">
+    <el-col :span="6" style="height: calc(100vh - 86px); overflow-y: auto ">
       <Tools :total-price="totalPrice" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
     </el-col>
   </el-row>
