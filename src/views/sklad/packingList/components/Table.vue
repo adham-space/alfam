@@ -1,16 +1,18 @@
 <template>
-  <div style="height: calc(100vh - 86px)">
+  <div ref="tblContainer" style="height: calc(100vh - 86px)">
     <el-table
-      height="100%"
+      :max-height="bodyHeight + ''"
       style="width: 100%"
       size="small"
-      :data="tableData"
+      :data="tableDataComputed"
+      show-summary
+      :summary-method="jamiSumma"
     >
-      <el-table-column type="index" label="№" align="center" width="100" />
       <el-table-column
         width="150"
         label="КАФЕЛНИ КОДИ"
         prop="code"
+        fixed="left"
         align="center"
       />
       <el-table-column
@@ -40,7 +42,7 @@
       </el-table-column>
       <el-table-column
         width="300"
-        label="УМУМИЙ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
+        label="УМУМИЙ МИҚДОРНИ ЎЛЧОВ БИРЛИГИ"
         align="center"
       >
         <el-table-column
@@ -50,16 +52,12 @@
           prop="packTotalArea"
         >
           <template slot-scope="scope">
-            <div class="two-fields">
-              <el-input
-                size="small"
-                type="number"
-                :min="0"
-                :value="scope.row.packTotalArea"
-                @input="areaIsChanging($event, scope.row)"
-              />
-            </div>
-
+            <el-input
+              size="small"
+              type="number"
+              :value="scope.row.packTotalArea"
+              @input="areaIsChanging($event, scope.row)"
+            />
           </template>
         </el-table-column>
         <el-table-column
@@ -81,16 +79,23 @@
       </el-table-column>
       <el-table-column
         width="155"
-        label="ТОВАРНИ УМУМИЙ ПОЧКАСИНИ (МИҚДОРИ)"
-        prop=""
         align="center"
       >
+        <template slot="header" slot-scope="">
+          <span>ТОВАРНИ УМУМИЙ</span><br>
+          <span>ПОЧКАСИНИЙ</span><br>
+          <span>(МИҚДОРИ)</span><br>
+        </template>
         <el-table-column
           width="178"
           align="center"
           prop="pack_num"
-          label="ТОВАРНИ УМУМИЙ ДОНАСИНИ (МИҚДОРИ)"
         >
+          <template slot="header" slot-scope="">
+            <span>ТОВАРНИ УМУМИЙ</span><br>
+            <span>ДОНАСИНИ</span><br>
+            <span>(МИҚДОРИ)</span><br>
+          </template>
           <template slot-scope="scope">
             <div class="two-fields">
               <div class="two-fields">
@@ -112,28 +117,72 @@
           </template>
         </el-table-column>
       </el-table-column>
+
       <el-table-column
-        width="160"
+        width="100"
+        prop="basePrice"
+        align="center"
+      >
+        <template slot="header" slot-scope="">
+          <span>ТАН НАРХИ</span><br>
+          <span>m2 / Dona</span>
+        </template>
+        <template slot-scope="scope">
+          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.byItemNum ? 'Price by item number' : 'Price by area (m2)'" placement="left">
+            <el-switch :value="scope.row.byItemNum" active-color="#13ce66" inactive-color="" @change="calcPriceByItemNumChanged($event, scope.row)" />
+          </el-tooltip>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        width="120"
         label="ТАН НАРХИ"
         prop="basePrice"
         align="center"
       >
         <template slot-scope="scope">
+          <span>{{ scope.row.basePrice }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        width="130"
+        prop="sum_kassa"
+        align="center"
+      >
+        <template slot="header">
+          <span>СУММАСИ</span><br>
+          <span>КАССА</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        width="130"
+        prop="basePrice_changed"
+        align="center"
+      >
+        <template slot="header">
+          <span>ЎЗГАРГАН</span><br>
+          <span>ТАН НАРХИ</span>
+        </template>
+
+        <template slot-scope="scope">
           <el-input
             size="small"
-            :value="scope.row.basePrice"
+            type="number"
+            :value="scope.row.basePrice_changed"
             @input="basePriceIsChanging($event, scope.row)"
           />
         </template>
       </el-table-column>
       <el-table-column
-        width="160"
+        width="130"
         label="СУММАСИ"
         prop="sum"
         align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.sum }}
+          {{ scope.row.sum.toFixed(2) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -178,7 +227,7 @@
         />
       </el-table-column>
     </el-table>
-    <el-dialog title="" :visible.sync="showImageDilog" width="40%">
+    <el-dialog title="" :visible.sync="showImageDilog" append-to-body width="40%">
       <el-image
         style="width: 100%; height: 90%"
         :src="imageUrl"
@@ -198,12 +247,58 @@ export default {
   mixins: [data_, methods_],
   data() {
     return {
+      bodyHeight: 300
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.bodyHeight = this.$refs.tblContainer.clientHeight
+      console.log(this.$refs.tblContainer.clientHeight)
+    }, 100)
+    window.addEventListener('resize', e => {
+      console.log('windows resizing')
+      this.bodyHeight = this.$refs.tblContainer.clientHeight
+    })
   },
   methods: {
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
+    },
+    jamiSumma(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = 'Жами'
+          // return;
+        }
+        if (
+          column.property === 'packTotalArea' ||
+          column.property === 'item_num' ||
+          column.property === 'sum' ||
+          column.property === 'sum_kassa'
+        ) {
+          const values = data.map((item) => Number(item[column.property]))
+          if (!values.every((value) => isNaN(value))) {
+            const val = values.reduce((prev, curr) => {
+              const value = Number(curr)
+              if (!isNaN(value)) {
+                return prev + curr
+              } else {
+                return prev
+              }
+            }, 0)
+            sums[index] = val.toFixed(2)
+          } else {
+            sums[index] = ''
+          }
+        }
+      })
+      this.$nextTick(() => {
+        // this.$refs.myTableDHJ.doLayout()
+      })
+      return sums
     }
   }
 }

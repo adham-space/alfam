@@ -1,6 +1,7 @@
 export default {
   methods: {
     // area value is changing
+    
     areaIsChanging(newArea, currentRow) {
       this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
       // set new area to its object
@@ -135,22 +136,27 @@ export default {
     calculateBasePrices(changedTotalPrice) {
       if (changedTotalPrice) {
         changedTotalPrice = changedTotalPrice === '' ? 0 : parseFloat(changedTotalPrice + '')
+        changedTotalPrice = changedTotalPrice 
         const sumOfAllPrices = this.tableDataComputed.reduce(function(a, b) {
           return a + (b.sum === '' ? 0 : parseFloat(b.sum))
         }, 0)
         const sumPriceProprtions = []
         this.tableDataComputed.forEach(item => {
           sumPriceProprtions.push(
-            parseFloat((item.sum / sumOfAllPrices).toFixed(4))
+            // parseFloat((item.sum / sumOfAllPrices).toFixed(4))
+            item.sum / sumOfAllPrices 
           )
         })
         for (let i = 0; i < sumPriceProprtions.length; i++) {
           const currentProduct = this.tableDataComputed[i]
-          currentProduct.sum = this.truncateToDecimals(changedTotalPrice * sumPriceProprtions[i], 4)
+          // currentProduct.sum = this.truncateToDecimals(changedTotalPrice * sumPriceProprtions[i], 4)
+          currentProduct.sum = changedTotalPrice * sumPriceProprtions[i]
           if (currentProduct.byItemNum && currentProduct.item_num) {
-            currentProduct.basePrice_changed = parseFloat((currentProduct.sum / currentProduct.item_num).toFixed(4))
+            // currentProduct.basePrice_changed = parseFloat((currentProduct.sum / currentProduct.item_num).toFixed(4))
+            currentProduct.basePrice_changed = currentProduct.sum / currentProduct.item_num
           } else if (!currentProduct.byItemNum && currentProduct.packTotalArea) {
-            currentProduct.basePrice_changed = parseFloat((currentProduct.sum / currentProduct.packTotalArea).toFixed(4))
+            // currentProduct.basePrice_changed = parseFloat((currentProduct.sum / currentProduct.packTotalArea).toFixed(4))
+            currentProduct.basePrice_changed = parseFloat(( currentProduct.sum / currentProduct.packTotalArea ).toFixed(4))
           } else {
             if (currentProduct.byItemNum !== 0 && currentProduct.packTotalArea !== 0) {
               this.$notify({

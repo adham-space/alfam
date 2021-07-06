@@ -47,6 +47,9 @@ export default {
       this.newDriver = {
         ...this.currentDriver
       }
+      setTimeout(() => {
+        this.$refs.editBodyRef.triggerSumTotalPrice();
+      }, 600)
     },
     cancel() {
       this.$emit('closeDialog')
