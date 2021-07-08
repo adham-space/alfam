@@ -1,9 +1,9 @@
 <template>
   <el-row style="height: calc(100vh - 86px); ">
-    <el-col :span="19" style="height: calc(100vh - 96px);">
-      <Table ref="packingListTableRef_sklad" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
+    <el-col :span="18" style="height: calc(100vh - 96px);">
+      <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
-    <el-col :span="5" style="height: calc(100vh - 86px); ">
+    <el-col :span="6" style="height: calc(100vh - 86px); overflow-y: auto ">
       <Tools :total-price="totalPrice" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
     </el-col>
   </el-row>
@@ -13,14 +13,14 @@
 import Table from './components/Table'
 import Tools from './components/Tools'
 export default {
-  name: 'Shop',
+  name: 'OthersPackingList',
   components: {
     Table,
     Tools
   },
   data() {
     return {
-      totalPrice: '',
+      totalPrice: 0,
       broken: false
     }
   },

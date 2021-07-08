@@ -11,6 +11,8 @@ import Layout from '@/layout'
 import skaladRouter from './modules/sklad'
 import shop from './modules/shop'
 import information from './modules/information'
+import storeRouter from './modules/archive'
+import othersRouter from './modules/others'
 
 export const constantRoutes = [
   {
@@ -77,6 +79,8 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  othersRouter,
+  storeRouter,
   skaladRouter,
   shop,
   information,

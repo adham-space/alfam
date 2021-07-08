@@ -61,14 +61,14 @@
       class="tools-wrapper-item"
       placeholder="Cost to upload (so'm)"
     />
-    <el-input
+    <!-- <el-input
       :value="totalPrice"
       type="number"
       class="tools-wrapper-item"
       placeholder="Discount price"
       @input="changeBasePrice"
-    />
-    <div style="margin-bottom: 1em">
+    /> -->
+    <!-- <div style="margin-bottom: 1em">
       <el-switch
         v-model="isDebt"
         active-color="#13ce66"
@@ -90,10 +90,9 @@
       rows="4"
     />
     <div class="order-action-btn">
-      <!-- <el-button type="primary">Save</el-button>
-      <el-button type="danger">Cancel</el-button> -->
-      <slot></slot>
-    </div>
+      <el-button type="primary">Save</el-button>
+      <el-button type="danger">Cancel</el-button>
+    </div> -->
   </div>
 </template>
 <script>

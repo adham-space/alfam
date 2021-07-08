@@ -155,6 +155,7 @@
 
 <script>
 export default {
+  name: 'OthersStoreProduct',
   data() {
     return {
       totalArea: '',

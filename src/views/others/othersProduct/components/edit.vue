@@ -10,23 +10,13 @@
     :show-close="false"
     @open="dialogOpened"
   >
-    <editBody ref="editBodyRef">
-      <span style="margin-top: 1rem" class="dialog-footer">
-        <el-button @click="cancel()">Cancel</el-button>
-        <el-button :loading="saving" type="primary" @click="save()">Save</el-button>
-      </span>
-    </editBody>
-
   </el-dialog>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-import editBody from '../../editOrder/index.vue'
 export default {
-  components: {
-    editBody
-  },
+ 
   props: {
     dialogVisible: {
       type: Boolean,

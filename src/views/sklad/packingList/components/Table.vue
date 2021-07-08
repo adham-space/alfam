@@ -1,5 +1,5 @@
 <template>
-  <div ref="tblContainer" style="height: calc(100vh - 86px)">
+  <div ref="tblContainer2" style="height: calc(100vh - 86px)">
     <el-table
       :max-height="bodyHeight + ''"
       style="width: 100%"
@@ -119,73 +119,6 @@
       </el-table-column>
 
       <el-table-column
-        width="100"
-        prop="basePrice"
-        align="center"
-      >
-        <template slot="header" slot-scope="">
-          <span>ТАН НАРХИ</span><br>
-          <span>m2 / Dona</span>
-        </template>
-        <template slot-scope="scope">
-          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.byItemNum ? 'Price by item number' : 'Price by area (m2)'" placement="left">
-            <el-switch :value="scope.row.byItemNum" active-color="#13ce66" inactive-color="" @change="calcPriceByItemNumChanged($event, scope.row)" />
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        width="120"
-        label="ТАН НАРХИ"
-        prop="basePrice"
-        align="center"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.basePrice }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        width="130"
-        prop="sum_kassa"
-        align="center"
-      >
-        <template slot="header">
-          <span>СУММАСИ</span><br>
-          <span>КАССА</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        width="130"
-        prop="basePrice_changed"
-        align="center"
-      >
-        <template slot="header">
-          <span>ЎЗГАРГАН</span><br>
-          <span>ТАН НАРХИ</span>
-        </template>
-
-        <template slot-scope="scope">
-          <el-input
-            size="small"
-            type="number"
-            :value="scope.row.basePrice_changed"
-            @input="basePriceIsChanging($event, scope.row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column
-        width="130"
-        label="СУММАСИ"
-        prop="sum"
-        align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.sum.toFixed(2) }}
-        </template>
-      </el-table-column>
-      <el-table-column
         width="150"
         label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"
         prop="weight"
@@ -252,12 +185,11 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.bodyHeight = this.$refs.tblContainer.clientHeight
-      console.log(this.$refs.tblContainer.clientHeight)
-    }, 100)
+      this.bodyHeight = this.$refs.tblContainer2.clientHeight
+    }, 300)
     window.addEventListener('resize', e => {
       console.log('windows resizing')
-      this.bodyHeight = this.$refs.tblContainer.clientHeight
+      this.bodyHeight = this.$refs.tblContainer2.clientHeight
     })
   },
   methods: {
@@ -271,7 +203,6 @@ export default {
       columns.forEach((column, index) => {
         if (index === 0) {
           sums[index] = 'Жами'
-          // return;
         }
         if (
           column.property === 'packTotalArea' ||
@@ -295,9 +226,6 @@ export default {
           }
         }
       })
-      this.$nextTick(() => {
-        // this.$refs.myTableDHJ.doLayout()
-      })
       return sums
     }
   }
@@ -313,7 +241,6 @@ export default {
 }
 
 .list-main {
-  /* border: 1px solid green; */
   height: calc(100% - 105px);
   margin: 0 !important;
 }

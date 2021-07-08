@@ -90,9 +90,8 @@
       rows="4"
     />
     <div class="order-action-btn">
-      <!-- <el-button type="primary">Save</el-button>
-      <el-button type="danger">Cancel</el-button> -->
-      <slot />
+      <el-button type="primary">Save</el-button>
+      <el-button type="danger">Cancel</el-button>
     </div>
   </div>
 </template>
