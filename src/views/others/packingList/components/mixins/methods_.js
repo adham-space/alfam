@@ -189,7 +189,7 @@ export default {
     calculateTotalPrice() {
       this.$emit('calculateTotalPrice', this.truncateToDecimals(this.tableDataComputed.reduce(function(a, b) {
         return a + (b.sum === '' ? 0 : parseFloat(b.sum))
-      }, 0), 2))
+      }, 0), 4))
     },
     checkPropotion() {
       const totalArea = this.tableDataComputed.reduce(function(a, b) {

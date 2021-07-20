@@ -182,7 +182,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.sum.toFixed(2) }}
+          {{ scope.row.sum }}
         </template>
       </el-table-column>
       <el-table-column
@@ -289,7 +289,7 @@ export default {
                 return prev
               }
             }, 0)
-            sums[index] = val.toFixed(2)
+            sums[index] = parseFloat(val.toFixed(4))
           } else {
             sums[index] = ''
           }

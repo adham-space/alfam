@@ -4,6 +4,19 @@
 
     <el-select
       v-model="currentProduct"
+      style="width: 100%; margin-bottom: 0.5em"
+      placeholder="Choose from Whom"
+    >
+      <el-option
+        v-for="(pr, i) in products"
+        :key="i"
+        :label="pr.label"
+        :value="pr.value"
+      />
+    </el-select>
+
+    <el-select
+      v-model="currentProduct"
       style="width: 100%"
       placeholder="Choose a product"
     >
@@ -14,7 +27,6 @@
         :value="pr.value"
       />
     </el-select>
-    <el-checkbox v-model="withBorken" style="margin: 1em 0" @change="brokenStateChanged">Include borkens</el-checkbox>
     <el-select
       v-model="currentStatus"
       style="width: 100%"
@@ -56,11 +68,17 @@
         :value="pr.value"
       />
     </el-select>
-    <el-input
-      v-model="costOfUpload"
-      class="tools-wrapper-item"
-      placeholder="Cost to upload (so'm)"
-    />
+    <div style="width: 100%">
+      <el-input
+        v-model="costOfUpload"
+        style="width: 100%"
+        class="tools-wrapper-item"
+        placeholder="Cost to upload (so'm)"
+      />
+      <p>
+        Total upload price: 540
+      </p>
+    </div>
     <el-input
       :value="totalPrice"
       type="number"

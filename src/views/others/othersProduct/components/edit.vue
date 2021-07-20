@@ -9,14 +9,13 @@
     :close-on-press-escape="false"
     :show-close="false"
     @open="dialogOpened"
-  >
-  </el-dialog>
+  />
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex'
 export default {
- 
+
   props: {
     dialogVisible: {
       type: Boolean,

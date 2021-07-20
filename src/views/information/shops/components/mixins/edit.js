@@ -3,7 +3,6 @@ export default {
     return {
       newShop: {
         name: '',
-        owner: ''
       },
       rules: {
         name: [{
@@ -16,17 +15,6 @@ export default {
             }
           }
         }],
-        owner: [{
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (value) {
-              return cb()
-            } else {
-              return cb(new Error('Ownership should not be empty'))
-            }
-          }
-        }]
-
       }
     }
   }

@@ -1,5 +1,8 @@
 <template>
   <el-row :gutter="10" class="stepOne">
+    <el-col :md="{ offset: 6, span: 12 }" style="padding:  .5em">
+      <el-input v-model="belongsTo" placeholder="Belongs to" @change="nameChanging" />
+    </el-col>
     <el-col :md="{ offset: 6, span: 12 }">
       <el-input v-model="name" placeholder="Name" @change="nameChanging" />
     </el-col>
@@ -71,6 +74,7 @@
 export default {
   data() {
     return {
+      belongsTo: '',
       name: '',
       types: [],
       editing: {

@@ -11,28 +11,24 @@
   >
     <el-form ref="newShopRef" :model="newShop" :rules="rules">
       <el-form-item>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item prop="name">
             <el-input v-model="newShop.name" placeholder="Name" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="owner">
-            <el-input v-model="newShop.owner" placeholder="Ownership" />
           </el-form-item>
         </el-col>
       </el-form-item>
 
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="cancel()">Cancel</el-button>
-      <el-button type="primary" @click="save()">Save</el-button>
+      <el-button :disabled="saving" @click="cancel()">Cancel</el-button>
+      <el-button :disabled="saving" :loading="saving" type="primary" @click="save()">Save</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { Message } from 'element-ui'
+import { mapActions, mapState } from 'vuex'
 import edit from './mixins/edit'
 export default {
   mixins: [edit],
@@ -44,14 +40,14 @@ export default {
   },
   data() {
     return {
-
+      saving: false
     }
   },
   computed: {
     ...mapState('shops', ['currentShop'])
   },
   methods: {
-    ...mapMutations('shops', ['EDIT_SHOP']),
+    ...mapActions('shops', ['EDIT_SHOP']),
     dialogOpened() {
       this.newShop = {
         ...this.currentShop
@@ -61,20 +57,33 @@ export default {
       this.$emit('closeDialog')
       this.$refs.newShopRef.resetFields()
       this.newShop = {
-        firstName: '',
-        lastName: '',
-        address: ''
+        name: ''
       }
     },
     save() {
       this.$refs.newShopRef.validate(valid => {
         if (valid) {
+          this.saving = true
           this.EDIT_SHOP({
             name: this.newShop.name,
-            owner: this.newShop.owner,
-            id: this.newShop.id
+            id: this.newShop._id
+          }).then(res => {
+             this.saving = false
+            Message({
+              message: res.data,
+              type: 'success',
+              duration: 3000
+            })
+            this.cancel()
+          }).catch(err => {
+            this.saving = false
+            Message({
+              message: err.response.data,
+              type: 'error',
+              duration: 3000
+            })
           })
-          this.cancel()
+          
         } else {
           return false
         }

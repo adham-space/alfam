@@ -61,13 +61,16 @@
       class="tools-wrapper-item"
       placeholder="Cost to upload (so'm)"
     />
-    <el-input
-      :value="totalPrice"
-      type="number"
-      class="tools-wrapper-item"
-      placeholder="Discount price"
-      @input="changeBasePrice"
-    />
+    <div>
+      Discount price (last price)
+      <el-input
+        :value="totalPrice"
+        type="number"
+        class="tools-wrapper-item"
+        placeholder="Discount price"
+        @input="changeBasePrice"
+      />
+    </div>
     <div style="margin-bottom: 1em">
       <el-switch
         v-model="isDebt"

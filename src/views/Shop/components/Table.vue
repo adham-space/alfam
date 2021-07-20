@@ -151,8 +151,8 @@
         align="center"
       >
         <template slot="header">
-          <span>СУММАСИ</span><br>
-          <span>КАССА</span>
+          <span>КАССА</span><br>
+          <span>НАРХИ</span>
         </template>
       </el-table-column>
 
@@ -177,12 +177,16 @@
       </el-table-column>
       <el-table-column
         width="130"
-        label="СУММАСИ"
         prop="sum"
         align="center"
       >
+        <template slot="header">
+          <span>СКИДКА</span><br>
+          <span>НАРХИ</span>
+        </template>
+
         <template slot-scope="scope">
-          {{ scope.row.sum.toFixed(2) }}
+          {{ scope.row.sum }}
         </template>
       </el-table-column>
       <el-table-column
@@ -289,7 +293,7 @@ export default {
                 return prev
               }
             }, 0)
-            sums[index] = val.toFixed(2)
+            sums[index] = parseFloat(val.toFixed(4))
           } else {
             sums[index] = ''
           }

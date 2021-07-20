@@ -10,14 +10,9 @@
   >
     <el-form ref="newShopRef" :model="newShop" :rules="rules">
       <el-form-item>
-        <el-col :span="12">
+        <el-col :span="24" >
           <el-form-item prop="name">
             <el-input v-model="newShop.name" placeholder="Name" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="owner">
-            <el-input v-model="newShop.owner" placeholder="Ownership" />
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -30,8 +25,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import add from './mixins/add'
+import request from '@/utils/request'
 export default {
   mixins: [add],
   props: {
@@ -46,7 +42,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('shops', ['CREATE_NEWSHOP']),
+    ...mapActions('shops', ['GET_SHOPS']),
     cancel() {
       this.$emit('closeDialog')
       this.$refs.newShopRef.resetFields()
@@ -58,12 +54,26 @@ export default {
     save() {
       this.$refs.newShopRef.validate(valid => {
         if (valid) {
-          this.CREATE_NEWSHOP({
-            name: this.newShop.name,
-            owner: this.newShop.owner,
-            id: Math.floor(Math.random() * 1000)
-          })
-          this.cancel()
+         request({
+           url: "info/add-shop",
+           method: 'POST',
+           data: this.newShop
+         }).then(res => {
+           this.cancel()
+           this.$notify({
+             message: res.data.message,
+             type: 'success',
+             duration: 2000
+           })
+           this.GET_SHOPS()
+         }).catch(err => {
+           this.$notify({
+             message: err.response.data,
+             type: 'success',
+             duration: 2000
+           })
+         })
+         
         } else {
           return false
         }
