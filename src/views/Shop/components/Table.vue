@@ -37,9 +37,9 @@
         <template slot-scope="scope">
           <el-image
           style="width: 30px; height: 30px"
-          :src="'http://localhost:3000/' + scope.row.photo"
+          :src="'https://radiant-lowlands-92396.herokuapp.com/' + scope.row.photo"
           fit="scale-down"
-          @click="openImg('http://localhost:3000/' + scope.row.photo)"
+          @click="openImg('https://radiant-lowlands-92396.herokuapp.com/' + scope.row.photo)"
         />
         </template>
       </el-table-column>
