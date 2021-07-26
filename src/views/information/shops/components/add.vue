@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import add from './mixins/add'
 import request from '@/utils/request'
 export default {

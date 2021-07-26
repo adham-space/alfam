@@ -35,19 +35,30 @@
             />
           </el-select>
         </el-form-item>
-        <p>
-          PARTIYA: <br /><span
-            style="background-color: green; color: white"
-            >{{ partiya_title }}</span
+        <el-form-item prop="singan">
+          <el-checkbox
+            @change="changedBrokenState"
+            v-model="formDataObj.singan"
+            style="margin-left: 1rem"
+            >Singan</el-checkbox
           >
+        </el-form-item>
+      </el-col>
+      <el-col :lg="{ offset: 6, span: 12 }" :md="{ offset: 4, span: 16 }">
+        <p>
+          PARTIYA:
+          <span style="background-color: green; color: white">{{
+            partiya_title
+          }}</span>
         </p>
       </el-col>
       <el-col
         class="store-bdy"
         :lg="{ offset: 6, span: 12 }"
         :md="{ offset: 4, span: 16 }"
+        
       >
-        <el-card shadow="hover" class="box-card">
+        <el-card v-if="!hidePacketField" shadow="hover" class="box-card">
           <div slot="header" class="clearfix">
             <span>Create one packet</span>
           </div>
@@ -129,16 +140,7 @@
         </el-card>
 
         <el-card shadow="hover" class="box-card" style="margin-top: 1rem">
-          <div slot="header" style="height: 4rem">
-            <el-form-item prop="singan">
-              <span>Store to sklad</span>
-              <el-checkbox
-                v-model="formDataObj.singan"
-                style="margin-left: 1rem"
-                >Singan</el-checkbox
-              >
-            </el-form-item>
-          </div>
+          <div slot="header" style="height: 4rem">Store To Sklad</div>
           <div class="one-packet">
             <span style="color: darkgray; margin-right: 1rem"
               >TOTAL AREA:
@@ -202,16 +204,15 @@
 
         <el-form-item prop="description" style="width: 100%">
           <el-input
+            v-model="formDataObj.description"
             type="textarea"
             style="margin: 1em 0; width: 100%"
             placeholder="Description"
-            v-model="formDataObj.description"
-          >
-          </el-input>
+          />
         </el-form-item>
         <el-button
           :loading="isSaving"
-          style="color: green;"
+          style="color: green"
           @click="storeToSklad()"
           >Store to sklad</el-button
         >
@@ -227,6 +228,7 @@ import { Message } from "element-ui";
 export default {
   data() {
     return {
+      hidePacketField: false,
       formDataObj: {
         currentProduct: "",
         current_subType: "",
@@ -245,7 +247,7 @@ export default {
             required: true,
             validator: (rule, value, cb) => {
               console.log("value", value);
-              if (!!value) {
+              if (value) {
                 cb();
               } else {
                 cb(new Error("Product should be selected"));
@@ -258,7 +260,7 @@ export default {
             trigger: "change",
             required: true,
             validator: (rule, value, cb) => {
-              if (!!value) {
+              if (value) {
                 cb();
               } else {
                 cb(new Error("Type of product should be selected"));
@@ -271,7 +273,7 @@ export default {
             trigger: "change",
             required: true,
             validator: (rule, value, cb) => {
-              if (!!value) {
+              if (value) {
                 cb();
               } else {
                 cb(new Error("Number should be enetered"));
@@ -284,7 +286,7 @@ export default {
             trigger: "change",
             required: true,
             validator: (rule, value, cb) => {
-              if (!!value) {
+              if (value) {
                 cb();
               } else {
                 cb(new Error("Wight of packet should be enetered"));
@@ -297,7 +299,7 @@ export default {
             trigger: "change",
             required: true,
             validator: (rule, value, cb) => {
-              if (!!value) {
+              if (value) {
                 cb();
               } else {
                 cb(new Error("Price should be enetered"));
@@ -310,7 +312,7 @@ export default {
             trigger: "change",
             required: true,
             validator: (rule, value, cb) => {
-              if (!!value) {
+              if (value) {
                 cb();
               } else {
                 cb(new Error("Total area should be enetered"));
@@ -332,10 +334,11 @@ export default {
       "todays_product_nums",
     ]),
     partiya_title() {
-      let date = new Date();
+      const date = new Date();
+      console.log(this.formDataObj.singan ? 0 : 1);
       return `${this.productName}-${this.typeName}-${
-        this.todays_product_nums + 1
-      }-${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        this.todays_product_nums + (this.formDataObj.singan ? 0 : 1)
+      }-${this.formDataObj.singan ? 'broken' : ''}-${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     },
     subTypes() {
       const pr = this.products_types.find(
@@ -343,6 +346,7 @@ export default {
       );
       console.log("pr", pr);
       if (pr) {
+        // eslint-disable-next-line
         this.productName = pr.product_name;
         return pr.product_types;
       }
@@ -373,6 +377,7 @@ export default {
     ]),
     storeToSklad() {
       const sendData = {
+        partiya: this.todays_product_nums + (this.formDataObj.singan ? 0 : 1),
         title: this.partiya_title,
         product: this.formDataObj.currentProduct,
         product_type: this.formDataObj.current_subType,
@@ -420,6 +425,39 @@ export default {
         }
       });
     },
+
+    changedBrokenState(val) {
+      if (val) {
+        this.hidePacketField = true;
+        request({
+          url: "/products/get-product-of-type",
+          method: "GET",
+          params: {
+            partiya: this.todays_product_nums + (this.formDataObj.singan ? 0 : 1),
+            product_type: this.formDataObj.current_subType,
+            product: this.formDataObj.currentProduct,
+          },
+        })
+          .then(res => {
+            // console.log(res.data)
+            this.currentType = res.data.product_type;
+            this.formDataObj.numberOfItems = res.data.number_of_items;
+            this.formDataObj.weightOfPacket = res.data.wight_of_one_packet;
+            this.formDataObj.base_price = res.data.base_price;
+            this.formDataObj.base_priceBy = res.data.base_priceBy;
+          })
+          .catch((err) => {
+            Message({
+              message: err.response.data,
+              type: "error",
+              duration: 4000,
+            });
+          });
+      } else {
+        this.hidePacketField = false;
+      }
+    },
+
     resetAll() {
       this.formDataObj.currentProduct = "";
       this.formDataObj.current_subType = "";
@@ -440,7 +478,8 @@ export default {
       this.areaOfOneItem();
       this.typeName = "";
       this.productName = "";
-      this.$refs.storeFormRef.resetFields()
+      this.$refs.storeFormRef.resetFields();
+      this.hidePacketField = false
     },
     setCurrentType(val) {
       const pr = this.products_types.find(
@@ -452,6 +491,7 @@ export default {
         this.GET_TODAYS_PRODUCTS({
           product: this.formDataObj.currentProduct,
           product_type: this.formDataObj.current_subType,
+          isBroken: this.formDataObj.singan,
         });
       } else {
         this.currentType = {};

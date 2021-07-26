@@ -63,6 +63,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import add from './mixins/add'
+import { Message } from 'element-ui'
 export default {
   mixins: [add],
   props: {

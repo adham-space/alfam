@@ -9,9 +9,9 @@
       @change="getProducts"
     >
       <el-option
-        v-for="(pr, i) in products_types"
+        v-for="(pr, i) in batches"
         :key="i"
-        :label="pr.product_name"
+        :label="pr._product[0].split('-')[0] + ' - ' + pr._product[0].split('-')[2]"
         :value="pr._id"
       />
     </el-select>
@@ -101,6 +101,7 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
+import request from '@/utils/request'
 export default {
   props: {
     totalPrice: {
@@ -119,6 +120,7 @@ export default {
     debtDescription: '',
     debtDate: '',
     isDebt: false,
+    batches: [],
     Procedures: [
       {
         label: 'Sotib olish',
@@ -132,21 +134,29 @@ export default {
         label: 'Qaytarib berish',
         value: 3
       }
-    ],
+    ]
   }),
   computed: {
-    ...mapState('products', ["products_types", "product"]),
-   drivers() {
-     return this.$store.state.drivers.tableData
-   },
-   consumers() {
-     return this.$store.state.customers.tableData
-   }
+    ...mapState('products', ['products_types', 'product']),
+    drivers() {
+      return this.$store.state.drivers.tableData
+    },
+    consumers() {
+      return this.$store.state.customers.tableData
+    }
   },
   mounted() {
-    this.GET_PRODUCT_TYPES();
+    this.GET_PRODUCT_TYPES()
     this.GET_CUSTOMERS()
     this.GET_DRIVERS()
+    request({
+      url: '/products/get-batches',
+      method: 'GET'
+    }).then(res => {
+      this.batches = res.data
+    }).catch(err => {
+      console.log(err)
+    })
   },
   methods: {
     ...mapActions('products', ['GET_PRODUCT_TYPES', 'GET_PRODUCT_BY_TYPE_ID']),

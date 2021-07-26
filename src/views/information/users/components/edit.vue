@@ -65,6 +65,8 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import edit from './mixins/edit'
+import { Message } from 'element-ui'
+
 export default {
   mixins: [edit],
   props: {
@@ -131,7 +133,7 @@ export default {
             })
           }).catch(err => {
             this.saving = false
-            Mesasage({
+            Message({
               message: err.response.duration,
               type: 'error',
               duration: 2000

@@ -59,6 +59,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import edit from './mixins/edit'
+import { Message } from 'element-ui'
 export default {
   mixins: [edit],
   props: {

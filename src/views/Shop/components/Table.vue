@@ -1,12 +1,12 @@
 <template>
   <div ref="tblContainer" style="height: calc(100vh - 86px)">
     <el-table
+      v-loading="product_with_types_table_loading"
       :max-height="bodyHeight + ''"
       style="width: 100%"
       size="small"
       :data="tableDataComputed"
       show-summary
-      v-loading="product_with_types_table_loading"
       :summary-method="jamiSumma"
     >
       <el-table-column
@@ -21,7 +21,11 @@
         label="СПЕЦИФИКАЦИЯСИ"
         prop="type_name"
         align="center"
-      />
+      >
+        <template slot-scope="scope"> 
+          {{scope.row.type_name + (scope.row.broken ? ' - broken': '')}}
+        </template>
+      </el-table-column>
       <el-table-column
         width="150"
         label="ТОВАРНИ РАЗМЕРИ"
@@ -36,11 +40,11 @@
       >
         <template slot-scope="scope">
           <el-image
-          style="width: 30px; height: 30px"
-          :src="'https://radiant-lowlands-92396.herokuapp.com/' + scope.row.photo"
-          fit="scale-down"
-          @click="openImg('https://radiant-lowlands-92396.herokuapp.com/' + scope.row.photo)"
-        />
+            style="width: 30px; height: 30px"
+            :src="'http://localhost:3000/' + scope.row.photo"
+            fit="scale-down"
+            @click="openImg('http://localhost:3000/' + scope.row.photo)"
+          />
         </template>
       </el-table-column>
       <el-table-column
@@ -158,7 +162,7 @@
           <span>НАРХИ</span>
         </template>
         <template slot-scope="scope">
-          {{scope.row.sum_kassa.toFixed(4)}}  
+          {{ scope.row.sum_kassa.toFixed(4) }}
         </template>
       </el-table-column>
 

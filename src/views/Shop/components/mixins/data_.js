@@ -1,4 +1,4 @@
-import { mapState } from "vuex"
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -16,7 +16,7 @@ export default {
       currentNotification: null,
       currentProduct: {},
       brokenPropotionArr: [],
-      totalPrice: 0,
+      totalPrice: 0
       // tableData: [
       //   {
       //     propotion: 53.33,
@@ -108,7 +108,7 @@ export default {
       //   }
 
       // ],
-      
+
     }
   },
   computed: {
