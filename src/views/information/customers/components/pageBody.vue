@@ -1,6 +1,7 @@
 <template>
   <el-col :span="24" class="customers-page-body">
     <el-table
+      v-loading="tblLoading"
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
       :data="tableData"
@@ -8,7 +9,11 @@
       highlight-current-row
       @row-click="customerChosed"
     >
-      <el-table-column width="100" align="center" prop="id" label="ID" />
+      <el-table-column width="100" align="center" prop="id" label="ID">
+        <template slot-scope="scope">
+          {{ scope.row._id.substr(0, 6) }}
+        </template>
+      </el-table-column>
       <el-table-column width="180" align="center" prop="name" label="Name">
         <template slot-scope="scope">
           {{ `${scope.row.firstName} ${scope.row.lastName}` }}
@@ -41,7 +46,7 @@ export default {
   data: () => ({
   }),
   computed: {
-    ...mapState('customers', ['tableData'])
+    ...mapState('customers', ['tableData', 'tblLoading'])
   },
   beforeDestroy() {
     this.SET_CUSTOMER(null)

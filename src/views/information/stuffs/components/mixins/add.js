@@ -6,7 +6,7 @@ export default {
         lastName: '',
         address: '',
         phone: '',
-        registered_date: ''
+        shopId: ''
       },
       rules: {
         phone: [{

@@ -68,7 +68,7 @@ export default {
             name: this.newShop.name,
             id: this.newShop._id
           }).then(res => {
-             this.saving = false
+            this.saving = false
             Message({
               message: res.data,
               type: 'success',
@@ -83,7 +83,6 @@ export default {
               duration: 3000
             })
           })
-          
         } else {
           return false
         }

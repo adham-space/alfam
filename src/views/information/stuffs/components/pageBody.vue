@@ -1,6 +1,7 @@
 <template>
   <el-col :span="24" class="stuffs-page-body">
     <el-table
+      v-loading="tblLoading"
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
       :data="tableData"
@@ -8,15 +9,28 @@
       highlight-current-row
       @row-click="stuffChosed"
     >
-      <el-table-column width="100" align="center" prop="id" label="ID" />
-      <el-table-column align="center" prop="name" label="Name">
+      <el-table-column width="100" align="center" prop="_id" label="ID">
+        <template slot-scope="scope">
+          {{ scope.row._id.substr(0, 6) }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Name">
         <template slot-scope="scope">
           {{ `${scope.row.firstName} ${scope.row.lastName}` }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="address" label="Address" />
       <el-table-column width="260" align="center" prop="phone" label="Phone number" />
-      <el-table-column width="150" align="center" prop="registered_date" label="Registred date" />
+      <el-table-column width="150" align="center" prop="shop" label="Shop">
+        <template slot-scope="scope">
+          {{ scope.row.shop.name }}
+        </template>
+      </el-table-column>
+      <el-table-column width="150" align="center" prop="date" label="Registred date">
+        <template slot-scope="scope">
+          {{ (new Date(scope.row.date)).toLocaleString().split(',')[0] }}
+        </template>
+      </el-table-column>
     </el-table>
     <div class="pgntion">
       <Pagination
@@ -39,7 +53,7 @@ export default {
   data: () => ({
   }),
   computed: {
-    ...mapState('stuffs', ['tableData'])
+    ...mapState('stuffs', ['tableData', 'tblLoading'])
   },
   beforeDestroy() {
     this.SET_STUFF(null)

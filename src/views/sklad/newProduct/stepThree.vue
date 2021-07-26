@@ -17,7 +17,7 @@
         />
         <el-table-column
           prop="name"
-          label="Specification"
+          label="type_nameification"
           align="center"
         />
         <el-table-column label="Size" align="center">

@@ -16,7 +16,7 @@
           <el-option label="Shopping amount" :value="5" />
         </el-select>
       </el-input>
-      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" />
+      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="search()" />
     </div>
     <div style="display: flex">
       <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex'
 import add from './add.vue'
 import delete_ from './delete.vue'
 import edit from './edit.vue'
@@ -51,8 +51,12 @@ export default {
   computed: {
     ...mapState('stuffs', ['currentStuff'])
   },
+  mounted() {
+    this.GET_STUFFS()
+  },
   methods: {
     ...mapMutations('stuffs', ['SET_QUERY']),
+    ...mapActions('stuffs', ['GET_STUFFS']),
     searchTypeChanged(t) {
       this.SET_QUERY({
         key: 'search_input',

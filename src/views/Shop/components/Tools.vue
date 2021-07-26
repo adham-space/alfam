@@ -6,12 +6,13 @@
       v-model="currentProduct"
       style="width: 100%"
       placeholder="Choose a product"
+      @change="getProducts"
     >
       <el-option
-        v-for="(pr, i) in products"
+        v-for="(pr, i) in products_types"
         :key="i"
-        :label="pr.label"
-        :value="pr.value"
+        :label="pr.product_name"
+        :value="pr._id"
       />
     </el-select>
     <el-checkbox v-model="withBorken" style="margin: 1em 0" @change="brokenStateChanged">Include borkens</el-checkbox>
@@ -38,22 +39,22 @@
       <el-option
         v-for="(pr, i) in consumers"
         :key="i"
-        :label="pr.label"
-        :value="pr.value"
+        :label="pr.firstName + ' ' + pr.lastName"
+        :value="pr._id"
       />
     </el-select>
     <el-select
-      v-model="currentConsumer"
+      v-model="currentDriver"
       class="tools-wrapper-item"
       style="width: 100%"
 
       placeholder="Choose a Driver"
     >
       <el-option
-        v-for="(pr, i) in consumers"
+        v-for="(pr, i) in drivers"
         :key="i"
-        :label="pr.label"
-        :value="pr.value"
+        :label="pr.firstName + ' ' + pr.lastName"
+        :value="pr._id"
       />
     </el-select>
     <el-input
@@ -68,7 +69,7 @@
         type="number"
         class="tools-wrapper-item"
         placeholder="Discount price"
-        @input="changeBasePrice"
+        @input="changebase_price"
       />
     </div>
     <div style="margin-bottom: 1em">
@@ -99,6 +100,7 @@
   </div>
 </template>
 <script>
+import { mapActions, mapState } from 'vuex'
 export default {
   props: {
     totalPrice: {
@@ -112,16 +114,11 @@ export default {
     currentStatus: '',
     currentConsumer: '',
     costOfUpload: '',
+    currentDriver: '',
     discountPrice: 0,
     debtDescription: '',
     debtDate: '',
     isDebt: false,
-    products: [
-      {
-        label: 'Nilufar',
-        value: 1
-      }
-    ],
     Procedures: [
       {
         label: 'Sotib olish',
@@ -136,27 +133,32 @@ export default {
         value: 3
       }
     ],
-    consumers: [
-      {
-        label: 'A',
-        value: 1
-      },
-      {
-        label: 'B',
-        value: 2
-      },
-      {
-        label: 'Q',
-        value: 3
-      }
-    ]
   }),
+  computed: {
+    ...mapState('products', ["products_types", "product"]),
+   drivers() {
+     return this.$store.state.drivers.tableData
+   },
+   consumers() {
+     return this.$store.state.customers.tableData
+   }
+  },
+  mounted() {
+    this.GET_PRODUCT_TYPES();
+    this.GET_CUSTOMERS()
+    this.GET_DRIVERS()
+  },
   methods: {
-    basePriceChangedOneOfItem(val) { // this will be called when base price of one item is changed
-      this.discountPrice = val
-      console.log('sends back', val)
+    ...mapActions('products', ['GET_PRODUCT_TYPES', 'GET_PRODUCT_BY_TYPE_ID']),
+    ...mapActions('customers', ['GET_CUSTOMERS']),
+    ...mapActions('drivers', ['GET_DRIVERS']),
+    getProducts(val) {
+      this.GET_PRODUCT_BY_TYPE_ID(val)
     },
-    changeBasePrice(val) { // this is to change each item base price accordingly
+    base_priceChangedOneOfItem(val) { // this will be called when base price of one item is changed
+      this.discountPrice = val
+    },
+    changebase_price(val) { // this is to change each item base price accordingly
       this.$emit('totalPriceChanged', val)
     },
     brokenStateChanged(val) {

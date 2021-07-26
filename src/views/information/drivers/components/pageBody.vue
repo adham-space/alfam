@@ -1,6 +1,7 @@
 <template>
   <el-col :span="24" class="drivers-page-body">
     <el-table
+      v-loading="tblLoading"
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
       :data="tableData"
@@ -8,7 +9,11 @@
       highlight-current-row
       @row-click="driverChosed"
     >
-      <el-table-column width="100" align="center" prop="id" label="ID" />
+      <el-table-column width="100" align="center" prop="id" label="ID">
+        <template slot-scope="scope">
+          {{ scope.row._id.substr(0, 6) }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="name" label="Name">
         <template slot-scope="scope">
           {{ `${scope.row.firstName} ${scope.row.lastName}` }}
@@ -18,7 +23,11 @@
       <el-table-column width="260" align="center" prop="phone" label="Phone number" />
       <el-table-column width="180" align="center" prop="car_type" label="Car type" />
       <el-table-column width="160" align="center" prop="car_num" label="Car num" />
-      <el-table-column width="150" align="center" prop="createdAt" label="Registred date" />
+      <el-table-column width="150" align="center" prop="date" label="Registred date">
+        <template slot-scope="scope">
+          {{ (new Date(scope.row.date)).toLocaleString().split(',')[0] }}
+        </template>
+      </el-table-column>
     </el-table>
     <div class="pgntion">
       <Pagination
@@ -41,7 +50,7 @@ export default {
   data: () => ({
   }),
   computed: {
-    ...mapState('drivers', ['tableData'])
+    ...mapState('drivers', ['tableData', 'tblLoading'])
   },
   beforeDestroy() {
     this.SET_DRIVER(null)

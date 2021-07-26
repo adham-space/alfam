@@ -30,7 +30,7 @@ export default {
     },
     totalPriceChanged(val) {
       this.totalPrice = val
-      this.$refs.packingListTableRef.calculateBasePrices(val)
+      this.$refs.packingListTableRef.calculatebase_prices(val)
     },
     changedBrokenState(val) {
       this.broken = val

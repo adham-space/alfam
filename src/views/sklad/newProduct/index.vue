@@ -24,6 +24,7 @@
         <el-button style="color: red; margin-right: 1rem" @click="cancelConfirmDialog = true">cancel</el-button>
       </template>
     </form-wizard>
+
     <el-dialog
       title="Cancel new product"
       :visible.sync="cancelConfirmDialog"
@@ -48,6 +49,8 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import stepOne from './stepOne'
 import stepTwo from './stepTwo'
 import stepThree from './stepThree'
+import { mapActions, mapState } from 'vuex'
+import { Message } from 'element-ui'
 export default {
   name: 'NewProduct',
   components: {
@@ -62,8 +65,38 @@ export default {
       cancelConfirmDialog: false
     }
   },
+  computed: {
+    ...mapState('newProduct', ['types', 'product_name'])
+  },
   methods: {
-    onComplete() {},
+    ...mapActions('newProduct', ['UPLOAD_IMAGES', 'UPLOAD_TYPES']),
+    async onComplete() {
+      try {
+        for (let i = 0; i < this.types.length; i++) {
+          const formData = new FormData()
+          formData.append('image', this.types[i].photo.raw)
+          const filePath = await this.UPLOAD_IMAGES(formData)
+          this.types[i].photo = filePath.data.path
+        }
+        const dataObj = {
+          product_name: this.product_name,
+          product_types: this.types
+        }
+        await this.UPLOAD_TYPES(dataObj)
+        Message({
+          message: 'Success:  types are saved',
+          duration: 3000,
+          type: 'success'
+        })
+        this.Cancel()
+      } catch (error) {
+        Message({
+          message: error.response.data,
+          type: 'error',
+          duration: 20000
+        })
+      }
+    },
     tabChanged() {},
     Cancel() {
       this.cancelConfirmDialog = false

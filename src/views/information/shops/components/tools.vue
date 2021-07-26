@@ -16,7 +16,7 @@
           <el-option label="Shopping amount" :value="5" />
         </el-select>
       </el-input>
-      <el-button :disabled="tblLoading" :loading="tblLoading" @click="search()" style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" />
+      <el-button :disabled="tblLoading" :loading="tblLoading" style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="search()" />
     </div>
     <div style="display: flex">
       <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>

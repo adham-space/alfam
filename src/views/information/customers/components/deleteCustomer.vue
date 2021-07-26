@@ -9,7 +9,7 @@
     :show-close="false"
     :destroy-on-close="true"
   >
-    <p v-if="!!currentCustomer">Do you want to delete customer: {{ `${currentCustomer.firstName} ${currentCustomer.lastName} with an ID: ${currentCustomer.id}` }} </p>
+    <p v-if="!!currentCustomer">Do you want to delete customer: {{ `${currentCustomer.firstName} ${currentCustomer.lastName} with an ID: ${currentCustomer._id}` }} </p>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel()">No</el-button>
       <el-button type="danger" @click="save()">Yes</el-button>
@@ -18,7 +18,8 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { Message } from 'element-ui'
+import { mapActions, mapState } from 'vuex'
 export default {
   props: {
     dialogVisible: {
@@ -35,13 +36,25 @@ export default {
     ...mapState('customers', ['currentCustomer'])
   },
   methods: {
-    ...mapMutations('customers', ['DELETE']),
+    ...mapActions('customers', ['DELETE_CUSTOMER']),
     cancel() {
       this.$emit('closeDialog')
     },
     save() {
-      this.DELETE()
-      this.cancel()
+      this.DELETE_CUSTOMER(this.currentCustomer._id).then(() => {
+        Message({
+          message: 'Success: delete',
+          duration: 2000,
+          type: 'success'
+        })
+        this.cancel()
+      }).catch(err => {
+        Message({
+          message: err.response.data,
+          duration: 2000,
+          type: 'error'
+        })
+      })
     }
   }
 }

@@ -27,7 +27,7 @@ const informationRouter = {
       path: 'shops',
       component: () => import('@/views/information/shops/index'),
       name: 'Shops',
-      meta: { title: 'Shops ', noCache: false }
+      meta: { title: 'Shops && Sklad', noCache: false }
     },
     {
       path: 'drivers',

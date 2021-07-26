@@ -12,7 +12,7 @@
         <el-option
           v-for="type in types"
           :key="type.id"
-          :label="type.name"
+          :label="type.type_name"
           :value="type.id"
         />
       </el-select>

@@ -1,6 +1,7 @@
 <template>
   <el-col :span="24" class="users-page-body">
     <el-table
+      v-loading="tblLoading"
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
       :data="tableData"
@@ -8,10 +9,23 @@
       highlight-current-row
       @row-click="driverChosed"
     >
-      <el-table-column width="100" align="center" prop="id" label="ID" />
-      <el-table-column align="center" prop="stuffId" label="Stuff" />
+      <el-table-column width="100" align="center" prop="_id" label="ID">
+        <template slot-scope="scope">
+          {{ scope.row._id.substr(0, 6) }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="stuff" label="Stuff">
+        <template slot-scope="scope">
+          {{ scope.row.stuff.firstName + ' ' + scope.row.stuff.lastName }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="username" label="Username" />
-      <el-table-column align="center" prop="roleId" label="Role" />
+      <el-table-column align="center" prop="role" label="Role" />
+      <el-table-column align="center" prop="is_active" label="Status">
+        <template slot-scope="scope">
+          {{ scope.row.is_active }}
+        </template>
+      </el-table-column>
     </el-table>
     <div class="pgntion">
       <Pagination
@@ -34,7 +48,7 @@ export default {
   data: () => ({
   }),
   computed: {
-    ...mapState('users', ['tableData'])
+    ...mapState('users', ['tableData', 'tblLoading'])
   },
   beforeDestroy() {
     this.SET_USER(null)

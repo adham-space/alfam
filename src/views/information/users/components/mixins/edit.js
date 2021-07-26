@@ -2,9 +2,11 @@ export default {
   data() {
     return {
       newUser: {
-        stuffId: '',
-        roleId: '',
-        username: ''
+        stuff: '',
+        role: '',
+        username: '',
+        password: '',
+        is_active: false
       },
       rules: {
         username: [{
@@ -17,7 +19,7 @@ export default {
             }
           }
         }],
-        roleId: [{
+        role: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {
@@ -27,13 +29,13 @@ export default {
             }
           }
         }],
-        stuffId: [{
+        stuff: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {
               return cb()
             } else {
-              return cb(new Error('Role should not be empty'))
+              return cb(new Error('Stuff should not be empty'))
             }
           }
         }]

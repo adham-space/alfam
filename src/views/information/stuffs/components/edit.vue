@@ -34,6 +34,20 @@
           </el-form-item>
         </el-col>
       </el-form-item>
+      <el-form-item>
+        <el-col :span="12">
+          <el-form-item prop="shopId" label="Shop">
+            <el-select v-model="newStuff.shopId" style="width: 100%">
+              <el-option
+                v-for="shop in shops"
+                :key="shop._id"
+                :value="shop._id"
+                :label="shop.name"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel()">Cancel</el-button>
@@ -43,7 +57,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import edit from './mixins/edit'
 export default {
   mixins: [edit],
@@ -59,13 +73,26 @@ export default {
     }
   },
   computed: {
-    ...mapState('stuffs', ['currentStuff'])
+    ...mapState('stuffs', ['currentStuff']),
+    ...mapState('shops', ['tableData']),
+    shops() {
+      return this.tableData
+    }
+  },
+  mounted() {
+    this.GET_SHOPS()
   },
   methods: {
-    ...mapMutations('stuffs', ['EDIT_STUFF']),
+    ...mapActions('stuffs', ['EDIT_STUFF']),
+    ...mapActions('shops', ['GET_SHOPS']),
     dialogOpened() {
       this.newStuff = {
-        ...this.currentStuff
+        id: this.currentStuff._id,
+        firstName: this.currentStuff.firstName,
+        lastName: this.currentStuff.lastName,
+        address: this.currentStuff.address,
+        phone: this.currentStuff.phone,
+        shopId: this.currentStuff.shop._id
       }
     },
     cancel() {
@@ -75,7 +102,8 @@ export default {
         firstName: '',
         lastName: '',
         address: '',
-        phone: ''
+        phone: '',
+        shopId: ''
       }
     },
     save() {
@@ -86,9 +114,17 @@ export default {
             lastName: this.newStuff.lastName,
             address: this.newStuff.address,
             phone: this.newStuff.phone,
+            shopId: this.newStuff.shopId,
             id: this.newStuff.id
+          }).then(() => {
+            this.cancel()
+          }).catch(err => {
+            Message({
+              message: err.response.data,
+              type: 'error',
+              duration: 2000
+            })
           })
-          this.cancel()
         } else {
           return false
         }

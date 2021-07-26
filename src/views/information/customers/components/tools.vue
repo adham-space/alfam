@@ -16,7 +16,7 @@
           <el-option label="Shopping amount" :value="5" />
         </el-select>
       </el-input>
-      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" />
+      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" :loading="tblLoading" @click="search()" />
     </div>
     <div style="display: flex">
       <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import addCustomer from './addCustomer.vue'
 import deleteCustomer from './deleteCustomer.vue'
 import editCustomer from './editCustomer.vue'
@@ -49,15 +49,19 @@ export default {
     deleteCustomerDialog: false
   }),
   computed: {
-    ...mapState('customers', ['currentCustomer'])
+    ...mapState('customers', ['currentCustomer', 'tblLoading'])
   },
   methods: {
     ...mapMutations('customers', ['SET_QUERY']),
+    ...mapActions('customers', ['GET_CUSTOMERS']),
     searchTypeChanged(t) {
       this.SET_QUERY({
         key: 'search_input',
         value: t
       })
+    },
+    search() {
+      this.GET_CUSTOMERS()
     }
   }
 }

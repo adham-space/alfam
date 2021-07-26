@@ -1,7 +1,7 @@
 <template>
   <div class="components-container">
     <aside>
-      When the page is scrolled to the specified position, the Back to Top button appears in the lower right corner
+      When the page is scrolled to the type_nameified position, the Back to Top button appears in the lower right corner
     </aside>
     <aside>
       You can customize the style of the button, show / hide, height of appearance, height of the return. If you need a text prompt, you can use element-ui el-tooltip elements externally

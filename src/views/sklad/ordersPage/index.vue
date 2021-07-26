@@ -66,7 +66,7 @@
         <el-table-column
           width="150"
           label="СПЕЦИФИКАЦИЯСИ"
-          prop="spec"
+          prop="type_name"
           align="center"
         />
         <el-table-column
@@ -148,93 +148,93 @@ export default {
     tableData: [
       {
         code: '1191A',
-        spec: 'Ochi',
+        type_name: 'Ochi',
         size: '30 * 60',
         packTotalArea: '',
         item_num: '',
         pack_num: '',
         over_pack_num: '',
-        pack_weight: 25,
-        one_item_weight: 3.125,
+        wight_of_one_packet: 25,
+        weight_of_an_item: 3.125,
         weight: '',
-        packArea: 1.44,
-        itemArea: 0.18,
-        pack_content_num: 8
+        area_of_one_packet: 1.44,
+        area_of_an_item: 0.18,
+        number_of_items: 8
       },
       {
         code: '1191B',
-        spec: "To'qi",
+        type_name: "To'qi",
         size: '30 * 60',
         packTotalArea: '',
         item_num: '',
         pack_num: '',
         over_pack_num: '',
-        pack_weight: 25,
-        one_item_weight: 3.125,
+        wight_of_one_packet: 25,
+        weight_of_an_item: 3.125,
         weight: '',
-        packArea: 1.44,
-        itemArea: 0.18,
-        pack_content_num: 8
+        area_of_one_packet: 1.44,
+        area_of_an_item: 0.18,
+        number_of_items: 8
       },
       {
         code: '1191C',
-        spec: 'Dekor',
+        type_name: 'Dekor',
         size: '30 * 60',
         packTotalArea: '',
         item_num: '',
         pack_num: '',
         over_pack_num: '',
-        pack_weight: 25,
-        one_item_weight: 3.125,
+        wight_of_one_packet: 25,
+        weight_of_an_item: 3.125,
         weight: '',
-        packArea: 1.44,
-        itemArea: 0.18,
-        pack_content_num: 8
+        area_of_one_packet: 1.44,
+        area_of_an_item: 0.18,
+        number_of_items: 8
       },
       {
         code: '1191D',
-        spec: 'Pol',
+        type_name: 'Pol',
         size: '30 * 30',
         packTotalArea: '',
         item_num: '',
         pack_num: '',
         over_pack_num: '',
-        pack_weight: 21,
-        one_item_weight: 1.4,
+        wight_of_one_packet: 21,
+        weight_of_an_item: 1.4,
         weight: '',
-        packArea: 1.35,
-        itemArea: 0.09,
-        pack_content_num: 15
+        area_of_one_packet: 1.35,
+        area_of_an_item: 0.09,
+        number_of_items: 15
       },
       {
         code: '1191F',
-        spec: 'Friz',
+        type_name: 'Friz',
         size: '30 * 6 ',
         packTotalArea: '',
         item_num: '',
         pack_num: '',
         over_pack_num: '',
-        pack_weight: 21,
-        one_item_weight: 1.4,
+        wight_of_one_packet: 21,
+        weight_of_an_item: 1.4,
         weight: '',
-        packArea: 0.72,
-        itemArea: 0.018,
-        pack_content_num: 40
+        area_of_one_packet: 0.72,
+        area_of_an_item: 0.018,
+        number_of_items: 40
       },
       {
         code: '1191S',
-        spec: 'Sigara',
+        type_name: 'Sigara',
         size: '30 * 2 ',
         packTotalArea: '',
         item_num: '',
         pack_num: '',
         over_pack_num: '',
-        pack_weight: 10,
-        one_item_weight: 0.1,
+        wight_of_one_packet: 10,
+        weight_of_an_item: 0.1,
         weight: '',
-        packArea: 0.6,
-        itemArea: 0.006,
-        pack_content_num: 100
+        area_of_one_packet: 0.6,
+        area_of_an_item: 0.006,
+        number_of_items: 100
       }
     ],
     showImageDilog: false

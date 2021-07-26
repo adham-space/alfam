@@ -6,6 +6,7 @@
       size="small"
       :data="tableDataComputed"
       show-summary
+      v-loading="product_with_types_table_loading"
       :summary-method="jamiSumma"
     >
       <el-table-column
@@ -18,7 +19,7 @@
       <el-table-column
         width="150"
         label="СПЕЦИФИКАЦИЯСИ"
-        prop="spec"
+        prop="type_name"
         align="center"
       />
       <el-table-column
@@ -33,12 +34,14 @@
         prop="photo"
         align="center"
       >
-        <el-image
+        <template slot-scope="scope">
+          <el-image
           style="width: 30px; height: 30px"
-          src="https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80"
+          :src="'http://localhost:3000/' + scope.row.photo"
           fit="scale-down"
-          @click="openImg('https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80')"
+          @click="openImg('http://localhost:3000/' + scope.row.photo)"
         />
+        </template>
       </el-table-column>
       <el-table-column
         width="300"
@@ -120,7 +123,7 @@
 
       <el-table-column
         width="100"
-        prop="basePrice"
+        prop="base_price"
         align="center"
       >
         <template slot="header" slot-scope="">
@@ -128,8 +131,8 @@
           <span>m2 / Dona</span>
         </template>
         <template slot-scope="scope">
-          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.byItemNum ? 'Price by item number' : 'Price by area (m2)'" placement="left">
-            <el-switch :value="scope.row.byItemNum" active-color="#13ce66" inactive-color="" @change="calcPriceByItemNumChanged($event, scope.row)" />
+          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.price_by ? 'Price by item number' : 'Price by area (m2)'" placement="left">
+            <el-switch :value="scope.row.price_by" active-color="#13ce66" inactive-color="" @change="calcPriceprice_byChanged($event, scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -137,11 +140,11 @@
       <el-table-column
         width="120"
         label="ТАН НАРХИ"
-        prop="basePrice"
+        prop="base_price"
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.basePrice }}</span>
+          <span>{{ scope.row.base_price }}</span>
         </template>
       </el-table-column>
 
@@ -154,11 +157,14 @@
           <span>КАССА</span><br>
           <span>НАРХИ</span>
         </template>
+        <template slot-scope="scope">
+          {{scope.row.sum_kassa.toFixed(4)}}  
+        </template>
       </el-table-column>
 
       <el-table-column
         width="130"
-        prop="basePrice_changed"
+        prop="base_price_changed"
         align="center"
       >
         <template slot="header">
@@ -170,8 +176,8 @@
           <el-input
             size="small"
             type="number"
-            :value="scope.row.basePrice_changed"
-            @input="basePriceIsChanging($event, scope.row)"
+            :value="scope.row.base_price_changed"
+            @input="base_priceIsChanging($event, scope.row)"
           />
         </template>
       </el-table-column>
@@ -186,7 +192,7 @@
         </template>
 
         <template slot-scope="scope">
-          {{ scope.row.sum }}
+          {{ scope.row.sum.toFixed(4) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -203,17 +209,17 @@
           width="160"
           label="ПОЧКАСИДИГИ (м2)"
           align="center"
-          prop="packArea"
+          prop="area_of_one_packet"
         />
         <el-table-column
           width="140"
           label="1-ДОНАСИНИ (м2)"
-          prop="itemArea"
+          prop="area_of_an_item"
           align="center"
         />
         <el-table-column
           align="center"
-          prop="pack_content_num"
+          prop="number_of_items"
           width="140"
           label="УМУМИЙ ДОНАСИ"
         />
@@ -221,13 +227,13 @@
           width="160"
           label="ПОЧКАСИДИГИ (КГ)"
           align="center"
-          prop="pack_weight"
+          prop="wight_of_one_packet"
         />
         <el-table-column
           width="140"
           label="1-ДОНАСИНИ  (КГ)"
           align="center"
-          prop="one_item_weight"
+          prop="weight_of_an_item"
         />
       </el-table-column>
     </el-table>
@@ -242,6 +248,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import data_ from './mixins/data_.js'
 import methods_ from './mixins/methods_.js'
 export default {
@@ -253,6 +260,9 @@ export default {
     return {
       bodyHeight: 300
     }
+  },
+  computed: {
+    ...mapState('products', ['product_with_types_table_loading'])
   },
   mounted() {
     setTimeout(() => {

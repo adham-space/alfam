@@ -43,7 +43,8 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { Message } from 'element-ui'
+import { mapActions, mapState } from 'vuex'
 import editCustomer from './mixins/editCustomer'
 export default {
   mixins: [editCustomer],
@@ -62,7 +63,7 @@ export default {
     ...mapState('customers', ['currentCustomer'])
   },
   methods: {
-    ...mapMutations('customers', ['CREATE_NEWCUSTOMER', 'EDIT_CUSTOMER']),
+    ...mapActions('customers', ['EDIT_CUSTOMER']),
     dialogOpened() {
       this.newCustomer = {
         ...this.currentCustomer
@@ -80,14 +81,21 @@ export default {
     save() {
       this.$refs.newCustomerRef.validate(valid => {
         if (valid) {
-          this.EDIT_CUSTOMER({
-            firstName: this.newCustomer.firstName,
-            lastName: this.newCustomer.lastName,
-            address: this.newCustomer.address,
-            phone: this.newCustomer.phone,
-            id: this.newCustomer.id
-          })
-          this.cancel()
+          this.EDIT_CUSTOMER(this.newCustomer)
+            .then(() => {
+              this.cancel()
+              Message({
+                message: 'Success: update',
+                type: 'success',
+                duration: 2000
+              })
+            }).catch(err => {
+              Message({
+                message: err.response.data,
+                type: 'error',
+                duration: 2000
+              })
+            })
         } else {
           return false
         }

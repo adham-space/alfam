@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 
-
 function getShops(params) {
   return request({
     url: '/info/get-shops',
@@ -8,7 +7,6 @@ function getShops(params) {
     method: 'GET'
   })
 }
-
 
 function updateShop(params) {
   return request({
@@ -50,28 +48,27 @@ const mutations = {
   SET_TABLE_LOADER: (state) => {
     state.tblLoading = !state.tblLoading
   },
-  SET_QUERY_PARAM(state, data)  {
+  SET_QUERY_PARAM(state, data) {
     state.queryParams[data.key] = data.value
   }
 }
 
 const actions = {
-  GET_SHOPS({commit, state}) {
+  GET_SHOPS({ commit, state }) {
     return new Promise((resolve, reject) => {
       commit('SET_TABLE_LOADER')
       getShops(state.queryParams).then(res => {
         commit('SET_SHOPS', res.data)
         commit('SET_TABLE_LOADER')
-        console.log('shops:', res.data)
         resolve()
       }).catch(err => {
         commit('SET_SHOPS', [])
         commit('SET_TABLE_LOADER')
         reject(err)
       })
-    }) 
+    })
   },
-  EDIT_SHOP({dispatch}, data) {
+  EDIT_SHOP({ dispatch }, data) {
     return new Promise((resolve, reject) => {
       updateShop(data).then(res => {
         resolve(res)
@@ -81,7 +78,7 @@ const actions = {
       })
     })
   },
-  DELETE_SHOP({dispatch}, data) {
+  DELETE_SHOP({ dispatch }, data) {
     return new Promise((resolve, reject) => {
       deleteShop(data).then(res => {
         resolve(res)

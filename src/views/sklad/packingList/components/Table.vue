@@ -18,7 +18,7 @@
       <el-table-column
         width="150"
         label="СПЕЦИФИКАЦИЯСИ"
-        prop="spec"
+        prop="type_name"
         align="center"
       />
       <el-table-column
@@ -132,17 +132,17 @@
           width="160"
           label="ПОЧКАСИДИГИ (м2)"
           align="center"
-          prop="packArea"
+          prop="area_of_one_packet"
         />
         <el-table-column
           width="140"
           label="1-ДОНАСИНИ (м2)"
-          prop="itemArea"
+          prop="area_of_an_item"
           align="center"
         />
         <el-table-column
           align="center"
-          prop="pack_content_num"
+          prop="number_of_items"
           width="140"
           label="УМУМИЙ ДОНАСИ"
         />
@@ -150,13 +150,13 @@
           width="160"
           label="ПОЧКАСИДИГИ (КГ)"
           align="center"
-          prop="pack_weight"
+          prop="wight_of_one_packet"
         />
         <el-table-column
           width="140"
           label="1-ДОНАСИНИ  (КГ)"
           align="center"
-          prop="one_item_weight"
+          prop="weight_of_an_item"
         />
       </el-table-column>
     </el-table>

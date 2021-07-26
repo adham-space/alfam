@@ -9,7 +9,7 @@
     :show-close="false"
     :destroy-on-close="true"
   >
-    <p v-if="!!currentStuff">Do you want to delete driver: {{ `${currentStuff.firstName} ${currentStuff.lastName} with an ID: ${currentStuff.id}` }} </p>
+    <p v-if="!!currentStuff">Do you want to delete driver: {{ `ID: ${currentStuff._id}` }} </p>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel()">No</el-button>
       <el-button type="danger" @click="save()">Yes</el-button>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   props: {
     dialogVisible: {
@@ -35,13 +35,16 @@ export default {
     ...mapState('stuffs', ['currentStuff'])
   },
   methods: {
-    ...mapMutations('stuffs', ['DELETE']),
+    ...mapActions('stuffs', ['DELETE_STUFF']),
     cancel() {
       this.$emit('closeDialog')
     },
     save() {
-      this.DELETE()
-      this.cancel()
+      this.DELETE_STUFF(this.currentStuff._id).then(() => {
+        this.cancel()
+      }).catch(err => {
+        console.error(err)
+      })
     }
   }
 }

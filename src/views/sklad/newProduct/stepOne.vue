@@ -24,14 +24,14 @@
           border
         >
           <el-table-column type="index" align="center" />
-          <el-table-column prop="name" label="Name" align="center">
+          <el-table-column prop="type_name" label="Name" align="center">
             <template slot-scope="scope">
               <el-input
                 v-if="editing.status && scope.row.id === editing.id"
                 v-model="editedType"
-                @keyup.native.enter="saveEdit(scope.row.name)"
+                @keyup.native.enter="saveEdit(scope.row.type_name)"
               />
-              <p v-else>{{ scope.row.name }}</p>
+              <p v-else>{{ scope.row.type_name }}</p>
             </template>
           </el-table-column>
           <el-table-column width="50">
@@ -40,7 +40,7 @@
                 v-if="editing.status && scope.row.id === editing.id"
                 type="text"
                 icon="el-icon-check"
-                @click="saveEdit(scope.row.name)"
+                @click="saveEdit(scope.row.type_name)"
               />
               <el-button
                 v-else
@@ -57,7 +57,7 @@
                 type="text"
                 icon="el-icon-delete"
                 :disabled="editing.status"
-                @click="deleteThis(scope.row.name)"
+                @click="deleteThis(scope.row.type_name)"
               />
             </template>
           </el-table-column>
@@ -103,11 +103,11 @@ export default {
     addNewType() {
       const nm = this.typeObject.name + ''
       if (this.types.length === 0) {
-        this.types.push({ id: 0, name: nm })
+        this.types.push({ id: 0, type_name: nm })
       } else {
         this.types.push({
           id: this.types[this.types.length - 1].id + 1,
-          name: nm
+          type_name: nm
         })
       }
       this.typeObject.name = ''
@@ -117,20 +117,20 @@ export default {
       console.log('row: ', row)
       this.editing.status = true
       this.editing.id = row.id
-      this.editedType = row.name
+      this.editedType = row.type_name
     },
     saveEdit(name) {
       this.editing.status = false
       const index = this.types.findIndex(
-        (item) => item.name.toLowerCase().trim() === name.toLowerCase().trim()
+        (item) => item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
       )
-      this.types[index].name = this.editedType + ''
+      this.types[index].type_name = this.editedType + ''
       this.editedType = ''
       this.$store.commit('newProduct/SET_TYPES', this.types)
     },
     deleteThis(name) {
       const index = this.types.findIndex(
-        (item) => item.name.toLowerCase().trim() === name.toLowerCase().trim()
+        (item) => item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
       )
       this.types.splice(index, 1)
       this.$store.commit('newProduct/SET_TYPES', this.types)

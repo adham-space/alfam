@@ -33,18 +33,19 @@
           </el-form-item>
         </el-col>
       </el-form-item>
-
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="cancel()">Cancel</el-button>
-      <el-button type="primary" @click="save()">Save</el-button>
+      <el-button :disabled="saving" @click="cancel()">Cancel</el-button>
+      <el-button :disabled="saving" :loading="saving" type="primary" @click="save()">Save</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import addCustomer from './mixins/addCustomer'
+import request from '@/utils/request'
+import { Message } from 'element-ui'
 export default {
   mixins: [addCustomer],
   props: {
@@ -55,11 +56,11 @@ export default {
   },
   data() {
     return {
-
+      saving: false
     }
   },
   methods: {
-    ...mapMutations('customers', ['CREATE_NEWCUSTOMER']),
+    ...mapActions('customers', ['GET_CUSTOMERS']),
     cancel() {
       this.$emit('closeDialog')
       this.$refs.newCustomerRef.resetFields()
@@ -73,17 +74,29 @@ export default {
     save() {
       this.$refs.newCustomerRef.validate(valid => {
         if (valid) {
-          this.CREATE_NEWCUSTOMER({
-            firstName: this.newCustomer.firstName,
-            lastName: this.newCustomer.lastName,
-            address: this.newCustomer.address,
-            id: Math.floor(Math.random() * 1000),
-            shopping_amount: 0,
-            shopping_times: 0,
-            phone: this.newCustomer.phone,
-            createdAt: new Date().toLocaleDateString()
+          this.saving = true
+          request({
+            url: '/info/add-customer',
+            method: 'POST',
+            data: this.newCustomer
+          }).then(() => {
+            this.saving = false
+            Message({
+              message: 'Success:  added new customer',
+              type: 'success',
+              duration: 2000
+            })
+            this.GET_CUSTOMERS()
+            this.cancel()
           })
-          this.cancel()
+            .catch(err => {
+              this.saving = false
+              Message({
+                message: err.response.data,
+                type: 'error',
+                duration: 2000
+              })
+            })
         } else {
           return false
         }

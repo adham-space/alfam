@@ -66,7 +66,7 @@
       type="number"
       class="tools-wrapper-item"
       placeholder="Discount price"
-      @input="changeBasePrice"
+      @input="changebase_price"
     />
     <div style="margin-bottom: 1em">
       <el-switch
@@ -150,11 +150,11 @@ export default {
     ]
   }),
   methods: {
-    basePriceChangedOneOfItem(val) { // this will be called when base price of one item is changed
+    base_priceChangedOneOfItem(val) { // this will be called when base price of one item is changed
       this.discountPrice = val
       console.log('sends back', val)
     },
-    changeBasePrice(val) { // this is to change each item base price accordingly
+    changebase_price(val) { // this is to change each item base price accordingly
       this.$emit('totalPriceChanged', val)
     },
     brokenStateChanged(val) {

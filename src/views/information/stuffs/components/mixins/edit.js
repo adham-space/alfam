@@ -6,7 +6,7 @@ export default {
         lastName: '',
         address: '',
         phone: '',
-        registered_date: ''
+        shopId: ''
       },
       rules: {
         firstName: [{
@@ -30,6 +30,16 @@ export default {
           }
         }],
         address: [{
+          trigger: 'change',
+          validator: (rule, value, cb) => {
+            if (value) {
+              return cb()
+            } else {
+              return cb(new Error('Address should not be empty'))
+            }
+          }
+        }],
+        phone: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {

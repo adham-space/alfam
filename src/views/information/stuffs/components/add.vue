@@ -36,20 +36,17 @@
       <el-form-item>
         <el-col :span="12">
           <el-form-item prop="shopId" label="Shop">
-           <el-select v-model="newStuff.shopId" style="width: 100%">
-             <el-option 
-                v-for="shop in shops" 
-                :key="shop.id"
-                :value="shop.id"
+            <el-select v-model="newStuff.shopId" style="width: 100%">
+              <el-option
+                v-for="shop in shops"
+                :key="shop._id"
+                :value="shop._id"
                 :label="shop.name"
-                >
-
-             </el-option>
-           </el-select>
+              />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-form-item>
-
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel()">Cancel</el-button>
@@ -59,8 +56,10 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import add from './mixins/add'
+import request from '@/utils/request'
+import { Message } from 'element-ui'
 export default {
   mixins: [add],
   props: {
@@ -71,20 +70,21 @@ export default {
   },
   data() {
     return {
-      shops: [
-        {
-          name: 'Aaaa',
-          id: 1
-        },
-        {
-          name: 'Bbb',
-          id: 2
-        }
-      ]
     }
   },
+  computed: {
+    ...mapState('shops', ['tableData']),
+    shops() {
+      return this.tableData
+    }
+  },
+  mounted() {
+    this.GET_SHOPS()
+  },
   methods: {
-    ...mapMutations('drivers', ['CREATE_NEWSTUFF']),
+    ...mapMutations('stuffs', ['SET_QUERY']),
+    ...mapActions('shops', ['GET_SHOPS']),
+    ...mapActions('stuffs', ['GET_STUFFS']),
     cancel() {
       this.$emit('closeDialog')
       this.$refs.newStuffRef.resetFields()
@@ -92,23 +92,32 @@ export default {
         firstName: '',
         lastName: '',
         address: '',
-        phone: ''
+        phone: '',
+        shopId: ''
       }
     },
     save() {
       this.$refs.newStuffRef.validate(valid => {
         if (valid) {
-          this.CREATE_NEWSTUFF({
-            firstName: this.newStuff.firstName,
-            lastName: this.newStuff.lastName,
-            address: this.newStuff.address,
-            id: Math.floor(Math.random() * 1000),
-            phone: this.newStuff.phone,
-            createdAt: new Date().toLocaleDateString(),
-            car_num: this.newStuff.car_num,
-            car_type: this.newStuff.car_type
+          console.log('new stuff:', this.newStuff)
+          request({
+            url: '/info/add-stuff',
+            method: 'POST',
+            data: this.newStuff
+          }).then(res => {
+            Message({
+              message: res.data,
+              type: 'success',
+              duration: 2000
+            })
+            this.cancel()
+          }).catch(err => {
+            Message({
+              message: err.response.data,
+              type: 'error',
+              duration: 2000
+            })
           })
-          this.cancel()
         } else {
           return false
         }

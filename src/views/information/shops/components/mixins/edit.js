@@ -2,7 +2,7 @@ export default {
   data() {
     return {
       newShop: {
-        name: '',
+        name: ''
       },
       rules: {
         name: [{
@@ -14,7 +14,7 @@ export default {
               return cb(new Error('Name should not be empty'))
             }
           }
-        }],
+        }]
       }
     }
   }

@@ -1,4 +1,30 @@
-// import request from '@/utils/request'
+import request from '@/utils/request'
+
+function getDrivers(params) {
+  return request({
+    url: '/info/get-drivers',
+    params,
+    method: 'GET'
+  })
+}
+
+function updateDriver(params) {
+  return request({
+    url: '/info/update-driver',
+    data: params,
+    method: 'PATCH'
+  })
+}
+
+function deleteDriver(params) {
+  return request({
+    url: '/info/delete-driver',
+    data: {
+      id: params
+    },
+    method: 'DELETE'
+  })
+}
 
 const state = {
   queryParams: {
@@ -7,40 +33,61 @@ const state = {
     currentPage: 1,
     perPage: 20
   },
-  currentDriver: null,
-  tableData: []
+  tableData: [],
+  tblLoading: false,
+  currentDriver: null
 }
 
 const mutations = {
-  SET_QUERY: (state, query) => {
-    state.queryParams[query.key] = query.value
-  },
-  SET_DRIVER: (state, driver) => {
-    state.currentDriver = driver
-  },
-  SET_TABLE_DATA: (state, data) => {
+  SET_DRIVERS: (state, data) => {
     state.tableData = data
   },
-  CREATE_NEWDRIVER: (state, driver) => {
-    state.tableData.push(driver)
+  SET_DRIVER: (state, data) => {
+    state.currentDriver = data
   },
-  EDIT_DRIVER: (state, driver) => {
-    const indx = state.tableData.findIndex(c => c.id === driver.id)
-    state.tableData[indx].firstName = driver.firstName
-    state.tableData[indx].lastName = driver.lastName
-    state.tableData[indx].address = driver.address
-    state.tableData[indx].phone = driver.phone
-    state.tableData[indx].car_num = driver.car_num
-    state.tableData[indx].car_type = driver.car_type
+  SET_TABLE_LOADER: (state) => {
+    state.tblLoading = !state.tblLoading
   },
-  DELETE: (state) => {
-    const indx = state.tableData.findIndex(c => c.id === state.currentDriver.id)
-    state.tableData.splice(indx, 1)
+  SET_QUERY_PARAM(state, data) {
+    state.queryParams[data.key] = data.value
   }
 }
 
 const actions = {
-
+  GET_DRIVERS({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      commit('SET_TABLE_LOADER')
+      getDrivers(state.queryParams).then(res => {
+        commit('SET_DRIVERS', res.data)
+        commit('SET_TABLE_LOADER')
+        resolve()
+      }).catch(err => {
+        commit('SET_DRIVERS', [])
+        commit('SET_TABLE_LOADER')
+        reject(err)
+      })
+    })
+  },
+  EDIT_DRIVER({ dispatch }, data) {
+    return new Promise((resolve, reject) => {
+      updateDriver(data).then(res => {
+        resolve(res)
+        dispatch('GET_DRIVERS')
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+  DELETE_DRIVER({ dispatch }, data) {
+    return new Promise((resolve, reject) => {
+      deleteDriver(data).then(res => {
+        resolve()
+        dispatch('GET_DRIVERS')
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
 }
 
 export default {

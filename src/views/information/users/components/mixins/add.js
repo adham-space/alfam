@@ -3,8 +3,10 @@ export default {
     return {
       newUser: {
         stuffId: '',
-        roleId: '',
-        username: ''
+        role: '',
+        username: '',
+        password: '',
+        is_active: true
       },
       rules: {
         username: [{
@@ -17,7 +19,17 @@ export default {
             }
           }
         }],
-        roleId: [{
+        password: [{
+          trigger: 'change',
+          validator: (rule, value, cb) => {
+            if (value) {
+              return cb()
+            } else {
+              return cb(new Error('Password should not be empty'))
+            }
+          }
+        }],
+        role: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (value) {

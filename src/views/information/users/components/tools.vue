@@ -16,13 +16,13 @@
           <el-option label="Shopping amount" :value="5" />
         </el-select>
       </el-input>
-      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" />
+      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="search()" />
     </div>
     <div style="display: flex">
       <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
       <el-button style="border: 1px solid transparent" icon="el-icon-plus" @click="addDialog = true" />
-      <el-button :disabled="!!!currentUsers" style="border: 1px solid transparent" icon="el-icon-edit" @click="editDialog = true" />
-      <el-button :disabled="!!!currentUsers" style="border: 1px solid transparent; color: red" icon="el-icon-delete" @click="delete_Dialog = true" />
+      <el-button :disabled="!!!currentUser" style="border: 1px solid transparent" icon="el-icon-edit" @click="editDialog = true" />
+      <el-button :disabled="!!!currentUser" style="border: 1px solid transparent; color: red" icon="el-icon-delete" @click="delete_Dialog = true" />
       <add :dialog-visible="addDialog" @closeDialog="addDialog = false" />
       <edit :dialog-visible="editDialog" @closeDialog="editDialog = false" />
       <delete_ :dialog-visible="delete_Dialog" @closeDialog="delete_Dialog = false" />
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import add from './add.vue'
 import delete_ from './delete.vue'
 import edit from './edit.vue'
@@ -49,15 +49,22 @@ export default {
     delete_Dialog: false
   }),
   computed: {
-    ...mapState('users', ['currentUsers'])
+    ...mapState('users', ['currentUser'])
+  },
+  mounted() {
+    this.GET_USERS()
   },
   methods: {
     ...mapMutations('users', ['SET_QUERY']),
+    ...mapActions('users', ['GET_USERS']),
     searchTypeChanged(t) {
       this.SET_QUERY({
         key: 'search_input',
         value: t
       })
+    },
+    search() {
+      this.GET_USERS()
     }
   }
 }

@@ -46,18 +46,19 @@
           </el-form-item>
         </el-col>
       </el-form-item>
-
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="cancel()">Cancel</el-button>
-      <el-button type="primary" @click="save()">Save</el-button>
+      <el-button :disabled="saving" @click="cancel()">Cancel</el-button>
+      <el-button :loading="saving" :disabled="saving" type="primary" @click="save()">Save</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
+import request from '@/utils/request'
 import add from './mixins/add'
+import { Message } from 'element-ui'
 export default {
   mixins: [add],
   props: {
@@ -68,11 +69,11 @@ export default {
   },
   data() {
     return {
-
+      saving: false
     }
   },
   methods: {
-    ...mapMutations('drivers', ['CREATE_NEWDRIVER']),
+    ...mapActions('drivers', ['GET_DRIVERS']),
     cancel() {
       this.$emit('closeDialog')
       this.$refs.newDriverRef.resetFields()
@@ -88,17 +89,28 @@ export default {
     save() {
       this.$refs.newDriverRef.validate(valid => {
         if (valid) {
-          this.CREATE_NEWDRIVER({
-            firstName: this.newDriver.firstName,
-            lastName: this.newDriver.lastName,
-            address: this.newDriver.address,
-            id: Math.floor(Math.random() * 1000),
-            phone: this.newDriver.phone,
-            createdAt: new Date().toLocaleDateString(),
-            car_num: this.newDriver.car_num,
-            car_type: this.newDriver.car_type
+          this.saving = true
+          request({
+            url: '/info/add-driver',
+            method: 'POST',
+            data: this.newDriver
+          }).then(() => {
+            this.saving = false
+            this.GET_DRIVERS()
+            Message({
+              message: 'Success: added new driver',
+              type: 'success',
+              duration: 2000
+            })
+            this.cancel()
+          }).catch(err => {
+            this.saving = false
+            Message({
+              message: err.response.data,
+              type: 'success',
+              duration: 2000
+            })
           })
-          this.cancel()
         } else {
           return false
         }

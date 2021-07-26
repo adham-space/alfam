@@ -65,7 +65,7 @@
              >BASE PRICE:
              </span>
               <el-input
-                v-model="basePrice"
+                v-model="base_price"
                 style="width: 150px"
                 type="number"
                 placeholder="Base price"
@@ -76,8 +76,8 @@
                style="color: darkgray; margin-right: 1rem"
              >PRICE BY:
              </span>
-              <el-switch v-model="basePriceBy" />
-              {{ basePriceByText }}
+              <el-switch v-model="base_priceBy" />
+              {{ base_priceByText }}
             </span>
           </div>
 
@@ -162,9 +162,9 @@ export default {
       numberOfItems: '',
       weightOfPacket: '',
       singan: false,
-      basePrice: '',
+      base_price: '',
       currentType: {},
-      basePriceBy: true,
+      base_priceBy: true,
       options: [
         {
           label: 'Nilufar',
@@ -277,8 +277,8 @@ export default {
       const errorInNum = checkNum - parseInt(checkNum)
       return errorInNum > 0.0
     },
-    basePriceByText() {
-      if (this.basePriceBy) {
+    base_priceByText() {
+      if (this.base_priceBy) {
         return 'Area (m2)'
       } else {
         return 'By item num'

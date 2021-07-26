@@ -1,4 +1,30 @@
-// import request from '@/utils/request'
+import request from '@/utils/request'
+
+function getCustomers(params) {
+  return request({
+    url: '/info/get-customers',
+    params,
+    method: 'GET'
+  })
+}
+
+function updateCustomer(params) {
+  return request({
+    url: '/info/update-customer',
+    data: params,
+    method: 'PATCH'
+  })
+}
+
+function deleteCustomer(params) {
+  return request({
+    url: '/info/delete-customer',
+    data: {
+      id: params
+    },
+    method: 'DELETE'
+  })
+}
 
 const state = {
   queryParams: {
@@ -7,38 +33,61 @@ const state = {
     currentPage: 1,
     perPage: 20
   },
-  currentCustomer: null,
-  tableData: []
+  tableData: [],
+  tblLoading: false,
+  currentCustomer: null
 }
 
 const mutations = {
-  SET_QUERY: (state, query) => {
-    state.queryParams[query.key] = query.value
-  },
-  SET_CUSTOMER: (state, customer) => {
-    state.currentCustomer = customer
-  },
-  SET_TABLE_DATA: (state, data) => {
+  SET_CUSTOMERS: (state, data) => {
     state.tableData = data
   },
-  CREATE_NEWCUSTOMER: (state, customer) => {
-    state.tableData.push(customer)
+  SET_CUSTOMER: (state, data) => {
+    state.currentCustomer = data
   },
-  EDIT_CUSTOMER: (state, customer) => {
-    const indx = state.tableData.findIndex(c => c.id === customer.id)
-    state.tableData[indx].firstName = customer.firstName
-    state.tableData[indx].lastName = customer.lastName
-    state.tableData[indx].address = customer.address
-    state.tableData[indx].phone = customer.phone
+  SET_TABLE_LOADER: (state) => {
+    state.tblLoading = !state.tblLoading
   },
-  DELETE: (state) => {
-    const indx = state.tableData.findIndex(c => c.id === state.currentCustomer.id)
-    state.tableData.splice(indx, 1)
+  SET_QUERY_PARAM(state, data) {
+    state.queryParams[data.key] = data.value
   }
 }
 
 const actions = {
-
+  GET_CUSTOMERS({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      commit('SET_TABLE_LOADER')
+      getCustomers(state.queryParams).then(res => {
+        commit('SET_CUSTOMERS', res.data)
+        commit('SET_TABLE_LOADER')
+        resolve()
+      }).catch(err => {
+        commit('SET_CUSTOMERS', [])
+        commit('SET_TABLE_LOADER')
+        reject(err)
+      })
+    })
+  },
+  EDIT_CUSTOMER({ dispatch }, data) {
+    return new Promise((resolve, reject) => {
+      updateCustomer(data).then(res => {
+        resolve(res)
+        dispatch('GET_CUSTOMERS')
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+  DELETE_CUSTOMER({ dispatch }, data) {
+    return new Promise((resolve, reject) => {
+      deleteCustomer(data).then(res => {
+        resolve()
+        dispatch('GET_CUSTOMERS')
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
 }
 
 export default {
