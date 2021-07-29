@@ -182,14 +182,22 @@ export default {
       this.calcPrice()
       this.calculateTotalPrice()
     },
+
     truncateToDecimals(num, dec = 2) {
       const calcDec = Math.pow(10, dec)
       return Math.trunc(num * calcDec) / calcDec
     },
+
     calculateTotalPrice() {
       this.$emit('calculateTotalPrice', this.truncateToDecimals(this.tableDataComputed.reduce(function(a, b) {
         return a + (b.sum === '' ? 0 : parseFloat(b.sum))
       }, 0), 4))
+    },
+
+    closeNotification() {
+      if (this.currentNotification) {
+        this.currentNotification.close()
+      }
     },
     checkPropotion() {
       const totalArea = this.tableDataComputed.reduce(function(a, b) {
@@ -203,7 +211,7 @@ export default {
       this.brokenPropotionArr = []
       this.tableDataComputed.forEach(product => {
         brokenPropotionObj.name = product.type_name
-        brokenPropotionObj.good_percentage = product.propotion
+        brokenPropotionObj.good_percentage = product.proportion
         brokenPropotionObj.bad_percentage = totalArea === 0 ? 0 : this.truncateToDecimals(product.packTotalArea === '' ? 0.0 : parseFloat(product.packTotalArea) / totalArea * 100.0)
         this.brokenPropotionArr.push(brokenPropotionObj)
         brokenPropotionObj = {

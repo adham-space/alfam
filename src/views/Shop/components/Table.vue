@@ -1,9 +1,9 @@
 <template>
-  <div ref="tblContainer" style="height: calc(100vh - 86px)">
+  <div ref="tblContainer" style="height: 100%">
     <el-table
       v-loading="product_with_types_table_loading"
       :max-height="bodyHeight + ''"
-      style="width: 100%"
+      style="width: 100%; border-top-left: 10px;"
       size="small"
       :data="tableDataComputed"
       show-summary
@@ -22,8 +22,8 @@
         prop="type_name"
         align="center"
       >
-        <template slot-scope="scope"> 
-          {{scope.row.type_name + (scope.row.broken ? ' - broken': '')}}
+        <template slot-scope="scope">
+          {{ scope.row.type_name + (scope.row.broken ? ' - broken': '') }}
         </template>
       </el-table-column>
       <el-table-column
@@ -162,7 +162,7 @@
           <span>НАРХИ</span>
         </template>
         <template slot-scope="scope">
-          {{ scope.row.sum_kassa.toFixed(4) }}
+          {{ scope.row.sum_kassa.toFixed(2) }}
         </template>
       </el-table-column>
 
@@ -196,7 +196,7 @@
         </template>
 
         <template slot-scope="scope">
-          {{ scope.row.sum.toFixed(4) }}
+          {{ scope.row.sum.toFixed(2) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -274,7 +274,6 @@ export default {
       console.log(this.$refs.tblContainer.clientHeight)
     }, 300)
     window.addEventListener('resize', e => {
-      console.log('windows resizing')
       this.bodyHeight = this.$refs.tblContainer.clientHeight
     })
   },
@@ -332,7 +331,7 @@ export default {
 
 .list-main {
   /* border: 1px solid green; */
-  height: calc(100% - 105px);
+  height: calc(100% - 50px);
   margin: 0 !important;
 }
 .el-tabs__header {

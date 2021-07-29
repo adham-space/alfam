@@ -7,6 +7,7 @@ const storeRouter = {
   redirect: 'noRedirect',
   name: 'Store archive',
   meta: {
+    roles: ['admin', 'zavsklad'],
     title: 'Store',
     icon: 'el-icon-pie-chart'
   },

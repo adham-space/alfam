@@ -7,39 +7,51 @@ const informationRouter = {
   redirect: 'noRedirect',
   name: 'Information',
   meta: {
+    roles: ['admin', 'seller', 'zav. sklad'],
     title: 'Information',
     icon: 'el-icon-document'
   },
   children: [
     {
       path: 'users',
+
       component: () => import('@/views/information/users/index'),
       name: 'Users',
-      meta: { title: 'Users ', noCache: false }
+      meta: {
+        roles: ['admin'],
+        title: 'Users ', noCache: false }
     },
     {
       path: 'stuff',
       component: () => import('@/views/information/stuffs/index'),
       name: 'Stuffs',
-      meta: { title: 'Stuffs', noCache: false }
+      meta: {
+        roles: ['admin'],
+        title: 'Stuffs', noCache: false }
     },
     {
       path: 'shops',
       component: () => import('@/views/information/shops/index'),
       name: 'Shops',
-      meta: { title: 'Shops && Sklad', noCache: false }
+      meta: {
+        roles: ['admin'],
+        title: 'Shops && Sklad', noCache: false }
     },
     {
       path: 'drivers',
       component: () => import('@/views/information/drivers/index'),
       name: 'Drivers',
-      meta: { title: 'Drivers ', noCache: false }
+      meta: {
+        roles: ['admin', 'seller', 'zav. sklad'],
+        title: 'Drivers ', noCache: false }
     },
     {
       path: 'customers',
       component: () => import('@/views/information/customers/index'),
       name: 'Customers',
-      meta: { title: 'Customers ', noCache: false }
+      meta: {
+        roles: ['admin', 'seller', 'zav. sklad'],
+        title: 'Customers ', noCache: false }
     }
   ]
 }

@@ -29,28 +29,28 @@
       />
     </el-select>
     <el-select
-      v-model="currentConsumer"
+      v-model="currentcustomer"
       class="tools-wrapper-item"
       style="width: 100%"
 
-      placeholder="Choose a consumer"
+      placeholder="Choose a customer"
     >
       <el-option
-        v-for="(pr, i) in consumers"
+        v-for="(pr, i) in customers"
         :key="i"
         :label="pr.label"
         :value="pr.value"
       />
     </el-select>
     <el-select
-      v-model="currentConsumer"
+      v-model="currentcustomer"
       class="tools-wrapper-item"
       style="width: 100%"
 
       placeholder="Choose a Driver"
     >
       <el-option
-        v-for="(pr, i) in consumers"
+        v-for="(pr, i) in customers"
         :key="i"
         :label="pr.label"
         :value="pr.value"
@@ -108,7 +108,7 @@ export default {
     withBorken: false,
     currentProduct: '',
     currentStatus: '',
-    currentConsumer: '',
+    currentcustomer: '',
     costOfUpload: '',
     discountPrice: 0,
     debtDescription: '',
@@ -134,7 +134,7 @@ export default {
         value: 3
       }
     ],
-    consumers: [
+    customers: [
       {
         label: 'A',
         value: 1

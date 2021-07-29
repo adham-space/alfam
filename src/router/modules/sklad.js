@@ -7,6 +7,7 @@ const skladRouter = {
   redirect: 'noRedirect',
   name: 'Skald',
   meta: {
+    roles: ['admin', 'zav. sklad'],
     title: 'Sklad',
     icon: 'el-icon-school'
   },

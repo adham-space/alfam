@@ -1,10 +1,11 @@
 <template>
-  <el-row style="height: calc(100vh - 86px); ">
-    <el-col :span="18" style="height: calc(100vh - 96px);">
+       
+  <el-row style="height: calc(100vh - 50px);">
+    <el-col :span="18" style="height: 100%; ">
       <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
-    <el-col :span="6" style="height: calc(100vh - 86px); overflow-y: auto ">
-      <Tools :total-price="totalPrice" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
+    <el-col :span="6" style="height: 100%; overflow-y: auto;   ">
+      <Tools :total-price="totalPrice" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
     </el-col>
   </el-row>
 </template>
@@ -12,6 +13,7 @@
 <script>
 import Table from './components/Table'
 import Tools from './components/Tools'
+import { mapMutations } from 'vuex'
 export default {
   name: 'ShopPackingList',
   components: {
@@ -25,15 +27,24 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('products', ['SET_ORDER']),
+    closeNotification_() {
+      this.$refs.packingListTableRef.closeNotification()
+    },
     calculateTotalPrice(val) {
       this.totalPrice = val
+      this.SET_ORDER({ key: 'last_sum', value: val })
     },
     totalPriceChanged(val) {
       this.totalPrice = val
+      this.SET_ORDER({ key: 'last_sum', value: val })
       this.$refs.packingListTableRef.calculatebase_prices(val)
     },
     changedBrokenState(val) {
       this.broken = val
+      setTimeout(() => { // this needs for to wait until computed state change for table data
+        this.$refs.packingListTableRef.calculateTotalPrice()
+      }, 200)
     }
   }
 }

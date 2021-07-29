@@ -7,6 +7,7 @@ const othersRouter = {
   redirect: 'noRedirect',
   name: 'Others',
   meta: {
+    roles: ['admin'],
     title: 'Others',
     icon: 'el-icon-refresh'
   },

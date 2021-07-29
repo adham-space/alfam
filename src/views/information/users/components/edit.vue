@@ -26,9 +26,9 @@
         <el-col :span="12">
           <el-form-item prop="role">
             <el-select v-model="newUser.role" style="width: 100%" placeholder="Role">
-              <el-option label="admin" value="231" />
-              <el-option label="zav. sklad" value="651" />
-              <el-option label="seller" value="432" />
+              <el-option label="admin" value="admin" />
+              <el-option label="zav. sklad" value="zav. sklad" />
+              <el-option label="seller" value="seller" />
             </el-select>
           </el-form-item>
         </el-col>

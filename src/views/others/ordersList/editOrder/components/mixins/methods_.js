@@ -187,6 +187,7 @@ export default {
       return Math.trunc(num * calcDec) / calcDec
     },
     calculateTotalPrice() {
+      console.log('chek it:')
       this.$emit('calculateTotalPrice', this.truncateToDecimals(this.tableDataComputed.reduce(function(a, b) {
         return a + (b.sum === '' ? 0 : parseFloat(b.sum))
       }, 0), 2))

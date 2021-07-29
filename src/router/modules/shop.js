@@ -7,6 +7,7 @@ const shopRouter = {
   redirect: 'noRedirect',
   name: 'Shop',
   meta: {
+    roles: ['admin', 'seller'],
     title: 'Shop',
     icon: 'el-icon-shopping-cart-full'
   },

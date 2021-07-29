@@ -1,4 +1,12 @@
-// import request from '@/utils/request'
+import request from '@/utils/request'
+
+function get_my_orders(params) {
+  return request({
+    url: '/orders/get-my-orders',
+    method: 'GET',
+    params
+  })
+}
 
 const state = {
   queryParams: {
@@ -7,37 +15,30 @@ const state = {
     currentPage: 1,
     perPage: 20
   },
-  tableData: [{
-    id: '123',
-    order_num: 'ALFAM-001',
-    shop: 'Bektopi shop',
-    product: 'Nilufar',
-    area: 345,
-    price: 2000000,
-    purchase_amount: 5,
-    customer: {
-      firstName: 'Adham',
-      lastName: 'Muhammadjonov',
-      address: 'Tashkent city'
-    },
-    driver: {
-      firstName: 'Alisher',
-      lastName: 'Rahimov'
-    },
-    load_price: 1231,
-    date: '10/23/2021'
-  }],
+  orders: [],
   currentOrder: null
 }
 
 const mutations = {
   SET_ORDER: (state, order) => {
     state.currentOrder = order
+  },
+  SET_ORDERS: (state, orders) => {
+    state.orders = orders
   }
 }
 
 const actions = {
-
+  GET_ORDERS: ({ commit, state }) => {
+    return new Promise((resolve, reject) => {
+      get_my_orders(state.queryParams).then(res => {
+        commit('SET_ORDERS', res.data)
+        resolve()
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
 }
 
 export default {
