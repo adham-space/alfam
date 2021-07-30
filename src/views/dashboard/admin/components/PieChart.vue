@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div style="background-color: #051e36; color: white" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -52,6 +52,7 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
+          color: ['#ffffff'],
           data: ['Nilufar', 'Nimadur1', 'Nimadur-2']
         },
         series: [

@@ -1,5 +1,4 @@
 <template>
-       
   <el-row style="height: calc(100vh - 50px);">
     <el-col :span="18" style="height: 100%; ">
       <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />

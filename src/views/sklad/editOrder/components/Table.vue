@@ -1,9 +1,8 @@
 <template>
-  <div ref="tblContainer" style="height: 100%">
+  <div ref="tblContainer1" style="height: calc(100vh - 86px)">
     <el-table
-      v-loading="product_with_types_table_loading"
       :max-height="bodyHeight + ''"
-      style="width: 100%; border-top-left: 10px;"
+      style="width: 100%"
       size="small"
       :data="tableDataComputed"
       show-summary
@@ -21,11 +20,7 @@
         label="СПЕЦИФИКАЦИЯСИ"
         prop="type_name"
         align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.type_name + (scope.row.broken ? ' - broken': '') }}
-        </template>
-      </el-table-column>
+      />
       <el-table-column
         width="150"
         label="ТОВАРНИ РАЗМЕРИ"
@@ -38,14 +33,12 @@
         prop="photo"
         align="center"
       >
-        <template slot-scope="scope">
-          <el-image
-            style="width: 30px; height: 30px"
-            :src="'http://localhost:3000/' + scope.row.photo"
-            fit="scale-down"
-            @click="openImg('http://localhost:3000/' + scope.row.photo)"
-          />
-        </template>
+        <el-image
+          style="width: 30px; height: 30px"
+          src="https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80"
+          fit="scale-down"
+          @click="openImg('https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80')"
+        />
       </el-table-column>
       <el-table-column
         width="300"
@@ -158,11 +151,8 @@
         align="center"
       >
         <template slot="header">
-          <span>КАССА</span><br>
-          <span>НАРХИ</span>
-        </template>
-        <template slot-scope="scope">
-          {{ scope.row.sum_kassa.toFixed(2) }}
+          <span>СУММАСИ</span><br>
+          <span>КАССА</span>
         </template>
       </el-table-column>
 
@@ -187,14 +177,10 @@
       </el-table-column>
       <el-table-column
         width="130"
+        label="СУММАСИ"
         prop="sum"
         align="center"
       >
-        <template slot="header">
-          <span>СКИДКА</span><br>
-          <span>НАРХИ</span>
-        </template>
-
         <template slot-scope="scope">
           {{ scope.row.sum.toFixed(2) }}
         </template>
@@ -252,7 +238,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import data_ from './mixins/data_.js'
 import methods_ from './mixins/methods_.js'
 export default {
@@ -265,16 +250,13 @@ export default {
       bodyHeight: 300
     }
   },
-  computed: {
-    ...mapState('products', ['product_with_types_table_loading'])
-  },
   mounted() {
     setTimeout(() => {
-      this.bodyHeight = this.$refs.tblContainer.clientHeight
-      console.log(this.$refs.tblContainer.clientHeight)
+      this.bodyHeight = this.$refs.tblContainer1.clientHeight
     }, 300)
     window.addEventListener('resize', e => {
-      this.bodyHeight = this.$refs.tblContainer.clientHeight
+      console.log('windows resizing')
+      this.bodyHeight = this.$refs.tblContainer1.clientHeight
     })
   },
   methods: {
@@ -306,7 +288,7 @@ export default {
                 return prev
               }
             }, 0)
-            sums[index] = parseFloat(val.toFixed(4))
+            sums[index] = val.toFixed(2)
           } else {
             sums[index] = ''
           }
@@ -331,7 +313,7 @@ export default {
 
 .list-main {
   /* border: 1px solid green; */
-  height: calc(100% - 50px);
+  height: calc(100% - 105px);
   margin: 0 !important;
 }
 .el-tabs__header {

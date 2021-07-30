@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div style="background-color: #051e36" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -95,9 +95,9 @@ export default {
         series: [{
           name: 'expected', itemStyle: {
             normal: {
-              color: '#FF005A',
+              color: 'orange',
               lineStyle: {
-                color: '#FF005A',
+                color: 'red',
                 width: 2
               }
             }
@@ -120,12 +120,12 @@ export default {
                 width: 2
               },
               areaStyle: {
-                color: '#f3f8ff'
+                color: '#0a3358'
               }
             }
           },
           data: actualData,
-          animationDuration: 2800,
+          animationDuration: 800,
           animationEasing: 'quadraticOut'
         }]
       })

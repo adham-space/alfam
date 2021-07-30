@@ -19,8 +19,8 @@
       <el-button :disabled="tblLoading" :loading="tblLoading" style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="search()" />
     </div>
     <div style="display: flex">
-      <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
-      <el-button style="border: 1px solid transparent" icon="el-icon-plus" @click="addDialog = true" />
+<!--      <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
+ -->      <el-button style="border: 1px solid transparent" icon="el-icon-plus" @click="addDialog = true" />
       <el-button :disabled="!!!currentShop" style="border: 1px solid transparent" icon="el-icon-edit" @click="editDialog = true" />
       <el-button :disabled="!!!currentShop" style="border: 1px solid transparent; color: red" icon="el-icon-delete" @click="delete_Dialog = true" />
       <add :dialog-visible="addDialog" @closeDialog="addDialog = false" />

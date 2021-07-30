@@ -46,6 +46,7 @@ const state = {
   products_types: [],
   todays_product_nums: 0,
   order: {
+    product: '',
     products: [],
     order_name: `ALFAM-${1}-${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
     includes_brokens: false,
@@ -56,7 +57,8 @@ const state = {
     last_sum: '',
     is_debt: false,
     date_of_return_debt: '',
-    description_of_debt: ''
+    description_of_debt: '',
+    status: -1
   }
 }
 
