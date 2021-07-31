@@ -143,20 +143,6 @@ export default {
     debtDate: '',
     isDebt: false,
     batches: [],
-    Procedures: [
-      {
-        label: '',
-        value: 1
-      },
-      {
-        label: '',
-        value: 2
-      },
-      {
-        label: 'Qaytarib berish',
-        value: 3
-      }
-    ]
   }),
   computed: {
     ...mapState('products', ['products_types', 'product', 'order']),
@@ -245,7 +231,7 @@ export default {
     getProducts(val) {
       let product = this.batches.find(batch => batch._id === val)._product[0]
       product = product.split('-')[0] + ' - ' + product.split('-')[2]
-      this.SET_ORDER({ key: 'product', value: product })
+      this.SET_ORDER({key: 'product', value: product})
       this.GET_PRODUCT_BY_TYPE_ID(val)
     },
     // base_priceChangedOneOfItem(val) { // this will be called when base price of one item is changed

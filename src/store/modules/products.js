@@ -45,6 +45,8 @@ const state = {
   product_with_types_table_loading: false,
   products_types: [],
   todays_product_nums: 0,
+  isThereBroken: false, // is there already broken enetered in this partiya
+  there_is_product_type: false,
   order: {
     product: '',
     products: [],
@@ -70,7 +72,9 @@ const mutations = {
     state.products = products
   },
   SET_TODAYS_PRODUCT_NUM: (state, num) => {
-    state.todays_product_nums = num
+    state.todays_product_nums = num.partiya,
+    state.isThereBroken = num.isThereBroken
+    state.there_is_product_type = num.there_is_product_type
   },
   SET_PRODUCT: (state, product) => {
     state.product_with_types = product

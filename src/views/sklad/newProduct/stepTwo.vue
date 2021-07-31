@@ -29,8 +29,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="A">
-              <el-input v-model="formTwo.code" placeholder="Code" />
+            <el-form-item label="Base price">
+              <el-input v-model="formTwo.code" placeholder="Base price" />
             </el-form-item>
           </el-col>
         </el-form-item>

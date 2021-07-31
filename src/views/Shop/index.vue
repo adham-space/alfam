@@ -51,7 +51,7 @@ export default {
 
 <style>
   .packing-list-body {
-   height: calc(100vh - 50px);
+   height: calc(100vh - 50px); 
    padding: 1em;
    background-color: #fcf5ef;
   }

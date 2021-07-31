@@ -8,6 +8,7 @@
 import { mapGetters } from 'vuex'
 import adminDashboard from './admin'
 import editorDashboard from './editor'
+// import 'element-theme-dark';
 
 export default {
   name: 'Dashboard',

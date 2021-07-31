@@ -246,7 +246,7 @@ export default {
                 'tr',
                 null,
                 (() => {
-                  return [h('td', null, elem.name), h('td', null, elem.good_percentage), h('td', null, elem.bad_percentage)]
+                  return [h('td', null, elem.name), h('td', null, elem.good_percentage.toFixed(2)), h('td', null, elem.bad_percentage)]
                 })()
               ))
             })

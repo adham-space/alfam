@@ -3,7 +3,7 @@
     <el-table
       v-loading="product_with_types_table_loading"
       :max-height="bodyHeight + ''"
-      style="width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #dbdbdb;"
+      style="width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #bbbbbb;"
       size="small"
       :data="tableDataComputed"
       show-summary
