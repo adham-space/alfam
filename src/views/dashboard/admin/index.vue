@@ -1,111 +1,235 @@
 <template>
   <div class="dashboard-editor-container">
-
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
-
-    <el-row style="background:#051e36;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
-    </el-row>
-
-    <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <vue-apex-charts
+          class="char-body"
+          width="100%"
+          height="300"
+          :options="chartOptions"
+          :series="series"
+        >
+        </vue-apex-charts>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart2 />
-        </div>
+      <el-col :span="12">
+        <vue-apex-charts
+          class="char-body"
+          width="100%"
+          height="300"
+          :options="chartOptions"
+          :series="series"
+        >
+        </vue-apex-charts>
       </el-col>
-
-      <el-col :span="24">
-        <ul>
-          <li>Proporsiya</li>
-          <li>Ishchilarni xatolarini teshkirish, baxo berish</li>
-          <li>Skladchidan pulni yashiri, do'konchiga ko'rsatish</li>
-          <li>Jarayonlar ketma ketligini sotish, barter, vazvrat</li>
-          <li>Loglar</li>
-          <li>Pulini o'zgartirish</li>
-        </ul>
+      <el-col :span="12">
+        <vue-apex-charts
+          class="char-body"
+          width="100%"
+          height="300"
+          :options="chartOptionsRadial"
+          :series="seriesRadial"
+        >
+        </vue-apex-charts>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-import PieChart from './components/PieChart'
-import PieChart2 from './components/PieChart2'
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
-
+import VueApexCharts from "vue-apexcharts";
 export default {
-  name: 'DashboardAdmin',
+  name: "DashboardAdmin",
   components: {
-    PanelGroup,
-    LineChart,
-    PieChart,
-    PieChart2
+    VueApexCharts,
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
-    }
+      seriesRadial: [44, 55],
+      chartOptionsRadial: {
+        chart: {
+          height: 350,
+          type: "radialBar",
+          offsetX: 0,
+          foreColor: "#fff",
+        },
+        colors: ["#FCCF31", "#17ead9", "#f02fc2"],
+        plotOptions: {
+          radialBar: {
+            inverseOrder: false,
+            hollow: {
+              margin: 5,
+              size: "48%",
+              background: "transparent",
+            },
+            track: {
+              show: true,
+              background: "#40475D",
+              strokeWidth: "10%",
+              opacity: 1,
+              margin: 3, // margin is in pixels
+            },
+            dataLabels: {
+              name: {
+                fontSize: "22px",
+              },
+              value: {
+                fontSize: "16px",
+              },
+              total: {
+                show: true,
+                label: "Total",
+                formatter: function (w) {
+                  // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
+                  return 249;
+                },
+              },
+            },
+          },
+        },
+        labels: ["Apples", "Oranges"],
+        legend: {
+          show: true,
+          position: "left",
+          offsetX: -30,
+          offsetY: -10,
+          formatter: function (val, opts) {
+            return val + " - " + opts.w.globals.series[opts.seriesIndex] + "%";
+          },
+        },
+        fill: {
+          type: "gradient",
+          gradient: {
+            shade: "dark",
+            type: "horizontal",
+            shadeIntensity: 0.5,
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100],
+            gradientToColors: ["#F55555", "#6078ea", "#6094ea"],
+          },
+        },
+      },
+      series: [
+        {
+          name: "Desktops",
+          data: [120, 41, 335, 501, 409, 612, 629, 391, 148],
+        },
+      ],
+      chartOptions: {
+        chart: {
+          height: 350,
+          type: "line",
+          zoom: {
+            enabled: false,
+          },
+          toolbar: {
+            show: false,
+          },
+          dropShadow: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            top: 15,
+            left: 3,
+            blur: 3,
+            color: "#000",
+            opacity: 0.35,
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "straight",
+        },
+        title: {
+          text: "Product Trends by Month",
+          align: "left",
+          style: {
+            color: "white",
+          },
+        },
+        // colors: ["#db2e03", "#6bdb03"],
+        grid: {
+          show: false,
+        },
+        stroke: {
+          curve: "smooth",
+        },
+        colors: ["#FCCF31", "#17ead9", "#f02fc2"],
+        fill: {
+          type: "gradient",
+          gradient: {
+            shade: "dark",
+            type: "horizontal",
+            shadeIntensity: 0.5,
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100],
+            gradientToColors: ["#F55555", "#6078ea", "#6094ea"],
+          },
+        },
+        tooltip: {
+          theme: "dark",
+        },
+        legend: {
+          labels: {
+            useSeriesColors: true,
+          },
+        },
+        // title: {
+        //   text: '',
+        //   style: {
+        //     color: 'white'
+        //   }
+        // },
+        yaxis: {
+          labels: {
+            style: {
+              colors: "white",
+            },
+          },
+        },
+        xaxis: {
+          categories: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+          ],
+          labels: {
+            style: {
+              colors: "white",
+            },
+          },
+        },
+      },
+    };
   },
-  methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-    }
-  }
-}
+  methods: {},
+};
 </script>
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
   padding: 32px;
-  background-color: #001528;
-  position: relative;
-
-  .github-corner {
-    position: absolute;
-    top: 0px;
-    border: 0;
-    right: 0;
-  }
-
-  .chart-wrapper {
-    
-    background: rgba(255, 255, 255, 0.062);
-    // background: #05362b;
-    // background: #0a3358;
-    border-radius: 10px;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
-  }
+  background-color: #181e36;
+  height: calc(100vh - 50px);
+  overflow-x: auto;
 }
 
-@media (max-width:1024px) {
-  .chart-wrapper {
-    padding: 8px;
-  }
+.char-body {
+  background-color: #1f2644;
+  padding: 1em;
+  border-radius: 10px;
+  margin: 1rem 0;
 }
 </style>
+
+
