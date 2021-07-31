@@ -1,5 +1,5 @@
 <template>
-  <el-row style="height: calc(100vh - 50px);">
+  <el-row :gutter="15" class="packing-list-body">
     <el-col :span="18" style="height: 100%; ">
       <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
@@ -50,5 +50,9 @@ export default {
 </script>
 
 <style>
-
+  .packing-list-body {
+   height: calc(100vh - 50px);
+   padding: 1em;
+   background-color: #fcf5ef;
+  }
 </style>

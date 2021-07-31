@@ -1,6 +1,7 @@
 <template>
   <el-col :span="24" class="orders-page-body">
     <el-table
+      v-loading="tableLoading"
       style="width: 100%"
       height="calc(100% - 3.5rem)"
       :data="orders"
@@ -116,12 +117,13 @@
 
           <el-popover
             placement="right"
-            trigger="hover">
+            trigger="hover"
+          >
             <el-table :show-header="false" :data="gridData(scope.row.products)">
-              <el-table-column align="center" width="120" property="name" label="name"></el-table-column>
-              <el-table-column align="center" width="100" property="value" label="value"></el-table-column>
+              <el-table-column align="center" width="120" property="name" label="name" />
+              <el-table-column align="center" width="100" property="value" label="value" />
             </el-table>
-            <el-button type="text" slot="reference">{{ getTotalNumber(scope.row.products).item_num }}</el-button>
+            <el-button slot="reference" type="text">{{ getTotalNumber(scope.row.products).item_num }}</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -163,18 +165,23 @@
           {{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}
         </template>
       </el-table-column>
-      <el-table-column width="180" v-if="roles.includes('admin')" align="center" label="Stuff">
+      <el-table-column v-if="roles.includes('admin')" width="180" align="center" label="Stuff">
         <template slot-scope="scope">
-          {{ scope.row.user.stuff.firstName + ' ' + scope.row.user.stuff.lastName}}
+          {{ scope.row.user.stuff.firstName + ' ' + scope.row.user.stuff.lastName }}
         </template>
       </el-table-column>
       <el-table-column width="80" align="center" label="Status" fixed="right">
         <template slot-scope="scope">
-           <el-tooltip class="item" effect="dark" 
-            :content="statuses_text[scope.row.status + 1]" placement="left-start">
-            <i 
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="statuses_text[scope.row.status + 1]"
+            placement="left-start"
+          >
+            <i
               :style="{color: statuses_color[scope.row.status + 1]}"
-              :class="statuses[scope.row.status + 1]"></i>
+              :class="statuses[scope.row.status + 1]"
+            />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -203,13 +210,13 @@ export default {
   data: () => ({
     showImageDilog: false,
     imageUrl: '',
-    statuses: ['el-icon-loading','el-icon-error', 'el-icon-success'],
-    statuses_text: ['Waiting approvement','Order ejected', 'Order accepted'],
+    statuses: ['el-icon-loading', 'el-icon-error', 'el-icon-success'],
+    statuses_text: ['Waiting approvement', 'Order ejected', 'Order accepted'],
     statuses_color: ['gray', 'red', 'green']
   }),
   computed: {
     ...mapState('user', ['roles']),
-    ...mapState('orders', ['orders'])
+    ...mapState('orders', ['orders', 'tableLoading'])
   },
   mounted() {
     this.GET_ORDERS()
@@ -240,22 +247,22 @@ export default {
       return products.reduce((a, b) => ({ over_pack_num: a.over_pack_num + b.over_pack_num }))
     },
     gridData(products) {
-      let dataItem  = {
+      let dataItem = {
         name: '',
         value: ''
       }
-      let data = []
+      const data = []
       products.forEach(product => {
         dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
         dataItem.value = product.item_num
         data.push(dataItem)
-        dataItem  = {
+        dataItem = {
           name: '',
           value: ''
         }
       })
 
-      return data;
+      return data
     }
   }
 }

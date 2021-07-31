@@ -16,6 +16,7 @@ const state = {
     perPage: 20
   },
   orders: [],
+  tableLoading: false,
   currentOrder: null
 }
 
@@ -31,10 +32,14 @@ const mutations = {
 const actions = {
   GET_ORDERS: ({ commit, state }) => {
     return new Promise((resolve, reject) => {
+      state.tableLoading = true
       get_my_orders(state.queryParams).then(res => {
         commit('SET_ORDERS', res.data)
+        state.tableLoading = false
         resolve()
       }).catch(err => {
+        state.tableLoading = false
+        commit('SET_ORDERS', [])
         reject(err)
       })
     })

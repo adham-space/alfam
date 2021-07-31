@@ -3,10 +3,11 @@
     <el-table
       v-loading="product_with_types_table_loading"
       :max-height="bodyHeight + ''"
-      style="width: 100%; border-top-left: 10px;"
+      style="width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #dbdbdb;"
       size="small"
       :data="tableDataComputed"
       show-summary
+      border
       :summary-method="jamiSumma"
     >
       <el-table-column
