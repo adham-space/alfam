@@ -8,37 +8,37 @@
 </template>
 
 <script>
-import Tools from './components/tools.vue'
-import pageBody from './components/pageBody.vue'
+import Tools from "./components/tools.vue";
+import pageBody from "./components/pageBody.vue";
 export default {
-  name: 'Archive',
+  name: "Archive",
   components: {
     Tools,
-    pageBody
-  }
-
-}
+    pageBody,
+  },
+};
 </script>
 
 <style>
-    .orders-body {
-        background-color: rgb(243, 243, 243);
-        height: calc(100vh - 89px);
-        width: 100%;
-        padding: 1rem;
-    }
+.orders-body {
+  background-color: #e4bb98;
+  height: calc(100vh - 50px);
+  width: 100%;
+  padding: 1rem;
+  margin: 0 !important;
+}
 
-    .orders-page-body {
-        background-color: white;
-        border-radius: 8px;
-    }
-    .orders-page-body {
-        margin-top: 1rem;
-        height: calc(100vh - 6rem - 89px);
-    }
-    .pgntion {
-        height: 3.5rem;
-        display: flex;
-        align-items: center;
-    }
+.orders-page-body {
+  background-color: white;
+  border-radius: 8px;
+}
+.orders-page-body {
+  margin-top: 1rem;
+  height: calc(100vh - 6rem - 50px);
+}
+.pgntion {
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+}
 </style>

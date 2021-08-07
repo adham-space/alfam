@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="24" class="orders-page-tools">
+  <el-col :span="24" class="inventars-page-tools">
     <div style="display: flex">
       <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Search for driver">
         <el-select
@@ -16,7 +16,7 @@
           <el-option label="Shopping amount" :value="5" />
         </el-select>
       </el-input>
-      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" />
+      <el-button @click="GET_INVENTARS()" style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" />
     </div>
     <div style="display: flex">
 <!--      <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     search_input: '',
@@ -36,10 +36,11 @@ export default {
     delete_Dialog: false
   }),
   computed: {
-    ...mapState('orders', ['currentOrder'])
+    ...mapState('inventars', ['currentOrder'])
   },
   methods: {
-    ...mapMutations('orders', ['SET_QUERY']),
+    ...mapMutations('inventars', ['SET_QUERY']),
+    ...mapActions('inventars', ['GET_INVENTARS']),
     searchTypeChanged(t) {
       this.SET_QUERY({
         key: 'search_input',
@@ -51,12 +52,12 @@ export default {
 </script>
 
 <style>
-     .orders-page-tools {
+     .inventars-page-tools {
          background-color: white;
         border-radius: 8px;
     }
 
-    .orders-page-tools {
+    .inventars-page-tools {
         height: 3rem;
         /* border: 1px solid red; */
         display: flex;

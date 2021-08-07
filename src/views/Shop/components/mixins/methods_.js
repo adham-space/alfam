@@ -255,6 +255,21 @@ export default {
         ]),
         duration: 0
       })
+    },
+
+
+
+    checkTableIsValid() {
+        let isValid = true;
+        this.tableDataComputed.forEach(product => {
+          if(product.packTotalArea === '') isValid = false;
+          if(product.item_num === '') isValid = false;
+          if(product.pack_num === '') isValid = false;
+          if(product.over_pack_num === '') isValid = false;
+          if(product.base_price_changed === '') isValid = false;
+        })
+        return isValid;
     }
+
   }
 }

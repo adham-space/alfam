@@ -246,7 +246,7 @@ export default {
                 'tr',
                 null,
                 (() => {
-                  return [h('td', null, elem.name), h('td', null, elem.good_percentage), h('td', null, elem.bad_percentage)]
+                  return [h('td', null, elem.name), h('td', null, elem.good_percentage.toFixed(2)), h('td', null, elem.bad_percentage)]
                 })()
               ))
             })
@@ -255,6 +255,21 @@ export default {
         ]),
         duration: 0
       })
+    },
+
+
+
+    checkTableIsValid() {
+        let isValid = true;
+        this.tableDataComputed.forEach(product => {
+          if(product.packTotalArea === '') isValid = false;
+          if(product.item_num === '') isValid = false;
+          if(product.pack_num === '') isValid = false;
+          if(product.over_pack_num === '') isValid = false;
+          if(product.base_price_changed === '') isValid = false;
+        })
+        return isValid;
     }
+
   }
 }

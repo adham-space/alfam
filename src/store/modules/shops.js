@@ -34,6 +34,7 @@ const state = {
     perPage: 20
   },
   tableData: [],
+  shops: [],
   tblLoading: false,
   currentShop: null
 }
@@ -41,6 +42,7 @@ const state = {
 const mutations = {
   SET_SHOPS: (state, data) => {
     state.tableData = data
+    state.shops  = data
   },
   SET_SHOP: (state, data) => {
     state.currentShop = data

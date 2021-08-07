@@ -410,6 +410,7 @@ export default {
         total_number_of_items: parseFloat(this.totalNumberOfItems()),
         total_number_of_packets: parseFloat(this.numberOfPackets()),
         total_wight_of_packets: parseFloat(this.totalWeight()),
+        total_number_of_over_packet: parseFloat(this.notCompletePacketItems()),
         description: this.formDataObj.description,
       };
       this.$refs.storeFormRef.validate((valid) => {

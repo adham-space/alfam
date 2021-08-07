@@ -1,10 +1,10 @@
 <template>
-  <el-row style="height: calc(100vh - 50px);">
+  <el-row :gutter="15" class="packing-list-body">
     <el-col :span="18" style="height: 100%; ">
       <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
     <el-col :span="6" style="height: 100%; overflow-y: auto;   ">
-      <Tools :total-price="totalPrice" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
+      <Tools @checkTable="checkTableValididty()" :isTableValid="isTableValid" :total-price="totalPrice" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
     </el-col>
   </el-row>
 </template>
@@ -14,7 +14,7 @@ import Table from './components/Table'
 import Tools from './components/Tools'
 import { mapMutations } from 'vuex'
 export default {
-  name: 'ShopPackingList',
+  name: 'SkladPackingList',
   components: {
     Table,
     Tools
@@ -22,11 +22,16 @@ export default {
   data() {
     return {
       totalPrice: 0,
-      broken: false
+      broken: false,
+      isTableValid: false
     }
   },
   methods: {
     ...mapMutations('products', ['SET_ORDER']),
+    checkTableValididty() {
+      console.log("this.$refs.packingListTableRef.checkTableIsValid()", this.$refs.packingListTableRef.checkTableIsValid())
+      this.isTableValid  = this.$refs.packingListTableRef.checkTableIsValid()
+    },
     closeNotification_() {
       this.$refs.packingListTableRef.closeNotification()
     },
@@ -50,5 +55,10 @@ export default {
 </script>
 
 <style>
-
+  .packing-list-body {
+   height: calc(100vh - 50px); 
+   padding: 1em;
+   /* background-color: #fcf5ef; */
+   background-color: #ecc5a2;
+  }
 </style>

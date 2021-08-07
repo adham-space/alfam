@@ -185,6 +185,27 @@
           </el-tooltip>
         </template>
       </el-table-column>
+       <el-table-column width="80" align="center" label="Actuality" fixed="right">
+        <template slot-scope="scope">
+          <el-tooltip
+            v-if="!actuality"
+            class="item"
+            effect="dark"
+            content="Open"
+            placement="left-start"
+          >
+            <el-checkbox
+              :value="scope.row.actuality_status"
+              @change="closeCurrentOrder()"
+            >
+
+            </el-checkbox>
+          </el-tooltip>
+          <el-tooltip v-else>
+            <i  class="el-icon-check"></i>
+          </el-tooltip>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="pgntion">
       <Pagination :total="102" :page="1" :limit="20" />
@@ -202,7 +223,8 @@
 <script>
 import Pagination from '@/components/Pagination'
 import { mapMutations, mapState, mapActions } from 'vuex'
-
+import request from '@/utils/request'
+import { Message } from 'element-ui'
 export default {
   components: {
     Pagination
@@ -261,8 +283,26 @@ export default {
           value: ''
         }
       })
-
       return data
+    },
+    closeCurrentOrder() {
+      request({
+        url: '/orders/close-order',
+        method: 'POST'
+      }).then(res => {
+        Message({
+          message: res.data,
+          type: 'success',
+          duration: 3000
+        })
+      })
+      .catch(err => {
+        Message({
+          message: err.response.data,
+          type: 'error',
+          duration: 3000
+        })
+      })
     }
   }
 }

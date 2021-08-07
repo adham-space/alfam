@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row :gutter="10" class="orders-body">
+    <el-row :gutter="10" class="inventars-body">
       <Tools />
       <page-body />
     </el-row>
@@ -21,20 +21,20 @@ export default {
 </script>
 
 <style>
-    .orders-body {
-        background-color: rgb(243, 243, 243);
-        height: calc(100vh - 89px);
+    .inventars-body {
+         background-color: #e4bb98;
+        height: calc(100vh - 50px);
         width: 100%;
         padding: 1rem;
     }
 
-    .orders-page-body {
+    .inventars-page-body {
         background-color: white;
         border-radius: 8px;
     }
-    .orders-page-body {
+    .inventars-page-body {
         margin-top: 1rem;
-        height: calc(100vh - 6rem - 89px);
+        height: calc(100vh - 6rem - 50px);
     }
     .pgntion {
         height: 3.5rem;

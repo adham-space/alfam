@@ -1,41 +1,28 @@
 <template>
-  <el-col :span="24" class="orders-page-body">
+  <el-col :span="24" class="inventars-page-body">
     <el-table
+      v-loading="tblLoading"
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
       :data="tableData"
       stripe
       highlight-current-row
-      @row-click="orderChosed"
+      @row-click="driverChosed"
     >
-      <el-table-column width="100" align="center" prop="id" label="ID" />
-      <el-table-column width="130" align="center" prop="order_num" label="Order No" />
-      <el-table-column width="170" align="center" prop="shop" label="Shop" />
-      <el-table-column width="170" align="center" prop="product" label="Product" />
-      <el-table-column width="170" align="center" prop="area" label="Area ㎡" />
-      <el-table-column width="170" align="center" prop="price" label="Price" />
-      <el-table-column width="180" align="center" prop="customer" label="Customer">
+      <el-table-column width="100" align="center" prop="_id" label="ID">
         <template slot-scope="scope">
-          {{ `${scope.row.customer.firstName} ${scope.row.customer.lastName}` }}
+          {{ scope.row._id.substr(0, 6) }}
         </template>
       </el-table-column>
-      <el-table-column width="170" align="center" prop="purchase_amount" label="Purchases" />
-      <el-table-column width="190" align="center" prop="address" label="Address">
-        <template slot-scope="scope">
-          {{ scope.row.customer.address }}
-        </template>
-      </el-table-column>
-      <el-table-column width="180" align="center" prop="driver" label="Driver">
-        <template slot-scope="scope">
-          {{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" prop="name" label="Name" />
+      <el-table-column align="center" prop="sellers" label="Workers" />
     </el-table>
     <div class="pgntion">
       <Pagination
         :total="102"
-        :page="1"
-        :limit="20"
+        :page.sync="listQuery.page"
+        :limit.sync="listQuery.limit"
+        @pagination="getList"
       />
     </div>
   </el-col>
@@ -43,24 +30,34 @@
 
 <script>
 import Pagination from '@/components/Pagination'
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
   components: {
     Pagination
   },
   data: () => ({
+    listQuery: {
+      page: 1,
+      limit: 20
+    }
   }),
   computed: {
-    ...mapState('orders', ['tableData'])
+    ...mapState('inventars', ['tableData', 'tblLoading'])
   },
   beforeDestroy() {
-    this.SET_ORDER(null)
+    // this.SET_SHOP(null)
   },
   methods: {
-    ...mapMutations('orders', ['SET_ORDER']),
-    orderChosed(row, column, event) {
-      this.SET_ORDER(row)
+    ...mapMutations('inventars', ['SET_SHOP', 'SET_QUERY_PARAM']),
+    ...mapActions('inventars', ['GET_INVENTARS']),
+    driverChosed(row, column, event) {
+      this.SET_SHOP(row)
+    },
+    getList() {
+      this.SET_QUERY_PARAM({ key: 'perPage', value: this.listQuery.limit })
+      this.SET_QUERY_PARAM({ key: 'currentPage', value: this.listQuery.page })
+      this.GET_INVENTARS()
     }
   }
 

@@ -1,7 +1,12 @@
 <template>
   <div class="dashboard-editor-container">
     <el-row>
-      <el-col :span="12">
+      <el-col 
+        :md="{span: 12}"
+        :lg="{span: 12}"
+        :sm="{span: 24}"
+        :xm="{span: 24}"
+      >
         <vue-apex-charts
           class="char-body"
           width="100%"
@@ -11,7 +16,12 @@
         >
         </vue-apex-charts>
       </el-col>
-      <el-col :span="12">
+      <el-col
+      :md="{span: 12}"
+        :lg="{span: 12}"
+        :sm="{span: 24}"
+        :xm="{span: 24}"
+      >
         <vue-apex-charts
           class="char-body"
           width="100%"
@@ -21,7 +31,10 @@
         >
         </vue-apex-charts>
       </el-col>
-      <el-col :span="10">
+      <el-col :md="{span: 12}"
+        :lg="{span: 12}"
+        :sm="{span: 24}"
+        :xm="{span: 24}">
         <vue-apex-charts
           class="char-body"
           width="100%"
@@ -31,7 +44,10 @@
         >
         </vue-apex-charts>
       </el-col>
-      <el-col :span="14">
+      <el-col :md="{span: 12}"
+        :lg="{span: 12}"
+        :sm="{span: 24}"
+        :xm="{span: 24}">
         <vue-apex-charts
           class="char-body"
           width="100%"
@@ -43,7 +59,10 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="12">
+      <el-col :md="{span: 12}"
+        :lg="{span: 12}"
+        :sm="{span: 24}"
+        :xm="{span: 24}">
         <div class="char-body">
           <vue-apex-charts
             width="100%"
@@ -659,6 +678,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
+.dashboard-editor-container::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 10px;
+}
+
+/* Track */
+.dashboard-editor-container::-webkit-scrollbar-track {
+  background: #f1f1f100;
+  border-radius: 10px;
+
+}
+
+/* Handle */
+.dashboard-editor-container::-webkit-scrollbar-thumb {
+  background: rgba(172, 172, 172, 0.186);
+  border-radius: 10px;
+
+}
+
+/* Handle on hover */
+.dashboard-editor-container::-webkit-scrollbar-thumb:hover {
+  background: rgb(146, 146, 146);
+  border-radius: 10px;
+}
+
+
 .dashboard-editor-container {
   padding-left: 20px;
   padding-bottom: 20px;

@@ -1,9 +1,9 @@
 <template>
   <el-row :gutter="10" class="stepOne">
-    <el-col :md="{ offset: 6, span: 12 }">
+    <el-col :offset="2" :span="20">
       <el-input v-model="name" placeholder="Name" @change="nameChanging" />
     </el-col>
-    <el-col style="margin-top: 20px" :md="{ offset: 6, span: 12 }">
+    <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="newType">
         <el-input
           v-model="typeObject.name"
@@ -14,7 +14,7 @@
         <el-button @click="addNewType()">Add</el-button>
       </div>
     </el-col>
-    <el-col style="margin-top: 20px" :md="{ offset: 6, span: 12 }">
+    <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="types">
         <el-table
           :empty-text="'Type not inserted'"
@@ -143,6 +143,7 @@ export default {
 .stepOne {
   /* border: 1px solid red; */
   height: 100%;
+    background-color: white;
   overflow-y: auto;
 }
 .newType {

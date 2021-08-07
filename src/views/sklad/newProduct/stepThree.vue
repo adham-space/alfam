@@ -3,7 +3,7 @@
     <el-col :span="24" class="step-header">
       <h2>Nilufar</h2>
     </el-col>
-    <el-col :md="{ offset: 6, span: 12 }">
+    <el-col :span="24">
       <el-table width="100%" :data="types">
         <el-table-column
           type="index"

@@ -42,9 +42,9 @@
         <template slot-scope="scope">
           <el-image
             style="width: 30px; height: 30px"
-            :src="'http://localhost:3000/' + scope.row.photo"
+            :src="'http://localhost:3000/' + scope.row.photo_path"
             fit="scale-down"
-            @click="openImg('http://localhost:3000/' + scope.row.photo)"
+            @click="openImg('http://localhost:3000/' + scope.row.photo_path)"
           />
         </template>
       </el-table-column>

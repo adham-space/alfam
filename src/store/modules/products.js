@@ -24,7 +24,8 @@ function getTodaysProductInfo(params) {
 function getProductById(id) {
   return request({
     params: {
-      id
+      product: id.product_id,
+      partiya: id.partiya
     },
     url: '/products/get-product-by-typeid'
   })
@@ -33,6 +34,15 @@ function getProductById(id) {
 function save_order(data) {
   return request({
     url: '/orders/save-order',
+    method: 'POST',
+    data
+  })
+}
+
+
+function save_sample(data) {
+  return request({
+    url: '/orders/save-sample',
     method: 'POST',
     data
   })
@@ -56,11 +66,13 @@ const state = {
     customer: '',
     driver: '',
     upload_cost: '',
+    isSample: false,
     last_sum: '',
     is_debt: false,
     date_of_return_debt: '',
     description_of_debt: '',
-    status: -1
+    status: -1,
+    shop: ''
   }
 }
 
@@ -86,10 +98,12 @@ const mutations = {
     state.order[order.key] = order.value
   },
   PREPARE_ORDER: (state) => {
+    state.order.products = []
     const current_product = state.product_with_types
     for (let i = 0; i < current_product.length; i++) {
       if (state.order.includes_brokens) {
         const pro_obj = {
+          id: current_product[i]._id,
           is_broken: current_product[i].broken,
           code: current_product[i].code + (current_product[i].broken ? '-1' : ''),
           type_name: current_product[i].type_name,
@@ -112,6 +126,7 @@ const mutations = {
         state.order.products.push(pro_obj)
       } else if (!current_product[i].broken) {
         const pro_obj = {
+          id: current_product[i]._id,
           is_broken: current_product[i].broken,
           code: current_product[i].code,
           type_name: current_product[i].type_name,
@@ -139,6 +154,7 @@ const mutations = {
     state.product_with_types = []
     state.order = {
       products: [],
+      isSample: false,
       order_name: '',
       includes_brokens: false,
       action: -1,
@@ -156,12 +172,16 @@ const mutations = {
 const actions = {
   SAVE_ORDER({ commit, state }) {
     return new Promise((resolve, reject) => {
-      save_order(state.order).then(res => {
-        commit('RESET_ORDER')
-        resolve()
-      }).catch(err => {
-        reject(err)
-      })
+      if(state.oreder) {
+
+      } else {
+        save_order(state.order).then(res => {
+          commit('RESET_ORDER')
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      }
     })
   },
   GET_PRODUCT_BY_TYPE_ID({ commit }, id) {

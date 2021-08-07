@@ -3,10 +3,11 @@
     <el-table
       v-loading="product_with_types_table_loading"
       :max-height="bodyHeight + ''"
-      style="width: 100%; border-top-left: 10px;"
+      style="width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #bbbbbb;"
       size="small"
       :data="tableDataComputed"
       show-summary
+      border
       :summary-method="jamiSumma"
     >
       <el-table-column
@@ -41,9 +42,9 @@
         <template slot-scope="scope">
           <el-image
             style="width: 30px; height: 30px"
-            :src="'http://localhost:3000/' + scope.row.photo"
+            :src="'http://localhost:3000/' + scope.row.photo_path"
             fit="scale-down"
-            @click="openImg('http://localhost:3000/' + scope.row.photo)"
+            @click="openImg('http://localhost:3000/' + scope.row.photo_path)"
           />
         </template>
       </el-table-column>
@@ -125,7 +126,7 @@
         </el-table-column>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
         width="100"
         prop="base_price"
         align="center"
@@ -139,9 +140,9 @@
             <el-switch :value="scope.row.price_by" active-color="#13ce66" inactive-color="" @change="calcPriceprice_byChanged($event, scope.row)" />
           </el-tooltip>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         width="120"
         label="ТАН НАРХИ"
         prop="base_price"
@@ -150,9 +151,9 @@
         <template slot-scope="scope">
           <span>{{ scope.row.base_price }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         width="130"
         prop="sum_kassa"
         align="center"
@@ -164,9 +165,9 @@
         <template slot-scope="scope">
           {{ scope.row.sum_kassa.toFixed(2) }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         width="130"
         prop="base_price_changed"
         align="center"
@@ -184,8 +185,9 @@
             @input="base_priceIsChanging($event, scope.row)"
           />
         </template>
-      </el-table-column>
-      <el-table-column
+      </el-table-column> -->
+
+      <!-- <el-table-column
         width="130"
         prop="sum"
         align="center"
@@ -198,7 +200,7 @@
         <template slot-scope="scope">
           {{ scope.row.sum.toFixed(2) }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         width="150"
         label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"

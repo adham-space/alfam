@@ -4,7 +4,7 @@
       <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
     <el-col :span="6" style="height: 100%; overflow-y: auto;   ">
-      <Tools :total-price="totalPrice" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
+      <Tools @checkTable="checkTableValididty()" :isTableValid="isTableValid" :total-price="totalPrice" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
     </el-col>
   </el-row>
 </template>
@@ -22,11 +22,16 @@ export default {
   data() {
     return {
       totalPrice: 0,
-      broken: false
+      broken: false,
+      isTableValid: false
     }
   },
   methods: {
     ...mapMutations('products', ['SET_ORDER']),
+    checkTableValididty() {
+      console.log("this.$refs.packingListTableRef.checkTableIsValid()", this.$refs.packingListTableRef.checkTableIsValid())
+      this.isTableValid  = this.$refs.packingListTableRef.checkTableIsValid()
+    },
     closeNotification_() {
       this.$refs.packingListTableRef.closeNotification()
     },
@@ -53,6 +58,7 @@ export default {
   .packing-list-body {
    height: calc(100vh - 50px); 
    padding: 1em;
-   background-color: #fcf5ef;
+   /* background-color: #fcf5ef; */
+   background-color: #ecc5a2;
   }
 </style>

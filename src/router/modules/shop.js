@@ -16,13 +16,13 @@ const shopRouter = {
       path: 'shop-packing-list',
       component: () => import('@/views/Shop/index'),
       name: 'ShopPackingList',
-      meta: { title: 'Packing List', noCache: false }
+      meta: { title: 'New invoice', noCache: false }
     },
     {
       path: 'my-orders',
       component: () => import('@/views/Shop/ordersList/index'),
       name: 'MyOrders',
-      meta: { title: 'My Orders', noCache: false }
+      meta: { title: 'Invoices', noCache: false }
     },
     {
       path: 'edit-order/:order_id',

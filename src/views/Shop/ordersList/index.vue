@@ -22,7 +22,8 @@ export default {
 
 <style>
     .orders-body {
-        background-color: #fcf5ef;
+        /* background-color: #fcf5ef; */
+        background-color: #E4BB98;
         height: calc(100vh - 50px);
         width: 100%;
         padding: 1rem;
