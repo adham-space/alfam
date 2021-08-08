@@ -48,6 +48,23 @@
           />
         </template>
       </el-table-column>
+
+      <el-table-column
+        width="100"
+        prop="isReturning"
+        align="center"
+        v-if="order.action === 2"
+      >
+        <template slot="header" slot-scope="">
+          <span style="font-weight: bold">+ / -</span>
+        </template>
+        <template slot-scope="scope">
+          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.isReturning ? 'Price by item number' : 'Price by area (m2)'" placement="left">
+            <el-switch v-model="scope.row.isReturning" active-color="#13ce66" inactive-color="" />
+          </el-tooltip>
+        </template>
+      </el-table-column>
+
       <el-table-column
         width="300"
         label="УМУМИЙ МИҚДОРНИ ЎЛЧОВ БИРЛИГИ"
@@ -267,7 +284,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('products', ['product_with_types_table_loading'])
+    ...mapState('products', ['product_with_types_table_loading', 'order'])
   },
   mounted() {
     setTimeout(() => {

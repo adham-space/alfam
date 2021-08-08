@@ -20,7 +20,7 @@
             v-for="(pr, i) in batches"
             :key="i"
             :label="pr.product"
-            :value="pr.product_id"
+            :value="pr.product"
           />
         </el-select>
       </el-form-item>
@@ -282,14 +282,14 @@ export default {
       this.SET_ORDER({ key: "is_debt", value: val });
     },
     getProducts(val) {
-      let product = this.batches.find((batch) => batch.product_id.includes(val));
+      let product = this.batches.find((batch) => batch.product.includes(val));
       console.log("product: ", product);
       this.SET_ORDER({ key: "product", value: {
         title: product.product,
-        product_id: val,
+        product_id: product.product_id,
         partiya: product.partiya
       }});
-      this.GET_PRODUCT_BY_TYPE_ID({product_id: val, partiya: product.partiya});
+      this.GET_PRODUCT_BY_TYPE_ID({product_id: product.product_id, partiya: product.partiya});
     },
 
     changebase_price(val) {
