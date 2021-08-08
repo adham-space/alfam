@@ -53,54 +53,64 @@ export default {
         totalPrice: [{
           trigger: "change",
           validator: (rule, value, cb) => {
+            if(!this.toolBarForm.isSample) {
             if (value !== "") {
               cb()
             } else {
               cb(new Error("Enter price"))
             }
+          } else cb()
           }
         }],
 
         currentDriver: [{
           trigger: "change",
           validator: (rule, value, cb) => {
+            if(!this.toolBarForm.isSample) {
             if (!!value) {
               cb()
             } else {
               cb(new Error("Select driver"))
             }
+          } else cb()
           }
         }],
 
         currentStatus: [{
           trigger: "change",
           validator: (rule, value, cb) => {
+            if(!this.toolBarForm.isSample) {
             if (!!value) {
               cb()
             } else {
               cb(new Error("Select action"))
             }
+          } else cb()
           }
         }],
 
         currentProduct: [{
           trigger: "change",
           validator: (rules, value, cb) => {
+            if(!this.toolBarForm.isSample) {
             if (!!value) {
               cb()
             } else {
               cb(new Error("Select product"))
             }
+          } else cb()
           }
         }],
         currentcustomer: [{
           trigger: "change",
           validator: (rules, value, cb) => {
-            if (!!value) {
-              cb()
-            } else {
-              cb(new Error("Select customer"))
-            }
+            if(!this.toolBarForm.isSample) {
+              if (!!value) {
+                cb()
+              } else {
+                cb(new Error("Select customer"))
+              }
+            } else cb()
           }
         }],
 

@@ -57,6 +57,8 @@ const state = {
   todays_product_nums: 0,
   isThereBroken: false, // is there already broken enetered in this partiya
   there_is_product_type: false,
+  wrong_format: false,
+  wrong_format_product: '',
   order: {
     product: '',
     products: [],
@@ -99,8 +101,16 @@ const mutations = {
   },
   PREPARE_ORDER: (state) => {
     state.order.products = []
+    state.wrong_format_product = ''
+    state.wrong_format = false
     const current_product = state.product_with_types
     for (let i = 0; i < current_product.length; i++) {
+      if(current_product[i].item_num < 0) {
+        state.wrong_format = true
+        state.wrong_format_product = current_product[i].type_name
+        i = 1000000
+        return
+      }
       if (state.order.includes_brokens) {
         const pro_obj = {
           id: current_product[i]._id,
@@ -172,14 +182,26 @@ const mutations = {
 const actions = {
   SAVE_ORDER({ commit, state }) {
     return new Promise((resolve, reject) => {
-      if(state.oreder) {
-
+      console.log('Is Sample:', state.order.isSample)
+      if(!state.wrong_format) {
+        if(state.order.isSample) {
+          save_sample(state.order).then(res => {
+            commit('RESET_ORDER')
+            resolve()
+          }).catch(err => {
+            reject(err)
+          })
+        } else {
+          save_order(state.order).then(res => {
+            commit('RESET_ORDER')
+            resolve()
+          }).catch(err => {
+            reject(err)
+          })
+        }
       } else {
-        save_order(state.order).then(res => {
-          commit('RESET_ORDER')
-          resolve()
-        }).catch(err => {
-          reject(err)
+        this.$notify({
+          message: 'You inserted wrong value to: ' + state.wrong_format_product
         })
       }
     })

@@ -19,12 +19,8 @@
             style="background-color: transparent"
             v-for="(pr, i) in batches"
             :key="i"
-            :label="
-              pr._product[0].title.split('-')[0] +
-              ' - ' +
-              pr._product[0].title.split('-')[2]
-            "
-            :value="pr._id"
+            :label="pr.product"
+            :value="pr.product_id"
           />
         </el-select>
       </el-form-item>
@@ -190,7 +186,7 @@ export default {
     this.GET_CUSTOMERS();
     this.GET_DRIVERS();
     request({
-      url: "/products/get-batches",
+      url: "/products/get-batches-shop",
       method: "GET",
     })
       .then((res) => {
@@ -286,15 +282,14 @@ export default {
       this.SET_ORDER({ key: "is_debt", value: val });
     },
     getProducts(val) {
-      let {_product, _id} = this.batches.find((batch) => batch._id[1].includes(val[1]));
-      let title = _product[0].title.split("-")[0] + " - " + val[0];
+      let product = this.batches.find((batch) => batch.product_id.includes(val));
+      console.log("product: ", product);
       this.SET_ORDER({ key: "product", value: {
-        title,
-        product_id: val[1],
-        partiya: val[0]
-
+        title: product.product,
+        product_id: val,
+        partiya: product.partiya
       }});
-      this.GET_PRODUCT_BY_TYPE_ID({product_id: val[1], partiya: val[0]});
+      this.GET_PRODUCT_BY_TYPE_ID({product_id: val, partiya: product.partiya});
     },
 
     changebase_price(val) {
