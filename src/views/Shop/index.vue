@@ -4,7 +4,7 @@
       <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
     <el-col :span="6" style="height: 100%; overflow-y: auto;   ">
-      <Tools @checkTable="checkTableValididty()" :isTableValid="isTableValid" :total-price="totalPrice" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
+      <Tools @checkTable="checkTableValididty()" :isTableValid="isTableValid" :totalPrice="totalPrice" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
     </el-col>
   </el-row>
 </template>

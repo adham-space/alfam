@@ -87,7 +87,7 @@ const mutations = {
   },
   SET_TODAYS_PRODUCT_NUM: (state, num) => {
     state.todays_product_nums = num.partiya,
-    state.isThereBroken = num.isThereBroken
+      state.isThereBroken = num.isThereBroken
     state.there_is_product_type = num.there_is_product_type
   },
   SET_PRODUCT: (state, product) => {
@@ -105,12 +105,14 @@ const mutations = {
     state.wrong_format = false
     const current_product = state.product_with_types
     for (let i = 0; i < current_product.length; i++) {
-      if(current_product[i].item_num < 0) {
+      if (current_product[i].item_num < 0) {
         state.wrong_format = true
         state.wrong_format_product = current_product[i].type_name
         i = 1000000
         return
       }
+      console.log("PREPARE PHOTO:", current_product[i])
+
       if (state.order.includes_brokens) {
         const pro_obj = {
           id: current_product[i]._id,
@@ -118,7 +120,7 @@ const mutations = {
           code: current_product[i].code + (current_product[i].broken ? '-1' : ''),
           type_name: current_product[i].type_name,
           size: current_product[i].size,
-          photo: current_product[i].photo,
+          photo_path: current_product[i].photo_path,
           isReturning: current_product[i].isReturning,
           packTotalArea: current_product[i].packTotalArea,
           item_num: current_product[i].item_num,
@@ -142,7 +144,7 @@ const mutations = {
           code: current_product[i].code,
           type_name: current_product[i].type_name,
           size: current_product[i].size,
-          photo: current_product[i].photo,
+          photo_path: current_product[i].photo_path,
           isReturning: current_product[i].isReturning,
           packTotalArea: current_product[i].packTotalArea,
           item_num: current_product[i].item_num,
@@ -185,8 +187,8 @@ const actions = {
   SAVE_ORDER({ commit, state }) {
     return new Promise((resolve, reject) => {
       console.log('Is Sample:', state.order.isSample)
-      if(!state.wrong_format) {
-        if(state.order.isSample) {
+      if (!state.wrong_format) {
+        if (state.order.isSample) {
           save_sample(state.order).then(res => {
             commit('RESET_ORDER')
             resolve()

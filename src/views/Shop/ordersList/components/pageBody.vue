@@ -6,49 +6,49 @@
       height="calc(100% - 3.5rem)"
       :data="orders"
       stripe
+      @row-dblclick="rowChosen"
       highlight-current-row
       @row-click="orderChosed"
     >
       <el-table-column type="expand" fixed="left">
         <!-- eslint-disable-next-line -->
         <template slot-scope="scope">
-          <el-table
+          <div class="inner-table">
+            <el-table
             :data="scope.row.products"
-            :show-header="false"
+            :show-header="true"
+            style="width: 80%"
             stripe
           >
             <el-table-column
-              width="150"
               label="КАФЕЛНИ КОДИ"
               prop="code"
               fixed="left"
               align="center"
             />
             <el-table-column
-              width="150"
               label="СПЕЦИФИКАЦИЯСИ"
               prop="type_name"
               align="center"
             />
             <el-table-column
-              width="150"
               label="ТОВАРНИ РАЗМЕРИ"
               prop="size"
               align="center"
             />
             <el-table-column
-              width="150"
               label="ТОВАРНИ РАСМИ"
               prop="photo"
               align="center"
             >
               <!-- eslint-disable-next-line  -->
               <template slot-scope="scope">
+               
                 <el-image
                   style="width: 30px; height: 30px"
-                  :src="'http://localhost:3000/' + scope.row.photo"
+                  :src="'http://localhost:3000/' + scope.row.photo_path"
                   fit="scale-down"
-                  @click="openImg('http://localhost:3000/' + scope.row.photo)"
+                  @click="openImg('http://localhost:3000/' + scope.row.photo_path)"
                 />
               </template>
             </el-table-column>
@@ -57,13 +57,11 @@
               align="center"
             >
               <el-table-column
-                width="160"
                 label="ПОЧКАСИДИГИ (м2)"
                 align="center"
                 prop="area_of_one_packet"
               />
               <el-table-column
-                width="140"
                 label="1-ДОНАСИНИ (м2)"
                 prop="area_of_an_item"
                 align="center"
@@ -71,23 +69,21 @@
               <el-table-column
                 align="center"
                 prop="number_of_items"
-                width="140"
                 label="УМУМИЙ ДОНАСИ"
               />
               <el-table-column
-                width="160"
                 label="ПОЧКАСИДИГИ (КГ)"
                 align="center"
                 prop="wight_of_one_packet"
               />
               <el-table-column
-                width="140"
                 label="1-ДОНАСИНИ  (КГ)"
                 align="center"
                 prop="weight_of_an_item"
               />
             </el-table-column>
           </el-table>
+          </div>
         </template>
       </el-table-column>
       <el-table-column width="100" align="center" prop="_id" label="ID">
@@ -107,7 +103,10 @@
         prop="product"
         label="Product"
       />
-      <el-table-column width="170" align="center" label="Area ㎡">
+      <el-table-column width="170" align="center">
+        <template slot="header">
+          <span>Area m<sup>2</sup></span>
+        </template>
         <template slot-scope="scope">
           {{ parseFloat(getTotalAre(scope.row.products).packTotalArea.toFixed(4)) }}
         </template>
@@ -247,13 +246,17 @@ export default {
     this.SET_ORDER(null)
   },
   methods: {
-    ...mapMutations('orders', ['SET_ORDER']),
+    ...mapMutations('orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER']),
     ...mapActions('orders', ['GET_ORDERS']),
+    rowChosen(row) {
+      console.log('header setting')
+      this.SET_CURRENT_ORDER_HEADER(row)
+    },
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
     },
-    orderChosed(row, column, event) {
+    orderChosed(row) {
       this.SET_ORDER(row)
     },
     getTotalAre(products) {
@@ -309,4 +312,10 @@ export default {
 </script>
 
 <style>
+
+  .inner-table {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 </style>

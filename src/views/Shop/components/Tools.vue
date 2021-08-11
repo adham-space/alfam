@@ -296,11 +296,12 @@ export default {
       // this is to change each item base price accordingly
       this.$emit("totalPriceChanged", val);
       this.toolBarForm.totalPrice = val;
-      this.SET_ORDER({ key: "last_sum", val });
+      this.SET_ORDER({ key: "last_sum", value: parseFloat(val) });
     },
     brokenStateChanged(val) {
       this.$emit("brokenState", val);
       this.SET_ORDER({ key: "includes_brokens", value: val });
+
     },
     procedureChanged(val) {
       this.SET_ORDER({ key: "action", value: val });

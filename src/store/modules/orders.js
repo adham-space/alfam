@@ -16,6 +16,11 @@ const state = {
     perPage: 20
   },
   orders: [],
+  currentOrderHeader: {
+    customer: '',
+    product: '',
+    order_name: '',
+  },
   tableLoading: false,
   currentOrder: null
 }
@@ -26,6 +31,14 @@ const mutations = {
   },
   SET_ORDERS: (state, orders) => {
     state.orders = orders
+  },
+  SET_CURRENT_ORDER_HEADER: (state, { customer, product, order_name }) => {
+    customer = customer.firstName + ' ' + customer.lastName
+    state.currentOrderHeader = {
+      customer,
+      product,
+      order_name
+    }
   }
 }
 
