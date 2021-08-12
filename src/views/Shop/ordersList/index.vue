@@ -2,19 +2,27 @@
   <div>
     <el-row :gutter="10" class="orders-body">
       <Tools />
-      <page-body />
+     <keep-alive>
+       <current :is="currentTable" />
+     </keep-alive>
     </el-row>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Tools from './components/tools.vue'
-import pageBody from './components/pageBody.vue'
+import innerTable from './components/innerTable'
+import orderInventar from './components/orderInventar'
 export default {
   name: 'OrdersList',
   components: {
     Tools,
-    pageBody
+    orderInventar,
+    innerTable
+  },
+  computed: {
+    ...mapState('orders', ['currentTable'])
   }
 
 }

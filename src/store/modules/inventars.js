@@ -8,8 +8,6 @@ function getInventars(params) {
   })
 }
 
-
-
 const state = {
   queryParams: {
     search_input: 1,
@@ -51,7 +49,7 @@ const actions = {
         reject(err)
       })
     })
-  },
+  }
 }
 
 export default {

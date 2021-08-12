@@ -8,26 +8,26 @@ export default {
         isSample: false,
         currentProduct: '',
         withBorken: false,
-        currentcustomer: "",
-        currentStatus: "",
-        currentDriver: "",
-        costOfUpload: "",
+        currentcustomer: '',
+        currentStatus: '',
+        currentDriver: '',
+        costOfUpload: '',
         totalPrice: this.totalPrice,
         isDebt: false,
         currentShop: '',
-        debtDate: "",
-        debtDescription: "",
+        debtDate: '',
+        debtDescription: ''
       },
       rules: {
         currentShop: [{
 
-          trigger: "change",
+          trigger: 'change',
           validator: (rule, value, cb) => {
             if (this.toolBarForm.isSample) {
-              if (!!value) {
+              if (value) {
                 cb()
               } else {
-                cb(new Error("Select shop"))
+                cb(new Error('Select shop'))
               }
             } else {
               cb()
@@ -36,13 +36,13 @@ export default {
         }],
         debtDate: [{
 
-          trigger: "change",
+          trigger: 'change',
           validator: (rule, value, cb) => {
             if (this.toolBarForm.isDebt) {
-              if (!!value) {
+              if (value) {
                 cb()
               } else {
-                cb(new Error("Select debt date"))
+                cb(new Error('Select debt date'))
               }
             } else {
               cb()
@@ -51,68 +51,68 @@ export default {
         }],
 
         totalPrice: [{
-          trigger: "change",
+          trigger: 'change',
           validator: (rule, value, cb) => {
-            if(!this.toolBarForm.isSample) {
-            if (value !== "") {
-              cb()
-            } else {
-              cb(new Error("Enter price"))
-            }
-          } else cb()
-          }
-        }],
-
-        currentDriver: [{
-          trigger: "change",
-          validator: (rule, value, cb) => {
-            if(!this.toolBarForm.isSample) {
-            if (!!value) {
-              cb()
-            } else {
-              cb(new Error("Select driver"))
-            }
-          } else cb()
-          }
-        }],
-
-        currentStatus: [{
-          trigger: "change",
-          validator: (rule, value, cb) => {
-            if(!this.toolBarForm.isSample) {
-            if (!!value) {
-              cb()
-            } else {
-              cb(new Error("Select action"))
-            }
-          } else cb()
-          }
-        }],
-
-        currentProduct: [{
-          trigger: "change",
-          validator: (rules, value, cb) => {
-            if(!this.toolBarForm.isSample) {
-            if (!!value) {
-              cb()
-            } else {
-              cb(new Error("Select product"))
-            }
-          } else cb()
-          }
-        }],
-        currentcustomer: [{
-          trigger: "change",
-          validator: (rules, value, cb) => {
-            if(!this.toolBarForm.isSample) {
-              if (!!value) {
+            if (!this.toolBarForm.isSample) {
+              if (value !== '') {
                 cb()
               } else {
-                cb(new Error("Select customer"))
+                cb(new Error('Enter price'))
               }
             } else cb()
           }
         }],
+
+        currentDriver: [{
+          trigger: 'change',
+          validator: (rule, value, cb) => {
+            if (!this.toolBarForm.isSample) {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('Select driver'))
+              }
+            } else cb()
+          }
+        }],
+
+        currentStatus: [{
+          trigger: 'change',
+          validator: (rule, value, cb) => {
+            if (!this.toolBarForm.isSample) {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('Select action'))
+              }
+            } else cb()
+          }
+        }],
+
+        currentProduct: [{
+          trigger: 'change',
+          validator: (rules, value, cb) => {
+            if (!this.toolBarForm.isSample) {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('Select product'))
+              }
+            } else cb()
+          }
+        }],
+        currentcustomer: [{
+          trigger: 'change',
+          validator: (rules, value, cb) => {
+            if (!this.toolBarForm.isSample) {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('Select customer'))
+              }
+            } else cb()
+          }
+        }]
 
       }
     }

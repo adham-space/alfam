@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="10" class="stepOne">
     <el-col :span="24" class="step-header">
-      <h2>{{$store.state.newProduct.product_name}}</h2>
+      <h2>{{ $store.state.newProduct.product_name }}</h2>
     </el-col>
     <el-col class="selectType" :span="24">
       <el-select

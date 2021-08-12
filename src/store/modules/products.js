@@ -35,10 +35,10 @@ function save_order(data) {
   return request({
     url: '/orders/save-order',
     method: 'POST',
-    data
+    data,
+    timeout: 20*1000
   })
 }
-
 
 function save_sample(data) {
   return request({
@@ -87,7 +87,7 @@ const mutations = {
   },
   SET_TODAYS_PRODUCT_NUM: (state, num) => {
     state.todays_product_nums = num.partiya,
-      state.isThereBroken = num.isThereBroken
+    state.isThereBroken = num.isThereBroken
     state.there_is_product_type = num.there_is_product_type
   },
   SET_PRODUCT: (state, product) => {
@@ -111,7 +111,7 @@ const mutations = {
         i = 1000000
         return
       }
-      console.log("PREPARE PHOTO:", current_product[i])
+      console.log('PREPARE PHOTO:', current_product[i])
 
       if (state.order.includes_brokens) {
         const pro_obj = {

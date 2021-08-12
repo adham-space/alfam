@@ -16,9 +16,9 @@
           @change="getProducts"
         >
           <el-option
-            style="background-color: transparent"
             v-for="(pr, i) in batches"
             :key="i"
+            style="background-color: transparent"
             :label="pr.product"
             :value="pr.product"
           />
@@ -29,8 +29,7 @@
           v-model="toolBarForm.withBorken"
           style="width: 100%"
           @change="brokenStateChanged"
-          >Include borkens</el-checkbox
-        >
+        >Include borkens</el-checkbox>
       </el-form-item>
       <el-form-item prop="currentcustomer">
         <el-select
@@ -57,7 +56,7 @@
           placeholder="Choose action"
           @change="procedureChanged"
         >
-          <el-option label="Sotib olish" :value="1"  />
+          <el-option label="Sotib olish" :value="1" />
           <el-option label="Barter (Almashtirish)" :value="2" />
           <el-option label="Qaytarish" :value="3" />
         </el-select>
@@ -109,9 +108,9 @@
       </el-form-item>
 
       <el-form-item
+        v-if="toolBarForm.isDebt"
         label="Debt return date"
         prop="debtDate"
-        v-if="toolBarForm.isDebt"
       >
         <el-date-picker
           v-model="toolBarForm.debtDate"
@@ -144,200 +143,198 @@
         :disabled="order_saving"
         :loading="order_saving"
         @click="validateOrder()"
-        >Save</el-button
-      >
+      >Save</el-button>
       <el-button type="danger" @click="reset_all()">Cancel</el-button>
     </div>
   </div>
 </template>
 <script>
-import { mapMutations, mapActions, mapState } from "vuex";
-import request from "@/utils/request";
-import { Message } from "element-ui";
-import tools_mixin from "./mixins/tools.mixin";
+import { mapMutations, mapActions, mapState } from 'vuex'
+import request from '@/utils/request'
+import { Message } from 'element-ui'
+import tools_mixin from './mixins/tools.mixin'
 export default {
   mixins: [tools_mixin],
   props: {
     totalPrice: {
       type: [Number, String],
-      default: 0,
+      default: 0
     },
     isTableValid: {
       type: [Boolean],
-      default: false,
-    },
+      default: false
+    }
   },
   data: () => ({
     order_saving: false,
-    batches: [],
+    batches: []
   }),
   computed: {
-    ...mapState("products", ["products_types", "product", "order"]),
+    ...mapState('products', ['products_types', 'product', 'order']),
     drivers() {
-      return this.$store.state.drivers.tableData;
+      return this.$store.state.drivers.tableData
     },
     customers() {
-      return this.$store.state.customers.tableData;
-    },
+      return this.$store.state.customers.tableData
+    }
   },
   mounted() {
-    this.getOrderCount();
-    this.GET_PRODUCT_TYPES();
-    this.GET_CUSTOMERS();
-    this.GET_DRIVERS();
+    this.getOrderCount()
+    this.GET_PRODUCT_TYPES()
+    this.GET_CUSTOMERS()
+    this.GET_DRIVERS()
     request({
-      url: "/products/get-batches-shop",
-      method: "GET",
+      url: '/products/get-batches-shop',
+      method: 'GET'
     })
       .then((res) => {
-        this.batches = res.data;
+        this.batches = res.data
         console.log(this.batches)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   },
   methods: {
-    ...mapActions("products", [
-      "GET_PRODUCT_TYPES",
-      "GET_PRODUCT_BY_TYPE_ID",
-      "SAVE_ORDER",
+    ...mapActions('products', [
+      'GET_PRODUCT_TYPES',
+      'GET_PRODUCT_BY_TYPE_ID',
+      'SAVE_ORDER'
     ]),
-    ...mapActions("customers", ["GET_CUSTOMERS"]),
-    ...mapActions("drivers", ["GET_DRIVERS"]),
-    ...mapMutations("products", ["SET_ORDER", "PREPARE_ORDER"]),
+    ...mapActions('customers', ['GET_CUSTOMERS']),
+    ...mapActions('drivers', ['GET_DRIVERS']),
+    ...mapMutations('products', ['SET_ORDER', 'PREPARE_ORDER']),
 
     getOrderCount() {
       request({
-        url: "/orders/get-order-count-for-today",
+        url: '/orders/get-order-count-for-today'
       })
         .then((res) => {
-          console.log("orders", res.data);
-          const d = new Date();
+          console.log('orders', res.data)
+          const d = new Date()
           this.SET_ORDER({
-            key: "order_name",
+            key: 'order_name',
             value: `ALFAM-${res.data[0].count + 1}-${d.getDate()}/${
               d.getMonth() + 1
-            }/${d.getFullYear()}`,
-          });
+            }/${d.getFullYear()}`
+          })
         })
         .catch((err) => {
-          console.log("orders", err);
-        });
+          console.log('orders', err)
+        })
     },
 
     checkTableIsValidToSave() {
-      this.$emit("checkTable");
+      this.$emit('checkTable')
     },
 
     validateOrder() {
-      this.checkTableIsValidToSave();
+      this.checkTableIsValidToSave()
       setTimeout(() => {
         this.$refs.toolBarFormRef.validate((valid) => {
           if (valid) {
             if (this.isTableValid) {
-              this.saveOrder();
+              this.saveOrder()
             } else {
               this.$notify({
-                message: "Check table, there should not be empty, make them 0",
-                type: "error",
-                duration: 0,
-              });
+                message: 'Check table, there should not be empty, make them 0',
+                type: 'error',
+                duration: 0
+              })
             }
           } else {
-            return false;
+            return false
           }
-        });
-      }, 120);
+        })
+      }, 120)
     },
 
     saveOrder() {
       // first need to be check whether everything is ok
-      this.order_saving = true;
-      this.PREPARE_ORDER();
+      this.order_saving = true
+      this.PREPARE_ORDER()
       setTimeout(() => {
         this.SAVE_ORDER()
           .then(() => {
-            this.order_saving = false;
+            this.order_saving = false
             Message({
-              message: "Order successfully saved",
-              type: "success",
-              duration: 3000,
-            });
-            this.reset_all();
-            this.$emit("closeNotification");
-            this.getOrderCount();
+              message: 'Order successfully saved',
+              type: 'success',
+              duration: 3000
+            })
+            this.reset_all()
+            this.$emit('closeNotification')
+            this.getOrderCount()
           })
           .catch((err) => {
-            this.order_saving = false;
+            this.order_saving = false
             Message({
               message: err.response.data,
-              type: "error",
-              duration: 3000,
-            });
-          });
-      }, 200);
+              type: 'error',
+              duration: 3000
+            })
+          })
+      }, 200)
     },
     setIsDebt(val) {
-      this.SET_ORDER({ key: "is_debt", value: val });
+      this.SET_ORDER({ key: 'is_debt', value: val })
     },
     getProducts(val) {
-      let product = this.batches.find((batch) => batch.product.includes(val));
-      console.log("product: ", product);
-      this.SET_ORDER({ key: "product", value: {
+      const product = this.batches.find((batch) => batch.product.includes(val))
+      console.log('product: ', product)
+      this.SET_ORDER({ key: 'product', value: {
         title: product.product,
         product_id: product.product_id,
         partiya: product.partiya
-      }});
-      this.GET_PRODUCT_BY_TYPE_ID({product_id: product.product_id, partiya: product.partiya});
+      }})
+      this.GET_PRODUCT_BY_TYPE_ID({ product_id: product.product_id, partiya: product.partiya })
     },
 
     changebase_price(val) {
       // this is to change each item base price accordingly
-      this.$emit("totalPriceChanged", val);
-      this.toolBarForm.totalPrice = val;
-      this.SET_ORDER({ key: "last_sum", value: parseFloat(val) });
+      this.$emit('totalPriceChanged', val)
+      this.toolBarForm.totalPrice = val
+      this.SET_ORDER({ key: 'last_sum', value: parseFloat(val) })
     },
     brokenStateChanged(val) {
-      this.$emit("brokenState", val);
-      this.SET_ORDER({ key: "includes_brokens", value: val });
-
+      this.$emit('brokenState', val)
+      this.SET_ORDER({ key: 'includes_brokens', value: val })
     },
     procedureChanged(val) {
-      this.SET_ORDER({ key: "action", value: val });
+      this.SET_ORDER({ key: 'action', value: val })
     },
     setReturnDebtDate(val) {
-      this.SET_ORDER({ key: "date_of_return_debt", value: val });
+      this.SET_ORDER({ key: 'date_of_return_debt', value: val })
     },
     setDebtDescription(val) {
-      this.SET_ORDER({ key: "description_of_debt", value: val });
+      this.SET_ORDER({ key: 'description_of_debt', value: val })
     },
     costOfUploadChanging(val) {
-      this.SET_ORDER({ key: "upload_cost", value: parseFloat(val) });
+      this.SET_ORDER({ key: 'upload_cost', value: parseFloat(val) })
     },
     currentDriverChanged(val) {
-      this.SET_ORDER({ key: "driver", value: val });
+      this.SET_ORDER({ key: 'driver', value: val })
     },
     customerChanged(val) {
-      this.SET_ORDER({ key: "customer", value: val });
-      this.getLastActionOfCustomer();
+      this.SET_ORDER({ key: 'customer', value: val })
+      this.getLastActionOfCustomer()
     },
     reset_all() {
-      this.toolBarForm.withBorken = false;
-      this.toolBarForm.currentProduct = "";
-      this.toolBarForm.currentStatus = "";
-      this.toolBarForm.currentcustomer = "";
-      this.toolBarForm.costOfUpload = "";
-      this.order_saving = false;
-      this.toolBarForm.currentDriver = "";
-      this.toolBarForm.debtDescription = "";
-      this.toolBarForm.debtDate = "";
-      this.toolBarForm.isDebt = false;
-      this.changebase_price(0);
-      this.$refs.toolBarFormRef.resetFields();
-    },
-  },
-};
+      this.toolBarForm.withBorken = false
+      this.toolBarForm.currentProduct = ''
+      this.toolBarForm.currentStatus = ''
+      this.toolBarForm.currentcustomer = ''
+      this.toolBarForm.costOfUpload = ''
+      this.order_saving = false
+      this.toolBarForm.currentDriver = ''
+      this.toolBarForm.debtDescription = ''
+      this.toolBarForm.debtDate = ''
+      this.toolBarForm.isDebt = false
+      this.changebase_price(0)
+      this.$refs.toolBarFormRef.resetFields()
+    }
+  }
+}
 </script>
 
 <style scope>

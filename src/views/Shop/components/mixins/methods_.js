@@ -22,7 +22,7 @@ export default {
           // then set number of complete packets
           this.currentProduct.pack_num = parseInt(totalNumberOfItems / this.currentProduct.number_of_items)
           // then set bumber of over full packet numbers
-          this.currentProduct.over_pack_num = totalNumberOfItems > this.currentProduct.number_of_items ? parseInt(totalNumberOfItems % this.currentProduct.number_of_items) :0
+          this.currentProduct.over_pack_num = totalNumberOfItems > this.currentProduct.number_of_items ? parseInt(totalNumberOfItems % this.currentProduct.number_of_items) : 0
           // calculate price of product according to base_price
           this.currentProduct.sum = parseInt(this.currentProduct.base_price * newArea)
           // set weight
@@ -59,7 +59,7 @@ export default {
         this.currentProduct.item_num = parseInt(newItemNum)
         this.currentProduct.packTotalArea = this.truncateToDecimals(parseFloat(this.currentProduct.item_num * this.currentProduct.area_of_an_item), 4)
         this.currentProduct.pack_num = parseInt(this.currentProduct.item_num / this.currentProduct.number_of_items)
-        this.currentProduct.over_pack_num =this.currentProduct.item_num > this.currentProduct.number_of_items ? parseInt(this.currentProduct.item_num % this.currentProduct.number_of_items) : 0
+        this.currentProduct.over_pack_num = this.currentProduct.item_num > this.currentProduct.number_of_items ? parseInt(this.currentProduct.item_num % this.currentProduct.number_of_items) : 0
         this.calcPrice()
         this.currentProduct.weight = (this.currentProduct.item_num * this.currentProduct.weight_of_an_item).toFixed(2)
         this.checkPropotion()
@@ -257,18 +257,16 @@ export default {
       })
     },
 
-
-
     checkTableIsValid() {
-        let isValid = true;
-        this.tableDataComputed.forEach(product => {
-          if(product.packTotalArea === '') isValid = false;
-          if(product.item_num === '') isValid = false;
-          if(product.pack_num === '') isValid = false;
-          if(product.over_pack_num === '') isValid = false;
-          if(product.base_price_changed === '') isValid = false;
-        })
-        return isValid;
+      let isValid = true
+      this.tableDataComputed.forEach(product => {
+        if (product.packTotalArea === '') isValid = false
+        if (product.item_num === '') isValid = false
+        if (product.pack_num === '') isValid = false
+        if (product.over_pack_num === '') isValid = false
+        if (product.base_price_changed === '') isValid = false
+      })
+      return isValid
     }
 
   }

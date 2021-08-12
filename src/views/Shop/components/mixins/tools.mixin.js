@@ -7,26 +7,26 @@ export default {
       toolBarForm: {
         currentProduct: '',
         withBorken: false,
-        currentcustomer: "",
-        currentStatus: "",
-        currentDriver: "",
-        costOfUpload: "",
+        currentcustomer: '',
+        currentStatus: '',
+        currentDriver: '',
+        costOfUpload: '',
         totalPrice: this.totalPrice,
         isDebt: false,
-        debtDate: "",
-        debtDescription: "",
+        debtDate: '',
+        debtDescription: ''
       },
       rules: {
 
         debtDate: [{
 
-          trigger: "change",
+          trigger: 'change',
           validator: (rule, value, cb) => {
             if (this.toolBarForm.isDebt) {
-              if (!!value) {
+              if (value) {
                 cb()
               } else {
-                cb(new Error("Select debt date"))
+                cb(new Error('Select debt date'))
               }
             } else {
               cb()
@@ -35,58 +35,58 @@ export default {
         }],
 
         totalPrice: [{
-          trigger: "change",
+          trigger: 'change',
           validator: (rule, value, cb) => {
-            if (value !== "") {
+            if (value !== '') {
               cb()
             } else {
-              cb(new Error("Enter price"))
+              cb(new Error('Enter price'))
             }
           }
         }],
 
         currentDriver: [{
-          trigger: "change",
+          trigger: 'change',
           validator: (rule, value, cb) => {
-            if (!!value) {
+            if (value) {
               cb()
             } else {
-              cb(new Error("Select driver"))
+              cb(new Error('Select driver'))
             }
           }
         }],
 
         currentStatus: [{
-          trigger: "change",
+          trigger: 'change',
           validator: (rule, value, cb) => {
-            if (!!value) {
+            if (value) {
               cb()
             } else {
-              cb(new Error("Select action"))
+              cb(new Error('Select action'))
             }
           }
         }],
 
         currentProduct: [{
-          trigger: "change",
+          trigger: 'change',
           validator: (rules, value, cb) => {
-            if (!!value) {
+            if (value) {
               cb()
             } else {
-              cb(new Error("Select product"))
+              cb(new Error('Select product'))
             }
           }
         }],
         currentcustomer: [{
-          trigger: "change",
+          trigger: 'change',
           validator: (rules, value, cb) => {
-            if (!!value) {
+            if (value) {
               cb()
             } else {
-              cb(new Error("Select customer"))
+              cb(new Error('Select customer'))
             }
           }
-        }],
+        }]
 
       }
     }

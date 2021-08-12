@@ -50,10 +50,10 @@
       </el-table-column>
 
       <el-table-column
+        v-if="order.action === 2"
         width="100"
         prop="isReturning"
         align="center"
-        v-if="order.action === 2"
       >
         <template slot="header" slot-scope="">
           <span style="font-weight: bold">+ / -</span>

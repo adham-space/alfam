@@ -23,7 +23,7 @@ const storeRouter = {
       component: () => import('@/views/store/inventars/index'),
       name: 'Inventars',
       meta: { title: 'Inventars', noCache: false }
-    },
+    }
     // {
     //   path: 'all-orders',
     //   component: () => import('@/views/store/ordersList/index'),

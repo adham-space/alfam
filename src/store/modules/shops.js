@@ -42,7 +42,7 @@ const state = {
 const mutations = {
   SET_SHOPS: (state, data) => {
     state.tableData = data
-    state.shops  = data
+    state.shops = data
   },
   SET_SHOP: (state, data) => {
     state.currentShop = data

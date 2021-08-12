@@ -6,8 +6,8 @@
       height="calc(100% - 3.5rem)"
       :data="orders"
       stripe
-      @row-dblclick="rowChosen"
       highlight-current-row
+      @row-dblclick="rowChosen"
       @row-click="orderChosed"
     >
       <el-table-column type="expand" fixed="left">
@@ -15,74 +15,74 @@
         <template slot-scope="scope">
           <div class="inner-table">
             <el-table
-            :data="scope.row.products"
-            :show-header="true"
-            style="width: 80%"
-            stripe
-          >
-            <el-table-column
-              label="КАФЕЛНИ КОДИ"
-              prop="code"
-              fixed="left"
-              align="center"
-            />
-            <el-table-column
-              label="СПЕЦИФИКАЦИЯСИ"
-              prop="type_name"
-              align="center"
-            />
-            <el-table-column
-              label="ТОВАРНИ РАЗМЕРИ"
-              prop="size"
-              align="center"
-            />
-            <el-table-column
-              label="ТОВАРНИ РАСМИ"
-              prop="photo"
-              align="center"
+              :data="scope.row.products"
+              :show-header="true"
+              style="width: 80%"
+              stripe
             >
-              <!-- eslint-disable-next-line  -->
+              <el-table-column
+                label="КАФЕЛНИ КОДИ"
+                prop="code"
+                fixed="left"
+                align="center"
+              />
+              <el-table-column
+                label="СПЕЦИФИКАЦИЯСИ"
+                prop="type_name"
+                align="center"
+              />
+              <el-table-column
+                label="ТОВАРНИ РАЗМЕРИ"
+                prop="size"
+                align="center"
+              />
+              <el-table-column
+                label="ТОВАРНИ РАСМИ"
+                prop="photo"
+                align="center"
+              >
+                <!-- eslint-disable-next-line  -->
               <template slot-scope="scope">
-               
-                <el-image
-                  style="width: 30px; height: 30px"
-                  :src="'http://localhost:3000/' + scope.row.photo_path"
-                  fit="scale-down"
-                  @click="openImg('http://localhost:3000/' + scope.row.photo_path)"
+
+                  <el-image
+                    style="width: 50px; height: 50px"
+                    :src="'http://localhost:3000/' + scope.row.photo_path"
+                    fit="scale-down"
+                    @click="openImg('http://localhost:3000/' + scope.row.photo_path)"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
+                align="center"
+              >
+                <el-table-column
+                  label="ПОЧКАСИДИГИ (м2)"
+                  align="center"
+                  prop="area_of_one_packet"
                 />
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
-              align="center"
-            >
-              <el-table-column
-                label="ПОЧКАСИДИГИ (м2)"
-                align="center"
-                prop="area_of_one_packet"
-              />
-              <el-table-column
-                label="1-ДОНАСИНИ (м2)"
-                prop="area_of_an_item"
-                align="center"
-              />
-              <el-table-column
-                align="center"
-                prop="number_of_items"
-                label="УМУМИЙ ДОНАСИ"
-              />
-              <el-table-column
-                label="ПОЧКАСИДИГИ (КГ)"
-                align="center"
-                prop="wight_of_one_packet"
-              />
-              <el-table-column
-                label="1-ДОНАСИНИ  (КГ)"
-                align="center"
-                prop="weight_of_an_item"
-              />
-            </el-table-column>
-          </el-table>
+                <el-table-column
+                  label="1-ДОНАСИНИ (м2)"
+                  prop="area_of_an_item"
+                  align="center"
+                />
+                <el-table-column
+                  align="center"
+                  prop="number_of_items"
+                  label="УМУМИЙ ДОНАСИ"
+                />
+                <el-table-column
+                  label="ПОЧКАСИДИГИ (КГ)"
+                  align="center"
+                  prop="wight_of_one_packet"
+                />
+                <el-table-column
+                  label="1-ДОНАСИНИ  (КГ)"
+                  align="center"
+                  prop="weight_of_an_item"
+                />
+              </el-table-column>
+            </el-table>
           </div>
         </template>
       </el-table-column>
@@ -132,7 +132,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="170" align="center" prop="last_sum" label="Price" />
+      <el-table-column width="170" align="center" prop="last_sum" label="Price" >
+        <template slot-scope="scope">
+          {{scope.row.last_sum.toFixed(4)}}
+        </template>
+      </el-table-column>
       <el-table-column
         width="180"
         align="center"
@@ -169,40 +173,23 @@
           {{ scope.row.user.stuff.firstName + ' ' + scope.row.user.stuff.lastName }}
         </template>
       </el-table-column>
-      <el-table-column width="80" align="center" label="Status" fixed="right">
+      <el-table-column width="80" align="center" label="Actuality" fixed="right">
         <template slot-scope="scope">
           <el-tooltip
             class="item"
             effect="dark"
-            :content="statuses_text[scope.row.status + 1]"
-            placement="left-start"
-          >
-            <i
-              :style="{color: statuses_color[scope.row.status + 1]}"
-              :class="statuses[scope.row.status + 1]"
-            />
-          </el-tooltip>
-        </template>
-      </el-table-column>
-       <el-table-column width="80" align="center" label="Actuality" fixed="right">
-        <template slot-scope="scope">
-          <el-tooltip
-            v-if="!actuality"
-            class="item"
-            effect="dark"
-            content="Open"
+            :content="scope.row.actuality_status ? 'Open':'Closed'"
             placement="left-start"
           >
             <el-checkbox
               :value="scope.row.actuality_status"
-              @change="closeCurrentOrder()"
-            >
-
-            </el-checkbox>
+              :disabled="!!!scope.row.actuality_status"
+              @change="closeCurrentOrder(scope.row._id)"
+            />
           </el-tooltip>
-          <el-tooltip v-else>
-            <i  class="el-icon-check"></i>
-          </el-tooltip>
+          <!-- <el-tooltip v-else>
+            <i class="el-icon-check" />
+          </el-tooltip> -->
         </template>
       </el-table-column>
     </el-table>
@@ -225,11 +212,13 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import request from '@/utils/request'
 import { Message } from 'element-ui'
 export default {
+  name: 'OrderInventar',
   components: {
     Pagination
   },
   data: () => ({
     showImageDilog: false,
+    actuality: false,
     imageUrl: '',
     statuses: ['el-icon-loading', 'el-icon-error', 'el-icon-success'],
     statuses_text: ['Waiting approvement', 'Order ejected', 'Order accepted'],
@@ -237,7 +226,7 @@ export default {
   }),
   computed: {
     ...mapState('user', ['roles']),
-    ...mapState('orders', ['orders', 'tableLoading'])
+    ...mapState('orders', ['orders', 'tableLoading', 'currentOrderHeader'])
   },
   mounted() {
     this.GET_ORDERS()
@@ -246,11 +235,14 @@ export default {
     this.SET_ORDER(null)
   },
   methods: {
-    ...mapMutations('orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER']),
-    ...mapActions('orders', ['GET_ORDERS']),
+    ...mapMutations('orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER', 'SET_CURRENT_TABLE']),
+    ...mapActions('orders', ['GET_ORDERS', 'GET_CURRENT_ORDER', 'CLOSE_CURRENT_ORDER']),
     rowChosen(row) {
-      console.log('header setting')
-      this.SET_CURRENT_ORDER_HEADER(row)
+      console.log(row)
+      this.GET_CURRENT_ORDER().then(() => {
+        this.SET_CURRENT_ORDER_HEADER(row)
+        this.SET_CURRENT_TABLE('innerTable')
+      })
     },
     openImg(url) {
       this.showImageDilog = true
@@ -288,23 +280,11 @@ export default {
       })
       return data
     },
-    closeCurrentOrder() {
-      request({
-        url: '/orders/close-order',
-        method: 'POST'
-      }).then(res => {
-        Message({
-          message: res.data,
-          type: 'success',
-          duration: 3000
-        })
-      })
-      .catch(err => {
-        Message({
-          message: err.response.data,
-          type: 'error',
-          duration: 3000
-        })
+    closeCurrentOrder(id) {
+      this.CLOSE_CURRENT_ORDER(id).then(() => {
+        this.GET_ORDERS()
+      }).catch(err => {
+        console.error(err)
       })
     }
   }

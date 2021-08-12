@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
     <el-row>
-      <el-col 
+      <el-col
         :md="{span: 12}"
         :lg="{span: 12}"
         :sm="{span: 24}"
@@ -13,11 +13,10 @@
           height="300"
           :options="chartOptions"
           :series="series"
-        >
-        </vue-apex-charts>
+        />
       </el-col>
       <el-col
-      :md="{span: 12}"
+        :md="{span: 12}"
         :lg="{span: 12}"
         :sm="{span: 24}"
         :xm="{span: 24}"
@@ -28,63 +27,63 @@
           height="300"
           :options="chartOptions2"
           :series="series"
-        >
-        </vue-apex-charts>
+        />
       </el-col>
-      <el-col :md="{span: 12}"
+      <el-col
+        :md="{span: 12}"
         :lg="{span: 12}"
         :sm="{span: 24}"
-        :xm="{span: 24}">
+        :xm="{span: 24}"
+      >
         <vue-apex-charts
           class="char-body"
           width="100%"
           height="300"
           :options="chartOptionsRadial"
           :series="seriesRadial"
-        >
-        </vue-apex-charts>
+        />
       </el-col>
-      <el-col :md="{span: 12}"
+      <el-col
+        :md="{span: 12}"
         :lg="{span: 12}"
         :sm="{span: 24}"
-        :xm="{span: 24}">
+        :xm="{span: 24}"
+      >
         <vue-apex-charts
           class="char-body"
           width="100%"
           height="300"
           :options="chartOptionsBar"
           :series="seriesBar"
-        >
-        </vue-apex-charts>
+        />
       </el-col>
     </el-row>
     <el-row>
-      <el-col :md="{span: 12}"
+      <el-col
+        :md="{span: 12}"
         :lg="{span: 12}"
         :sm="{span: 24}"
-        :xm="{span: 24}">
+        :xm="{span: 24}"
+      >
         <div class="char-body">
           <vue-apex-charts
             width="100%"
             height="70"
             :options="optionsBarHorizontal1"
             :series="optionsBarHorizontal1.series"
-          >
-          </vue-apex-charts>
+          />
           <vue-apex-charts
             width="100%"
             height="70"
             :options="optionsBarHorizontal2"
             :series="optionsBarHorizontal2.series"
-          >
-          </vue-apex-charts>
+          />
           <vue-apex-charts
             width="100%"
             height="70"
             :options="optionsBarHorizontal3"
             :series="optionsBarHorizontal3.series"
-          >
-          </vue-apex-charts>
+          />
         </div>
       </el-col>
     </el-row>
@@ -92,386 +91,386 @@
 </template>
 
 <script>
-import VueApexCharts from "vue-apexcharts";
+import VueApexCharts from 'vue-apexcharts'
 export default {
-  name: "DashboardAdmin",
+  name: 'DashboardAdmin',
   components: {
-    VueApexCharts,
+    VueApexCharts
   },
   data() {
     return {
       optionsBarHorizontal1: {
         chart: {
-          foreColor: "#fff",
-          type: "bar",
+          foreColor: '#fff',
+          type: 'bar',
           stacked: true,
           sparkline: {
-            enabled: true,
-          },
+            enabled: true
+          }
         },
         stroke: {
-          width: 3,
+          width: 3
         },
-        colors: ["#FCCF31"],
+        colors: ['#FCCF31'],
         plotOptions: {
           bar: {
             horizontal: true,
-            barHeight: "20%",
+            barHeight: '20%',
             colors: {
-              backgroundBarColors: ["#40475D"],
-            },
-          },
+              backgroundBarColors: ['#40475D']
+            }
+          }
         },
         stroke: {
-          width: 0,
+          width: 0
         },
         series: [
           {
-            name: "Process 1",
-            data: [44],
-          },
+            name: 'Process 1',
+            data: [44]
+          }
         ],
         title: {
           floating: true,
           offsetX: -10,
           offsetY: 5,
-          text: "Process 1",
+          text: 'Process 1'
         },
         subtitle: {
           floating: true,
-          align: "right",
+          align: 'right',
           offsetY: 0,
-          text: "44%",
+          text: '44%',
           style: {
-            fontSize: "20px",
-          },
+            fontSize: '20px'
+          }
         },
         tooltip: {
-          enabled: false,
+          enabled: false
         },
         xaxis: {
-          categories: ["Process 1"],
+          categories: ['Process 1']
         },
         yaxis: {
-          max: 100,
+          max: 100
         },
         tooltip: {
-          theme: "dark",
+          theme: 'dark'
         },
         fill: {
           opacity: 1,
-          type: "gradient",
+          type: 'gradient',
           gradient: {
-            gradientToColors: ["#F55555"],
-          },
-        },
+            gradientToColors: ['#F55555']
+          }
+        }
       },
       optionsBarHorizontal2: {
         chart: {
-          foreColor: "#fff",
-          type: "bar",
+          foreColor: '#fff',
+          type: 'bar',
           stacked: true,
           sparkline: {
-            enabled: true,
-          },
+            enabled: true
+          }
         },
         stroke: {
-          width: 3,
+          width: 3
         },
-        colors: ["#17ead9"],
+        colors: ['#17ead9'],
         plotOptions: {
           bar: {
             horizontal: true,
-            barHeight: "20%",
+            barHeight: '20%',
             colors: {
-              backgroundBarColors: ["#40475D"],
-            },
-          },
+              backgroundBarColors: ['#40475D']
+            }
+          }
         },
         stroke: {
-          width: 0,
+          width: 0
         },
         series: [
           {
-            name: "Process 1",
-            data: [84],
-          },
+            name: 'Process 1',
+            data: [84]
+          }
         ],
         title: {
           floating: true,
           offsetX: -10,
           offsetY: 5,
-          text: "Process 1",
+          text: 'Process 1'
         },
         subtitle: {
           floating: true,
-          align: "right",
+          align: 'right',
           offsetY: 0,
-          text: "44%",
+          text: '44%',
           style: {
-            fontSize: "20px",
-          },
+            fontSize: '20px'
+          }
         },
         tooltip: {
-          enabled: false,
+          enabled: false
         },
         xaxis: {
-          categories: ["Process 2"],
+          categories: ['Process 2']
         },
         yaxis: {
-          max: 100,
+          max: 100
         },
         tooltip: {
-          theme: "dark",
+          theme: 'dark'
         },
         fill: {
           opacity: 1,
-          type: "gradient",
+          type: 'gradient',
           gradient: {
-            gradientToColors: ["#6078ea"],
-          },
-        },
+            gradientToColors: ['#6078ea']
+          }
+        }
       },
       optionsBarHorizontal3: {
         chart: {
-          foreColor: "#fff",
-          type: "bar",
+          foreColor: '#fff',
+          type: 'bar',
           stacked: true,
           sparkline: {
-            enabled: true,
-          },
+            enabled: true
+          }
         },
         stroke: {
-          width: 3,
+          width: 3
         },
-        colors: ["#f02fc2"],
+        colors: ['#f02fc2'],
         plotOptions: {
           bar: {
             horizontal: true,
-            barHeight: "20%",
+            barHeight: '20%',
             colors: {
-              backgroundBarColors: ["#40475D"],
-            },
-          },
+              backgroundBarColors: ['#40475D']
+            }
+          }
         },
         stroke: {
-          width: 0,
+          width: 0
         },
         series: [
           {
-            name: "Process 1",
-            data: [64],
-          },
+            name: 'Process 1',
+            data: [64]
+          }
         ],
         title: {
           floating: true,
           offsetX: -10,
           offsetY: 5,
-          text: "Process 1",
+          text: 'Process 1'
         },
         subtitle: {
           floating: true,
-          align: "right",
+          align: 'right',
           offsetY: 0,
-          text: "44%",
+          text: '44%',
           style: {
-            fontSize: "20px",
-          },
+            fontSize: '20px'
+          }
         },
         tooltip: {
-          enabled: false,
+          enabled: false
         },
         xaxis: {
-          categories: ["Process 3"],
+          categories: ['Process 3']
         },
         yaxis: {
-          max: 100,
+          max: 100
         },
         tooltip: {
-          theme: "dark",
+          theme: 'dark'
         },
         fill: {
           opacity: 1,
-          type: "gradient",
+          type: 'gradient',
           gradient: {
-            gradientToColors: ["#6094ea"],
-          },
-        },
+            gradientToColors: ['#6094ea']
+          }
+        }
       },
       seriesRadial: [44, 55],
 
       chartOptionsRadial: {
         chart: {
           // height: 350,
-          type: "radialBar",
+          type: 'radialBar',
           offsetX: 0,
-          foreColor: "#fff",
+          foreColor: '#fff'
         },
-        colors: ["#FCCF31", "#17ead9", "#f02fc2"],
+        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
         plotOptions: {
           radialBar: {
             inverseOrder: false,
             hollow: {
               margin: 15,
-              size: "48%",
-              background: "transparent",
+              size: '48%',
+              background: 'transparent'
             },
             track: {
               show: true,
-              background: "#40475D",
-              strokeWidth: "10%",
+              background: '#40475D',
+              strokeWidth: '10%',
               opacity: 1,
-              margin: 3, // margin is in pixels
+              margin: 3 // margin is in pixels
             },
             dataLabels: {
               name: {
-                fontSize: "22px",
+                fontSize: '22px'
               },
               value: {
-                fontSize: "16px",
+                fontSize: '16px'
               },
               total: {
                 show: true,
-                label: "Total",
-                formatter: function (w) {
+                label: 'Total',
+                formatter: function(w) {
                   // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-                  return 249;
-                },
-              },
-            },
-          },
+                  return 249
+                }
+              }
+            }
+          }
         },
-        labels: ["Apples", "Oranges"],
+        labels: ['Apples', 'Oranges'],
         title: {
-          text: "This is circular"
+          text: 'This is circular'
         },
         legend: {
           show: true,
-          position: "left",
+          position: 'left',
           offsetX: -30,
           offsetY: 10,
-          formatter: function (val, opts) {
-            return val + " - " + opts.w.globals.series[opts.seriesIndex] + "%";
-          },
+          formatter: function(val, opts) {
+            return val + ' - ' + opts.w.globals.series[opts.seriesIndex] + '%'
+          }
         },
         fill: {
-          type: "gradient",
+          type: 'gradient',
           gradient: {
-            shade: "dark",
-            type: "horizontal",
+            shade: 'dark',
+            type: 'horizontal',
             shadeIntensity: 0.5,
             inverseColors: true,
             opacityFrom: 1,
             opacityTo: 1,
             stops: [0, 100],
-            gradientToColors: ["#F55555", "#6078ea", "#6094ea"],
-          },
-        },
+            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+          }
+        }
       },
       seriesBar: [
         {
-          data: [21, 22, 10, 28, 16, 21, 13, 30],
-        },
+          data: [21, 22, 10, 28, 16, 21, 13, 30]
+        }
       ],
       chartOptionsBar: {
         chart: {
-          type: "bar",
-          foreColor: "white",
+          type: 'bar',
+          foreColor: 'white',
           toolbar: {
-            show: false,
+            show: false
           },
           events: {
-            click: function (chart, w, e) {
+            click: function(chart, w, e) {
               // console.log(chart, w, e)
-            },
-          },
+            }
+          }
         },
         // colors: colors,
         grid: {
-          borderColor: "#40475D",
+          borderColor: '#40475D'
         },
         plotOptions: {
           bar: {
-            columnWidth: "35%",
+            columnWidth: '35%'
             // distributed: true,
-          },
+          }
         },
         dataLabels: {
-          enabled: false,
+          enabled: false
         },
         stroke: {
-          width: 0,
+          width: 0
         },
         legend: {
-          show: true,
+          show: true
         },
-        colors: ["#FCCF31", "#17ead9", "#f02fc2"],
+        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
         fill: {
-          type: "gradient",
+          type: 'gradient',
           gradient: {
-            type: "vertical",
-            shade: "dark",
-            type: "vertical",
+            type: 'vertical',
+            shade: 'dark',
+            type: 'vertical',
             shadeIntensity: 0.5,
             inverseColors: false,
             opacityFrom: 1,
             opacityTo: 0.8,
             stops: [0, 100],
-            gradientToColors: ["#F55555", "#6078ea", "#6094ea"],
-          },
+            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+          }
         },
         title: {
-          text: "Load Average",
-          align: "left",
+          text: 'Load Average',
+          align: 'left',
           style: {
-            fontSize: "12px",
-          },
+            fontSize: '12px'
+          }
         },
         subtitle: {
-          text: "20%",
+          text: '20%',
           floating: true,
-          align: "right",
+          align: 'right',
           offsetY: 0,
           style: {
-            fontSize: "22px",
-          },
+            fontSize: '22px'
+          }
         },
         tooltip: {
-          theme: "dark",
+          theme: 'dark'
         },
         xaxis: {
           categories: [
-            ["John", "Doe"],
-            ["Joe", "Smith"],
-            ["Jake", "Williams"],
-            "Amber",
-            ["Peter", "Brown"],
-            ["Mary", "Evans"],
-            ["David", "Wilson"],
-            ["Lily", "Roberts"],
+            ['John', 'Doe'],
+            ['Joe', 'Smith'],
+            ['Jake', 'Williams'],
+            'Amber',
+            ['Peter', 'Brown'],
+            ['Mary', 'Evans'],
+            ['David', 'Wilson'],
+            ['Lily', 'Roberts']
           ],
           labels: {
             style: {
-              fontSize: "12px",
-            },
-          },
-        },
+              fontSize: '12px'
+            }
+          }
+        }
       },
       series: [
         {
-          name: "Desktops",
-          data: [120, 41, 335, 501, 409, 612, 629, 391, 148],
-        },
+          name: 'Desktops',
+          data: [120, 41, 335, 501, 409, 612, 629, 391, 148]
+        }
       ],
       chartOptions: {
         chart: {
           height: 350,
-          type: "area",
+          type: 'area',
           zoom: {
-            enabled: false,
+            enabled: false
           },
           toolbar: {
-            show: false,
+            show: false
           },
           dropShadow: {
             enabled: false,
@@ -479,52 +478,52 @@ export default {
             top: 15,
             left: 3,
             blur: 3,
-            color: "#000",
-            opacity: 0.35,
-          },
+            color: '#000',
+            opacity: 0.35
+          }
         },
         dataLabels: {
-          enabled: false,
+          enabled: false
         },
         stroke: {
-          curve: "straight",
+          curve: 'straight'
         },
         title: {
-          text: "Product Trends by Month",
-          align: "left",
+          text: 'Product Trends by Month',
+          align: 'left',
           style: {
-            color: "white",
-          },
+            color: 'white'
+          }
         },
         // colors: ["#db2e03", "#6bdb03"],
         grid: {
           show: true,
-           borderColor: "#40475D",
+          borderColor: '#40475D'
         },
         stroke: {
-          curve: "smooth",
+          curve: 'smooth'
         },
-        colors: ["#FCCF31", "#17ead9", "#f02fc2"],
+        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
         fill: {
-          type: "gradient",
+          type: 'gradient',
           gradient: {
-            shade: "dark",
-            type: "horizontal",
+            shade: 'dark',
+            type: 'horizontal',
             shadeIntensity: 0.5,
             inverseColors: true,
             opacityFrom: 1,
             opacityTo: 1,
             stops: [0, 100],
-            gradientToColors: ["#F55555", "#6078ea", "#6094ea"],
-          },
+            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+          }
         },
         tooltip: {
-          theme: "dark",
+          theme: 'dark'
         },
         legend: {
           labels: {
-            useSeriesColors: true,
-          },
+            useSeriesColors: true
+          }
         },
         // title: {
         //   text: '',
@@ -535,38 +534,38 @@ export default {
         yaxis: {
           labels: {
             style: {
-              colors: "white",
-            },
-          },
+              colors: 'white'
+            }
+          }
         },
         xaxis: {
           categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep'
           ],
           labels: {
             style: {
-              colors: "white",
-            },
-          },
-        },
+              colors: 'white'
+            }
+          }
+        }
       },
       chartOptions2: {
         chart: {
           height: 350,
-          type: "line",
+          type: 'line',
           zoom: {
-            enabled: false,
+            enabled: false
           },
           toolbar: {
-            show: false,
+            show: false
           },
           dropShadow: {
             enabled: true,
@@ -574,51 +573,51 @@ export default {
             top: 15,
             left: 3,
             blur: 3,
-            color: "#000",
-            opacity: 0.35,
-          },
+            color: '#000',
+            opacity: 0.35
+          }
         },
         dataLabels: {
-          enabled: false,
+          enabled: false
         },
         stroke: {
-          curve: "straight",
+          curve: 'straight'
         },
         title: {
-          text: "Product Trends by Month",
-          align: "left",
+          text: 'Product Trends by Month',
+          align: 'left',
           style: {
-            color: "white",
-          },
+            color: 'white'
+          }
         },
         // colors: ["#db2e03", "#6bdb03"],
         grid: {
-          show: false,
+          show: false
         },
         stroke: {
-          curve: "smooth",
+          curve: 'smooth'
         },
-        colors: ["#FCCF31", "#17ead9", "#f02fc2"],
+        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
         fill: {
-          type: "gradient",
+          type: 'gradient',
           gradient: {
-            shade: "dark",
-            type: "horizontal",
+            shade: 'dark',
+            type: 'horizontal',
             shadeIntensity: 0.5,
             inverseColors: true,
             opacityFrom: 1,
             opacityTo: 1,
             stops: [0, 100],
-            gradientToColors: ["#F55555", "#6078ea", "#6094ea"],
-          },
+            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+          }
         },
         tooltip: {
-          theme: "dark",
+          theme: 'dark'
         },
         legend: {
           labels: {
-            useSeriesColors: true,
-          },
+            useSeriesColors: true
+          }
         },
         // title: {
         //   text: '',
@@ -629,56 +628,55 @@ export default {
         yaxis: {
           labels: {
             style: {
-              colors: "white",
-            },
-          },
+              colors: 'white'
+            }
+          }
         },
         xaxis: {
           categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep'
           ],
           labels: {
             style: {
-              colors: "white",
-            },
-          },
-        },
+              colors: 'white'
+            }
+          }
+        }
       },
-      trigoStrength: 3,
-    };
+      trigoStrength: 3
+    }
   },
   methods: {
     generateMinuteWiseTimeSeries(baseval, count, yrange) {
-      var i = 0;
-      var series = [];
+      var i = 0
+      var series = []
       while (i < count) {
-        var x = baseval;
+        var x = baseval
         var y =
           (Math.sin(i / this.trigoStrength) * (i / this.trigoStrength) +
             i / this.trigoStrength +
             1) *
-          (this.trigoStrength * 2);
+          (this.trigoStrength * 2)
 
-        series.push([x, y]);
-        baseval += 300000;
-        i++;
+        series.push([x, y])
+        baseval += 300000
+        i++
       }
-      return series;
-    },
-  },
-};
+      return series
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-
 
 .dashboard-editor-container::-webkit-scrollbar {
   width: 6px;
@@ -705,7 +703,6 @@ export default {
   border-radius: 10px;
 }
 
-
 .dashboard-editor-container {
   padding-left: 20px;
   padding-bottom: 20px;
@@ -721,5 +718,4 @@ export default {
   margin: 20px 20px 0 0;
 }
 </style>
-
 

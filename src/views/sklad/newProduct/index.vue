@@ -127,7 +127,7 @@ export default {
 .new-product-body {
   /* border: 1px solid green; */
   /* height: calc(100vh - 100px); */
-  height: calc(100vh - 2em - 50px); 
+  height: calc(100vh - 2em - 50px);
   max-width: 900px;
   /* border-radius: 10px; */
   /* background-color: #ecc5a2; */

@@ -16,30 +16,31 @@
           @change="getProducts"
         >
           <el-option
-            style="background-color: transparent"
             v-for="(pr, i) in batches"
             :key="i"
+            style="background-color: transparent"
             :label="
               pr._product[0].title.split('-')[0] +
-              ' - ' +
-              pr._product[0].title.split('-')[2]
+                ' - ' +
+                pr._product[0].title.split('-')[2]
             "
             :value="pr._id"
           />
         </el-select>
       </el-form-item>
       <el-form-item prop="isSample">
-        <el-checkbox v-model="toolBarForm.isSample" @change="sampleStateChanged" style="width: 100%"
-          >Sample</el-checkbox
-        >
+        <el-checkbox
+          v-model="toolBarForm.isSample"
+          style="width: 100%"
+          @change="sampleStateChanged"
+        >Sample</el-checkbox>
       </el-form-item>
       <el-form-item v-if="!toolBarForm.isSample" prop="withBorken">
         <el-checkbox
           v-model="toolBarForm.withBorken"
           style="width: 100%"
           @change="brokenStateChanged"
-          >Include borkens</el-checkbox
-        >
+        >Include borkens</el-checkbox>
       </el-form-item>
       <el-form-item v-if="!toolBarForm.isSample" prop="currentcustomer">
         <el-select
@@ -128,9 +129,9 @@
       </el-form-item>
 
       <el-form-item
+        v-if="toolBarForm.isDebt"
         label="Debt return date"
         prop="debtDate"
-        v-if="toolBarForm.isDebt"
       >
         <el-date-picker
           v-model="toolBarForm.debtDate"
@@ -163,214 +164,213 @@
         :disabled="order_saving"
         :loading="order_saving"
         @click="validateOrder()"
-        >Save</el-button
-      >
+      >Save</el-button>
       <el-button type="danger" @click="reset_all()">Cancel</el-button>
     </div>
   </div>
 </template>
 <script>
-import { mapMutations, mapActions, mapState } from "vuex";
-import request from "@/utils/request";
-import { Message } from "element-ui";
-import tools_mixin from "./mixins/tools.mixin";
+import { mapMutations, mapActions, mapState } from 'vuex'
+import request from '@/utils/request'
+import { Message } from 'element-ui'
+import tools_mixin from './mixins/tools.mixin'
 export default {
   mixins: [tools_mixin],
   props: {
     totalPrice: {
       type: [Number, String],
-      default: 0,
+      default: 0
     },
     isTableValid: {
       type: [Boolean],
-      default: false,
-    },
+      default: false
+    }
   },
   data: () => ({
     order_saving: false,
-    batches: [],
+    batches: []
 
   }),
   computed: {
-    ...mapState("products", ["products_types", "product", "order"]),
-    ...mapState("shops", ["shops"]),
+    ...mapState('products', ['products_types', 'product', 'order']),
+    ...mapState('shops', ['shops']),
     drivers() {
-      return this.$store.state.drivers.tableData;
+      return this.$store.state.drivers.tableData
     },
     customers() {
-      return this.$store.state.customers.tableData;
-    },
+      return this.$store.state.customers.tableData
+    }
   },
   mounted() {
-    this.getOrderCount();
-    this.GET_PRODUCT_TYPES();
-    this.GET_CUSTOMERS();
-    this.GET_DRIVERS();
-    this.GET_SHOPS();
+    this.getOrderCount()
+    this.GET_PRODUCT_TYPES()
+    this.GET_CUSTOMERS()
+    this.GET_DRIVERS()
+    this.GET_SHOPS()
     request({
-      url: "/products/get-batches",
-      method: "GET",
+      url: '/products/get-batches',
+      method: 'GET'
     })
       .then((res) => {
-        this.batches = res.data;
-        console.log(this.batches);
+        this.batches = res.data
+        console.log(this.batches)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   },
   methods: {
-    ...mapActions("products", [
-      "GET_PRODUCT_TYPES",
-      "GET_PRODUCT_BY_TYPE_ID",
-      "SAVE_ORDER",
+    ...mapActions('products', [
+      'GET_PRODUCT_TYPES',
+      'GET_PRODUCT_BY_TYPE_ID',
+      'SAVE_ORDER'
     ]),
-    ...mapActions("customers", ["GET_CUSTOMERS"]),
-    ...mapActions("shops", ["GET_SHOPS"]),
-    ...mapActions("drivers", ["GET_DRIVERS"]),
-    ...mapMutations("products", ["SET_ORDER", "PREPARE_ORDER"]),
+    ...mapActions('customers', ['GET_CUSTOMERS']),
+    ...mapActions('shops', ['GET_SHOPS']),
+    ...mapActions('drivers', ['GET_DRIVERS']),
+    ...mapMutations('products', ['SET_ORDER', 'PREPARE_ORDER']),
 
     getOrderCount() {
       request({
-        url: "/orders/get-order-count-for-today",
+        url: '/orders/get-order-count-for-today'
       })
         .then((res) => {
-          console.log("orders", res.data);
-          const d = new Date();
+          console.log('orders', res.data)
+          const d = new Date()
           this.SET_ORDER({
-            key: "order_name",
+            key: 'order_name',
             value: `ALFAM-${res.data[0].count + 1}-${d.getDate()}/${
               d.getMonth() + 1
-            }/${d.getFullYear()}`,
-          });
+            }/${d.getFullYear()}`
+          })
         })
         .catch((err) => {
-          console.log("orders", err);
-        });
+          console.log('orders', err)
+        })
     },
 
     checkTableIsValidToSave() {
-      this.$emit("checkTable");
+      this.$emit('checkTable')
     },
 
     validateOrder() {
-      this.checkTableIsValidToSave();
+      this.checkTableIsValidToSave()
       setTimeout(() => {
         this.$refs.toolBarFormRef.validate((valid) => {
           if (valid) {
             if (this.isTableValid) {
-              this.saveOrder();
+              this.saveOrder()
             } else {
               this.$notify({
-                message: "Check table, there should not be empty, make them 0",
-                type: "error",
-                duration: 0,
-              });
+                message: 'Check table, there should not be empty, make them 0',
+                type: 'error',
+                duration: 0
+              })
             }
           } else {
-            return false;
+            return false
           }
-        });
-      }, 120);
+        })
+      }, 120)
     },
 
     saveOrder() {
       // first need to be check whether everything is ok
-      this.order_saving = true;
-      this.PREPARE_ORDER();
+      this.order_saving = true
+      this.PREPARE_ORDER()
       setTimeout(() => {
         this.SAVE_ORDER()
           .then(() => {
-            this.order_saving = false;
+            this.order_saving = false
             Message({
-              message: "Order successfully saved",
-              type: "success",
-              duration: 3000,
-            });
-            this.reset_all();
-            this.$emit("closeNotification");
-            this.getOrderCount();
+              message: 'Order successfully saved',
+              type: 'success',
+              duration: 3000
+            })
+            this.reset_all()
+            this.$emit('closeNotification')
+            this.getOrderCount()
           })
           .catch((err) => {
-            this.order_saving = false;
+            this.order_saving = false
             Message({
               message: err.response.data,
-              type: "error",
-              duration: 3000,
-            });
-          });
-      }, 200);
+              type: 'error',
+              duration: 3000
+            })
+          })
+      }, 200)
     },
     setIsDebt(val) {
-      this.SET_ORDER({ key: "is_debt", value: val });
+      this.SET_ORDER({ key: 'is_debt', value: val })
     },
     getProducts(val) {
-      let { _product, _id } = this.batches.find((batch) =>
+      const { _product, _id } = this.batches.find((batch) =>
         batch._id[1].includes(val[1])
-      );
-      let title = _product[0].title.split("-")[0] + " - " + val[0];
+      )
+      const title = _product[0].title.split('-')[0] + ' - ' + val[0]
       this.SET_ORDER({
-        key: "product",
+        key: 'product',
         value: {
           title,
           product_id: val[1],
-          partiya: val[0],
-        },
-      });
-      this.GET_PRODUCT_BY_TYPE_ID({ product_id: val[1], partiya: val[0] });
+          partiya: val[0]
+        }
+      })
+      this.GET_PRODUCT_BY_TYPE_ID({ product_id: val[1], partiya: val[0] })
     },
 
     changebase_price(val) {
       // this is to change each item base price accordingly
-      this.$emit("totalPriceChanged", val);
-      this.toolBarForm.totalPrice = val;
-      this.SET_ORDER({ key: "last_sum", val });
+      this.$emit('totalPriceChanged', val)
+      this.toolBarForm.totalPrice = val
+      this.SET_ORDER({ key: 'last_sum', val })
     },
     brokenStateChanged(val) {
-      this.$emit("brokenState", val);
-      this.SET_ORDER({ key: "includes_brokens", value: val });
+      this.$emit('brokenState', val)
+      this.SET_ORDER({ key: 'includes_brokens', value: val })
     },
     sampleStateChanged(val) {
-      this.SET_ORDER({ key: "isSample", value: val });
+      this.SET_ORDER({ key: 'isSample', value: val })
     },
     procedureChanged(val) {
-      this.SET_ORDER({ key: "action", value: val });
+      this.SET_ORDER({ key: 'action', value: val })
     },
     setReturnDebtDate(val) {
-      this.SET_ORDER({ key: "date_of_return_debt", value: val });
+      this.SET_ORDER({ key: 'date_of_return_debt', value: val })
     },
     setDebtDescription(val) {
-      this.SET_ORDER({ key: "description_of_debt", value: val });
+      this.SET_ORDER({ key: 'description_of_debt', value: val })
     },
     costOfUploadChanging(val) {
-      this.SET_ORDER({ key: "upload_cost", value: parseFloat(val) });
+      this.SET_ORDER({ key: 'upload_cost', value: parseFloat(val) })
     },
     currentDriverChanged(val) {
-      this.SET_ORDER({ key: "driver", value: val });
+      this.SET_ORDER({ key: 'driver', value: val })
     },
     customerChanged(val) {
-      this.SET_ORDER({ key: "customer", value: val });
-      this.getLastActionOfCustomer();
+      this.SET_ORDER({ key: 'customer', value: val })
+      this.getLastActionOfCustomer()
     },
     shopChanged(val) {
-      this.SET_ORDER({ key: "shop", value: val });
+      this.SET_ORDER({ key: 'shop', value: val })
     },
     reset_all() {
-      this.toolBarForm.withBorken = false;
-      this.toolBarForm.currentProduct = "";
-      this.toolBarForm.currentStatus = "";
-      this.toolBarForm.currentcustomer = "";
-      this.toolBarForm.costOfUpload = "";
-      this.order_saving = false;
-      this.toolBarForm.currentDriver = "";
-      this.toolBarForm.debtDescription = "";
-      this.toolBarForm.debtDate = "";
-      this.toolBarForm.isDebt = false;
-      this.changebase_price(0);
-      this.$refs.toolBarFormRef.resetFields();
-    },
-  },
-};
+      this.toolBarForm.withBorken = false
+      this.toolBarForm.currentProduct = ''
+      this.toolBarForm.currentStatus = ''
+      this.toolBarForm.currentcustomer = ''
+      this.toolBarForm.costOfUpload = ''
+      this.order_saving = false
+      this.toolBarForm.currentDriver = ''
+      this.toolBarForm.debtDescription = ''
+      this.toolBarForm.debtDate = ''
+      this.toolBarForm.isDebt = false
+      this.changebase_price(0)
+      this.$refs.toolBarFormRef.resetFields()
+    }
+  }
+}
 </script>
 
 <style scope>

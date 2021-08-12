@@ -8,15 +8,15 @@
 </template>
 
 <script>
-import Tools from "./components/tools.vue";
-import pageBody from "./components/pageBody.vue";
+import Tools from './components/tools.vue'
+import pageBody from './components/pageBody.vue'
 export default {
-  name: "Archive",
+  name: 'Archive',
   components: {
     Tools,
-    pageBody,
-  },
-};
+    pageBody
+  }
+}
 </script>
 
 <style>
