@@ -1,34 +1,42 @@
 <template>
   <el-row style="height: calc(100vh - 86px)">
-    <!-- <el-col :span="24" style="height: 3rem;">
-      <tools />
-    </el-col> -->
     <el-col :span="9" style="height: calc(100vh - 86px);">
       <el-table
-        :data="tableData"
+        :data="zavskladOrders"
         style="width: 100%"
         height="100%"
         border
         :highlight-current-row="true"
+        @row-click="choseOrder"
       >
         <el-table-column
           align="center"
-          prop="name"
           label="Do'kon nomi"
           width="200"
-        />
+        >
+          <template slot-scope="scope">
+            {{ scope.row.user.stuff.shop.name }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          prop="address"
           width="200"
           label="Haridor"
-        />
+        >
+          <template slot-scope="scope">
+            {{ scope.row.customer.firstName + ' ' + scope.row.customer.lastName }}
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="address"
           width="200"
+          prop="product"
           align="center"
           label="Status"
-        />
+        >
+          <!-- <template slot-scope="scope">
+
+          </template> -->
+        </el-table-column>
         <el-table-column
           prop="address"
           width="100"
@@ -54,7 +62,7 @@
         height="100%"
         style="width: 100%"
         size="small"
-        :data="tableData"
+        :data="currentOrderProducts"
       >
         <el-table-column type="index" label="№" align="center" width="100" />
         <el-table-column
@@ -138,6 +146,7 @@
   </el-row>
 </template>
 <script>
+import { mapActions, mapState } from 'vuex'
 // import tools from './components/tools'
 export default {
   name: 'OrdersPage',
@@ -145,101 +154,21 @@ export default {
   //   tools
   // },
   data: () => ({
-    tableData: [
-      {
-        code: '1191A',
-        type_name: 'Ochi',
-        size: '30 * 60',
-        packTotalArea: '',
-        item_num: '',
-        pack_num: '',
-        over_pack_num: '',
-        wight_of_one_packet: 25,
-        weight_of_an_item: 3.125,
-        weight: '',
-        area_of_one_packet: 1.44,
-        area_of_an_item: 0.18,
-        number_of_items: 8
-      },
-      {
-        code: '1191B',
-        type_name: "To'qi",
-        size: '30 * 60',
-        packTotalArea: '',
-        item_num: '',
-        pack_num: '',
-        over_pack_num: '',
-        wight_of_one_packet: 25,
-        weight_of_an_item: 3.125,
-        weight: '',
-        area_of_one_packet: 1.44,
-        area_of_an_item: 0.18,
-        number_of_items: 8
-      },
-      {
-        code: '1191C',
-        type_name: 'Dekor',
-        size: '30 * 60',
-        packTotalArea: '',
-        item_num: '',
-        pack_num: '',
-        over_pack_num: '',
-        wight_of_one_packet: 25,
-        weight_of_an_item: 3.125,
-        weight: '',
-        area_of_one_packet: 1.44,
-        area_of_an_item: 0.18,
-        number_of_items: 8
-      },
-      {
-        code: '1191D',
-        type_name: 'Pol',
-        size: '30 * 30',
-        packTotalArea: '',
-        item_num: '',
-        pack_num: '',
-        over_pack_num: '',
-        wight_of_one_packet: 21,
-        weight_of_an_item: 1.4,
-        weight: '',
-        area_of_one_packet: 1.35,
-        area_of_an_item: 0.09,
-        number_of_items: 15
-      },
-      {
-        code: '1191F',
-        type_name: 'Friz',
-        size: '30 * 6 ',
-        packTotalArea: '',
-        item_num: '',
-        pack_num: '',
-        over_pack_num: '',
-        wight_of_one_packet: 21,
-        weight_of_an_item: 1.4,
-        weight: '',
-        area_of_one_packet: 0.72,
-        area_of_an_item: 0.018,
-        number_of_items: 40
-      },
-      {
-        code: '1191S',
-        type_name: 'Sigara',
-        size: '30 * 2 ',
-        packTotalArea: '',
-        item_num: '',
-        pack_num: '',
-        over_pack_num: '',
-        wight_of_one_packet: 10,
-        weight_of_an_item: 0.1,
-        weight: '',
-        area_of_one_packet: 0.6,
-        area_of_an_item: 0.006,
-        number_of_items: 100
-      }
-    ],
-    showImageDilog: false
+    showImageDilog: false,
+    imageUrl: '',
+    currentOrderProducts: []
   }),
+  computed: {
+    ...mapState('orders', ['zavskladOrders'])
+  },
+  mounted() {
+    this.GET_ZAVSKLAD_ORDERS()
+  },
   methods: {
+    ...mapActions('orders', ['GET_ZAVSKLAD_ORDERS']),
+    choseOrder(row) {
+      this.currentOrderProducts = row.products
+    },
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url

@@ -25,9 +25,24 @@ function close_current_order(params) {
   })
 }
 
+function get_all_order(params) {
+  return request({
+    url: '/orders/zavskald-all-orders',
+    method: 'GET',
+    params
+  })
+}
+
 const state = {
   currentTable: 'orderInventar',
+  zavskladOrders: [],
   queryParams: {
+    search_input: 1,
+    search_text: '',
+    currentPage: 1,
+    perPage: 20
+  },
+  queryParamsZavsklad: {
     search_input: 1,
     search_text: '',
     currentPage: 1,
@@ -37,7 +52,7 @@ const state = {
   currentOrderHeader: {
     customer: '',
     product: '',
-    order_name: '',
+    order_name: ''
   },
   tableLoading: false,
   currentOrder: null
@@ -46,9 +61,12 @@ const state = {
 const mutations = {
   SET_CURRENT_TABLE: (state, table) => {
     state.currentTable = table
-  },  
+  },
   SET_ORDER: (state, order) => {
     state.currentOrder = order
+  },
+  SET_ORDER_ZAVSKLAD: (state, orders) => {
+    state.zavskladOrders = orders
   },
   SET_ORDERS: (state, orders) => {
     state.orders = orders
@@ -64,36 +82,50 @@ const mutations = {
 }
 
 const actions = {
-  CLOSE_CURRENT_ORDER: ({ commit, state}, data) => {
+  GET_ZAVSKLAD_ORDERS: ({ commit, state }) => {
     return new Promise((resolve, reject) => {
-      close_current_order({order_id: data}).then(res => {
+      state.tableLoading = true
+      get_all_order(state.queryParamsZavsklad).then(res => {
+        commit('SET_ORDER_ZAVSKLAD', res.data)
+        state.tableLoading = false
+        resolve()
+      }).catch(err => {
+        state.tableLoading = false
+        reject(err)
+      })
+    })
+  },
+  CLOSE_CURRENT_ORDER: ({ commit, state }, data) => {
+    return new Promise((resolve, reject) => {
+      close_current_order(data).then(res => {
         Message({
           message: res.data,
           type: 'success',
-          duration: 4000,
+          duration: 4000
         })
         resolve()
       }).catch(err => {
         Message({
           message: err.response.data,
           type: 'errors',
-          duration: 4000,
+          duration: 4000
         })
         reject()
       })
     })
   },
-  GET_CURRENT_ORDER: ({commit, state}) => {
+  GET_CURRENT_ORDER: ({ commit, state }) => {
     return new Promise((resolve, reject) => {
-      let sendObj = {
+      const sendObj = {
         product_id: state.currentOrder.product_id,
         customer: state.currentOrder.customer._id,
-        batch: state.currentOrder.batch
+        batch: state.currentOrder.batch,
+        order_count: state.currentOrder.order_count
       }
       state.tableLoading = true
       get_order_of_inventar(sendObj).then(res => {
         state.tableLoading = false
-        console.log("data:", res.data)
+        console.log('data:', res.data)
         commit('SET_ORDERS', res.data)
         resolve()
       }).catch(err => {

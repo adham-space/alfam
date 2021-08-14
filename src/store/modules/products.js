@@ -36,7 +36,7 @@ function save_order(data) {
     url: '/orders/save-order',
     method: 'POST',
     data,
-    timeout: 20*1000
+    timeout: 20 * 1000
   })
 }
 
@@ -86,7 +86,7 @@ const mutations = {
     state.products = products
   },
   SET_TODAYS_PRODUCT_NUM: (state, num) => {
-    state.todays_product_nums = num.partiya,
+    state.todays_product_nums = num.partiya
     state.isThereBroken = num.isThereBroken
     state.there_is_product_type = num.there_is_product_type
   },

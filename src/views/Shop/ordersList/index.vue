@@ -2,9 +2,9 @@
   <div>
     <el-row :gutter="10" class="orders-body">
       <Tools />
-     <keep-alive>
-       <current :is="currentTable" />
-     </keep-alive>
+      <keep-alive>
+        <current :is="currentTable" />
+      </keep-alive>
     </el-row>
   </div>
 </template>

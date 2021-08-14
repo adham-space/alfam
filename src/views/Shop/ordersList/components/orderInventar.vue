@@ -132,11 +132,34 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="170" align="center" prop="last_sum" label="Price" >
+      <el-table-column align="center" prop="last_sum" label="Price">
         <template slot-scope="scope">
-          {{scope.row.last_sum.toFixed(4)}}
+
+          <el-popover
+            placement="right"
+            trigger="hover"
+          >
+            <el-table :show-header="false" :data="gridDataPrice(scope.row.products)">
+              <el-table-column align="center" width="120" property="name" label="name" />
+              <el-table-column align="center" width="100" property="value" label="value">
+                <!-- eslint-disable-next-line -->
+                <template slot-scope="scope">
+                  <span>  {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-button slot="reference" type="text">
+              {{ parseFloat(scope.row.last_sum.toFixed(4)) }}
+            </el-button>
+          </el-popover>
         </template>
       </el-table-column>
+
+      <!-- <el-table-column width="170" align="center" prop="last_sum" label="Price">
+        <template slot-scope="scope">
+          {{ parseFloat(scope.row.last_sum.toFixed(4)) }}
+        </template>
+      </el-table-column> -->
       <el-table-column
         width="180"
         align="center"
@@ -184,7 +207,7 @@
             <el-checkbox
               :value="scope.row.actuality_status"
               :disabled="!!!scope.row.actuality_status"
-              @change="closeCurrentOrder(scope.row._id)"
+              @change="closeCurrentOrder(scope.row)"
             />
           </el-tooltip>
           <!-- <el-tooltip v-else>
@@ -209,8 +232,8 @@
 <script>
 import Pagination from '@/components/Pagination'
 import { mapMutations, mapState, mapActions } from 'vuex'
-import request from '@/utils/request'
-import { Message } from 'element-ui'
+// import request from '@/utils/request'
+// import { Message } from 'element-ui'
 export default {
   name: 'OrderInventar',
   components: {
@@ -244,6 +267,27 @@ export default {
         this.SET_CURRENT_TABLE('innerTable')
       })
     },
+    gridDataPrice(products) {
+      let dataItem = {
+        name: '',
+        value: '',
+        isReturning: false
+      }
+      const data = []
+      products.forEach(product => {
+        dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
+        dataItem.value = product.sum
+        dataItem.isReturning = product.isReturning
+        data.push(dataItem)
+        dataItem = {
+          name: '',
+          value: '',
+          isReturning: false
+        }
+      })
+      return data
+    },
+
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
@@ -280,8 +324,9 @@ export default {
       })
       return data
     },
-    closeCurrentOrder(id) {
-      this.CLOSE_CURRENT_ORDER(id).then(() => {
+    closeCurrentOrder(row) {
+      console.log('row:', row)
+      this.CLOSE_CURRENT_ORDER({ order_id: row._id, consumer: row.customer._id, product_id: row.product_id }).then(() => {
         this.GET_ORDERS()
       }).catch(err => {
         console.error(err)

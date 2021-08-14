@@ -214,7 +214,7 @@ export default {
           const d = new Date()
           this.SET_ORDER({
             key: 'order_name',
-            value: `ALFAM-${res.data[0].count + 1}-${d.getDate()}/${
+            value: `ALFAM-${res.data === null ? 0 : res.data[0].count + 1}-${d.getDate()}/${
               d.getMonth() + 1
             }/${d.getFullYear()}`
           })

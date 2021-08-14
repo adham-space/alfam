@@ -35,13 +35,13 @@
       style="flex: 1; margin: 0 1em; text-align: right"
     >
       <el-button
-        @click="backToInventar()"
         style="
           border: 1px solid transparent;
           background-color: white;
           font-size: 1.2em;
         "
         class="el-icon-back"
+        @click="backToInventar()"
       />
       <span style="color: gray">{{ currentOrderHeader.order_name }}</span> /
       <span style="color: gray">{{ currentOrderHeader.product }}</span> /
@@ -73,47 +73,47 @@
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions } from "vuex";
-import edit from "./edit.vue";
+import { mapMutations, mapState, mapActions } from 'vuex'
+import edit from './edit.vue'
 export default {
   components: {
-    edit,
+    edit
   },
   data: () => ({
-    search_input: "",
+    search_input: '',
     search_type: 1,
     addDialog: false,
     editDialog: false,
-    delete_Dialog: false,
+    delete_Dialog: false
   }),
   computed: {
-    ...mapState("orders", ["currentOrder", "currentOrderHeader"]),
+    ...mapState('orders', ['currentOrder', 'currentOrderHeader'])
   },
   methods: {
-    ...mapMutations("orders", [
-      "SET_QUERY",
-      "SET_CURRENT_TABLE",
-      "SET_CURRENT_ORDER_HEADER",
+    ...mapMutations('orders', [
+      'SET_QUERY',
+      'SET_CURRENT_TABLE',
+      'SET_CURRENT_ORDER_HEADER'
     ]),
-    ...mapActions("orders", ["GET_ORDERS"]),
+    ...mapActions('orders', ['GET_ORDERS']),
     searchTypeChanged(t) {
       this.SET_QUERY({
-        key: "search_input",
-        value: t,
-      });
+        key: 'search_input',
+        value: t
+      })
     },
     backToInventar() {
       this.GET_ORDERS().then(() => {
-        this.SET_CURRENT_TABLE("orderInventar");
+        this.SET_CURRENT_TABLE('orderInventar')
         this.SET_CURRENT_ORDER_HEADER({
-          customer: "",
-          product: "",
-          order_name: "",
-        });
-      });
-    },
-  },
-};
+          customer: '',
+          product: '',
+          order_name: ''
+        })
+      })
+    }
+  }
+}
 </script>
 
 <style>
