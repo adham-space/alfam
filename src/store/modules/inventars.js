@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 function getInventars(params) {
   return request({
-    url: '/inventars/',
+    url: '/products/inventars',
     params,
     method: 'GET'
   })
@@ -15,14 +15,14 @@ const state = {
     currentPage: 1,
     perPage: 20
   },
-  tableData: [],
+  inventarData: [],
   tblLoading: false,
   currentInventar: null
 }
 
 const mutations = {
   SET_INVENTARS: (state, data) => {
-    state.tableData = data
+    state.inventarData = data
   },
   SET_INVENTAR: (state, data) => {
     state.currentInventar = data

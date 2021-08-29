@@ -3,6 +3,7 @@ export default {
     // area value is changing
 
     areaIsChanging(newArea, currentRow) {
+      console.log('area is changing', newArea)
       this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
       // set new area to its object
       if (newArea) {

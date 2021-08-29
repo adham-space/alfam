@@ -195,8 +195,8 @@
       <el-table-column prop="status" width="100" align="center" label="Status" fixed="right">
         <template slot-scope="scope">
           <i v-if="scope.row.status === -1" class="el-icon-loading" />
-          <i v-if="scope.row.status === 1" class="el-icon-success" />
-          <i v-if="scope.row.status === 0" class="el-icon-error" />
+          <i v-if="scope.row.status === 1" style="color: green" class="el-icon-success" />
+          <i v-if="scope.row.status === 0" style="color: red" class="el-icon-error" />
         </template>
       </el-table-column>
 
@@ -222,8 +222,6 @@
 <script>
 import Pagination from '@/components/Pagination'
 import { mapMutations, mapState, mapActions } from 'vuex'
-import request from '@/utils/request'
-import { Message } from 'element-ui'
 export default {
   name: 'InnerTable',
   components: {
@@ -253,7 +251,15 @@ export default {
       this.imageUrl = url
     },
     orderChosed(row) {
-      this.SET_ORDER(row)
+      if (row.status === -1) {
+        this.SET_ORDER(row)
+      } else {
+        this.$notify({
+          message: 'You cant edit this order: order already processed by zavsklad',
+          type: 'warning',
+          duration: 40000
+        })
+      }
     },
     getTotalAre(products) {
       return products.reduce((a, b) => ({ packTotalArea: a.packTotalArea + b.packTotalArea }))
@@ -320,25 +326,6 @@ export default {
         }
       })
       return data
-    },
-    closeCurrentOrder() {
-      request({
-        url: '/orders/close-order',
-        method: 'POST'
-      }).then(res => {
-        Message({
-          message: res.data,
-          type: 'success',
-          duration: 3000
-        })
-      })
-        .catch(err => {
-          Message({
-            message: err.response.data,
-            type: 'error',
-            duration: 3000
-          })
-        })
     }
   }
 }

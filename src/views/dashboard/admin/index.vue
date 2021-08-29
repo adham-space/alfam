@@ -121,9 +121,9 @@ export default {
             }
           }
         },
-        stroke: {
-          width: 0
-        },
+        // stroke: {
+        //   width: 0
+        // },
         series: [
           {
             name: 'Process 1',
@@ -146,16 +146,14 @@ export default {
           }
         },
         tooltip: {
-          enabled: false
+          enabled: false,
+          theme: 'dark'
         },
         xaxis: {
           categories: ['Process 1']
         },
         yaxis: {
           max: 100
-        },
-        tooltip: {
-          theme: 'dark'
         },
         fill: {
           opacity: 1,
@@ -187,9 +185,9 @@ export default {
             }
           }
         },
-        stroke: {
-          width: 0
-        },
+        // stroke: {
+        //   width: 0
+        // },
         series: [
           {
             name: 'Process 1',
@@ -212,7 +210,8 @@ export default {
           }
         },
         tooltip: {
-          enabled: false
+          enabled: false,
+          theme: 'dark'
         },
         xaxis: {
           categories: ['Process 2']
@@ -220,9 +219,9 @@ export default {
         yaxis: {
           max: 100
         },
-        tooltip: {
-          theme: 'dark'
-        },
+        // tooltip: {
+
+        // },
         fill: {
           opacity: 1,
           type: 'gradient',
@@ -253,9 +252,9 @@ export default {
             }
           }
         },
-        stroke: {
-          width: 0
-        },
+        // stroke: {
+        //   width: 0
+        // },
         series: [
           {
             name: 'Process 1',
@@ -278,16 +277,14 @@ export default {
           }
         },
         tooltip: {
-          enabled: false
+          enabled: false,
+          theme: 'dark'
         },
         xaxis: {
           categories: ['Process 3']
         },
         yaxis: {
           max: 100
-        },
-        tooltip: {
-          theme: 'dark'
         },
         fill: {
           opacity: 1,
@@ -410,7 +407,6 @@ export default {
           gradient: {
             type: 'vertical',
             shade: 'dark',
-            type: 'vertical',
             shadeIntensity: 0.5,
             inverseColors: false,
             opacityFrom: 1,
@@ -485,9 +481,9 @@ export default {
         dataLabels: {
           enabled: false
         },
-        stroke: {
-          curve: 'straight'
-        },
+        // stroke: {
+        //   curve: 'straight'
+        // },
         title: {
           text: 'Product Trends by Month',
           align: 'left',
@@ -580,9 +576,9 @@ export default {
         dataLabels: {
           enabled: false
         },
-        stroke: {
-          curve: 'straight'
-        },
+        // stroke: {
+        //   curve: 'straight'
+        // },
         title: {
           text: 'Product Trends by Month',
           align: 'left',

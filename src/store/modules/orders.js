@@ -33,6 +33,14 @@ function get_all_order(params) {
   })
 }
 
+function set_order_status(data) {
+  return request({
+    url: '/orders/set-order-status',
+    method: 'PUT',
+    data
+  })
+}
+
 const state = {
   currentTable: 'orderInventar',
   zavskladOrders: [],
@@ -82,6 +90,25 @@ const mutations = {
 }
 
 const actions = {
+  SET_ORDER_STATUS: ({ commit, state }, data) => {
+    return new Promise((resolve, reject) => {
+      set_order_status(data).then(res => {
+        Message({
+          message: res.data,
+          type: 'success',
+          duration: 4000
+        })
+        resolve()
+      }).catch(err => {
+        Message({
+          message: err.response.data,
+          type: 'error',
+          duration: 4000
+        })
+        reject(err)
+      })
+    })
+  },
   GET_ZAVSKLAD_ORDERS: ({ commit, state }) => {
     return new Promise((resolve, reject) => {
       state.tableLoading = true

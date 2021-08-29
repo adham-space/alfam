@@ -305,7 +305,7 @@ export default {
       this.SET_ORDER({ key: 'is_debt', value: val })
     },
     getProducts(val) {
-      const { _product, _id } = this.batches.find((batch) =>
+      const { _product } = this.batches.find((batch) =>
         batch._id[1].includes(val[1])
       )
       const title = _product[0].title.split('-')[0] + ' - ' + val[0]

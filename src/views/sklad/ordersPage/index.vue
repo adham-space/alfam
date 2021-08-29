@@ -1,7 +1,8 @@
 <template>
-  <el-row style="height: calc(100vh - 86px)">
-    <el-col :span="9" style="height: calc(100vh - 86px);">
+  <el-row style="height: calc(100vh - 50px)">
+    <el-col :span="9" style="height: calc(100vh - 50px);">
       <el-table
+        v-loading="tableLoading"
         :data="zavskladOrders"
         style="width: 100%"
         height="100%"
@@ -31,44 +32,40 @@
           width="200"
           prop="product"
           align="center"
-          label="Status"
-        >
-          <!-- <template slot-scope="scope">
-
-          </template> -->
-        </el-table-column>
+          label="Product"
+        />
         <el-table-column
           prop="address"
-          width="100"
+          width="150"
           align="center"
           fixed="right"
           label="Action"
         >
-          <template slot-scope="">
+          <template slot-scope="scope">
             <div class="action-btns">
-              <el-tooltip style="width: 50%" effect="dark" content="Top Left prompts info" placement="left-start">
-                <el-button type="text" icon="el-icon-check" class="action-btn" />
+              <el-tooltip effect="dark" content="Accept" placement="left-start">
+                <el-button :disabled="order_processing" :icon="order_processing ?'el-icon-loading' :'el-icon-check'" class="action-btn" @click="accept(scope.row._id)" />
               </el-tooltip>
-              <el-tooltip style="width: 50%" class="item" effect="dark" content="Top Left prompts info" placement="right-start">
-                <el-button type="text" icon="el-icon-close" style="color: red;" class="action-btn" />
+              <el-tooltip class="item" effect="dark" content="Reject" placement="right-start">
+                <el-button :disabled="order_processing" icon="el-icon-close" style="color: red;" class="action-btn" @click="reject(scope.row._id)" />
               </el-tooltip>
             </div>
           </template>
         </el-table-column>
       </el-table>
     </el-col>
-    <el-col :span="15" style="height: calc(100vh - 86px)">
+    <el-col :span="15" style="height: calc(100vh - 50px)">
       <el-table
         height="100%"
         style="width: 100%"
         size="small"
         :data="currentOrderProducts"
       >
-        <el-table-column type="index" label="№" align="center" width="100" />
         <el-table-column
           width="150"
           label="КАФЕЛНИ КОДИ"
           prop="code"
+          fixed="left"
           align="center"
         />
         <el-table-column
@@ -76,29 +73,22 @@
           label="СПЕЦИФИКАЦИЯСИ"
           prop="type_name"
           align="center"
-        />
+        >
+          <template slot-scope="scope">
+            {{ scope.row.type_name + (scope.row.broken ? ' - broken': '') }}
+          </template>
+        </el-table-column>
+
         <el-table-column
           width="150"
           label="ТОВАРНИ РАЗМЕРИ"
           prop="size"
           align="center"
         />
-        <el-table-column
-          width="150"
-          label="ТОВАРНИ РАСМИ"
-          prop="photo"
-          align="center"
-        >
-          <el-image
-            style="width: 30px; height: 30px"
-            src="https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80"
-            fit="scale-down"
-            @click="openImg('https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80')"
-          />
-        </el-table-column>
+
         <el-table-column
           width="300"
-          label="УМУМИЙ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
+          label="УМУМИЙ МИҚДОРНИ ЎЛЧОВ БИРЛИГИ"
           align="center"
         >
           <el-table-column
@@ -106,39 +96,80 @@
             label="УМУМИЙ (м2)"
             align="center"
             prop="packTotalArea"
-          />
+          >
+            <template slot-scope="scope">
+              {{ scope.row.packTotalArea }}
+            </template>
+          </el-table-column>
           <el-table-column
             width="150"
             label="УМУМИЙ (ДОНАСИ)"
             prop="item_num"
             align="center"
-          />
+          >
+            <template slot-scope="scope">
+              <div class="two-fields">
+                {{ scope.row.item_num }}
+              </div>
+            </template>
+          </el-table-column>
         </el-table-column>
+
         <el-table-column
           width="155"
-          label="ТОВАРНИ УМУМИЙ ПОЧКАСИНИ (МИҚДОРИ)"
-          prop=""
           align="center"
         >
+          <template slot="header" slot-scope="">
+            <span>ТОВАРНИ УМУМИЙ</span><br>
+            <span>ПОЧКАСИНИЙ</span><br>
+            <span>(МИҚДОРИ)</span><br>
+          </template>
           <el-table-column
             width="178"
             align="center"
             prop="pack_num"
-            label="ТОВАРНИ УМУМИЙ ДОНАСИНИ (МИҚДОРИ)"
           >
-            -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         </el-table-column>
+            <template slot="header" slot-scope="">
+              <span>ТОВАРНИ УМУМИЙ</span><br>
+              <span>ДОНАСИНИ</span><br>
+              <span>(МИҚДОРИ)</span><br>
+            </template>
+            <template slot-scope="scope">
+              {{ scope.row.pack_num }} / {{ scope.row.over_pack_num }}
+            </template>
+          </el-table-column>
         </el-table-column>
         <el-table-column
-          width="160"
+          width="150"
           label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"
           prop="weight"
           align="center"
-        />
+        >
+          <template slot-scope="scope">
+            {{ scope.row.weight_of_an_item * scope.row.item_num }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="150"
+          label="ТОВАРНИ РАСМИ"
+          prop="photo"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <el-image
+              style="width: 30px; height: 30px"
+              :src="'http://localhost:3000/' + scope.row.photo_path"
+              fit="scale-down"
+              @click="openImg('http://localhost:3000/' + scope.row.photo_path)"
+            />
+          </template>
+        </el-table-column>
+
       </el-table>
     </el-col>
     <el-dialog title="" :visible.sync="showImageDilog" width="40%">
       <el-image
-        style="width: 90%; height: 90%"
+        style="width: 100%"
         :src="imageUrl"
         fit="scale-down"
       />
@@ -156,22 +187,46 @@ export default {
   data: () => ({
     showImageDilog: false,
     imageUrl: '',
-    currentOrderProducts: []
+    currentOrderProducts: [],
+    order_processing: false
   }),
   computed: {
-    ...mapState('orders', ['zavskladOrders'])
+    ...mapState('orders', ['zavskladOrders', 'tableLoading'])
   },
   mounted() {
     this.GET_ZAVSKLAD_ORDERS()
   },
   methods: {
-    ...mapActions('orders', ['GET_ZAVSKLAD_ORDERS']),
+    ...mapActions('orders', ['GET_ZAVSKLAD_ORDERS', 'SET_ORDER_STATUS']),
     choseOrder(row) {
       this.currentOrderProducts = row.products
+      console.log(this.currentOrderProducts)
     },
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
+    },
+    accept(id) {
+      this.order_processing = true
+      this.SET_ORDER_STATUS({ status: 1, order_id: id }).then(() => {
+        this.order_processing = false
+        this.currentOrderProducts = []
+        this.GET_ZAVSKLAD_ORDERS()
+      }).catch(err => {
+        console.error(err)
+        this.order_processing = false
+      })
+    },
+    reject(id) {
+      this.order_processing = true
+      this.SET_ORDER_STATUS({ status: 0, order_id: id }).then(() => {
+        this.order_processing = false
+        this.currentOrderProducts = []
+        this.GET_ZAVSKLAD_ORDERS()
+      }).catch(err => {
+        console.error(err)
+        this.order_processing = false
+      })
     }
   }
 }
@@ -181,6 +236,7 @@ export default {
 .action-btns {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
 }
 

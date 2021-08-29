@@ -56,17 +56,18 @@
         @click="$router.push('/shop/shop-packing-list')"
       />
       <el-button
+        v-if="currentTable === 'innerTable'"
         :disabled="!!!currentOrder"
         style="border: 1px solid transparent"
         icon="el-icon-edit"
         @click="editDialog = true"
       />
-      <el-button
+      <!-- <el-button
         :disabled="!!!currentOrder"
         style="border: 1px solid transparent; color: red"
         icon="el-icon-delete"
         @click="delete_Dialog = true"
-      />
+      /> -->
       <edit :dialog-visible="editDialog" @closeDialog="editDialog = false" />
     </div>
   </el-col>
@@ -87,7 +88,7 @@ export default {
     delete_Dialog: false
   }),
   computed: {
-    ...mapState('orders', ['currentOrder', 'currentOrderHeader'])
+    ...mapState('orders', ['currentOrder', 'currentOrderHeader', 'currentTable'])
   },
   methods: {
     ...mapMutations('orders', [

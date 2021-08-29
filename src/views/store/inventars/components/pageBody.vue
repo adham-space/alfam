@@ -4,18 +4,35 @@
       v-loading="tblLoading"
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
-      :data="tableData"
+      :data="inventarData"
       stripe
       highlight-current-row
       @row-click="driverChosed"
     >
       <el-table-column width="100" align="center" prop="_id" label="ID">
         <template slot-scope="scope">
-          {{ scope.row._id.substr(0, 6) }}
+          {{ scope.row._id.substr(0, 10) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="name" label="Name" />
-      <el-table-column align="center" prop="sellers" label="Workers" />
+      <el-table-column align="center" prop="title" label="Product" />
+      <el-table-column align="center" label="Size">
+        <template slot-scope="scope">
+          {{ scope.row.product_type.height + ' * ' + scope.row.product_type.width }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="proportion">
+        <template slot-scope="scope">
+          {{ parseFloat(scope.row.proportion.toFixed(2)) }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="partiya" label="batch" />
+      <el-table-column align="center" prop="total_area" label="Area">
+        <template slot-scope="scope">
+          {{ parseFloat(scope.row.total_area.toFixed(2)) }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="total_number_of_items" label="Items" />
+      <el-table-column align="center" prop="total_number_of_packets" label="Number of packets" />
     </el-table>
     <div class="pgntion">
       <Pagination
@@ -43,16 +60,19 @@ export default {
     }
   }),
   computed: {
-    ...mapState('inventars', ['tableData', 'tblLoading'])
+    ...mapState('inventars', ['inventarData', 'tblLoading'])
   },
   beforeDestroy() {
     // this.SET_SHOP(null)
   },
+  mounted() {
+    this.GET_INVENTARS()
+  },
   methods: {
-    ...mapMutations('inventars', ['SET_SHOP', 'SET_QUERY_PARAM']),
+    ...mapMutations('inventars', ['SET_INVENTAR', 'SET_QUERY_PARAM']),
     ...mapActions('inventars', ['GET_INVENTARS']),
     driverChosed(row, column, event) {
-      this.SET_SHOP(row)
+      this.SET_INVENTAR(row)
     },
     getList() {
       this.SET_QUERY_PARAM({ key: 'perPage', value: this.listQuery.limit })
