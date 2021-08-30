@@ -48,7 +48,7 @@
                     style="width: 50px; height: 50px"
                     :src="'https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path"
                     fit="scale-down"
-                    @click="openImg('http://localhost:3000/' + scope.row.photo_path)"
+                    @click="openImg('https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path)"
                   />
                 </template>
               </el-table-column>
