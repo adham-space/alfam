@@ -22,17 +22,25 @@
       </el-table-column>
       <el-table-column align="center" label="proportion">
         <template slot-scope="scope">
-          {{ parseFloat(scope.row.proportion.toFixed(2)) }}
+          {{ toThousandFilter(parseFloat(scope.row.proportion.toFixed(2))) }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="partiya" label="batch" />
       <el-table-column align="center" prop="total_area" label="Area">
         <template slot-scope="scope">
-          {{ parseFloat(scope.row.total_area.toFixed(2)) }}
+          {{ toThousandFilter(parseFloat(scope.row.total_area.toFixed(2))) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="total_number_of_items" label="Items" />
-      <el-table-column align="center" prop="total_number_of_packets" label="Number of packets" />
+      <el-table-column align="center" prop="total_number_of_items" label="Items">
+        <template slot-scope="scope">
+          {{ toThousandFilter(scope.row.total_number_of_items) }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="total_number_of_packets" label="Number of packets">
+        <template slot-scope="scope">
+          {{ toThousandFilter(scope.row.total_number_of_packets) }}
+        </template>
+      </el-table-column>
     </el-table>
     <div class="pgntion">
       <Pagination
@@ -48,7 +56,7 @@
 <script>
 import Pagination from '@/components/Pagination'
 import { mapActions, mapMutations, mapState } from 'vuex'
-
+import { toThousandFilter } from '@/filters/index'
 export default {
   components: {
     Pagination
@@ -73,6 +81,9 @@ export default {
     ...mapActions('inventars', ['GET_INVENTARS']),
     driverChosed(row, column, event) {
       this.SET_INVENTAR(row)
+    },
+    toThousandFilter(num) {
+      return toThousandFilter(num)
     },
     getList() {
       this.SET_QUERY_PARAM({ key: 'perPage', value: this.listQuery.limit })

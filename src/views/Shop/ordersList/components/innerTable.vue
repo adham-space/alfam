@@ -257,7 +257,7 @@ export default {
         this.$notify({
           message: 'You cant edit this order: order already processed by zavsklad',
           type: 'warning',
-          duration: 40000
+          duration: 4000
         })
       }
     },
