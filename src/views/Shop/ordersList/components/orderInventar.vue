@@ -46,7 +46,7 @@
 
                   <el-image
                     style="width: 50px; height: 50px"
-                    :src="'http://localhost:3000/' + scope.row.photo_path"
+                    :src="'https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path"
                     fit="scale-down"
                     @click="openImg('http://localhost:3000/' + scope.row.photo_path)"
                   />
