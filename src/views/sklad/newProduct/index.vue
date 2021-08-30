@@ -23,6 +23,9 @@
       <template slot="custom-buttons-right" style="pardding-right: 2rem">
         <el-button style="color: red; margin-right: 1rem" @click="cancelConfirmDialog = true">cancel</el-button>
       </template>
+      <template slot="finish">
+        <el-button type="primary" :loading="finishing" :disabled="finishing">Save new product</el-button>
+      </template>
     </form-wizard>
 
     <el-dialog
@@ -62,7 +65,8 @@ export default {
   },
   data() {
     return {
-      cancelConfirmDialog: false
+      cancelConfirmDialog: false,
+      finishing: false
     }
   },
   computed: {
@@ -82,18 +86,21 @@ export default {
           product_name: this.product_name,
           product_types: this.types
         }
+        this.finishing = true
         await this.UPLOAD_TYPES(dataObj)
         Message({
           message: 'Success:  types are saved',
           duration: 3000,
           type: 'success'
         })
+        this.finishing = false
         this.Cancel()
       } catch (error) {
+        this.finishing = false
         Message({
           message: error.response.data,
           type: 'error',
-          duration: 20000
+          duration: 2000
         })
       }
     },

@@ -42,9 +42,9 @@
         <template slot-scope="scope">
           <el-image
             style="width: 30px; height: 30px"
-            :src="'https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path"
+            :src="baseApi + scope.row.photo_path"
             fit="scale-down"
-            @click="openImg('https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path)"
+            @click="openImg(baseApi + scope.row.photo_path)"
           />
         </template>
       </el-table-column>
@@ -243,7 +243,7 @@
         />
       </el-table-column>
     </el-table>
-    <el-dialog title="" :visible.sync="showImageDilog" append-to-body width="40%">
+    <el-dialog top="1%" title="" :visible.sync="showImageDilog" append-to-body width="40%">
       <el-image
         style="width: 100%; height: 90%"
         :src="imageUrl"
@@ -254,7 +254,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import data_ from './mixins/data_.js'
 import methods_ from './mixins/methods_.js'
 export default {
@@ -264,6 +264,7 @@ export default {
   mixins: [data_, methods_],
   data() {
     return {
+      baseApi: process.env.VUE_APP_BASE_API,
       bodyHeight: 300
     }
   },
@@ -278,8 +279,13 @@ export default {
     window.addEventListener('resize', e => {
       this.bodyHeight = this.$refs.tblContainer.clientHeight
     })
+    console.log('asas', this.baseApi)
+  },
+  beforeDestroy() {
+    this.SET_PRODUCT(-1)
   },
   methods: {
+    ...mapMutations('products', ['SET_PRODUCT']),
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url

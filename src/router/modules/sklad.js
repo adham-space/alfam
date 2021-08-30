@@ -16,25 +16,25 @@ const skladRouter = {
       path: 'newproduct',
       component: () => import('@/views/sklad/newProduct/index'),
       name: 'NewProduct',
-      meta: { title: 'New product', noCache: false }
+      meta: { title: 'New product', noCache: true }
     },
     {
       path: 'storetproduct',
       component: () => import('@/views/sklad/storeProducts/index'),
       name: 'Store',
-      meta: { title: 'Store to sklad', noCache: false }
+      meta: { title: 'Store to sklad', noCache: true }
     },
     {
       path: 'packing-list',
       component: () => import('@/views/sklad/packingList/index'),
       name: 'PackingList',
-      meta: { title: 'Packing List', noCache: false }
+      meta: { title: 'Packing List', noCache: true }
     },
     {
       path: 'orders',
       component: () => import('@/views/sklad/ordersPage/index'),
       name: 'Orders',
-      meta: { title: 'Orders', noCache: false }
+      meta: { title: 'Orders', noCache: true }
     }
 
   ]

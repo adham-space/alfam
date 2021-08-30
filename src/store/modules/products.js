@@ -91,7 +91,11 @@ const mutations = {
     state.there_is_product_type = num.there_is_product_type
   },
   SET_PRODUCT: (state, product) => {
-    state.product_with_types = product
+    if (product === -1) {
+      state.product_with_types = []
+    } else {
+      state.product_with_types = product
+    }
   },
   SET_LOADER: (state, loader) => {
     state[loader.key] = loader.value

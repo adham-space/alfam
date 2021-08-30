@@ -46,9 +46,9 @@
 
                   <el-image
                     style="width: 50px; height: 50px"
-                    :src="'https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path"
+                    :src="baseApi + scope.row.photo_path"
                     fit="scale-down"
-                    @click="openImg('https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path)"
+                    @click="openImg(baseApi + scope.row.photo_path)"
                   />
                 </template>
               </el-table-column>
@@ -108,7 +108,20 @@
           <span>Area m<sup>2</sup></span>
         </template>
         <template slot-scope="scope">
-          {{ parseFloat(getTotalAre(scope.row.products).packTotalArea.toFixed(4)) }}
+
+          <el-popover
+            placement="right"
+            trigger="hover"
+          >
+            <el-table :show-header="false" :data="gridDataArea(scope.row.products)">
+              <el-table-column align="center" width="120" property="name" label="name" />
+              <el-table-column align="center" width="100" property="value" label="value" />
+            </el-table>
+            <el-button slot="reference" type="text">
+              {{ parseFloat(getTotalAre(scope.row.products).packTotalArea.toFixed(4)) }}
+            </el-button>
+          </el-popover>
+
         </template>
       </el-table-column>
       <el-table-column width="170" align="center" label="Number of items">
@@ -240,6 +253,7 @@ export default {
     Pagination
   },
   data: () => ({
+    baseApi: process.env.VUE_APP_BASE_API,
     showImageDilog: false,
     actuality: false,
     imageUrl: '',
@@ -277,6 +291,27 @@ export default {
       products.forEach(product => {
         dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
         dataItem.value = product.sum
+        dataItem.isReturning = product.isReturning
+        data.push(dataItem)
+        dataItem = {
+          name: '',
+          value: '',
+          isReturning: false
+        }
+      })
+      return data
+    },
+
+    gridDataArea(products) {
+      let dataItem = {
+        name: '',
+        value: '',
+        isReturning: false
+      }
+      const data = []
+      products.forEach(product => {
+        dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
+        dataItem.value = product.packTotalArea
         dataItem.isReturning = product.isReturning
         data.push(dataItem)
         dataItem = {

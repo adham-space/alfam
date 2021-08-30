@@ -42,9 +42,9 @@
         <template slot-scope="scope">
           <el-image
             style="width: 30px; height: 30px"
-            :src="'https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path"
+            :src="baseApi + scope.row.photo_path"
             fit="scale-down"
-            @click="openImg('https://stormy-reef-87023.herokuapp.com/' + scope.row.photo_path)"
+            @click="openImg(baseApi + scope.row.photo_path)"
           />
         </template>
       </el-table-column>
@@ -59,7 +59,7 @@
           <span style="font-weight: bold">+ / -</span>
         </template>
         <template slot-scope="scope">
-          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.isReturning ? 'Price by item number' : 'Price by area (m2)'" placement="left">
+          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.isReturning ? 'To Remove' : 'To add'" placement="left">
             <el-switch v-model="scope.row.isReturning" active-color="#13ce66" inactive-color="" />
           </el-tooltip>
         </template>
@@ -259,7 +259,7 @@
         />
       </el-table-column>
     </el-table>
-    <el-dialog title="" :visible.sync="showImageDilog" append-to-body width="40%">
+    <el-dialog top="1%" title="" :visible.sync="showImageDilog" append-to-body width="40%">
       <el-image
         style="width: 100%; height: 90%"
         :src="imageUrl"
@@ -270,7 +270,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import data_ from './mixins/data_.js'
 import methods_ from './mixins/methods_.js'
 export default {
@@ -280,6 +280,7 @@ export default {
   mixins: [data_, methods_],
   data() {
     return {
+      baseApi: process.env.VUE_APP_BASE_API,
       bodyHeight: 300
     }
   },
@@ -295,7 +296,11 @@ export default {
       this.bodyHeight = this.$refs.tblContainer.clientHeight
     })
   },
+  beforeDestroy() {
+    this.SET_PRODUCT(-1)
+  },
   methods: {
+    ...mapMutations('products', ['SET_PRODUCT']),
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
