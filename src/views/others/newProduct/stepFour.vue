@@ -246,11 +246,22 @@ export default {
       )
       return (this.currentType.height * this.currentType.width) / 10000.0
     },
+    setCurrentCredentials(pr, val) {
+      console.log('pr', pr)
+      if (pr.weightOfPacket || pr.numberOfItems) {
+        this.formDataObj = {
+          currentProduct: '',
+          current_subType: val,
+          ...pr
+        }
+      }
+    },
     setCurrentType(val) {
       this.formDataObj.singan = false
       const pr = this.types.find(product => product.id === val)
       if (pr) {
         this.currentType = pr
+        this.setCurrentCredentials(pr, val)
         this.typeName = this.currentType.type_name
       } else {
         this.currentType = {}

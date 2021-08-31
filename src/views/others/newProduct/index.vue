@@ -9,7 +9,6 @@
       title=""
       subtitle=""
       @on-complete="onComplete"
-      @on-change="tabChanged"
     >
       <tab-content class="tb-cnt" title="Name/Types">
         <stepOne ref="stepOneRef" />
@@ -75,10 +74,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('newProduct', ['types', 'product_name'])
+    ...mapState('others/newProduct', ['types', 'product_name'])
   },
   methods: {
-    ...mapActions('newProduct', ['UPLOAD_IMAGES', 'UPLOAD_TYPES']),
+    ...mapActions('others/newProduct', ['UPLOAD_IMAGES', 'SAVE_PRODUCTS']),
     async onComplete() {
       try {
         for (let i = 0; i < this.types.length; i++) {
@@ -87,12 +86,10 @@ export default {
           const filePath = await this.UPLOAD_IMAGES(formData)
           this.types[i].photo_path = filePath.data.path
         }
-        const dataObj = {
-          product_name: this.product_name,
-          product_types: this.types
-        }
         this.finishing = true
-        await this.UPLOAD_TYPES(dataObj)
+        await this.SAVE_PRODUCTS().catch(err => {
+          console.error(err)
+        })
         Message({
           message: 'Success:  types are saved',
           duration: 3000,
@@ -109,12 +106,12 @@ export default {
         })
       }
     },
-    tabChanged() {},
     Cancel() {
       this.cancelConfirmDialog = false
       this.$refs.FormWizardRef.reset()
-      this.$store.commit('newProduct/SET_TYPES', [])
-      this.$store.commit('newProduct/SET_NAME', '')
+      this.$store.commit('others/newProduct/SET_TYPES', [])
+      this.$store.commit('others/newProduct/SET_NAME', '')
+      this.$store.commit('others/newProduct/SET_OTHER', '')
       this.$refs.stepOneRef.reset()
     }
   }

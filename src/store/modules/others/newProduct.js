@@ -10,9 +10,9 @@ function uploadImages(data) {
   })
 }
 
-function uploadProducttype(data) {
+function saveProducts(data) {
   return request({
-    url: '/products/upload-producttype',
+    url: '/others/store-product',
     method: 'POST',
     data
   })
@@ -44,27 +44,11 @@ const mutations = {
       base_price: parseFloat(packet.base_price),
       numberOfItems: parseFloat(packet.numberOfItems),
       weightOfPacket: parseFloat(packet.weightOfPacket),
-      base_priceBy: parseFloat(packet.base_priceBy)
+      base_priceBy: packet.base_priceBy
     }
     delete state.types[indx].type_id
   }
 }
-
-// base_price:"25"
-// base_priceBy:false
-// code:"A1191"
-// currentProduct:""
-// current_subType:0
-// description:""
-// height:30
-// id:0
-// numberOfItems:"6"
-// photo:Object
-// singan:false
-// totalArea:""
-// type_name:"Ochi"
-// weightOfPacket:"27"
-// width:90
 
 const actions = {
   UPLOAD_IMAGES(_, data) {
@@ -77,9 +61,13 @@ const actions = {
       })
     })
   },
-  UPLOAD_TYPES(_, data) {
+  SAVE_PRODUCTS({ state }) {
     return new Promise((resolve, reject) => {
-      uploadProducttype(data).then(res => {
+      saveProducts({
+        product_name: state.product_name,
+        other_id: state.other_id,
+        types: state.types
+      }).then(res => {
         resolve(res)
       }).catch(err => {
         reject(err)
