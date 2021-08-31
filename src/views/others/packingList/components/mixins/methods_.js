@@ -22,7 +22,7 @@ export default {
           // then set number of complete packets
           this.currentProduct.pack_num = parseInt(totalNumberOfItems / this.currentProduct.number_of_items)
           // then set bumber of over full packet numbers
-          this.currentProduct.over_pack_num = parseInt(totalNumberOfItems % this.currentProduct.number_of_items)
+          this.currentProduct.over_pack_num = totalNumberOfItems > this.currentProduct.number_of_items ? parseInt(totalNumberOfItems % this.currentProduct.number_of_items) : 0
           // calculate price of product according to base_price
           this.currentProduct.sum = parseInt(this.currentProduct.base_price * newArea)
           // set weight
@@ -59,7 +59,7 @@ export default {
         this.currentProduct.item_num = parseInt(newItemNum)
         this.currentProduct.packTotalArea = this.truncateToDecimals(parseFloat(this.currentProduct.item_num * this.currentProduct.area_of_an_item), 4)
         this.currentProduct.pack_num = parseInt(this.currentProduct.item_num / this.currentProduct.number_of_items)
-        this.currentProduct.over_pack_num = parseInt(this.currentProduct.item_num % this.currentProduct.number_of_items)
+        this.currentProduct.over_pack_num = this.currentProduct.item_num > this.currentProduct.number_of_items ? parseInt(this.currentProduct.item_num % this.currentProduct.number_of_items) : 0
         this.calcPrice()
         this.currentProduct.weight = (this.currentProduct.item_num * this.currentProduct.weight_of_an_item).toFixed(2)
         this.checkPropotion()
@@ -182,14 +182,22 @@ export default {
       this.calcPrice()
       this.calculateTotalPrice()
     },
+
     truncateToDecimals(num, dec = 2) {
       const calcDec = Math.pow(10, dec)
       return Math.trunc(num * calcDec) / calcDec
     },
+
     calculateTotalPrice() {
       this.$emit('calculateTotalPrice', this.truncateToDecimals(this.tableDataComputed.reduce(function(a, b) {
         return a + (b.sum === '' ? 0 : parseFloat(b.sum))
       }, 0), 4))
+    },
+
+    closeNotification() {
+      if (this.currentNotification) {
+        this.currentNotification.close()
+      }
     },
     checkPropotion() {
       const totalArea = this.tableDataComputed.reduce(function(a, b) {
@@ -203,7 +211,7 @@ export default {
       this.brokenPropotionArr = []
       this.tableDataComputed.forEach(product => {
         brokenPropotionObj.name = product.type_name
-        brokenPropotionObj.good_percentage = product.propotion
+        brokenPropotionObj.good_percentage = product.proportion
         brokenPropotionObj.bad_percentage = totalArea === 0 ? 0 : this.truncateToDecimals(product.packTotalArea === '' ? 0.0 : parseFloat(product.packTotalArea) / totalArea * 100.0)
         this.brokenPropotionArr.push(brokenPropotionObj)
         brokenPropotionObj = {
@@ -238,7 +246,7 @@ export default {
                 'tr',
                 null,
                 (() => {
-                  return [h('td', null, elem.name), h('td', null, elem.good_percentage), h('td', null, elem.bad_percentage)]
+                  return [h('td', null, elem.name), h('td', null, elem.good_percentage.toFixed(2)), h('td', null, elem.bad_percentage)]
                 })()
               ))
             })
@@ -247,6 +255,19 @@ export default {
         ]),
         duration: 0
       })
+    },
+
+    checkTableIsValid() {
+      let isValid = true
+      this.tableDataComputed.forEach(product => {
+        if (product.packTotalArea === '') isValid = false
+        if (product.item_num === '') isValid = false
+        if (product.pack_num === '') isValid = false
+        if (product.over_pack_num === '') isValid = false
+        if (product.base_price_changed === '') isValid = false
+      })
+      return isValid
     }
+
   }
 }

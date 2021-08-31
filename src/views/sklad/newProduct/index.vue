@@ -124,7 +124,7 @@ export default {
 
 .frm-wzrd {
   /* border: 1px solid green; */
-   /* background-color: #ecc5a2; */
+   /* background-color: #dae2de; */
   height: 100%;
 }
 .wizard-title {
@@ -137,7 +137,7 @@ export default {
   height: calc(100vh - 2em - 50px);
   max-width: 900px;
   /* border-radius: 10px; */
-  /* background-color: #ecc5a2; */
+  /* background-color: #dae2de; */
   overflow: hidden;
   background-color: white;
   margin: 1em auto;

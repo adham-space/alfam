@@ -1,5 +1,5 @@
 ~<template>
-  <el-row style="height: calc(100vh - 86px); border: 0px solid red">
+  <el-row class="new-product-body">
     <form-wizard
       ref="FormWizardRef"
       color="#20a0ff"
@@ -20,10 +20,14 @@
       <tab-content :lazy="true" class="tb-cnt" title="Preview">
         <stepThree />
       </tab-content>
-      <template slot="custom-buttons-right">
+      <template slot="custom-buttons-right" style="pardding-right: 2rem">
         <el-button style="color: red; margin-right: 1rem" @click="cancelConfirmDialog = true">cancel</el-button>
       </template>
+      <template slot="finish">
+        <el-button type="primary" :loading="finishing" :disabled="finishing">Save new product</el-button>
+      </template>
     </form-wizard>
+
     <el-dialog
       title="Cancel new product"
       :visible.sync="cancelConfirmDialog"
@@ -48,6 +52,8 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import stepOne from './stepOne'
 import stepTwo from './stepTwo'
 import stepThree from './stepThree'
+import { mapActions, mapState } from 'vuex'
+import { Message } from 'element-ui'
 export default {
   name: 'NewProduct',
   components: {
@@ -59,11 +65,45 @@ export default {
   },
   data() {
     return {
-      cancelConfirmDialog: false
+      cancelConfirmDialog: false,
+      finishing: false
     }
   },
+  computed: {
+    ...mapState('newProduct', ['types', 'product_name'])
+  },
   methods: {
-    onComplete() {},
+    ...mapActions('newProduct', ['UPLOAD_IMAGES', 'UPLOAD_TYPES']),
+    async onComplete() {
+      try {
+        for (let i = 0; i < this.types.length; i++) {
+          const formData = new FormData()
+          formData.append('image', this.types[i].photo.raw)
+          const filePath = await this.UPLOAD_IMAGES(formData)
+          this.types[i].photo_path = filePath.data.path
+        }
+        const dataObj = {
+          product_name: this.product_name,
+          product_types: this.types
+        }
+        this.finishing = true
+        await this.UPLOAD_TYPES(dataObj)
+        Message({
+          message: 'Success:  types are saved',
+          duration: 3000,
+          type: 'success'
+        })
+        this.finishing = false
+        this.Cancel()
+      } catch (error) {
+        this.finishing = false
+        Message({
+          message: error.response.data,
+          type: 'error',
+          duration: 2000
+        })
+      }
+    },
     tabChanged() {},
     Cancel() {
       this.cancelConfirmDialog = false
@@ -77,17 +117,30 @@ export default {
 </script>
 
 <style>
+
+.vue-form-wizard, .wizard-header {
+  background-color: white
+}
+
 .frm-wzrd {
   /* border: 1px solid green; */
+   /* background-color: #dae2de; */
   height: 100%;
 }
 .wizard-title {
   font-weight: bold !important;
   font-size: 24px !important;
 }
-.app-cntr {
+.new-product-body {
   /* border: 1px solid green; */
   /* height: calc(100vh - 100px); */
+  height: calc(100vh - 2em - 50px);
+  max-width: 900px;
+  /* border-radius: 10px; */
+  /* background-color: #dae2de; */
+  overflow: hidden;
+  background-color: white;
+  margin: 1em auto;
 }
 .tb-cnt {
   /* border: 1px solid blue; */

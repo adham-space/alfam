@@ -22,7 +22,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-import editBody from '../editOrder/index.vue'
+import editBody from '../../editOrder/index.vue'
 export default {
   components: {
     editBody

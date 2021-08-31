@@ -1,9 +1,9 @@
 <template>
   <el-row :gutter="10" class="stepOne">
     <el-col :span="24" class="step-header">
-      <h2>Nilufar</h2>
+      <h2>{{ $store.state.newProduct.product_name }}</h2>
     </el-col>
-    <el-col class="selectType" :md="{ offset: 6, span: 12 }">
+    <el-col class="selectType" :span="24">
       <el-select
         v-model="currentType"
         placeholder="Types"
@@ -12,15 +12,15 @@
         <el-option
           v-for="type in types"
           :key="type.id"
-          :label="type.name"
+          :label="type.type_name"
           :value="type.id"
         />
       </el-select>
     </el-col>
-    <el-col class="typeTitle" :offset="6" :span="12">
+    <el-col class="typeTitle" :span="24">
       <h4>{{ currentTypeName }}</h4>
     </el-col>
-    <el-col :offset="6" :span="12">
+    <el-col :span="24">
       <el-form :model="formTwo">
         <el-form-item>
           <el-col :span="12">
@@ -28,11 +28,11 @@
               <el-input v-model="formTwo.code" placeholder="Code" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="A">
-              <el-input v-model="formTwo.code" placeholder="Code" />
+          <!-- <el-col :span="12">
+            <el-form-item label="Base price">
+              <el-input v-model="formTwo.code" placeholder="Base price" />
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-form-item>
 
         <el-form-item>

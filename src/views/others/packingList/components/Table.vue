@@ -1,11 +1,13 @@
 <template>
-  <div ref="tblContainer" style="height: calc(100vh - 86px)">
+  <div ref="tblContainer" style="height: 100%">
     <el-table
+      v-loading="product_with_types_table_loading"
       :max-height="bodyHeight + ''"
-      style="width: 100%"
+      style="width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #bbbbbb;"
       size="small"
       :data="tableDataComputed"
       show-summary
+      border
       :summary-method="jamiSumma"
     >
       <el-table-column
@@ -20,7 +22,11 @@
         label="СПЕЦИФИКАЦИЯСИ"
         prop="type_name"
         align="center"
-      />
+      >
+        <template slot-scope="scope">
+          {{ scope.row.type_name + (scope.row.broken ? ' - broken': '') }}
+        </template>
+      </el-table-column>
       <el-table-column
         width="150"
         label="ТОВАРНИ РАЗМЕРИ"
@@ -33,12 +39,14 @@
         prop="photo"
         align="center"
       >
-        <el-image
-          style="width: 30px; height: 30px"
-          src="https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80"
-          fit="scale-down"
-          @click="openImg('https://images.unsplash.com/photo-1612831661153-4914a5ff7851?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2125&q=80')"
-        />
+        <template slot-scope="scope">
+          <el-image
+            style="width: 30px; height: 30px"
+            :src="baseApi + scope.row.photo_path"
+            fit="scale-down"
+            @click="openImg(baseApi + scope.row.photo_path)"
+          />
+        </template>
       </el-table-column>
       <el-table-column
         width="300"
@@ -118,7 +126,7 @@
         </el-table-column>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
         width="100"
         prop="base_price"
         align="center"
@@ -132,9 +140,9 @@
             <el-switch :value="scope.row.price_by" active-color="#13ce66" inactive-color="" @change="calcPriceprice_byChanged($event, scope.row)" />
           </el-tooltip>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         width="120"
         label="ТАН НАРХИ"
         prop="base_price"
@@ -143,20 +151,23 @@
         <template slot-scope="scope">
           <span>{{ scope.row.base_price }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         width="130"
         prop="sum_kassa"
         align="center"
       >
         <template slot="header">
-          <span>СУММАСИ</span><br>
-          <span>КАССА</span>
+          <span>КАССА</span><br>
+          <span>НАРХИ</span>
         </template>
-      </el-table-column>
+        <template slot-scope="scope">
+          {{ scope.row.sum_kassa.toFixed(2) }}
+        </template>
+      </el-table-column> -->
 
-      <el-table-column
+      <!-- <el-table-column
         width="130"
         prop="base_price_changed"
         align="center"
@@ -174,17 +185,22 @@
             @input="base_priceIsChanging($event, scope.row)"
           />
         </template>
-      </el-table-column>
-      <el-table-column
+      </el-table-column> -->
+
+      <!-- <el-table-column
         width="130"
-        label="СУММАСИ"
         prop="sum"
         align="center"
       >
-        <template slot-scope="scope">
-          {{ scope.row.sum }}
+        <template slot="header">
+          <span>СКИДКА</span><br>
+          <span>НАРХИ</span>
         </template>
-      </el-table-column>
+
+        <template slot-scope="scope">
+          {{ scope.row.sum.toFixed(2) }}
+        </template>
+      </el-table-column> -->
       <el-table-column
         width="150"
         label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"
@@ -227,7 +243,7 @@
         />
       </el-table-column>
     </el-table>
-    <el-dialog title="" :visible.sync="showImageDilog" append-to-body width="40%">
+    <el-dialog top="1%" title="" :visible.sync="showImageDilog" append-to-body width="40%">
       <el-image
         style="width: 100%; height: 90%"
         :src="imageUrl"
@@ -238,6 +254,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import data_ from './mixins/data_.js'
 import methods_ from './mixins/methods_.js'
 export default {
@@ -247,8 +264,12 @@ export default {
   mixins: [data_, methods_],
   data() {
     return {
+      baseApi: process.env.VUE_APP_BASE_API,
       bodyHeight: 300
     }
+  },
+  computed: {
+    ...mapState('products', ['product_with_types_table_loading'])
   },
   mounted() {
     setTimeout(() => {
@@ -256,11 +277,15 @@ export default {
       console.log(this.$refs.tblContainer.clientHeight)
     }, 300)
     window.addEventListener('resize', e => {
-      console.log('windows resizing')
       this.bodyHeight = this.$refs.tblContainer.clientHeight
     })
+    console.log('asas', this.baseApi)
+  },
+  beforeDestroy() {
+    this.SET_PRODUCT(-1)
   },
   methods: {
+    ...mapMutations('products', ['SET_PRODUCT']),
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
@@ -314,7 +339,7 @@ export default {
 
 .list-main {
   /* border: 1px solid green; */
-  height: calc(100% - 105px);
+  height: calc(100% - 50px);
   margin: 0 !important;
 }
 .el-tabs__header {

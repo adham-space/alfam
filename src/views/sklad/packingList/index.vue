@@ -59,6 +59,6 @@ export default {
    height: calc(100vh - 50px);
    padding: 1em;
    /* background-color: #fcf5ef; */
-   background-color: #ecc5a2;
+   background-color: #dae2de;
   }
 </style>

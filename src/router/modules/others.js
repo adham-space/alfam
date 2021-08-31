@@ -18,12 +18,7 @@ const othersRouter = {
       name: 'OthersNewProduct',
       meta: { title: 'New product', noCache: false }
     },
-    {
-      path: 'others-store-product',
-      component: () => import('@/views/others/storeProducts/index'),
-      name: 'OthersStoreProduct',
-      meta: { title: 'Store product', noCache: false }
-    },
+
     {
       path: 'others-product',
       component: () => import('@/views/others/othersProduct/index'),
@@ -34,13 +29,13 @@ const othersRouter = {
       path: 'others-packing-list',
       component: () => import('@/views/others/packingList/index'),
       name: 'OthersPackingList',
-      meta: { title: 'Packing list', noCache: false }
+      meta: { title: 'New invoice', noCache: false }
     },
     {
       path: 'others-order-list',
       component: () => import('@/views/others/ordersList/index'),
       name: 'OthersOrderList',
-      meta: { title: 'Orders list', noCache: false }
+      meta: { title: 'Invoices list', noCache: false }
     }
   ]
 }
