@@ -5,19 +5,24 @@
         v-model="belongsTo"
         style="width: 49.5%"
         placeholder="Name"
+        :loading="gettingOthers"
         @change="belongsChanging"
       >
         <el-option
           v-for="(item, index) in others"
           :key="index"
-          :label="item.firstName +' ' + item.lastName"
           :value="item._id"
-        />
-        <el-option
-          :value="'addNewItem'"
-          style="padding: 0"
+          :label="item.firstName + ' ' + item.lastName + ' | ' + item.shop"
+          style="display: flex; justify-content: space-between"
         >
-          <el-button style="border: 1px solid transparent; width: 100%; margin: 0" icon="el-icon-plus" />
+          <span>{{ item.firstName + ' ' + item.lastName }}</span>
+          <span>{{ item.shop }}</span>
+        </el-option>
+        <el-option :value="'addNewItem'" style="padding: 0">
+          <el-button
+            style="border: 1px solid transparent; width: 100%; margin: 0"
+            icon="el-icon-plus"
+          />
         </el-option>
       </el-select>
       <el-input v-model="name" style="width: 49.5%" placeholder="Name" @change="nameChanging" />
@@ -61,12 +66,7 @@
                 icon="el-icon-check"
                 @click="saveEdit(scope.row.type_name)"
               />
-              <el-button
-                v-else
-                type="text"
-                icon="el-icon-edit"
-                @click="editThis(scope.row)"
-              />
+              <el-button v-else type="text" icon="el-icon-edit" @click="editThis(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column width="50" align="center">
@@ -84,32 +84,54 @@
       </div>
     </el-col>
 
-    <el-dialog
-      title="Tips"
-      :visible.sync="openNewItemAddDialog"
-      width="35%"
-    >
-      <span>This is a message</span>
+    <el-dialog title="Add other" :visible.sync="openNewItemAddDialog" width="35%" align="center">
+      <el-row :gutter="10">
+        <el-col :span="12" style="margin-bottom: 10px">
+          <el-input v-model="newOther.firstName" placeholder="First name" />
+        </el-col>
+        <el-col :span="12" style="margin-bottom: 10px">
+          <el-input v-model="newOther.lastName" placeholder="Last name" />
+        </el-col>
+        <el-col :span="12">
+          <el-input v-model="newOther.shop" placeholder="Shop name" />
+        </el-col>
+        <el-col :span="12">
+          <el-input v-model="newOther.phone" placeholder="Phone" />
+        </el-col>
+      </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="openNewItemAddDialog = false">Cancel</el-button>
-        <el-button type="primary" @click="openNewItemAddDialog = false">Confirm</el-button>
+        <el-button @click="cancel()">Cancel</el-button>
+        <el-button :loading="saving" :disabled="saving" type="primary" @click="save()">Save</el-button>
       </span>
     </el-dialog>
-
   </el-row>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+import request from '@/utils/request'
+import { Message } from 'element-ui'
 export default {
   data() {
     return {
+      saving: false,
+      gettingOthers: false,
       openNewItemAddDialog: false,
       belongsTo: '',
-      others: [{
-        firstName: 'AAA',
-        lastName: 'BBB',
-        _id: 0
-      }],
+      newOther: {
+        firstName: '',
+        lastName: '',
+        shopName: '',
+        phone: ''
+      },
+      others: [
+        {
+          firstName: 'AAA',
+          lastName: 'BBB',
+          _id: 0,
+          shop: 'Aflam'
+        }
+      ],
       name: '',
       types: [],
       editing: {
@@ -122,11 +144,65 @@ export default {
       editedType: ''
     }
   },
+  mounted() {
+    this.gettingOthers = true
+    this.getOthers()
+  },
   methods: {
+    ...mapMutations('others/newProduct', ['SET_NAME', 'SET_TYPES', 'SET_OTHER']),
+    getOthers() {
+      request({
+        url: '/others/list',
+        method: 'GET'
+      })
+        .then(res => {
+          this.gettingOthers = false
+          this.others = res.data
+        })
+        .catch(err => {
+          this.gettingOthers = false
+          Message({
+            duration: 2000,
+            message: err.response.data,
+            type: 'error'
+          })
+          console.error(err)
+        })
+    },
+    cancel() {
+      // cancel add new other
+      this.openNewItemAddDialog = false
+    },
+    save() {
+      // save new other
+      this.saving = true
+      request({
+        url: '/others/add-other',
+        data: this.newOther,
+        method: 'POST'
+      })
+        .then(res => {
+          this.saving = false
+          this.openNewItemAddDialog = false
+          this.getOthers()
+          this.belongsTo = res.data._id
+          this.SET_OTHER(this.belongsTo)
+        })
+        .catch(err => {
+          this.saving = false
+          Message({
+            duration: 2000,
+            message: err.response.data,
+            type: 'error'
+          })
+        })
+    },
     belongsChanging(v) {
       if (v === 'addNewItem') {
         this.openNewItemAddDialog = true
         this.belongsTo = ''
+      } else {
+        this.SET_OTHER(v)
       }
     },
     reset() {
@@ -143,7 +219,7 @@ export default {
     },
     nameChanging(e) {
       console.log(e)
-      this.$store.commit('newProduct/SET_NAME', e)
+      this.SET_NAME(e)
     },
     addNewType() {
       const nm = this.typeObject.name + ''
@@ -156,7 +232,7 @@ export default {
         })
       }
       this.typeObject.name = ''
-      this.$store.commit('newProduct/SET_TYPES', this.types)
+      this.SET_TYPES(this.types)
     },
     editThis(row) {
       console.log('row: ', row)
@@ -167,18 +243,20 @@ export default {
     saveEdit(name) {
       this.editing.status = false
       const index = this.types.findIndex(
-        (item) => item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
+        item =>
+          item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
       )
       this.types[index].type_name = this.editedType + ''
       this.editedType = ''
-      this.$store.commit('newProduct/SET_TYPES', this.types)
+      this.SET_TYPES(this.types)
     },
     deleteThis(name) {
       const index = this.types.findIndex(
-        (item) => item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
+        item =>
+          item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
       )
       this.types.splice(index, 1)
-      this.$store.commit('newProduct/SET_TYPES', this.types)
+      this.SET_TYPES(this.types)
     }
   }
 }

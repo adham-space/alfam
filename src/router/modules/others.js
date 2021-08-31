@@ -19,12 +19,12 @@ const othersRouter = {
       meta: { title: 'New product', noCache: false }
     },
 
-    {
-      path: 'others-product',
-      component: () => import('@/views/others/othersProduct/index'),
-      name: 'OthersProduct',
-      meta: { title: 'Others product', noCache: false }
-    },
+    // {
+    //   path: 'others-product',
+    //   component: () => import('@/views/others/othersProduct/index'),
+    //   name: 'OthersProduct',
+    //   meta: { title: 'Others product', noCache: false }
+    // },
     {
       path: 'others-packing-list',
       component: () => import('@/views/others/packingList/index'),

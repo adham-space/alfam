@@ -14,8 +14,11 @@
       <tab-content class="tb-cnt" title="Name/Types">
         <stepOne ref="stepOneRef" />
       </tab-content>
-      <tab-content :lazy="true" class="tb-cnt" title="Types detail">
+      <tab-content :lazy="true" class="tb-cnt" title="Types details">
         <stepTwo />
+      </tab-content>
+      <tab-content :lazy="true" class="tb-cnt" title="Packet details">
+        <stepFour />
       </tab-content>
       <tab-content :lazy="true" class="tb-cnt" title="Preview">
         <stepThree />
@@ -51,6 +54,7 @@ import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import stepOne from './stepOne'
 import stepTwo from './stepTwo'
+import stepFour from './stepFour'
 import stepThree from './stepThree'
 import { mapActions, mapState } from 'vuex'
 import { Message } from 'element-ui'
@@ -60,6 +64,7 @@ export default {
     FormWizard,
     TabContent,
     stepOne,
+    stepFour,
     stepTwo,
     stepThree
   },
@@ -119,12 +124,11 @@ export default {
 <style>
 
 .vue-form-wizard, .wizard-header {
-  background-color: white
+  background-color: white;
+  border-radius: 10px;
 }
 
 .frm-wzrd {
-  /* border: 1px solid green; */
-   /* background-color: #dae2de; */
   height: 100%;
 }
 .wizard-title {
@@ -132,18 +136,14 @@ export default {
   font-size: 24px !important;
 }
 .new-product-body {
-  /* border: 1px solid green; */
-  /* height: calc(100vh - 100px); */
   height: calc(100vh - 2em - 50px);
   max-width: 900px;
-  /* border-radius: 10px; */
-  /* background-color: #dae2de; */
+  border-radius: 10px;
   overflow: hidden;
   background-color: white;
   margin: 1em auto;
 }
 .tb-cnt {
-  /* border: 1px solid blue; */
   height: calc(100vh - 320px);
   overflow-y: auto;
   overflow-x: hidden;

@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="10" class="stepOne">
     <el-col :span="24" class="step-header">
-      <h2>{{ $store.state.newProduct.product_name }}</h2>
+      <h2>{{ product_name }}</h2>
     </el-col>
     <el-col class="selectType" :span="24">
       <el-select
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -95,7 +95,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('newProduct', ['types']),
+    ...mapState('others/newProduct', ['types', 'product_name']),
     currentTypeName() {
       return this.types.find((t) => t.id + '' === this.currentType + '') !==
         undefined
@@ -104,7 +104,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('others/newProduct', ['SET_NAME', 'SET_TYPE']),
     save() {
+      console.log('TYPES: ', this.types)
       const type = this.types.find(
         (typ) => typ.id + '' === this.currentType + ''
       )
@@ -114,7 +116,7 @@ export default {
       type.width = parseFloat(this.formTwo.width)
       type.photo = this.photo[0]
       const index = this.types.findIndex((typ) => typ.id + '' === type.id + '')
-      this.$store.commit('newProduct/SET_TYPE', { index: index, type })
+      this.SET_TYPE({ index: index, type })
       this.formTwo = {
         code: '',
         height: '',

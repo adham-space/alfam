@@ -16,8 +16,8 @@
           align="center"
         />
         <el-table-column
-          prop="name"
-          label="type_nameification"
+          prop="type_name"
+          label="Type name"
           align="center"
         />
         <el-table-column label="Size" align="center">
@@ -58,7 +58,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('newProduct', ['types'])
+    ...mapState('others/newProduct', ['types'])
   },
   methods: {
     showImage(name, url) {
