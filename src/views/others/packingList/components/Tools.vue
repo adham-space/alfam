@@ -2,46 +2,73 @@
   <div class="tools-wrapper">
     <p>List №: {{ order.order_name }}</p>
 
-    <el-form
-      ref="toolBarFormRef"
-      :model="toolBarForm"
-      :rules="rules"
-      style="width: 100%"
-    >
+    <el-form ref="toolBarFormRef" :model="toolBarForm" :rules="rules" style="width: 100%">
+      <el-form-item prop="belongsTo" label="Other">
+        <el-select
+          v-model="toolBarForm.belongsTo"
+          style="width: 100%"
+          placeholder="Other"
+          :loading="gettingOthers"
+          @change="belongsChanging"
+        >
+          <el-option
+            v-for="(item, index) in others"
+            :key="index"
+            :value="item._id"
+            :label="item.firstName + ' ' + item.lastName + ' | ' + item.shop"
+            style="display: flex; justify-content: space-between"
+          >
+            <span>{{ item.firstName + ' ' + item.lastName }}</span>
+            <span>{{ item.shop }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item prop="currentProduct" label="Product">
         <el-select
           v-model="toolBarForm.currentProduct"
           style="width: 100%; background-color: transparent"
           placeholder="Choose a product"
+          :loading="gettingProducts"
           @change="getProducts"
         >
           <el-option
-            v-for="(pr, i) in batches"
+            v-for="(pr, i) in products"
             :key="i"
             style="background-color: transparent"
-            :label="
-              pr._product[0].title.split('-')[0] +
-                ' - ' +
-                pr._product[0].title.split('-')[2]
-            "
+            :label="pr.product_name"
             :value="pr._id"
           />
         </el-select>
       </el-form-item>
-      <el-form-item prop="isSample">
-        <el-checkbox
-          v-model="toolBarForm.isSample"
-          style="width: 100%"
-          @change="sampleStateChanged"
-        >Sample</el-checkbox>
+
+      <el-form-item>
+        <el-col :span="14" style="padding: 0">
+          <el-form-item prop="batch_" label="Batch">
+            <el-input
+              v-model="toolBarForm.batch_"
+              type="number"
+              placeholder="Enter batch"
+              @change="setBatch"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
+          <el-form-item prop="isSample" label="_">
+            <el-checkbox
+              v-model="toolBarForm.isSample"
+              style="width: 100%"
+              @change="sampleStateChanged"
+            >Sample</el-checkbox>
+          </el-form-item>
+        </el-col>
       </el-form-item>
-      <el-form-item v-if="!toolBarForm.isSample" prop="withBorken">
+      <!-- <el-form-item v-if="!toolBarForm.isSample" prop="withBorken">
         <el-checkbox
           v-model="toolBarForm.withBorken"
           style="width: 100%"
           @change="brokenStateChanged"
         >Include borkens</el-checkbox>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item v-if="!toolBarForm.isSample" prop="currentcustomer">
         <el-select
           v-model="toolBarForm.currentcustomer"
@@ -68,12 +95,7 @@
           placeholder="Choose a shop"
           @change="shopChanged"
         >
-          <el-option
-            v-for="(pr, i) in shops"
-            :key="i"
-            :label="pr.name"
-            :value="pr._id"
-          />
+          <el-option v-for="(pr, i) in shops" :key="i" :label="pr.name" :value="pr._id" />
         </el-select>
       </el-form-item>
       <!-- end of: if is sample then show shops list-->
@@ -119,20 +141,26 @@
         />
       </el-form-item>
 
+      <el-form-item prop="totalPrice" label="Discount price (last price)">
+        <el-input
+          :value="totalPrice"
+          type="number"
+          class="tools-wrapper-item"
+          placeholder="Discount price"
+          @input="changebase_price"
+        />
+      </el-form-item>
+
       <el-form-item v-if="!toolBarForm.isSample" label="Is debt?" prop="isDebt">
         <el-switch
           v-model="toolBarForm.isDebt"
           active-color="#13ce66"
-          inactive-color=""
+          inactive-color
           @change="setIsDebt"
         />
       </el-form-item>
 
-      <el-form-item
-        v-if="toolBarForm.isDebt"
-        label="Debt return date"
-        prop="debtDate"
-      >
+      <el-form-item v-if="toolBarForm.isDebt" label="Debt return date" prop="debtDate">
         <el-date-picker
           v-model="toolBarForm.debtDate"
           type="date"
@@ -144,11 +172,7 @@
         />
       </el-form-item>
 
-      <el-form-item
-        v-if="toolBarForm.isDebt"
-        label="Debt description"
-        prop="debtDescription"
-      >
+      <el-form-item v-if="toolBarForm.isDebt" label="Debt description" prop="debtDescription">
         <el-input
           v-model="toolBarForm.debtDescription"
           style="margin-bottom: 1em"
@@ -187,12 +211,15 @@ export default {
     }
   },
   data: () => ({
+    gettingOthers: false,
+    gettingProducts: false,
     order_saving: false,
-    batches: []
-
+    batches: [],
+    others: []
   }),
   computed: {
-    ...mapState('products', ['products_types', 'product', 'order']),
+    ...mapState('others/products', ['products']),
+    ...mapState('others/products', ['product', 'order']),
     ...mapState('shops', ['shops']),
     drivers() {
       return this.$store.state.drivers.tableData
@@ -203,7 +230,7 @@ export default {
   },
   mounted() {
     this.getOrderCount()
-    this.GET_PRODUCT_TYPES()
+    // this.GET_PRODUCT_TYPES();
     this.GET_CUSTOMERS()
     this.GET_DRIVERS()
     this.GET_SHOPS()
@@ -211,16 +238,34 @@ export default {
       url: '/products/get-batches',
       method: 'GET'
     })
-      .then((res) => {
+      .then(res => {
         this.batches = res.data
         console.log(this.batches)
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err)
+      })
+
+    request({
+      url: '/others/list',
+      method: 'GET'
+    })
+      .then(res => {
+        this.gettingOthers = false
+        this.others = res.data
+      })
+      .catch(err => {
+        this.gettingOthers = false
+        Message({
+          duration: 2000,
+          message: err.response.data,
+          type: 'error'
+        })
+        console.error(err)
       })
   },
   methods: {
-    ...mapActions('products', [
+    ...mapActions('others/products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCT_BY_TYPE_ID',
       'SAVE_ORDER'
@@ -228,23 +273,38 @@ export default {
     ...mapActions('customers', ['GET_CUSTOMERS']),
     ...mapActions('shops', ['GET_SHOPS']),
     ...mapActions('drivers', ['GET_DRIVERS']),
-    ...mapMutations('products', ['SET_ORDER', 'PREPARE_ORDER']),
+    ...mapMutations('others/products', ['SET_ORDER', 'PREPARE_ORDER']),
+    ...mapActions('others/products', ['GET_PRODUCTS', 'GET_PRODUCT']),
+
+    async belongsChanging(id) {
+      this.SET_ORDER({ key: 'other_id', value: id })
+      this.gettingProducts = true
+      await this.GET_PRODUCTS({ other_id: id })
+      this.gettingProducts = false
+    },
+
+    setBatch(batch) {
+      this.SET_ORDER({ key: 'batch_', value: parseInt(batch) })
+    },
 
     getOrderCount() {
       request({
-        url: '/orders/get-order-count-for-today'
+        url: '/others/get-order-count-for-today'
       })
-        .then((res) => {
+        .then(res => {
           console.log('orders', res.data)
           const d = new Date()
+          console.log(
+            `ALFAM-${res.data[0].count +
+              1}-${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+          )
           this.SET_ORDER({
             key: 'order_name',
-            value: `ALFAM-${res.data[0].count + 1}-${d.getDate()}/${
-              d.getMonth() + 1
-            }/${d.getFullYear()}`
+            value: `ALFAM-${res.data[0].count +
+              1}-${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
           })
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('orders', err)
         })
     },
@@ -256,7 +316,7 @@ export default {
     validateOrder() {
       this.checkTableIsValidToSave()
       setTimeout(() => {
-        this.$refs.toolBarFormRef.validate((valid) => {
+        this.$refs.toolBarFormRef.validate(valid => {
           if (valid) {
             if (this.isTableValid) {
               this.saveOrder()
@@ -291,7 +351,7 @@ export default {
             this.$emit('closeNotification')
             this.getOrderCount()
           })
-          .catch((err) => {
+          .catch(err => {
             this.order_saving = false
             Message({
               message: err.response.data,
@@ -304,25 +364,19 @@ export default {
     setIsDebt(val) {
       this.SET_ORDER({ key: 'is_debt', value: val })
     },
-    getProducts(val) {
-      const { _product } = this.batches.find((batch) =>
-        batch._id[1].includes(val[1])
-      )
-      const title = _product[0].title.split('-')[0] + ' - ' + val[0]
-      this.SET_ORDER({
-        key: 'product',
-        value: {
-          title,
-          product_id: val[1],
-          partiya: val[0]
-        }
-      })
-      this.GET_PRODUCT_BY_TYPE_ID({ product_id: val[1], partiya: val[0] })
+    async getProducts(val) {
+      const product = this.products.find(pr => pr._id.includes(val))
+      this.SET_ORDER({ key: 'product', value: {
+        title: product.product_name,
+        product_id: product._id
+      }})
+      await this.GET_PRODUCT({ _id: val })
     },
 
     changebase_price(val) {
       // this is to change each item base price accordingly
       this.$emit('totalPriceChanged', val)
+      console.log('totalPriceChanged', val)
       this.toolBarForm.totalPrice = val
       this.SET_ORDER({ key: 'last_sum', val })
     },
@@ -356,6 +410,7 @@ export default {
       this.SET_ORDER({ key: 'shop', value: val })
     },
     reset_all() {
+      this.toolBarForm.belongsTo = ''
       this.toolBarForm.withBorken = false
       this.toolBarForm.currentProduct = ''
       this.toolBarForm.currentStatus = ''
