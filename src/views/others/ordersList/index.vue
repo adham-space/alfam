@@ -25,7 +25,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('orders', ['currentTable'])
+    ...mapState('others/orders', ['currentTable'])
   },
   beforeDestroy() {
     console.log('Is destrotying')
@@ -37,7 +37,7 @@ export default {
     })
   },
   methods: {
-    ...mapMutations('orders', ['SET_CURRENT_TABLE', 'SET_CURRENT_ORDER_HEADER'])
+    ...mapMutations('others/orders', ['SET_CURRENT_TABLE', 'SET_CURRENT_ORDER_HEADER'])
   }
 
 }

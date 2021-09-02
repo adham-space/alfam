@@ -145,6 +145,11 @@
         <el-card shadow="hover" class="box-card" style="margin-top: 1rem">
           <div slot="header" style="height: 4rem">Store To Sklad</div>
           <div class="one-packet">
+
+            <!-- <el-form-item prop="target_from">
+
+            </el-form-item> -->
+
             <span
               style="color: darkgray; margin-right: 1rem"
             >TOTAL AREA:

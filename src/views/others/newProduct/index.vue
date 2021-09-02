@@ -87,9 +87,8 @@ export default {
           this.types[i].photo_path = filePath.data.path
         }
         this.finishing = true
-        await this.SAVE_PRODUCTS().catch(err => {
-          console.error(err)
-        })
+        await this.SAVE_PRODUCTS()
+
         Message({
           message: 'Success:  types are saved',
           duration: 3000,

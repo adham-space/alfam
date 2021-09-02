@@ -39,10 +39,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('orders', ['currentDriver'])
+    ...mapState('others/orders', ['currentDriver'])
   },
   methods: {
-    ...mapMutations('orders', ['EDIT_DRIVER']),
+    ...mapMutations('others/orders', ['EDIT_DRIVER']),
     dialogOpened() {
       this.newDriver = {
         ...this.currentDriver

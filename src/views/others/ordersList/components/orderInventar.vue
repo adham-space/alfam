@@ -42,7 +42,7 @@
                 align="center"
               >
                 <!-- eslint-disable-next-line  -->
-              <template slot-scope="scope">
+      <template slot-scope="scope">
 
                   <el-image
                     style="width: 50px; height: 50px"
@@ -263,7 +263,7 @@ export default {
   }),
   computed: {
     ...mapState('user', ['roles']),
-    ...mapState('orders', ['orders', 'tableLoading', 'currentOrderHeader'])
+    ...mapState('others/orders', ['orders', 'tableLoading', 'currentOrderHeader'])
   },
   mounted() {
     this.GET_ORDERS()
@@ -272,8 +272,8 @@ export default {
     this.SET_ORDER(null)
   },
   methods: {
-    ...mapMutations('orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER', 'SET_CURRENT_TABLE']),
-    ...mapActions('orders', ['GET_ORDERS', 'GET_CURRENT_ORDER', 'CLOSE_CURRENT_ORDER']),
+    ...mapMutations('others/orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER', 'SET_CURRENT_TABLE']),
+    ...mapActions('others/orders', ['GET_ORDERS', 'GET_CURRENT_ORDER', 'CLOSE_CURRENT_ORDER']),
     rowChosen(row) {
       console.log(row)
       this.GET_CURRENT_ORDER().then(() => {

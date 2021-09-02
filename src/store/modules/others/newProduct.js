@@ -44,7 +44,8 @@ const mutations = {
       base_price: parseFloat(packet.base_price),
       numberOfItems: parseFloat(packet.numberOfItems),
       weightOfPacket: parseFloat(packet.weightOfPacket),
-      base_priceBy: packet.base_priceBy
+      base_priceBy: packet.base_priceBy,
+      ...packet
     }
     delete state.types[indx].type_id
   }

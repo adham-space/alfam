@@ -5,6 +5,7 @@ export default {
     return {
       action_of_customer: -1,
       toolBarForm: {
+        belongsTo: '',
         isSample: false,
         currentProduct: '',
         withBorken: false,
@@ -16,11 +17,21 @@ export default {
         isDebt: false,
         currentShop: '',
         debtDate: '',
+        batch_: '',
         debtDescription: ''
       },
       rules: {
+        batch_: [{
+          trigger: 'change',
+          validator: (rule, value, cb) => {
+            if (value) {
+              cb()
+            } else {
+              cb(new Error('Enter batch'))
+            }
+          }
+        }],
         currentShop: [{
-
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (this.toolBarForm.isSample) {
@@ -35,7 +46,6 @@ export default {
           }
         }],
         debtDate: [{
-
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (this.toolBarForm.isDebt) {
@@ -49,7 +59,20 @@ export default {
             }
           }
         }],
-
+        batch: [{
+          trigger: 'change',
+          validator: (rule, value, cb) => {
+            if (this.toolBarForm.isDebt) {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('Input batch'))
+              }
+            } else {
+              cb()
+            }
+          }
+        }],
         totalPrice: [{
           trigger: 'change',
           validator: (rule, value, cb) => {
@@ -71,6 +94,18 @@ export default {
                 cb()
               } else {
                 cb(new Error('Select driver'))
+              }
+            } else cb()
+          }
+        }],
+        belongsTo: [{
+          trigger: 'change',
+          validator: (rule, value, cb) => {
+            if (!this.toolBarForm.isSample) {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('Select other'))
               }
             } else cb()
           }

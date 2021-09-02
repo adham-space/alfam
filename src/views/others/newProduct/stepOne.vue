@@ -124,14 +124,7 @@ export default {
         shopName: '',
         phone: ''
       },
-      others: [
-        {
-          firstName: 'AAA',
-          lastName: 'BBB',
-          _id: 0,
-          shop: 'Aflam'
-        }
-      ],
+      others: [],
       name: '',
       types: [],
       editing: {

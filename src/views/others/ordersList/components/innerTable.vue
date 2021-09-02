@@ -5,7 +5,7 @@
       style="width: 100%"
       height="calc(100% - 3.5rem)"
       :data="orders"
-      stripe
+      :row-class-name="tableRowClassName"
       highlight-current-row
       @row-click="orderChosed"
     >
@@ -155,32 +155,6 @@
           </el-popover>
         </template>
       </el-table-column>
-      <!-- <el-table-column
-        width="180"
-        align="center"
-        prop="customer"
-        label="Customer"
-      >
-        <template slot-scope="scope">
-          {{ `${scope.row.customer.firstName} ${scope.row.customer.lastName}` }}
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column
-        width="170"
-        align="center"
-        prop="purchase_amount"
-        label="Purchases"
-      /> -->
-      <!-- <el-table-column
-        width="230"
-        align="center"
-        prop="address"
-        label="Address"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.customer.address }}
-        </template>
-      </el-table-column> -->
       <el-table-column width="180" align="center" prop="driver" label="Driver">
         <template slot-scope="scope">
           {{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}
@@ -192,11 +166,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="status" width="100" align="center" label="Status" fixed="right">
+      <el-table-column prop="status" width="130" align="center" label="Checkout status" fixed="right">
         <template slot-scope="scope">
-          <i v-if="scope.row.status === -1" class="el-icon-loading" />
-          <i v-if="scope.row.status === 1" style="color: green" class="el-icon-success" />
-          <i v-if="scope.row.status === 0" style="color: red" class="el-icon-error" />
+          <el-checkbox :value="scope.row.did_checkout" @change="setCheckoutStatus($event, scope.row)" />
         </template>
       </el-table-column>
 
@@ -222,6 +194,7 @@
 <script>
 import Pagination from '@/components/Pagination'
 import { mapMutations, mapState, mapActions } from 'vuex'
+import { Message } from 'element-ui'
 export default {
   name: 'InnerTable',
   components: {
@@ -239,14 +212,37 @@ export default {
   }),
   computed: {
     ...mapState('user', ['roles']),
-    ...mapState('orders', ['orders', 'tableLoading', 'currentOrderHeader'])
+    ...mapState('others/orders', ['orders', 'tableLoading', 'currentOrderHeader'])
   },
   beforeDestroy() {
     this.SET_ORDER(null)
   },
   methods: {
-    ...mapMutations('orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER']),
-    ...mapActions('orders', ['GET_ORDERS', 'GET_CURRENT_ORDER']),
+    ...mapMutations('others/orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER']),
+    ...mapActions('others/orders', ['GET_ORDERS', 'GET_CURRENT_ORDER', 'DO_CHECKOUT']),
+    async setCheckoutStatus(val, row) {
+      try {
+        const result = await this.DO_CHECKOUT({ did_checkout: !row.did_checkout, order_id: row._id })
+        Message({
+          message: 'Success: ' + result.data,
+          type: 'success',
+          duration: 2000
+        })
+      } catch (error) {
+        Message({
+          message: 'Error: ' + error.response.data,
+          type: 'error',
+          duration: 4000
+        })
+      }
+    },
+
+    tableRowClassName({ row, rowIndex }) {
+      if (!row.did_checkout) {
+        return 'warning-row'
+      }
+      return ''
+    },
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
@@ -338,5 +334,9 @@ export default {
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+
+  .el-table .warning-row {
+    background: rgb(253, 233, 230);
   }
 </style>

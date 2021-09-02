@@ -1,7 +1,7 @@
 <template>
   <div ref="tblContainer" style="height: 100%">
     <el-table
-      v-loading="product_with_types_table_loading"
+      v-loading="getting_product"
       :max-height="bodyHeight + ''"
       style="width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #bbbbbb;"
       size="small"
@@ -48,6 +48,23 @@
           />
         </template>
       </el-table-column>
+
+      <el-table-column
+        v-if="order.action === 2"
+        width="100"
+        prop="isReturning"
+        align="center"
+      >
+        <template slot="header" slot-scope="">
+          <span style="font-weight: bold">+ / -</span>
+        </template>
+        <template slot-scope="scope">
+          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.isReturning ? 'To Remove' : 'To add'" placement="left">
+            <el-switch v-model="scope.row.isReturning" active-color="#13ce66" inactive-color="" />
+          </el-tooltip>
+        </template>
+      </el-table-column>
+
       <el-table-column
         width="300"
         label="УМУМИЙ МИҚДОРНИ ЎЛЧОВ БИРЛИГИ"
@@ -126,7 +143,7 @@
         </el-table-column>
       </el-table-column>
 
-      <!-- <el-table-column
+      <el-table-column
         width="100"
         prop="base_price"
         align="center"
@@ -136,13 +153,13 @@
           <span>m2 / Dona</span>
         </template>
         <template slot-scope="scope">
-          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.price_by ? 'Price by item number' : 'Price by area (m2)'" placement="left">
-            <el-switch :value="scope.row.price_by" active-color="#13ce66" inactive-color="" @change="calcPriceprice_byChanged($event, scope.row)" />
+          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.base_priceBy ? 'Price by item number' : 'Price by area (m2)'" placement="left">
+            <el-switch :value="scope.row.base_priceBy" active-color="#13ce66" inactive-color="" @change="calcPriceprice_byChanged($event, scope.row)" />
           </el-tooltip>
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
-      <!-- <el-table-column
+      <el-table-column
         width="120"
         label="ТАН НАРХИ"
         prop="base_price"
@@ -151,9 +168,9 @@
         <template slot-scope="scope">
           <span>{{ scope.row.base_price }}</span>
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
-      <!-- <el-table-column
+      <el-table-column
         width="130"
         prop="sum_kassa"
         align="center"
@@ -165,9 +182,9 @@
         <template slot-scope="scope">
           {{ scope.row.sum_kassa.toFixed(2) }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
-      <!-- <el-table-column
+      <el-table-column
         width="130"
         prop="base_price_changed"
         align="center"
@@ -185,9 +202,8 @@
             @input="base_priceIsChanging($event, scope.row)"
           />
         </template>
-      </el-table-column> -->
-
-      <!-- <el-table-column
+      </el-table-column>
+      <el-table-column
         width="130"
         prop="sum"
         align="center"
@@ -200,7 +216,7 @@
         <template slot-scope="scope">
           {{ scope.row.sum.toFixed(2) }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column
         width="150"
         label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"
@@ -269,7 +285,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('products', ['product_with_types_table_loading'])
+    ...mapState('others/products', ['getting_product']),
+    ...mapState('others/products', ['order'])
   },
   mounted() {
     setTimeout(() => {
@@ -279,13 +296,12 @@ export default {
     window.addEventListener('resize', e => {
       this.bodyHeight = this.$refs.tblContainer.clientHeight
     })
-    console.log('asas', this.baseApi)
   },
   beforeDestroy() {
-    this.SET_PRODUCT(-1)
+    this.SET_PRODUCT([])
   },
   methods: {
-    ...mapMutations('products', ['SET_PRODUCT']),
+    ...mapMutations('others/products', ['SET_PRODUCT']),
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url

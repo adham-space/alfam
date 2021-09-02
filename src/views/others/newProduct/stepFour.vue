@@ -212,7 +212,15 @@ export default {
     savePacket() {
       this.$refs.storeFormRef.validate((valid) => {
         if (valid) {
-          this.SET_PACKET_INFO({ type_id: this.formDataObj.current_subType, ...this.formDataObj })
+          this.SET_PACKET_INFO({
+            type_id: this.formDataObj.current_subType,
+            ...this.formDataObj,
+            area_of_an_item: parseFloat(this.areaOfOneItem()),
+            number_of_items: parseFloat(this.formDataObj.numberOfItems),
+            wight_of_one_packet: parseFloat(this.formDataObj.weightOfPacket),
+            area_of_one_packet: parseFloat(this.areaOfOnePacket()),
+            weight_of_an_item: parseFloat(this.wightOfOneItem())
+          })
           this.formDataObj = {
             currentProduct: '',
             current_subType: '',

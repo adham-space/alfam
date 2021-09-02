@@ -23,7 +23,7 @@ export default {
           // then set number of complete packets
           this.currentProduct.pack_num = parseInt(totalNumberOfItems / this.currentProduct.number_of_items)
           // then set bumber of over full packet numbers
-          this.currentProduct.over_pack_num = totalNumberOfItems > this.currentProduct.number_of_items ? parseInt(totalNumberOfItems % this.currentProduct.number_of_items) : 0
+          this.currentProduct.over_pack_num = parseInt(totalNumberOfItems % this.currentProduct.number_of_items)
           // calculate price of product according to base_price
           this.currentProduct.sum = parseInt(this.currentProduct.base_price * newArea)
           // set weight

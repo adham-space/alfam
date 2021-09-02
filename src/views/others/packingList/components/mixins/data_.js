@@ -20,12 +20,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('products', ['product_with_types']),
+    ...mapState('others/products', ['product']),
     tableDataComputed() {
-      if (this.broken) {
-        return this.product_with_types
+      if (this.product.product_types) {
+        return this.product.product_types
       }
-      return this.product_with_types.filter(item => item.broken === this.broken)
+      return this.product.product_types ? this.product.product_types.filter(item => item.broken === this.broken) : []
     }
   }
 }

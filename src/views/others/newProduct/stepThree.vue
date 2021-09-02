@@ -22,7 +22,7 @@
         />
         <el-table-column label="Size" align="center">
           <template slot-scope="scope">
-            {{ scope.row.width }} * {{ scope.row.height }}
+            {{ scope.row.height }} * {{ scope.row.width }}
           </template>
         </el-table-column>
         <el-table-column label="Rasmi" align="center">

@@ -88,15 +88,15 @@ export default {
     delete_Dialog: false
   }),
   computed: {
-    ...mapState('orders', ['currentOrder', 'currentOrderHeader', 'currentTable'])
+    ...mapState('others/orders', ['currentOrder', 'currentOrderHeader', 'currentTable'])
   },
   methods: {
-    ...mapMutations('orders', [
+    ...mapMutations('others/orders', [
       'SET_QUERY',
       'SET_CURRENT_TABLE',
       'SET_CURRENT_ORDER_HEADER'
     ]),
-    ...mapActions('orders', ['GET_ORDERS']),
+    ...mapActions('others/orders', ['GET_ORDERS']),
     searchTypeChanged(t) {
       this.SET_QUERY({
         key: 'search_input',

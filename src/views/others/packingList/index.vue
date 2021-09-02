@@ -27,7 +27,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('products', ['SET_ORDER']),
+    ...mapMutations('others/products', ['SET_ORDER']),
     checkTableValididty() {
       console.log('this.$refs.packingListTableRef.checkTableIsValid()', this.$refs.packingListTableRef.checkTableIsValid())
       this.isTableValid = this.$refs.packingListTableRef.checkTableIsValid()
