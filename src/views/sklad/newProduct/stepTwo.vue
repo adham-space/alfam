@@ -112,6 +112,7 @@ export default {
       type.code = this.formTwo.code + ''
       type.height = parseFloat(this.formTwo.height)
       type.width = parseFloat(this.formTwo.width)
+      type.size = `${type.height}*${type.width}`
       type.photo = this.photo[0]
       const index = this.types.findIndex((typ) => typ.id + '' === type.id + '')
       this.$store.commit('newProduct/SET_TYPE', { index: index, type })
