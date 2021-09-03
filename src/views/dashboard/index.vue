@@ -9,7 +9,6 @@ import { mapGetters } from 'vuex'
 import adminDashboard from './admin'
 import editorDashboard from './editor'
 // import 'element-theme-dark';
-
 export default {
   name: 'Dashboard',
   components: { adminDashboard, editorDashboard },
@@ -27,6 +26,9 @@ export default {
     if (!this.roles.includes('admin')) {
       this.currentRole = 'editorDashboard'
     }
+  },
+  mounted() {
+
   }
 }
 </script>

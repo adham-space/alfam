@@ -1,0 +1,462 @@
+ optionsBarHorizontal1: {
+        chart: {
+          foreColor: '#fff',
+          type: 'bar',
+          stacked: true,
+          sparkline: {
+            enabled: true
+          }
+        },
+        stroke: {
+          width: 3
+        },
+        colors: ['#FCCF31'],
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            barHeight: '20%',
+            colors: {
+              backgroundBarColors: ['#40475D']
+            }
+          }
+        },
+        // stroke: {
+        //   width: 0
+        // },
+        series: [
+          {
+            name: 'Process 1',
+            data: [44]
+          }
+        ],
+        title: {
+          floating: true,
+          offsetX: -10,
+          offsetY: 5,
+          text: 'Process 1'
+        },
+        subtitle: {
+          floating: true,
+          align: 'right',
+          offsetY: 0,
+          text: '44%',
+          style: {
+            fontSize: '20px'
+          }
+        },
+        tooltip: {
+          enabled: false,
+          theme: 'dark'
+        },
+        xaxis: {
+          categories: ['Process 1']
+        },
+        yaxis: {
+          max: 100
+        },
+        fill: {
+          opacity: 1,
+          type: 'gradient',
+          gradient: {
+            gradientToColors: ['#F55555']
+          }
+        }
+      },
+      optionsBarHorizontal2: {
+        chart: {
+          foreColor: '#fff',
+          type: 'bar',
+          stacked: true,
+          sparkline: {
+            enabled: true
+          }
+        },
+        stroke: {
+          width: 3
+        },
+        colors: ['#17ead9'],
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            barHeight: '20%',
+            colors: {
+              backgroundBarColors: ['#40475D']
+            }
+          }
+        },
+        // stroke: {
+        //   width: 0
+        // },
+        series: [
+          {
+            name: 'Process 1',
+            data: [84]
+          }
+        ],
+        title: {
+          floating: true,
+          offsetX: -10,
+          offsetY: 5,
+          text: 'Process 1'
+        },
+        subtitle: {
+          floating: true,
+          align: 'right',
+          offsetY: 0,
+          text: '44%',
+          style: {
+            fontSize: '20px'
+          }
+        },
+        tooltip: {
+          enabled: false,
+          theme: 'dark'
+        },
+        xaxis: {
+          categories: ['Process 2']
+        },
+        yaxis: {
+          max: 100
+        },
+        // tooltip: {
+
+        // },
+        fill: {
+          opacity: 1,
+          type: 'gradient',
+          gradient: {
+            gradientToColors: ['#6078ea']
+          }
+        }
+      },
+      optionsBarHorizontal3: {
+        chart: {
+          foreColor: '#fff',
+          type: 'bar',
+          stacked: true,
+          sparkline: {
+            enabled: true
+          }
+        },
+        stroke: {
+          width: 3
+        },
+        colors: ['#f02fc2'],
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            barHeight: '20%',
+            colors: {
+              backgroundBarColors: ['#40475D']
+            }
+          }
+        },
+        // stroke: {
+        //   width: 0
+        // },
+        series: [
+          {
+            name: 'Process 1',
+            data: [64]
+          }
+        ],
+        title: {
+          floating: true,
+          offsetX: -10,
+          offsetY: 5,
+          text: 'Process 1'
+        },
+        subtitle: {
+          floating: true,
+          align: 'right',
+          offsetY: 0,
+          text: '44%',
+          style: {
+            fontSize: '20px'
+          }
+        },
+        tooltip: {
+          enabled: false,
+          theme: 'dark'
+        },
+        xaxis: {
+          categories: ['Process 3']
+        },
+        yaxis: {
+          max: 100
+        },
+        fill: {
+          opacity: 1,
+          type: 'gradient',
+          gradient: {
+            gradientToColors: ['#6094ea']
+          }
+        }
+      },
+      seriesRadial: [44, 55],
+
+      chartOptionsRadial: {
+        chart: {
+          // height: 350,
+          type: 'radialBar',
+          offsetX: 0,
+          foreColor: '#fff'
+        },
+        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
+        plotOptions: {
+          radialBar: {
+            inverseOrder: false,
+            hollow: {
+              margin: 15,
+              size: '48%',
+              background: 'transparent'
+            },
+            track: {
+              show: true,
+              background: '#40475D',
+              strokeWidth: '10%',
+              opacity: 1,
+              margin: 3 // margin is in pixels
+            },
+            dataLabels: {
+              name: {
+                fontSize: '22px'
+              },
+              value: {
+                fontSize: '16px'
+              },
+              total: {
+                show: true,
+                label: 'Total',
+                formatter: function(w) {
+                  // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
+                  return 249
+                }
+              }
+            }
+          }
+        },
+        labels: ['Apples', 'Oranges'],
+        title: {
+          text: 'This is circular'
+        },
+        legend: {
+          show: true,
+          position: 'left',
+          offsetX: -30,
+          offsetY: 10,
+          formatter: function(val, opts) {
+            return val + ' - ' + opts.w.globals.series[opts.seriesIndex] + '%'
+          }
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100],
+            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+          }
+        }
+      },
+      
+      series: [
+        {
+          name: 'Desktops',
+          data: [120, 41, 335, 501, 409, 612, 629, 391, 148]
+        }
+      ],
+      chartOptions: {
+        chart: {
+          height: 350,
+          type: 'area',
+          zoom: {
+            enabled: false
+          },
+          toolbar: {
+            show: false
+          },
+          dropShadow: {
+            enabled: false,
+            enabledOnSeries: undefined,
+            top: 15,
+            left: 3,
+            blur: 3,
+            color: '#000',
+            opacity: 0.35
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        // stroke: {
+        //   curve: 'straight'
+        // },
+        title: {
+          text: 'Product Trends by Month',
+          align: 'left',
+          style: {
+            color: 'white'
+          }
+        },
+        // colors: ["#db2e03", "#6bdb03"],
+        grid: {
+          show: true,
+          borderColor: '#40475D'
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100],
+            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+          }
+        },
+        tooltip: {
+          theme: 'dark'
+        },
+        legend: {
+          labels: {
+            useSeriesColors: true
+          }
+        },
+        // title: {
+        //   text: '',
+        //   style: {
+        //     color: 'white'
+        //   }
+        // },
+        yaxis: {
+          labels: {
+            style: {
+              colors: 'white'
+            }
+          }
+        },
+        xaxis: {
+          categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep'
+          ],
+          labels: {
+            style: {
+              colors: 'white'
+            }
+          }
+        }
+      },
+      chartOptions2: {
+        chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          },
+          toolbar: {
+            show: false
+          },
+          dropShadow: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            top: 15,
+            left: 3,
+            blur: 3,
+            color: '#000',
+            opacity: 0.35
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        // stroke: {
+        //   curve: 'straight'
+        // },
+        title: {
+          text: 'Product Trends by Month',
+          align: 'left',
+          style: {
+            color: 'white'
+          }
+        },
+        // colors: ["#db2e03", "#6bdb03"],
+        grid: {
+          show: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100],
+            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+          }
+        },
+        tooltip: {
+          theme: 'dark'
+        },
+        legend: {
+          labels: {
+            useSeriesColors: true
+          }
+        },
+        // title: {
+        //   text: '',
+        //   style: {
+        //     color: 'white'
+        //   }
+        // },
+        yaxis: {
+          labels: {
+            style: {
+              colors: 'white'
+            }
+          }
+        },
+        xaxis: {
+          categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep'
+          ],
+          labels: {
+            style: {
+              colors: 'white'
+            }
+          }
+        }
+      },
+      trigoStrength: 3
