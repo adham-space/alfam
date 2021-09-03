@@ -43,15 +43,39 @@
           :series="seriesRadial"
         />
       </el-col>-->
-      <el-col :md="{span: 12}" :lg="{span: 12}" :sm="{span: 24}" :xm="{span: 24}">
+      <el-col
+        :md="{span: 12}"
+        :lg="{span: 12}"
+        :sm="{span: 24}"
+        :xm="{span: 24}"
+        class="char-body-1st"
+      >
         <vue-apex-charts
-          :key="barchartKey"
+          ref="chart1Ref"
           class="char-body"
           width="100%"
           height="300"
           :options="chartOptionsBar"
           :series="seriesBar"
         />
+        <div class="select-size-wrapper">
+          <el-select
+            v-model="currentSize"
+            clearable
+            style="width: 5.9em"
+            class="select-size"
+            @change="sizeChangedHandler"
+          >
+            <el-option label="All" :value="''" />
+            <el-option
+              v-for="size in sizeOptions"
+              :key="size._id"
+              :label="size.size"
+              :value="size.size"
+            />
+          </el-select>
+          <i style="color: white" :class="gettingData ? 'el-icon-loading': ''" />
+        </div>
       </el-col>
     </el-row>
     <!-- <el-row>
@@ -89,7 +113,7 @@
 <script>
 import VueApexCharts from 'vue-apexcharts'
 import request from '@/utils/request'
-
+import { toThousandFilter } from '@/filters/index'
 export default {
   name: 'DashboardAdmin',
   components: {
@@ -97,7 +121,10 @@ export default {
   },
   data() {
     return {
-      barchartKey: 0,
+      gettingData: false,
+      sizeOptions: [],
+      currentSize: '',
+      total_area: 0,
       seriesBar: [
         {
           name: '',
@@ -112,8 +139,11 @@ export default {
             show: false
           },
           events: {
-            click: function(chart, w, e) {
-              // console.log(chart, w, e)
+            click: (chart, w, e) => {
+              if (this.currentSize === '' && e.dataPointIndex >= 0) {
+                this.currentSize = e.config.xaxis.categories[e.dataPointIndex]
+                this.sizeChangedHandler(this.currentSize)
+              }
             }
           }
         },
@@ -128,7 +158,7 @@ export default {
           }
         },
         dataLabels: {
-          enabled: false
+          enabled: true
         },
         stroke: {
           width: 0
@@ -151,19 +181,20 @@ export default {
           }
         },
         title: {
-          text: 'Miqdorli gistogramma indeksi',
+          text: 'MIQDORLI GISTOGRAMMA INDEKSI',
           align: 'center',
           style: {
-            fontSize: '12px'
+            fontSize: '14px',
+            fontWeight: 'light'
           }
         },
         subtitle: {
-          // text: '20%',
+          text: 'Total (m2): ' + this.total_area,
           floating: true,
           align: 'right',
           offsetY: 0,
           style: {
-            fontSize: '22px'
+            fontSize: '14px'
           }
         },
         tooltip: {
@@ -181,29 +212,51 @@ export default {
     }
   },
   mounted() {
+    this.sizeChangedHandler('')
     request({
-      url: '/dashboard/get-inventar-area',
+      url: '/dashboard/get-product-sizes',
       method: 'GET'
     })
       .then(res => {
-        const chart1st = res.data
-        console.log('chart1', chart1st)
-        chart1st.forEach(ch => {
-          this.seriesBar[0].data.push(parseFloat((ch.total_area).toFixed(2)))
-          this.chartOptionsBar.xaxis.categories.push(ch.size)
-        })
-        this.barchartKey = Math.random() * 199
-        console.log('seriesBar', this.seriesBar)
-        console.log(
-          'this.chartOptionsBar.xaxis.categories',
-          this.chartOptionsBar.xaxis.categories
-        )
+        this.sizeOptions = res.data
       })
       .catch(err => {
         console.error(err)
+        this.sizeOptions = []
       })
   },
   methods: {
+    sizeChangedHandler(size) {
+      this.gettingData = true
+      request({
+        url: '/dashboard/get-inventar-area',
+        method: 'GET',
+        params: {
+          size: size
+        }
+      })
+        .then(res => {
+          this.gettingData = false
+          const chart1st = res.data
+          this.seriesBar[0].data = []
+          this.chartOptionsBar.xaxis.categories = []
+          chart1st.forEach(ch => {
+            if (size === '') {
+              this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+              this.chartOptionsBar.xaxis.categories.push(ch.size)
+            } else {
+              this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+              this.chartOptionsBar.xaxis.categories.push(ch.product_name)
+            }
+            this.chartOptionsBar.subtitle.text = 'Total (m2): ' + toThousandFilter(this.seriesBar[0].data.reduce((a, b) => a + b, 0))
+          })
+          this.$refs.chart1Ref.refresh()
+        })
+        .catch(err => {
+          this.gettingData = false
+          console.error(err)
+        })
+    },
     generateMinuteWiseTimeSeries(baseval, count, yrange) {
       var i = 0
       var series = []
@@ -225,7 +278,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dashboard-editor-container::-webkit-scrollbar {
   width: 6px;
   border-radius: 10px;
@@ -250,18 +303,34 @@ export default {
 }
 
 .dashboard-editor-container {
-  padding-left: 20px;
-  padding-bottom: 20px;
+  // padding-left: 20px;
+  // padding-bottom: 20px;
+  padding: 10px;
   background-color: #02111f;
   height: calc(100vh - 50px);
   overflow-x: auto;
 }
 
 .char-body {
-  background-color: #072746;
+  background-color: #0a2e52;
   padding: 20px;
   border-radius: 10px;
-  margin: 20px 20px 0 0;
+  // margin: 20px 20px 0 0;
+}
+
+.char-body-1st {
+  position: relative;
+}
+.select-size-wrapper {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.el-select.select-size > .el-input > .el-input__inner {
+  background-color: transparent !important;
+  color: white !important;
+  border: 1px solid transparent;
 }
 </style>
 
