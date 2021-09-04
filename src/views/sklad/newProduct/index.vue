@@ -27,7 +27,6 @@
         <el-button type="primary" :loading="finishing" :disabled="finishing">Save new product</el-button>
       </template>
     </form-wizard>
-
     <el-dialog
       title="Cancel new product"
       :visible.sync="cancelConfirmDialog"
