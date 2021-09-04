@@ -1,34 +1,20 @@
 <template>
   <div class="dashboard-editor-container">
-    <el-row>
-      <!-- <el-col
-        :md="{span: 12}"
-        :lg="{span: 12}"
-        :sm="{span: 24}"
-        :xm="{span: 24}"
-      >
-        <vue-apex-charts
-          class="char-body"
-          width="100%"
-          height="300"
-          :options="chartOptions"
-          :series="series"
-        />
-      </el-col>-->
-      <!-- <el-col
-        :md="{span: 12}"
-        :lg="{span: 12}"
-        :sm="{span: 24}"
-        :xm="{span: 24}"
-      >
-        <vue-apex-charts
-          class="char-body"
-          width="100%"
-          height="300"
-          :options="chartOptions2"
-          :series="series"
-        />
-      </el-col>-->
+    <div class="range-buttons__wrapper">
+      <div class="btn-group">
+        <div class="range-btn" :class="filterdate === 'day' ? 'active': ''" @click="filterdate = 'day'">DAY</div>
+        <div class="range-btn" :class="filterdate === 'month' ? 'active': ''" @click="filterdate = 'month'">MONTH</div>
+        <div class="range-btn" :class="filterdate === 'year' ? 'active': ''" @click="filterdate = 'year'">YEAR</div>
+      </div>
+      <div class="current-date">
+        {{ currentDate }}
+      </div>
+    </div>
+
+    <el-row :gutter="10">
+      <totalAreachart1st />
+      <ordersCashAmount :filterdate="filterdate" />
+      <!-- -->
       <!-- <el-col
         :md="{span: 12}"
         :lg="{span: 12}"
@@ -43,40 +29,7 @@
           :series="seriesRadial"
         />
       </el-col>-->
-      <el-col
-        :md="{span: 12}"
-        :lg="{span: 12}"
-        :sm="{span: 24}"
-        :xm="{span: 24}"
-        class="char-body-1st"
-      >
-        <vue-apex-charts
-          ref="chart1Ref"
-          class="char-body"
-          width="100%"
-          height="300"
-          :options="chartOptionsBar"
-          :series="seriesBar"
-        />
-        <div class="select-size-wrapper">
-          <el-select
-            v-model="currentSize"
-            clearable
-            style="width: 5.9em"
-            class="select-size"
-            @change="sizeChangedHandler"
-          >
-            <el-option label="All" :value="''" />
-            <el-option
-              v-for="size in sizeOptions"
-              :key="size._id"
-              :label="size.size"
-              :value="size.size"
-            />
-          </el-select>
-          <i style="color: white" :class="gettingData ? 'el-icon-loading': ''" />
-        </div>
-      </el-col>
+
     </el-row>
     <!-- <el-row>
       <el-col
@@ -111,174 +64,46 @@
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts'
-import request from '@/utils/request'
-import { toThousandFilter } from '@/filters/index'
+import totalAreachart1st from './components/totalAreachart1st'
+import ordersCashAmount from './components/ordersCashAmount'
 export default {
   name: 'DashboardAdmin',
   components: {
-    VueApexCharts
+    totalAreachart1st,
+    ordersCashAmount
   },
   data() {
     return {
-      gettingData: false,
-      sizeOptions: [],
-      currentSize: '',
-      total_area: 0,
-      seriesBar: [
-        {
-          name: '',
-          data: []
-        }
-      ],
-      chartOptionsBar: {
-        chart: {
-          type: 'bar',
-          foreColor: 'white',
-          toolbar: {
-            show: false
-          },
-          events: {
-            click: (chart, w, e) => {
-              if (this.currentSize === '' && e.dataPointIndex >= 0) {
-                this.currentSize = e.config.xaxis.categories[e.dataPointIndex]
-                this.sizeChangedHandler(this.currentSize)
-              }
-            }
-          }
-        },
-        // colors: colors,
-        grid: {
-          borderColor: '#40475D'
-        },
-        plotOptions: {
-          bar: {
-            columnWidth: '35%'
-            // distributed: true,
-          }
-        },
-        dataLabels: {
-          enabled: true
-        },
-        stroke: {
-          width: 0
-        },
-        legend: {
-          show: true
-        },
-        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
-        fill: {
-          type: 'gradient',
-          gradient: {
-            type: 'vertical',
-            shade: 'dark',
-            shadeIntensity: 0.5,
-            inverseColors: false,
-            opacityFrom: 1,
-            opacityTo: 0.8,
-            stops: [0, 100],
-            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
-          }
-        },
-        title: {
-          text: 'MIQDORLI GISTOGRAMMA INDEKSI',
-          align: 'center',
-          style: {
-            fontSize: '14px',
-            fontWeight: 'light'
-          }
-        },
-        subtitle: {
-          text: 'Total (m2): ' + this.total_area,
-          floating: true,
-          align: 'right',
-          offsetY: 0,
-          style: {
-            fontSize: '14px'
-          }
-        },
-        tooltip: {
-          theme: 'dark'
-        },
-        xaxis: {
-          categories: [],
-          labels: {
-            style: {
-              fontSize: '12px'
-            }
-          }
-        }
-      }
+
+      filterdate: 'month'
     }
   },
-  mounted() {
-    this.sizeChangedHandler('')
-    request({
-      url: '/dashboard/get-product-sizes',
-      method: 'GET'
-    })
-      .then(res => {
-        this.sizeOptions = res.data
-      })
-      .catch(err => {
-        console.error(err)
-        this.sizeOptions = []
-      })
-  },
-  methods: {
-    sizeChangedHandler(size) {
-      this.gettingData = true
-      request({
-        url: '/dashboard/get-inventar-area',
-        method: 'GET',
-        params: {
-          size: size
-        }
-      })
-        .then(res => {
-          this.gettingData = false
-          const chart1st = res.data
-          this.seriesBar[0].data = []
-          this.chartOptionsBar.xaxis.categories = []
-          chart1st.forEach(ch => {
-            if (size === '') {
-              this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
-              this.chartOptionsBar.xaxis.categories.push(ch.size)
-            } else {
-              this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
-              this.chartOptionsBar.xaxis.categories.push(ch.product_name)
-            }
-            this.chartOptionsBar.subtitle.text = 'Total (m2): ' + toThousandFilter(this.seriesBar[0].data.reduce((a, b) => a + b, 0))
-          })
-          this.$refs.chart1Ref.refresh()
-        })
-        .catch(err => {
-          this.gettingData = false
-          console.error(err)
-        })
-    },
-    generateMinuteWiseTimeSeries(baseval, count, yrange) {
-      var i = 0
-      var series = []
-      while (i < count) {
-        var x = baseval
-        var y =
-          (Math.sin(i / this.trigoStrength) * (i / this.trigoStrength) +
-            i / this.trigoStrength +
-            1) *
-          (this.trigoStrength * 2)
-
-        series.push([x, y])
-        baseval += 300000
-        i++
+  computed: {
+    currentDate() {
+      const d = new Date()
+      let result = ''
+      switch (this.filterdate) {
+        case 'day':
+          result = d.toLocaleString('ru', { month: 'long' }) + ', ' + d.getDate() + 'th'
+          break
+        case 'month':
+          result = d.toLocaleString('ru', { month: 'long' }) + ', ' + d.getFullYear()
+          break
+        case 'year':
+          result = d.getFullYear()
+          break
+        default:
+          break
       }
-      return series
+      return result
     }
   }
 }
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap');
+
 .dashboard-editor-container::-webkit-scrollbar {
   width: 6px;
   border-radius: 10px;
@@ -305,8 +130,9 @@ export default {
 .dashboard-editor-container {
   // padding-left: 20px;
   // padding-bottom: 20px;
-  padding: 10px;
+  padding: 1em;
   background-color: #02111f;
+
   height: calc(100vh - 50px);
   overflow-x: auto;
 }
@@ -318,19 +144,41 @@ export default {
   // margin: 20px 20px 0 0;
 }
 
-.char-body-1st {
-  position: relative;
-}
-.select-size-wrapper {
-  position: absolute;
-  top: 12px;
-  left: 12px;
+.range-buttons__wrapper {
+  display: flex;
+  color: white;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  .current-date {
+    border-bottom: 1px solid wheat;
+  }
+  .btn-group {
+    border-radius: 25px;
+    display: flex;
+    padding: .5em;
+    // background-color: #9dc4eb83;
+    border: 1px solid #9dc4eb83;
+      .range-btn {
+        font-size: 14px;
+        cursor: pointer;
+        text-align: center;
+        color: white;
+        width: 80px;
+        border-radius: 17px;
+        padding: .5em;
+        font-family: 'Nunito Sans', sans-serif;
+        font-size: 13px;
+        margin-left: 2em;
+      }
+      .range-btn:nth-child(1) {
+        margin-left: 0
+      }
+      .range-btn.active {
+        background-color: #0a2e52;
+      }
+  }
 }
 
-.el-select.select-size > .el-input > .el-input__inner {
-  background-color: transparent !important;
-  color: white !important;
-  border: 1px solid transparent;
-}
 </style>
 
