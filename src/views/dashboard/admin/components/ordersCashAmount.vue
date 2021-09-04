@@ -167,7 +167,7 @@ export default {
             this.series[0].data.push(parseFloat(ch.last_sum.toFixed(2)))
             this.chartOptions.xaxis.categories.push(ch.day)
 
-            this.chartOptions.subtitle.text = 'Total: ' + toThousandFilter(this.series[0].data.reduce((a, b) => a + b, 0))
+            this.chartOptions.subtitle.text = 'Total: ' + toThousandFilter(parseFloat((this.series[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
           })
           this.$refs.chart2nd.refresh()
         })

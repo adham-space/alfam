@@ -149,7 +149,7 @@ export default {
   color: white;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 1em;
   .current-date {
     border-bottom: 1px solid wheat;
   }

@@ -172,7 +172,7 @@ export default {
               this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
               this.chartOptionsBar.xaxis.categories.push(ch.product_name)
             }
-            this.chartOptionsBar.subtitle.text = 'Total: ' + toThousandFilter(this.seriesBar[0].data.reduce((a, b) => a + b, 0))
+            this.chartOptionsBar.subtitle.text = 'Total: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
           })
           this.$refs.chart1Ref.refresh()
         })
