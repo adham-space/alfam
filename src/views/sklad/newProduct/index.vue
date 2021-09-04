@@ -75,6 +75,7 @@ export default {
     ...mapActions('newProduct', ['UPLOAD_IMAGES', 'UPLOAD_TYPES']),
     async onComplete() {
       try {
+        this.finishing = true
         for (let i = 0; i < this.types.length; i++) {
           const formData = new FormData()
           formData.append('image', this.types[i].photo.raw)
@@ -85,7 +86,6 @@ export default {
           product_name: this.product_name,
           product_types: this.types
         }
-        this.finishing = true
         await this.UPLOAD_TYPES(dataObj)
         Message({
           message: 'Success:  types are saved',
