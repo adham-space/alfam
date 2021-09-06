@@ -8,7 +8,7 @@ const shopRouter = {
   name: 'Shop',
   meta: {
     roles: ['admin', 'seller'],
-    title: 'Shop',
+    title: 'Платформа',
     icon: 'el-icon-shopping-cart-full'
   },
   children: [
@@ -16,13 +16,13 @@ const shopRouter = {
       path: 'shop-packing-list',
       component: () => import('@/views/Shop/index'),
       name: 'ShopPackingList',
-      meta: { title: 'New invoice', noCache: true }
+      meta: { title: 'Инвойс', noCache: true }
     },
     {
       path: 'my-orders',
       component: () => import('@/views/Shop/ordersList/index'),
       name: 'MyOrders',
-      meta: { title: 'Invoices', noCache: true }
+      meta: { title: 'Инвойслар листи', noCache: true }
     },
     {
       path: 'edit-order/:order_id',

@@ -8,7 +8,7 @@ const othersRouter = {
   name: 'Others',
   meta: {
     roles: ['admin'],
-    title: 'Others',
+    title: 'Партнерлар',
     icon: 'el-icon-refresh'
   },
   children: [
@@ -16,7 +16,7 @@ const othersRouter = {
       path: 'others-new-product',
       component: () => import('@/views/others/newProduct/index'),
       name: 'OthersNewProduct',
-      meta: { title: 'New product', noCache: false }
+      meta: { title: 'Махсулот яратиш', noCache: false }
     },
 
     // {
@@ -29,13 +29,13 @@ const othersRouter = {
       path: 'others-packing-list',
       component: () => import('@/views/others/packingList/index'),
       name: 'OthersPackingList',
-      meta: { title: 'New invoice', noCache: false }
+      meta: { title: 'Янги шартнома', noCache: false }
     },
     {
       path: 'others-order-list',
       component: () => import('@/views/others/ordersList/index'),
       name: 'OthersOrderList',
-      meta: { title: 'Invoices list', noCache: false }
+      meta: { title: 'Шартномалар рўйхати', noCache: false }
     }
   ]
 }

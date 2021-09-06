@@ -6,7 +6,7 @@
     <el-col class="selectType" :span="24">
       <el-select
         v-model="currentType"
-        placeholder="Types"
+        placeholder="Турлари"
         @change="typeChoosen"
       >
         <el-option
@@ -25,7 +25,7 @@
         <el-form-item>
           <el-col :span="12">
             <el-form-item label="Code">
-              <el-input v-model="formTwo.code" placeholder="Code" />
+              <el-input v-model="formTwo.code" placeholder="Коди" />
             </el-form-item>
           </el-col>
           <!-- <el-col :span="12">
@@ -37,13 +37,13 @@
 
         <el-form-item>
           <el-col :span="12">
-            <el-form-item label="Height (cm)">
-              <el-input v-model="formTwo.height" placeholder="Height (cm)" />
+            <el-form-item label="Бўйига (cм)">
+              <el-input v-model="formTwo.height" placeholder="Бўйига (cм)" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Width (cm)">
-              <el-input v-model="formTwo.width" placeholder="Width (cm)" />
+            <el-form-item label="Энига (cм)">
+              <el-input v-model="formTwo.width" placeholder="Энига (cм)" />
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -59,7 +59,7 @@
         list-type="picture"
         :on-exceed="handleExceed"
       >
-        <el-button size="small" type="primary">Click to upload</el-button>
+        <el-button size="small" type="primary">Расмни юклаш</el-button>
         <div slot="tip" class="el-upload__tip" />
       </el-upload>
     </el-col>
@@ -72,7 +72,7 @@
         style="color: green; margin-top: 0.5rem"
         icon="el-icon-plus"
         @click="save()"
-      >save</el-button>
+      >Сақлаш</el-button>
     </el-col>
   </el-row>
 </template>

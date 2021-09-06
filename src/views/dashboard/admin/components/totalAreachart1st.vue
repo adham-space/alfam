@@ -18,11 +18,12 @@
       <el-select
         v-model="currentSize"
         clearable
-        style="width: 5.9em"
+        align="center"
+        style="width: 6.6em"
         class="select-size"
         @change="sizeChangedHandler"
       >
-        <el-option label="All" :value="''" />
+        <el-option label="Хаммаси" :value="''" />
         <el-option
           v-for="size in sizeOptions"
           :key="size._id"
@@ -105,7 +106,7 @@ export default {
           }
         },
         title: {
-          text: 'MIQDORLI GISTOGRAMMA IND.',
+          text: 'МИҚДОРЛИ ГИСТОГРАММА ИНД.',
           align: 'center',
           style: {
             fontSize: '14px',
@@ -113,7 +114,7 @@ export default {
           }
         },
         subtitle: {
-          text: 'Total: ',
+          text: 'Жами: ',
           floating: true,
           align: 'right',
           offsetY: 0,
@@ -172,7 +173,7 @@ export default {
               this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
               this.chartOptionsBar.xaxis.categories.push(ch.product_name)
             }
-            this.chartOptionsBar.subtitle.text = 'Total: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
+            this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
           })
           this.$refs.chart1Ref.refresh()
         })

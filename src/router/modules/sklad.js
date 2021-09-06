@@ -8,7 +8,7 @@ const skladRouter = {
   name: 'Skald',
   meta: {
     roles: ['admin', 'zav. sklad'],
-    title: 'Sklad',
+    title: 'Склад',
     icon: 'el-icon-school'
   },
   children: [
@@ -16,25 +16,25 @@ const skladRouter = {
       path: 'newproduct',
       component: () => import('@/views/sklad/newProduct/index'),
       name: 'NewProduct',
-      meta: { title: 'New product', noCache: true }
+      meta: { title: 'Махсулот яратиш', noCache: true }
     },
     {
       path: 'storetproduct',
       component: () => import('@/views/sklad/storeProducts/index'),
       name: 'Store',
-      meta: { title: 'Store to sklad', noCache: true }
+      meta: { title: 'Складга сақалаш', noCache: true }
     },
     {
       path: 'packing-list',
       component: () => import('@/views/sklad/packingList/index'),
       name: 'PackingList',
-      meta: { title: 'Packing List', noCache: true }
+      meta: { title: 'Упаковочний лист', noCache: true }
     },
     {
       path: 'orders',
       component: () => import('@/views/sklad/ordersPage/index'),
       name: 'Orders',
-      meta: { title: 'Orders', noCache: true }
+      meta: { title: 'Буюртмалар', noCache: true }
     }
 
   ]

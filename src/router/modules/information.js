@@ -8,7 +8,7 @@ const informationRouter = {
   name: 'Information',
   meta: {
     roles: ['admin', 'seller', 'zav. sklad'],
-    title: 'Information',
+    title: 'Маълумотлар',
     icon: 'el-icon-document'
   },
   children: [
@@ -19,7 +19,7 @@ const informationRouter = {
       name: 'Users',
       meta: {
         roles: ['admin'],
-        title: 'Users ', noCache: false }
+        title: 'Фойдаланувчилар ', noCache: false }
     },
     {
       path: 'stuff',
@@ -27,7 +27,7 @@ const informationRouter = {
       name: 'Stuffs',
       meta: {
         roles: ['admin'],
-        title: 'Stuffs', noCache: false }
+        title: 'Ҳодимлар', noCache: false }
     },
     {
       path: 'shops',
@@ -35,7 +35,7 @@ const informationRouter = {
       name: 'Shops',
       meta: {
         roles: ['admin'],
-        title: 'Shops && Sklad', noCache: false }
+        title: 'Диллерлар', noCache: false }
     },
     {
       path: 'drivers',
@@ -43,7 +43,7 @@ const informationRouter = {
       name: 'Drivers',
       meta: {
         roles: ['admin', 'seller', 'zav. sklad'],
-        title: 'Drivers ', noCache: false }
+        title: 'Шофёрлар ', noCache: false }
     },
     {
       path: 'customers',
@@ -51,7 +51,7 @@ const informationRouter = {
       name: 'Customers',
       meta: {
         roles: ['admin', 'seller', 'zav. sklad'],
-        title: 'Customers ', noCache: false }
+        title: 'Клиентлар ', noCache: false }
     }
   ]
 }
