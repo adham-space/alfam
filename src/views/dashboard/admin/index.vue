@@ -84,7 +84,7 @@ export default {
       let result = ''
       switch (this.filterdate) {
         case 'day':
-          result = d.toLocaleString('ru', { month: 'long' }) + ', ' + d.getDate() + 'th'
+          result = d.toLocaleString('ru', { month: 'long' }) + ', ' + d.getDate()
           break
         case 'month':
           result = d.toLocaleString('ru', { month: 'long' }) + ', ' + d.getFullYear()
