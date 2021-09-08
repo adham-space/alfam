@@ -60,7 +60,7 @@ export default {
         this.currentProduct.item_num = parseInt(newItemNum)
         this.currentProduct.packTotalArea = this.truncateToDecimals(parseFloat(this.currentProduct.item_num * this.currentProduct.area_of_an_item), 4)
         this.currentProduct.pack_num = parseInt(this.currentProduct.item_num / this.currentProduct.number_of_items)
-        this.currentProduct.over_pack_num = this.currentProduct.item_num > this.currentProduct.number_of_items ? parseInt(this.currentProduct.item_num % this.currentProduct.number_of_items) : 0
+        this.currentProduct.over_pack_num = parseInt(this.currentProduct.item_num % this.currentProduct.number_of_items)
         this.calcPrice()
         this.currentProduct.weight = (this.currentProduct.item_num * this.currentProduct.weight_of_an_item).toFixed(2)
         this.checkPropotion()
