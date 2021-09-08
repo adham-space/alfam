@@ -64,7 +64,7 @@ export default {
         //   curve: 'straight'
         // },
         title: {
-          text: 'OPERATSIYA JARAYONI GRAFIGI',
+          text: 'ОПЕРАЦИЯ ЖАРАЁНИ ГРАФИГИ',
           align: 'center',
           style: {
             color: 'white',
@@ -73,7 +73,7 @@ export default {
           }
         },
         subtitle: {
-          text: 'Total: ',
+          text: 'Жами: ',
           floating: true,
           align: 'right',
           offsetY: 0,
@@ -167,7 +167,7 @@ export default {
             this.series[0].data.push(parseFloat(ch.last_sum.toFixed(2)))
             this.chartOptions.xaxis.categories.push(ch.day)
 
-            this.chartOptions.subtitle.text = 'Total: ' + toThousandFilter(parseFloat((this.series[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
+            this.chartOptions.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.series[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
           })
           this.$refs.chart2nd.refresh()
         })

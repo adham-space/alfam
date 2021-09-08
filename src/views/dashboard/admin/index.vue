@@ -2,9 +2,9 @@
   <div class="dashboard-editor-container">
     <div class="range-buttons__wrapper">
       <div class="btn-group">
-        <div class="range-btn" :class="filterdate === 'day' ? 'active': ''" @click="filterdate = 'day'">DAY</div>
-        <div class="range-btn" :class="filterdate === 'month' ? 'active': ''" @click="filterdate = 'month'">MONTH</div>
-        <div class="range-btn" :class="filterdate === 'year' ? 'active': ''" @click="filterdate = 'year'">YEAR</div>
+        <div class="range-btn" :class="filterdate === 'day' ? 'active': ''" @click="filterdate = 'day'">КУН</div>
+        <div class="range-btn" :class="filterdate === 'month' ? 'active': ''" @click="filterdate = 'month'">ОЙ</div>
+        <div class="range-btn" :class="filterdate === 'year' ? 'active': ''" @click="filterdate = 'year'">ЙИЛ</div>
       </div>
       <div class="current-date">
         {{ currentDate }}
@@ -84,7 +84,7 @@ export default {
       let result = ''
       switch (this.filterdate) {
         case 'day':
-          result = d.toLocaleString('ru', { month: 'long' }) + ', ' + d.getDate() + 'th'
+          result = d.toLocaleString('ru', { month: 'long' }) + ', ' + d.getDate()
           break
         case 'month':
           result = d.toLocaleString('ru', { month: 'long' }) + ', ' + d.getFullYear()

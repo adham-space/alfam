@@ -1,31 +1,31 @@
 <template>
   <el-row>
     <el-col :span="24" class="step-header">
-      <h2>Nilufar</h2>
+      <h2>{{ $store.state.newProduct.product_name }}</h2>
     </el-col>
     <el-col :span="24">
       <el-table width="100%" :data="types">
         <el-table-column
           type="index"
-          label="No"
+          label="№"
           align="center"
         />
         <el-table-column
           prop="code"
-          label="Code"
+          label="Коди"
           align="center"
         />
         <el-table-column
           prop="type_name"
-          label="type_name"
+          label="Турлари"
           align="center"
         />
-        <el-table-column label="Size" align="center">
+        <el-table-column label="Размери" align="center">
           <template slot-scope="scope">
             {{ scope.row.height }}*{{ scope.row.width }}
           </template>
         </el-table-column>
-        <el-table-column label="Rasmi" align="center">
+        <el-table-column label="Расми" align="center">
           <template slot-scope="scope">
             <el-image
               style="width: 25px; height: 25px"

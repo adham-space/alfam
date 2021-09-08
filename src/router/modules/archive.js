@@ -8,7 +8,7 @@ const storeRouter = {
   name: 'Store archive',
   meta: {
     roles: ['admin', 'zavsklad'],
-    title: 'Store',
+    title: 'База',
     icon: 'el-icon-pie-chart'
   },
   children: [
@@ -16,13 +16,13 @@ const storeRouter = {
       path: 'archive',
       component: () => import('@/views/store/archive/index'),
       name: 'Archive',
-      meta: { title: 'Archive', noCache: false }
+      meta: { title: 'Архив', noCache: false }
     },
     {
       path: 'inventars',
       component: () => import('@/views/store/inventars/index'),
       name: 'Inventars',
-      meta: { title: 'Inventars', noCache: false }
+      meta: { title: 'Инвентаризация', noCache: false }
     }
     // {
     //   path: 'all-orders',

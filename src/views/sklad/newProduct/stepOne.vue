@@ -1,23 +1,23 @@
 <template>
   <el-row :gutter="10" class="stepOne">
     <el-col :offset="2" :span="20">
-      <el-input v-model="name" placeholder="Name" @change="nameChanging" />
+      <el-input v-model="name" placeholder="Махсулот номи" @change="nameChanging" />
     </el-col>
     <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="newType">
         <el-input
           v-model="typeObject.name"
           style="width: 70%"
-          placeholder="New type"
+          placeholder="Янги тур"
           @keyup.native.enter="addNewType()"
         />
-        <el-button @click="addNewType()">Add</el-button>
+        <el-button @click="addNewType()">Қўшиш</el-button>
       </div>
     </el-col>
     <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="types">
         <el-table
-          :empty-text="'Type not inserted'"
+          empty-text="Махсулот ҳали киритилмади"
           :show-header="false"
           :data="types"
           width="100%"
