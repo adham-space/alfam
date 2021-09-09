@@ -31,46 +31,22 @@
       </el-col>-->
 
     </el-row>
-    <!-- <el-row>
-      <el-col
-        :md="{span: 12}"
-        :lg="{span: 12}"
-        :sm="{span: 24}"
-        :xm="{span: 24}"
-      >
-        <div class="char-body">
-          <vue-apex-charts
-            width="100%"
-            height="70"
-            :options="optionsBarHorizontal1"
-            :series="optionsBarHorizontal1.series"
-          />
-          <vue-apex-charts
-            width="100%"
-            height="70"
-            :options="optionsBarHorizontal2"
-            :series="optionsBarHorizontal2.series"
-          />
-          <vue-apex-charts
-            width="100%"
-            height="70"
-            :options="optionsBarHorizontal3"
-            :series="optionsBarHorizontal3.series"
-          />
-        </div>
-      </el-col>
-    </el-row>-->
+    <el-row style="margin-top: 10px">
+      <sellersChartBytSale :filterdate="filterdate" />
+    </el-row>
   </div>
 </template>
 
 <script>
 import totalAreachart1st from './components/totalAreachart1st'
 import ordersCashAmount from './components/ordersCashAmount'
+import sellersChartBytSale from './components/sellersChartBytSale'
 export default {
   name: 'DashboardAdmin',
   components: {
     totalAreachart1st,
-    ordersCashAmount
+    ordersCashAmount,
+    sellersChartBytSale
   },
   data() {
     return {
