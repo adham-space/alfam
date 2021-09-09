@@ -86,7 +86,7 @@ export default {
             type: 'horizontal',
             shade: 'dark',
             shadeIntensity: 0.5,
-            inverseColors: false,
+            inverseColors: true,
             opacityFrom: 1,
             opacityTo: 0.8,
             stops: [0, 100],
