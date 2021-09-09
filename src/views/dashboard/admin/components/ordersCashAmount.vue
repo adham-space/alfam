@@ -89,7 +89,18 @@ export default {
         },
         // colors: ["#db2e03", "#6bdb03"],
         grid: {
-          show: false
+          borderColor: '#40475D',
+          show: true,
+          xaxis: {
+            lines: {
+              show: false
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true
+            }
+          }
         },
         stroke: {
           curve: 'smooth'

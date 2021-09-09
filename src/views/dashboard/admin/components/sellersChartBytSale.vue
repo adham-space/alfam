@@ -59,7 +59,17 @@ export default {
           // }
         },
         grid: {
-          borderColor: '#40475D'
+          borderColor: '#40475D',
+          xaxis: {
+            lines: {
+              show: true
+            }
+          },
+          yaxis: {
+            lines: {
+              show: false
+            }
+          }
         },
         plotOptions: {
           bar: {
