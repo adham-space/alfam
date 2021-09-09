@@ -7,7 +7,7 @@
     class="char-body-1st"
   >
     <vue-apex-charts
-      ref="chart1Ref"
+      ref="sellersChartRef"
       class="char-body"
       width="100%"
       height="400"
@@ -155,7 +155,7 @@ export default {
             this.chartOptionsBar.xaxis.categories.push(ch.shop)
             // this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
           })
-          this.$refs.chart1Ref.refresh()
+          this.$refs.sellersChartRef.refresh()
         })
         .catch(err => {
           this.gettingData = false
