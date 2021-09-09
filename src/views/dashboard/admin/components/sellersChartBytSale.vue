@@ -10,7 +10,7 @@
       ref="sellersChartRef"
       class="char-body"
       width="100%"
-      height="400"
+      height="300"
       :options="chartOptionsBar"
       :series="seriesBar"
     />
