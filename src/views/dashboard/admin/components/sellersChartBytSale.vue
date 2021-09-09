@@ -79,7 +79,7 @@ export default {
         legend: {
           show: true
         },
-        colors: ['#0cbce4'],
+        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
         fill: {
           type: 'gradient',
           gradient: {
@@ -89,8 +89,8 @@ export default {
             inverseColors: false,
             opacityFrom: 1,
             opacityTo: 0.8,
-            stops: [0, 100]
-            // gradientToColors: ['#0c819c', '#0c819c', '#0c819c']
+            stops: [0, 100],
+            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
           }
         },
         title: {
