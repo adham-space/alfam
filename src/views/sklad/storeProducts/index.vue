@@ -139,13 +139,30 @@
                 </el-form-item>
               </span>
             </div>
+            <div>
+              <span
+                style="margin-top: 1rem;"
+              ><span
+                 style="color: darkgray; margin-right: 1rem"
+               >TARGET:
+               </span>
+                <el-form-item prop="target_date">
+                  <el-date-picker
+                    v-model="formDataObj.target_date"
+                    type="daterange"
+                    range-separator="To"
+                    start-placeholder="Start date"
+                    end-placeholder="End date"
+                  />
+                </el-form-item>
+              </span>
+            </div>
           </div>
         </el-card>
 
         <el-card shadow="hover" class="box-card" style="margin-top: 1rem">
           <div slot="header" style="height: 4rem">Store To Sklad</div>
           <div class="one-packet">
-
             <!-- <el-form-item prop="target_from">
 
             </el-form-item> -->
@@ -244,9 +261,24 @@ export default {
         base_priceBy: false,
         singan: false,
         totalArea: '',
+        target_date: '',
         description: ''
       },
       rules: {
+        target_date: [
+          {
+            trigger: 'change',
+            required: true,
+            validator: (rule, value, cb) => {
+              console.log('value', value)
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('target_date should be set'))
+              }
+            }
+          }
+        ],
         currentProduct: [
           {
             trigger: 'change',
@@ -418,7 +450,9 @@ export default {
         total_number_of_packets: parseFloat(this.numberOfPackets()),
         total_wight_of_packets: parseFloat(this.totalWeight()),
         total_number_of_over_packet: parseFloat(this.notCompletePacketItems()),
-        description: this.formDataObj.description
+        description: this.formDataObj.description,
+        target_start_date: this.formDataObj.target_date[0],
+        target_end_date: this.formDataObj.target_date[1]
       }
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {

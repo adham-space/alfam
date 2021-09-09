@@ -24,7 +24,12 @@ export default {
   components: {
     VueApexCharts
   },
-  props: ['filterdate'],
+  props: {
+    filterdate: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       gettingData: false,
