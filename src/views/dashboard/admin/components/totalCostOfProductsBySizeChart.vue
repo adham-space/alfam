@@ -72,14 +72,16 @@ export default {
             }
           }
         },
+
         // colors: colors,
         grid: {
-          borderColor: '#40475D'
+          borderColor: '#40475D',
+          borderRadius: 4
         },
         plotOptions: {
           bar: {
-            columnWidth: '35%'
-            // distributed: true,
+            columnWidth: '30%',
+            borderRadius: 4
           }
         },
         dataLabels: {
@@ -94,18 +96,18 @@ export default {
         legend: {
           show: true
         },
-        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
+        colors: ['#00a2ff'],
         fill: {
           type: 'gradient',
           gradient: {
             type: 'vertical',
             shade: 'dark',
             shadeIntensity: 0.5,
-            inverseColors: false,
+            inverseColors: true,
             opacityFrom: 1,
             opacityTo: 0.8,
             stops: [0, 100],
-            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+            gradientToColors: ['#00ffd5']
           }
         },
         title: {
@@ -230,6 +232,7 @@ export default {
   background-color: transparent !important;
   color: white !important;
   border: 1px solid transparent;
+  color: #00a2ff
 }
 
 </style>

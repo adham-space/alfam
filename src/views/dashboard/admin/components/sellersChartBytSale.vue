@@ -74,11 +74,10 @@ export default {
         },
         plotOptions: {
           bar: {
-            columnWidth: '35%',
+            columnWidth: '10%',
             // distributed: true,
             borderRadius: 4,
             horizontal: true
-
           }
         },
         dataLabels: {
