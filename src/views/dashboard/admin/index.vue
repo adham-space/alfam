@@ -31,7 +31,8 @@
       </el-col>-->
 
     </el-row>
-    <el-row style="margin-top: 10px">
+    <el-row :gutter="10" style="margin-top: 10px">
+      <totalCostOfProductsBySizeChart />
       <sellersChartBytSale :filterdate="filterdate" />
     </el-row>
   </div>
@@ -39,6 +40,7 @@
 
 <script>
 import totalAreachart1st from './components/totalAreachart1st'
+import totalCostOfProductsBySizeChart from './components/totalCostOfProductsBySizeChart'
 import ordersCashAmount from './components/ordersCashAmount'
 import sellersChartBytSale from './components/sellersChartBytSale'
 export default {
@@ -46,11 +48,11 @@ export default {
   components: {
     totalAreachart1st,
     ordersCashAmount,
-    sellersChartBytSale
+    sellersChartBytSale,
+    totalCostOfProductsBySizeChart
   },
   data() {
     return {
-
       filterdate: 'month'
     }
   },

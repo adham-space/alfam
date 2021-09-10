@@ -137,6 +137,9 @@ export default {
           labels: {
             style: {
               colors: 'white'
+            },
+            formatter: function(value) {
+              return toThousandFilter(value)
             }
           }
         },

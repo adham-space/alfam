@@ -20,6 +20,7 @@
 <script>
 import VueApexCharts from 'vue-apexcharts'
 import request from '@/utils/request'
+import { toThousandFilter } from '@/filters/index'
 export default {
   components: {
     VueApexCharts
@@ -136,6 +137,9 @@ export default {
           labels: {
             style: {
               fontSize: '12px'
+            },
+            formatter: function(value) {
+              return toThousandFilter(value)
             }
           }
         }

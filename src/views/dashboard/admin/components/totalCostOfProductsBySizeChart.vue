@@ -7,7 +7,7 @@
     class="char-body-1st"
   >
     <vue-apex-charts
-      ref="chart1Ref"
+      ref="totalCostRef"
       class="char-body"
       width="100%"
       height="300"
@@ -106,7 +106,7 @@ export default {
           }
         },
         title: {
-          text: 'МИҚДОРЛИ ГИСТОГРАММА ИНД. (m2)',
+          text: 'МИҚДОРЛИ ГИСТОГРАММА ИНД. ($)',
           align: 'center',
           style: {
             fontSize: '14px',
@@ -161,7 +161,7 @@ export default {
     sizeChangedHandler(size) {
       this.gettingData = true
       request({
-        url: '/dashboard/get-inventar-area',
+        url: '/dashboard/get-inventar-cost',
         method: 'GET',
         params: {
           size: size
@@ -174,15 +174,18 @@ export default {
           this.chartOptionsBar.xaxis.categories = []
           chart1st.forEach(ch => {
             if (size === '') {
-              this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+              this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
               this.chartOptionsBar.xaxis.categories.push(ch.size)
             } else {
-              this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+              this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
               this.chartOptionsBar.xaxis.categories.push(ch.product_name)
             }
             this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
           })
-          this.$refs.chart1Ref.refresh()
+
+          // this.seriesBar[0].data = this.seriesBar[0].data.map(value => toThousandFilter(value))
+
+          this.$refs.totalCostRef.refresh()
         })
         .catch(err => {
           this.gettingData = false
