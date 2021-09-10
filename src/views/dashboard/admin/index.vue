@@ -36,6 +36,9 @@
       <ordersCashAmount :filterdate="filterdate" />
       <sellersChartBytSale :filterdate="filterdate" />
     </el-row>
+    <el-row :gutter="10" style="margin-top: 10px">
+      <stuffRating :filterdate="filterdate" />
+    </el-row>
   </div>
 </template>
 
@@ -44,13 +47,15 @@ import totalAreachart1st from './components/totalAreachart1st'
 import totalCostOfProductsBySizeChart from './components/totalCostOfProductsBySizeChart'
 import ordersCashAmount from './components/ordersCashAmount'
 import sellersChartBytSale from './components/sellersChartBytSale'
+import stuffRating from './components/stuffRatings'
 export default {
   name: 'DashboardAdmin',
   components: {
     totalAreachart1st,
     ordersCashAmount,
     sellersChartBytSale,
-    totalCostOfProductsBySizeChart
+    totalCostOfProductsBySizeChart,
+    stuffRating
   },
   data() {
     return {
@@ -124,6 +129,11 @@ export default {
 }
 
 .range-buttons__wrapper {
+  background-color: #02111f;
+  z-index: 100;
+  position: sticky;
+  top: -16px;
+  padding: .3em;
   display: flex;
   color: white;
   align-items: center;

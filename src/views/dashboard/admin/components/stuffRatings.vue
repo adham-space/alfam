@@ -20,7 +20,6 @@
 <script>
 import VueApexCharts from 'vue-apexcharts'
 import request from '@/utils/request'
-import { toThousandFilter } from '@/filters/index'
 export default {
   components: {
     VueApexCharts
@@ -37,19 +36,16 @@ export default {
       sellerOptions: [],
       currentSize: '',
       total_area: 0,
-      seriesBar: [
-        {
-          name: '',
-          data: []
-        }
-      ],
+      seriesBar: [],
       chartOptionsBar: {
         chart: {
           type: 'bar',
           foreColor: 'white',
           toolbar: {
             show: false
-          }
+          },
+          stacked: true,
+          stackType: '100%'
           // events: {
           //   click: (chart, w, e) => {
           //     if (this.currentSize === '' && e.dataPointIndex >= 0) {
@@ -76,17 +72,16 @@ export default {
           bar: {
             columnWidth: '10%',
             // distributed: true,
-            barHeight: '35%',
-
-            borderRadius: 4,
+            // borderRadius: 4,
+            barHeight: '30%',
             horizontal: true
           }
         },
         dataLabels: {
-          enabled: true,
-          formatter: function(value) {
-            return toThousandFilter(value)
-          }
+          enabled: true
+          // formatter: function(value) {
+          //   return toThousandFilter(value)
+          // }
         },
         stroke: {
           width: 0
@@ -94,22 +89,22 @@ export default {
         legend: {
           show: true
         },
-        colors: ['#FCCF31', '#17ead9', '#f02fc2'],
+        colors: ['#FCCF31', '#17ead9', '#f10000'],
         fill: {
-          type: 'gradient',
-          gradient: {
-            type: 'horizontal',
-            shade: 'dark',
-            shadeIntensity: 0.5,
-            inverseColors: true,
-            opacityFrom: 1,
-            opacityTo: 0.8,
-            stops: [0, 100],
-            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
-          }
+          // type: 'gradient',
+          // gradient: {
+          //   type: 'horizontal',
+          //   shade: 'dark',
+          //   shadeIntensity: 0.5,
+          //   inverseColors: true,
+          //   opacityFrom: 1,
+          //   opacityTo: 0.8,
+          //   stops: [0, 100],
+          //   gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+          // }
         },
         title: {
-          text: 'РАҚОБАТНИ ТАҚҚОСЛОВЧИ ДИНАМИКА',
+          text: 'МЕХНАТ САМАРАДОРЛИГИ',
           align: 'center',
           style: {
             fontSize: '12px',
@@ -141,10 +136,10 @@ export default {
           labels: {
             style: {
               fontSize: '12px'
-            },
-            formatter: function(value) {
-              return toThousandFilter(value)
             }
+            // formatter: function(value) {
+            //   return toThousandFilter(value)
+            // }
           }
         }
       }
@@ -157,7 +152,7 @@ export default {
     sizeChangedHandler() {
       this.gettingData = true
       request({
-        url: '/dashboard/sellers-sales',
+        url: '/dashboard/stuff-efficiency',
         method: 'GET',
         params: {
           filterdate: this.filterdate
@@ -166,13 +161,17 @@ export default {
         .then(res => {
           this.gettingData = false
           const chart1st = res.data
-          this.seriesBar[0].data = []
+          this.seriesBar = []
           this.chartOptionsBar.xaxis.categories = []
           chart1st.forEach(ch => {
-            this.seriesBar[0].data.push(parseFloat(ch.last_sum.toFixed(2)))
-            this.chartOptionsBar.xaxis.categories.push(ch.shop)
+            this.seriesBar.push({
+              data: [parseFloat(ch.last_sum.toFixed(2))],
+              name: ch.stuff
+            })
+
             // this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
           })
+          this.chartOptionsBar.xaxis.categories.push(this.filterdate)
           this.$refs.sellersChartRef.refresh()
         })
         .catch(err => {

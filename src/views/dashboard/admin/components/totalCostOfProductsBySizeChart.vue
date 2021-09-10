@@ -80,7 +80,7 @@ export default {
         },
         plotOptions: {
           bar: {
-            columnWidth: '30%',
+            columnWidth: '25%',
             borderRadius: 4
           }
         },
@@ -111,10 +111,10 @@ export default {
           }
         },
         title: {
-          text: 'МИҚДОРЛИ ГИСТОГРАММА ИНД. ($)',
+          text: 'МИҚДОРЛИ ГИСТОГРАММА ИНДЕКСИ ($)',
           align: 'center',
           style: {
-            fontSize: '14px',
+            fontSize: '12px',
             fontWeight: 'light'
           }
         },
@@ -232,7 +232,6 @@ export default {
   background-color: transparent !important;
   color: white !important;
   border: 1px solid transparent;
-  color: #00a2ff
 }
 
 </style>

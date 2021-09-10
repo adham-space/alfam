@@ -76,7 +76,7 @@ export default {
           align: 'center',
           style: {
             color: 'white',
-            fontSize: '14px',
+            fontSize: '12px',
             fontWeight: 'light'
           }
         },

@@ -78,7 +78,7 @@ export default {
         },
         plotOptions: {
           bar: {
-            columnWidth: '35%'
+            columnWidth: '25%'
             // distributed: true,
           }
         },
@@ -109,10 +109,10 @@ export default {
           }
         },
         title: {
-          text: 'МИҚДОРЛИ ГИСТОГРАММА ИНД. (m2)',
+          text: 'МИҚДОРЛИ ГИСТОГРАММА ИНДЕКСИ (м2)',
           align: 'center',
           style: {
-            fontSize: '14px',
+            fontSize: '12px',
             fontWeight: 'light'
           }
         },
