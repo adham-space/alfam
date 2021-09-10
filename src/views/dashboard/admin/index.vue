@@ -13,7 +13,8 @@
 
     <el-row :gutter="10">
       <totalAreachart1st />
-      <ordersCashAmount :filterdate="filterdate" />
+      <totalCostOfProductsBySizeChart />
+
       <!-- -->
       <!-- <el-col
         :md="{span: 12}"
@@ -32,7 +33,7 @@
 
     </el-row>
     <el-row :gutter="10" style="margin-top: 10px">
-      <totalCostOfProductsBySizeChart />
+      <ordersCashAmount :filterdate="filterdate" />
       <sellersChartBytSale :filterdate="filterdate" />
     </el-row>
   </div>
