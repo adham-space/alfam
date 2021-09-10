@@ -83,7 +83,10 @@ export default {
           }
         },
         dataLabels: {
-          enabled: true
+          enabled: true,
+          formatter: function(value) {
+            return toThousandFilter(value)
+          }
         },
         stroke: {
           width: 0

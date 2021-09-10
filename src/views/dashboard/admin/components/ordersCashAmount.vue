@@ -63,7 +63,10 @@ export default {
           }
         },
         dataLabels: {
-          enabled: false
+          enabled: false,
+          formatter: function(value) {
+            return toThousandFilter(value)
+          }
         },
         // stroke: {
         //   curve: 'straight'
