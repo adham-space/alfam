@@ -10,6 +10,7 @@
       class="char-body"
       width="100%"
       height="300"
+      type="polarArea"
       :options="chartOptions"
       :series="series"
     />
@@ -33,39 +34,27 @@ export default {
   data() {
     return {
       gettingData: false,
-      sizeOptions: [],
+      sizeOptions: [42, 47, 52, 58, 65, 88],
       currentSize: '',
       total_area: 0,
-      series: [
-        {
-          name: '',
-          data: []
-        }
-      ],
+      series: [42, 77, 52, 58, 65, 88],
       chartOptions: {
         chart: {
           height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          },
+          // width: 380,
+          type: 'polarArea',
           toolbar: {
             show: false
-          },
-          dropShadow: {
-            enabled: true,
-            enabledOnSeries: undefined,
-            top: 15,
-            left: 3,
-            blur: 3,
-            color: '#000',
-            opacity: 0.35
           }
         },
+        yaxis: {
+          show: false
+        },
+        labels: ['Rose A', 'Rose B', 'Rose C', 'Rose D', 'Rose E', 'Rose F'],
         dataLabels: {
-          enabled: false,
+          enabled: true,
           formatter: function(value) {
-            return toThousandFilter(value)
+            return parseFloat(value.toFixed(2))
           }
         },
         // stroke: {
@@ -80,33 +69,35 @@ export default {
             fontWeight: 'light'
           }
         },
-        subtitle: {
-          text: 'Жами: ',
-          floating: true,
-          align: 'right',
-          offsetY: 0,
-          style: {
-            fontSize: '14px',
-            color: 'white'
-          }
-        },
+        // subtitle: {
+        //   text: 'Жами: ',
+        //   floating: true,
+        //   align: 'right',
+        //   offsetY: 0,
+        //   style: {
+        //     fontSize: '14px',
+        //     color: 'white'
+        //   }
+        // },
         // colors: ["#db2e03", "#6bdb03"],
-        grid: {
-          borderColor: '#40475D',
-          show: true,
-          xaxis: {
-            lines: {
-              show: false
-            }
-          },
-          yaxis: {
-            lines: {
-              show: true
-            }
-          }
-        },
+        // grid: {
+        //   borderColor: '#40475D',
+        //   show: true,
+        //   xaxis: {
+        //     lines: {
+        //       show: false
+        //     }
+        //   },
+        //   yaxis: {
+        //     lines: {
+        //       show: true
+        //     }
+        //   }
+        // },
         stroke: {
-          curve: 'smooth'
+          curve: 'smooth',
+          width: 1,
+          colors: undefined
         },
         colors: ['#FCCF31', '#17ead9', '#f02fc2'],
         fill: {
@@ -119,7 +110,7 @@ export default {
             opacityFrom: 1,
             opacityTo: 1,
             stops: [0, 100],
-            gradientToColors: ['#F55555', '#6078ea', '#6094ea']
+            gradientToColors: ['#6078ea', '#6078ea', '#6094ea']
           }
         },
         tooltip: {
@@ -128,7 +119,8 @@ export default {
         legend: {
           labels: {
             useSeriesColors: true
-          }
+          },
+          position: 'right'
         },
         // title: {
         //   text: '',
@@ -136,29 +128,46 @@ export default {
         //     color: 'white'
         //   }
         // },
-        yaxis: {
-          labels: {
-            style: {
-              colors: 'white'
+        plotOptions: {
+          polarArea: {
+            rings: {
+              strokeWidth: 0
             },
-            formatter: function(value) {
-              return toThousandFilter(value)
+            spokes: {
+              strokeWidth: 0
             }
           }
         },
-        xaxis: {
-          categories: [],
-          labels: {
-            style: {
-              colors: 'white'
-            }
+        // yaxis: {
+        //   labels: {
+        //     style: {
+        //       colors: 'white'
+        //     },
+        //     formatter: function(value) {
+        //       return toThousandFilter(value)
+        //     }
+        //   }
+        // },
+        // xaxis: {
+        //   categories: [],
+        //   labels: {
+        //     style: {
+        //       colors: 'white'
+        //     }
+        //   }
+        // },
+        theme: {
+          monochrome: {
+            enabled: true,
+            shadeTo: 'light',
+            shadeIntensity: 0.8
           }
         }
       }
     }
   },
   mounted() {
-    this.getOrdersHistory()
+    // this.getOrdersHistory()
     // request({
     //   url: '/dashboard/get-product-sizes',
     //   method: 'GET'

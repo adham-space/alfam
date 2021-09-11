@@ -149,35 +149,35 @@ export default {
     this.sizeChangedHandler('')
   },
   methods: {
-    sizeChangedHandler() {
+    async sizeChangedHandler() {
       this.gettingData = true
-      request({
-        url: '/dashboard/stuff-efficiency',
-        method: 'GET',
-        params: {
-          filterdate: this.filterdate
-        }
-      })
-        .then(res => {
-          this.gettingData = false
-          const chart1st = res.data
-          this.seriesBar = []
-          this.chartOptionsBar.xaxis.categories = []
-          chart1st.forEach(ch => {
-            this.seriesBar.push({
-              data: [parseFloat(ch.last_sum.toFixed(2))],
-              name: ch.stuff
-            })
 
-            // this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
+      try {
+        const res = await request({
+          url: '/dashboard/stuff-efficiency',
+          method: 'GET',
+          params: {
+            filterdate: this.filterdate
+          }
+        })
+        this.gettingData = false
+        const chart1st = res.data
+        this.seriesBar = []
+        this.chartOptionsBar.xaxis.categories = []
+        chart1st.forEach(ch => {
+          this.seriesBar.push({
+            data: [parseFloat(ch.last_sum.toFixed(2))],
+            name: ch.stuff
           })
-          this.chartOptionsBar.xaxis.categories.push(this.filterdate)
-          this.$refs.sellersChartRef.refresh()
+
+          // this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
         })
-        .catch(err => {
-          this.gettingData = false
-          console.error(err)
-        })
+        this.chartOptionsBar.xaxis.categories.push(this.filterdate)
+        this.$refs.sellersChartRef.refresh()
+      } catch (err) {
+        this.gettingData = false
+        console.error(err)
+      }
     },
     generateMinuteWiseTimeSeries(baseval, count, yrange) {
       var i = 0

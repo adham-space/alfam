@@ -1,9 +1,9 @@
 <template>
   <el-col
-    :md="{span: 12}"
-    :lg="{span: 12}"
-    :sm="{span: 24}"
-    :xm="{span: 24}"
+    :md="{ span: 12 }"
+    :lg="{ span: 12 }"
+    :sm="{ span: 24 }"
+    :xm="{ span: 24 }"
     class="char-body-1st"
   >
     <vue-apex-charts
@@ -31,7 +31,7 @@
           :value="size.size"
         />
       </el-select>
-      <i style="color: white" :class="gettingData ? 'el-icon-loading': ''" />
+      <i style="color: white" :class="gettingData ? 'el-icon-loading' : ''" />
     </div>
   </el-col>
 </template>
@@ -152,45 +152,50 @@ export default {
       url: '/dashboard/get-product-sizes',
       method: 'GET'
     })
-      .then(res => {
+      .then((res) => {
         this.sizeOptions = res.data
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err)
         this.sizeOptions = []
       })
   },
   methods: {
-    sizeChangedHandler(size) {
+    async sizeChangedHandler(size) {
       this.gettingData = true
-      request({
-        url: '/dashboard/get-inventar-area',
-        method: 'GET',
-        params: {
-          size: size
-        }
-      })
-        .then(res => {
-          this.gettingData = false
-          const chart1st = res.data
-          this.seriesBar[0].data = []
-          this.chartOptionsBar.xaxis.categories = []
-          chart1st.forEach(ch => {
-            if (size === '') {
-              this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
-              this.chartOptionsBar.xaxis.categories.push(ch.size)
-            } else {
-              this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
-              this.chartOptionsBar.xaxis.categories.push(ch.product_name)
-            }
-            this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
-          })
-          this.$refs.chart1Ref.refresh()
+      try {
+        const res = await request({
+          url: '/dashboard/get-inventar-area',
+          method: 'GET',
+          params: {
+            size: size
+          }
         })
-        .catch(err => {
-          this.gettingData = false
-          console.error(err)
+        this.gettingData = false
+        const chart1st = res.data
+        this.seriesBar[0].data = []
+        this.chartOptionsBar.xaxis.categories = []
+        chart1st.forEach((ch) => {
+          if (size === '') {
+            this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+            this.chartOptionsBar.xaxis.categories.push(ch.size)
+          } else {
+            this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+            this.chartOptionsBar.xaxis.categories.push(ch.product_name)
+          }
+          this.chartOptionsBar.subtitle.text =
+            'Жами: ' +
+            toThousandFilter(
+              parseFloat(
+                this.seriesBar[0].data.reduce((a, b) => a + b, 0).toFixed(2)
+              )
+            )
         })
+        this.$refs.chart1Ref.refresh()
+      } catch (err) {
+        this.gettingData = false
+        console.error(err)
+      }
     },
     generateMinuteWiseTimeSeries(baseval, count, yrange) {
       var i = 0
@@ -228,5 +233,4 @@ export default {
   color: white !important;
   border: 1px solid transparent;
 }
-
 </style>

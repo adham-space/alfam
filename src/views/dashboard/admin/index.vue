@@ -6,14 +6,16 @@
         <div class="range-btn" :class="filterdate === 'month' ? 'active': ''" @click="filterdate = 'month'">ОЙ</div>
         <div class="range-btn" :class="filterdate === 'year' ? 'active': ''" @click="filterdate = 'year'">ЙИЛ</div>
       </div>
-      <div class="current-date">
-        {{ currentDate }}
+      <div class="refresh-and-date">
+        <el-button type="text" :icon="refreshing? 'el-icon-loading' : 'el-icon-refresh-right' " @click="refreshAllCharts()" />
+        <div class="current-date">
+          {{ currentDate }}
+        </div>
       </div>
     </div>
-
     <el-row :gutter="10">
-      <totalAreachart1st />
-      <totalCostOfProductsBySizeChart />
+      <totalAreachart1st ref="totalAreachart1stRef" />
+      <totalCostOfProductsBySizeChart ref="totalCostOfProductsBySizeChartRef" />
 
       <!-- -->
       <!-- <el-col
@@ -33,11 +35,20 @@
 
     </el-row>
     <el-row :gutter="10" style="margin-top: 10px">
-      <ordersCashAmount :filterdate="filterdate" />
-      <sellersChartBytSale :filterdate="filterdate" />
+      <ordersCashAmount ref="ordersCashAmountRef" :filterdate="filterdate" />
+      <el-col
+        :md="{span: 12}"
+        :lg="{span: 12}"
+        :sm="{span: 24}"
+        :xm="{span: 24}"
+      >
+        <pieChart :filterdate="filterdate" />
+      </el-col>
     </el-row>
     <el-row :gutter="10" style="margin-top: 10px">
-      <stuffRating :filterdate="filterdate" />
+      <sellersChartBytSale ref="sellersChartBytSaleRef" :filterdate="filterdate" />
+      <stuffRating ref="stuffRatingRef" :filterdate="filterdate" />
+
     </el-row>
   </div>
 </template>
@@ -48,6 +59,8 @@ import totalCostOfProductsBySizeChart from './components/totalCostOfProductsBySi
 import ordersCashAmount from './components/ordersCashAmount'
 import sellersChartBytSale from './components/sellersChartBytSale'
 import stuffRating from './components/stuffRatings'
+// import polarAreaForProducts from './components/polarAreaForProducts'
+import pieChart from './components/PieChart'
 export default {
   name: 'DashboardAdmin',
   components: {
@@ -55,11 +68,14 @@ export default {
     ordersCashAmount,
     sellersChartBytSale,
     totalCostOfProductsBySizeChart,
-    stuffRating
+    stuffRating,
+    // polarAreaForProducts,
+    pieChart
   },
   data() {
     return {
-      filterdate: 'month'
+      filterdate: 'month',
+      refreshing: false
     }
   },
   computed: {
@@ -80,6 +96,29 @@ export default {
           break
       }
       return result
+    }
+  },
+  methods: {
+    async refreshAllCharts() {
+      const {
+        totalAreachart1stRef,
+        totalCostOfProductsBySizeChartRef,
+        ordersCashAmountRef,
+        sellersChartBytSaleRef,
+        stuffRatingRef
+      } = this.$refs
+
+      try {
+        this.refreshing = true
+        await totalAreachart1stRef.sizeChangedHandler('')
+        await totalCostOfProductsBySizeChartRef.sizeChangedHandler('')
+        await ordersCashAmountRef.getOrdersHistory(this.filterdate)
+        await sellersChartBytSaleRef.sizeChangedHandler(this.filterdate)
+        await stuffRatingRef.sizeChangedHandler(this.filterdate)
+        this.refreshing = false
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }
@@ -166,6 +205,15 @@ export default {
       .range-btn.active {
         background-color: #0a2e52;
       }
+  }
+}
+
+.refresh-and-date {
+  display: flex;
+  align-items: center;
+  .el-button {
+    margin-right: 1em;
+    color: white;
   }
 }
 

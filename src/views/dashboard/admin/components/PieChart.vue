@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #051e36; color: white" :class="className" :style="{height:height,width:width}" />
+  <div style="background-color: #0a2e52;  border-radius: 10px; font-family: 'Nunito Sans', sans-serif" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -20,7 +20,7 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '340px'
     }
   },
   data() {
@@ -45,30 +45,67 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
+        color: ['#fac858', '#6094ea', '#ff4800', '#17ead9', '#91cc75', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+        title: {
+          text: 'САВДО СОТИҚ ОБъЁМИ ИНДЕКСИ',
+          left: 'center',
+          top: 20,
+          textStyle: {
+            color: '#fff',
+            // fontFamily: "'Nunito Sans', sans-serif",
+            fontSize: '14px'
+          }
+        },
+
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
+          formatter: '{b} : {c} ({d}%)'
         },
         legend: {
+          show: true,
           left: 'center',
+          // top: 'center',
           bottom: '10',
+          textStyle: {
+            color: '#fff'
+          },
           color: ['#ffffff'],
-          data: ['Nilufar', 'Nimadur1', 'Nimadur-2']
+          data: ['30*90', '60*90', '60*120']
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            // name: 'WEEKLY WRITE ARTICLES',
             type: 'pie',
-            roseType: 'radius',
-            radius: [15, 95],
-            center: ['50%', '38%'],
+            roseType: 'area',
+            label: {
+              color: 'rgba(255, 255, 255, 1)'
+            },
+            labelLine: {
+              lineStyle: {
+                color: 'rgba(255, 255, 255, 0.5)'
+              },
+              smooth: 0.2,
+              length: 10,
+              length2: 20
+            },
+            itemStyle: {
+              // color: ['#ff4800', '#FCCF31', '#17ead9', '#f02fc2'],
+              // shadowBlur: 200,
+              // shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+
+            radius: [25, 100],
+            center: ['50%', '50%'],
             data: [
-              { value: 320, name: 'Nilufar' },
-              { value: 240, name: 'Nimadur1' },
-              { value: 149, name: 'Nimadur-2' }
-            ],
-            animationEasing: 'cubicInOut',
-            animationDuration: 2600
+              { value: 320, name: '30*90' },
+              { value: 240, name: '60*90' },
+              { value: 149, name: '60*120' }
+            ].sort(function(a, b) { return a.value - b.value }),
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function(idx) {
+              return Math.random() * 200
+            }
           }
         ]
       })

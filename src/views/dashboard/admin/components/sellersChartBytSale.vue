@@ -154,31 +154,31 @@ export default {
     this.sizeChangedHandler('')
   },
   methods: {
-    sizeChangedHandler() {
+    async sizeChangedHandler() {
       this.gettingData = true
-      request({
-        url: '/dashboard/sellers-sales',
-        method: 'GET',
-        params: {
-          filterdate: this.filterdate
-        }
-      })
-        .then(res => {
-          this.gettingData = false
-          const chart1st = res.data
-          this.seriesBar[0].data = []
-          this.chartOptionsBar.xaxis.categories = []
-          chart1st.forEach(ch => {
-            this.seriesBar[0].data.push(parseFloat(ch.last_sum.toFixed(2)))
-            this.chartOptionsBar.xaxis.categories.push(ch.shop)
-            // this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
-          })
-          this.$refs.sellersChartRef.refresh()
+
+      try {
+        const res = await request({
+          url: '/dashboard/sellers-sales',
+          method: 'GET',
+          params: {
+            filterdate: this.filterdate
+          }
         })
-        .catch(err => {
-          this.gettingData = false
-          console.error(err)
+        this.gettingData = false
+        const chart1st = res.data
+        this.seriesBar[0].data = []
+        this.chartOptionsBar.xaxis.categories = []
+        chart1st.forEach(ch => {
+          this.seriesBar[0].data.push(parseFloat(ch.last_sum.toFixed(2)))
+          this.chartOptionsBar.xaxis.categories.push(ch.shop)
+          // this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
         })
+        this.$refs.sellersChartRef.refresh()
+      } catch (err) {
+        this.gettingData = false
+        console.error(err)
+      }
     },
     generateMinuteWiseTimeSeries(baseval, count, yrange) {
       var i = 0

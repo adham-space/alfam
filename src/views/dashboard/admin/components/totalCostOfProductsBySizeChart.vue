@@ -163,39 +163,39 @@ export default {
       })
   },
   methods: {
-    sizeChangedHandler(size) {
+    async sizeChangedHandler(size) {
       this.gettingData = true
-      request({
-        url: '/dashboard/get-inventar-cost',
-        method: 'GET',
-        params: {
-          size: size
-        }
-      })
-        .then(res => {
-          this.gettingData = false
-          const chart1st = res.data
-          this.seriesBar[0].data = []
-          this.chartOptionsBar.xaxis.categories = []
-          chart1st.forEach(ch => {
-            if (size === '') {
-              this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
-              this.chartOptionsBar.xaxis.categories.push(ch.size)
-            } else {
-              this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
-              this.chartOptionsBar.xaxis.categories.push(ch.product_name)
-            }
-            this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
-          })
 
-          // this.seriesBar[0].data = this.seriesBar[0].data.map(value => toThousandFilter(value))
+      try {
+        const res = await request({
+          url: '/dashboard/get-inventar-cost',
+          method: 'GET',
+          params: {
+            size: size
+          }
+        })
+        this.gettingData = false
+        const chart1st = res.data
+        this.seriesBar[0].data = []
+        this.chartOptionsBar.xaxis.categories = []
+        chart1st.forEach(ch => {
+          if (size === '') {
+            this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.chartOptionsBar.xaxis.categories.push(ch.size)
+          } else {
+            this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.chartOptionsBar.xaxis.categories.push(ch.product_name)
+          }
+          this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
+        })
 
-          this.$refs.totalCostRef.refresh()
-        })
-        .catch(err => {
-          this.gettingData = false
-          console.error(err)
-        })
+        // this.seriesBar[0].data = this.seriesBar[0].data.map(value => toThousandFilter(value))
+
+        this.$refs.totalCostRef.refresh()
+      } catch (error) {
+        this.gettingData = false
+        console.error(error)
+      }
     },
     generateMinuteWiseTimeSeries(baseval, count, yrange) {
       var i = 0
