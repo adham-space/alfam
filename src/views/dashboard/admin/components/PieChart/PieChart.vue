@@ -1,11 +1,11 @@
 <template>
-  <div style="background-color: #0a2e52;  border-radius: 10px; font-family: 'Nunito Sans', sans-serif" :class="className" :style="{height:height,width:width}" />
+  <div style="background-color: #0a2e52;  border-radius: 10px; font-family: 'LatoWebLight';" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-import resize from './mixins/resize'
+import resize from '../mixins/resize'
 
 export default {
   mixins: [resize],
@@ -21,6 +21,14 @@ export default {
     height: {
       type: String,
       default: '340px'
+    },
+    currentSize: {
+      type: String,
+      default: ''
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -41,28 +49,31 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart(initSeries = [], legendData = []) {
       this.chart = echarts.init(this.$el, 'macarons')
-
+      this.chart.on('click', (params) => {
+        if (this.currentSize === '' && !this.loading) {
+          console.log('Getting things', this.loading)
+          this.$emit('getBySize', params.name)
+        }
+      })
       this.chart.setOption({
         color: ['#fac858', '#6094ea', '#ff4800', '#17ead9', '#91cc75', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
         title: {
-          text: 'САВДО СОТИҚ ОБъЁМИ ИНДЕКСИ',
+          text: 'САВДО СОТИК ОБЪЁМИ ИНДЕКСИ',
           left: 'center',
           top: 20,
           textStyle: {
             color: '#fff',
-            // fontFamily: "'Nunito Sans', sans-serif",
-            fontSize: '14px'
+            fontSize: '12px'
           }
         },
-
         tooltip: {
           trigger: 'item',
-          formatter: '{b} : {c} ({d}%)'
+          formatter: '{b} | {c}m2 ({d}%)'
         },
         legend: {
-          show: true,
+          show: false,
           left: 'center',
           // top: 'center',
           bottom: '10',
@@ -70,7 +81,7 @@ export default {
             color: '#fff'
           },
           color: ['#ffffff'],
-          data: ['30*90', '60*90', '60*120']
+          data: legendData
         },
         series: [
           {
@@ -91,20 +102,15 @@ export default {
             itemStyle: {
               // color: ['#ff4800', '#FCCF31', '#17ead9', '#f02fc2'],
               // shadowBlur: 200,
-              // shadowColor: 'rgba(0, 0, 0, 0.5)'
             },
 
-            radius: [25, 100],
+            radius: [10, 120],
             center: ['50%', '50%'],
-            data: [
-              { value: 320, name: '30*90' },
-              { value: 240, name: '60*90' },
-              { value: 149, name: '60*120' }
-            ].sort(function(a, b) { return a.value - b.value }),
+            data: initSeries.sort(function(a, b) { return a.value - b.value }),
             animationType: 'scale',
             animationEasing: 'elasticOut',
             animationDelay: function(idx) {
-              return Math.random() * 200
+              return Math.random() * 1000
             }
           }
         ]

@@ -36,14 +36,7 @@
     </el-row>
     <el-row :gutter="10" style="margin-top: 10px">
       <ordersCashAmount ref="ordersCashAmountRef" :filterdate="filterdate" />
-      <el-col
-        :md="{span: 12}"
-        :lg="{span: 12}"
-        :sm="{span: 24}"
-        :xm="{span: 24}"
-      >
-        <pieChart :filterdate="filterdate" />
-      </el-col>
+      <PieChart :filterdate="filterdate" />
     </el-row>
     <el-row :gutter="10" style="margin-top: 10px">
       <sellersChartBytSale ref="sellersChartBytSaleRef" :filterdate="filterdate" />
@@ -60,7 +53,7 @@ import ordersCashAmount from './components/ordersCashAmount'
 import sellersChartBytSale from './components/sellersChartBytSale'
 import stuffRating from './components/stuffRatings'
 // import polarAreaForProducts from './components/polarAreaForProducts'
-import pieChart from './components/PieChart'
+import PieChart from './components/PieChart/index.vue'
 export default {
   name: 'DashboardAdmin',
   components: {
@@ -70,7 +63,7 @@ export default {
     totalCostOfProductsBySizeChart,
     stuffRating,
     // polarAreaForProducts,
-    pieChart
+    PieChart
   },
   data() {
     return {
@@ -195,7 +188,8 @@ export default {
         width: 80px;
         border-radius: 17px;
         padding: .5em;
-        font-family: 'Nunito Sans', sans-serif;
+        // font-family: 'Nunito Sans', sans-serif;
+        // font-family: 'LatoWebLight';
         font-size: 13px;
         margin-left: 2em;
       }

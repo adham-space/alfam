@@ -196,23 +196,6 @@ export default {
         this.gettingData = false
         console.error(error)
       }
-    },
-    generateMinuteWiseTimeSeries(baseval, count, yrange) {
-      var i = 0
-      var series = []
-      while (i < count) {
-        var x = baseval
-        var y =
-          (Math.sin(i / this.trigoStrength) * (i / this.trigoStrength) +
-            i / this.trigoStrength +
-            1) *
-          (this.trigoStrength * 2)
-
-        series.push([x, y])
-        baseval += 300000
-        i++
-      }
-      return series
     }
   }
 }
