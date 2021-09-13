@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from '../mixins/resize'
 
@@ -24,7 +24,7 @@ export default {
     },
     currentSize: {
       type: String,
-      default: ''
+      required: true
     },
     loading: {
       type: Boolean,
@@ -49,16 +49,11 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart(initSeries = [], legendData = []) {
-      this.chart = echarts.init(this.$el, 'macarons')
-      this.chart.on('click', (params) => {
-        if (this.currentSize === '' && !this.loading) {
-          console.log('Getting things', this.loading)
-          this.$emit('getBySize', params.name)
-        }
-      })
+    setChart(initSeries = [], legendData = []) {
       this.chart.setOption({
-        color: ['#fac858', '#6094ea', '#ff4800', '#17ead9', '#91cc75', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+        darkMode: true,
+        // color: ['#fac858', '#6094ea', '#ff4800', '#17ead9', '#91cc75', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+        color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
         title: {
           text: 'САВДО СОТИК ОБЪЁМИ ИНДЕКСИ',
           left: 'center',
@@ -70,7 +65,14 @@ export default {
         },
         tooltip: {
           trigger: 'item',
-          formatter: '{b} | {c}m2 ({d}%)'
+          formatter: '{b} | {c}m2 ({d}%)',
+          textStyle: {
+            color: '#fff'
+          },
+          backgroundColor: '#000'
+        },
+        line: {
+          symbol: 'circle'
         },
         legend: {
           show: false,
@@ -80,13 +82,16 @@ export default {
           textStyle: {
             color: '#fff'
           },
-          color: ['#ffffff'],
+          // color: ['#ffffff'],
           data: legendData
         },
         series: [
           {
             // name: 'WEEKLY WRITE ARTICLES',
+            clockwise: true,
             type: 'pie',
+            radius: [10, 100],
+            center: ['50%', '50%'],
             roseType: 'area',
             label: {
               color: 'rgba(255, 255, 255, 1)'
@@ -100,20 +105,40 @@ export default {
               length2: 20
             },
             itemStyle: {
-              // color: ['#ff4800', '#FCCF31', '#17ead9', '#f02fc2'],
-              // shadowBlur: 200,
+              borderRadius: 5,
+              borderWidth: 1,
+              borderJoin: 'round'
             },
-
-            radius: [10, 120],
-            center: ['50%', '50%'],
+            zlevel: 0,
+            z: 2,
+            startAngle: 90,
+            minAngle: 0,
+            precentPrecision: 2,
+            labelLayout: {
+              hideOverlap: true
+            },
+            selectedOffset: 10,
+            emphasis: {
+              scale: true,
+              scaleSize: 5
+            },
             data: initSeries.sort(function(a, b) { return a.value - b.value }),
-            animationType: 'scale',
-            animationEasing: 'elasticOut',
-            animationDelay: function(idx) {
-              return Math.random() * 1000
-            }
+            animationType: 'expansion',
+            animationTypeUpdate: 'transition',
+            animationEasingUpdate: 'transition',
+            animationDurationUpdate: 300,
+            animationEasing: 'cubicInOut'
           }
         ]
+      })
+    },
+    initChart() {
+      this.chart = echarts.init(this.$el, 'macarons')
+      this.chart.on('click', params => {
+        console.log(params)
+        if (this.currentSize === '') {
+          this.$emit('getBySize', params.name)
+        }
       })
     }
   }

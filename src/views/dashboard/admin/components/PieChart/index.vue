@@ -10,7 +10,7 @@
       ref="PieChartRef"
       :loading="gettingData"
       :current-size="currentSize"
-      @getBySize="getBySize"
+      @getBySize="sizeChangedHandler"
     />
     <div class="select-size-wrapper">
       <el-select
@@ -71,14 +71,10 @@ export default {
       })
   },
   methods: {
-    async getBySize(size) {
-      this.currentSize = size
-      this.gettingData = true
-      this.sizeChangedHandler(size)
-    },
+
     async sizeChangedHandler(size) {
       this.gettingData = true
-
+      this.currentSize = size
       try {
         const res = await request({
           url: '/dashboard/product-share-orders',
@@ -89,7 +85,7 @@ export default {
         })
         this.gettingData = false
         const chart1st = res.data
-        this.$refs.PieChartRef.initChart(chart1st, this.sizeOptions)
+        this.$refs.PieChartRef.setChart(chart1st, this.sizeOptions)
       } catch (error) {
         this.gettingData = false
         console.error(error)
