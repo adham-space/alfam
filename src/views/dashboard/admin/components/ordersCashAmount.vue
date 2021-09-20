@@ -130,12 +130,6 @@ export default {
             useSeriesColors: true
           }
         },
-        // title: {
-        //   text: '',
-        //   style: {
-        //     color: 'white'
-        //   }
-        // },
         yaxis: {
           labels: {
             style: {
@@ -159,17 +153,6 @@ export default {
   },
   mounted() {
     this.getOrdersHistory()
-    // request({
-    //   url: '/dashboard/get-product-sizes',
-    //   method: 'GET'
-    // })
-    //   .then(res => {
-    //     this.sizeOptions = res.data
-    //   })
-    //   .catch(err => {
-    //     console.error(err)
-    //     this.sizeOptions = []
-    //   })
   },
   methods: {
     async getOrdersHistory() {
@@ -197,23 +180,6 @@ export default {
         this.gettingData = false
         console.error(err)
       }
-    },
-    generateMinuteWiseTimeSeries(baseval, count, yrange) {
-      var i = 0
-      var series = []
-      while (i < count) {
-        var x = baseval
-        var y =
-          (Math.sin(i / this.trigoStrength) * (i / this.trigoStrength) +
-            i / this.trigoStrength +
-            1) *
-          (this.trigoStrength * 2)
-
-        series.push([x, y])
-        baseval += 300000
-        i++
-      }
-      return series
     }
   }
 }

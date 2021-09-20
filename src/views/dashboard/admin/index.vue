@@ -16,23 +16,6 @@
     <el-row :gutter="10">
       <totalAreachart1st ref="totalAreachart1stRef" />
       <totalCostOfProductsBySizeChart ref="totalCostOfProductsBySizeChartRef" />
-
-      <!-- -->
-      <!-- <el-col
-        :md="{span: 12}"
-        :lg="{span: 12}"
-        :sm="{span: 24}"
-        :xm="{span: 24}"
-      >
-        <vue-apex-charts
-          class="char-body"
-          width="100%"
-          height="300"
-          :options="chartOptionsRadial"
-          :series="seriesRadial"
-        />
-      </el-col>-->
-
     </el-row>
     <el-row :gutter="10" style="margin-top: 10px">
       <ordersCashAmount ref="ordersCashAmountRef" :filterdate="filterdate" />
@@ -41,7 +24,9 @@
     <el-row :gutter="10" style="margin-top: 10px">
       <sellersChartBytSale ref="sellersChartBytSaleRef" :filterdate="filterdate" />
       <stuffRating ref="stuffRatingRef" :filterdate="filterdate" />
-
+    </el-row>
+    <el-row :gutter="10" style="margin-top: 10px">
+      <targetChart :filterdate="filterdate" />
     </el-row>
   </div>
 </template>
@@ -54,6 +39,7 @@ import sellersChartBytSale from './components/sellersChartBytSale'
 import stuffRating from './components/stuffRatings'
 // import polarAreaForProducts from './components/polarAreaForProducts'
 import PieChart from './components/PieChart/index.vue'
+import targetChart from './components/targetChart/index.vue'
 export default {
   name: 'DashboardAdmin',
   components: {
@@ -62,6 +48,7 @@ export default {
     sellersChartBytSale,
     totalCostOfProductsBySizeChart,
     stuffRating,
+    targetChart,
     // polarAreaForProducts,
     PieChart
   },
