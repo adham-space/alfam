@@ -1,52 +1,56 @@
 <template>
   <el-col
-    :md="{span: 14}"
-    :lg="{span: 14}"
+    :md="{span: 13}"
+    :lg="{span: 13}"
     :sm="{span: 24}"
     :xm="{span: 24}"
     class="custom-e-charts-panel tahometer-table"
-    style="border-radius: 10px; overflow: hidden;"
+    style="border-radius: 10px; overflow: hidden; display: flex; flex-flow: column"
   >
-
-    <targetChart
-      ref="targetChartRef"
-      :loading="gettingData"
-      :current-product="current_product"
-      @getBySize="sizeChangedHandler"
-    />
-    <div style="background: #0a2e52; width: 50%; height: 350px; overflow: hidden; border-top-right-radius: 10px;  border-bottom-right-radius: 10px; ">
-      <el-table
-        :data="data"
-        height="350"
-        :header-cell-class-name="headerCellClassName"
-        :row-class-name="rowClassName"
-        :header-row-class-name="headerRowClassName"
-        style="width: 100%"
-        highlight-current-row
-        class="custom-table"
-        @row-click="rowSelect"
-      >
-        <el-table-column
-          align="center"
-          prop="product_name"
-          label="Махсулот"
+    <div style="background: #0a2e52; height: 350px; overflow: hidden; border-radius: 10px;  border-radius: 10px;">
+      <h4 style="text-align: center; color: white; font-size: 12px">МАХСУЛОТДАН ҚОНИҚИШ ТАХОМЕТЕРИ</h4>
+      <div style="display: flex;">
+        <targetChart
+          ref="targetChartRef"
+          :loading="gettingData"
+          :current-product="current_product"
+          @getBySize="sizeChangedHandler"
         />
-        <el-table-column
-          align="center"
-          prop="from"
-          label="Дан"
-        />
-        <el-table-column
-          align="center"
-          prop="to"
-          label="Гача"
-        />
-        <el-table-column
-          align="center"
-          prop="days_left"
-          label="Кун - қолди"
-        />
-      </el-table>
+        <div style="background: #0a2e52; width: 60%; height: 350px; overflow: hidden; border-top-right-radius: 10px;  border-bottom-right-radius: 10px;">
+          <el-table
+            :data="data"
+            height="280"
+            :header-cell-class-name="headerCellClassName"
+            :row-class-name="rowClassName"
+            :header-row-class-name="headerRowClassName"
+            style="width: 100%"
+            highlight-current-row
+            class="custom-table"
+            @row-click="rowSelect"
+          >
+            <el-table-column
+              align="center"
+              prop="product_name"
+              label="Махсулот"
+            />
+            <el-table-column
+              align="center"
+              prop="from"
+              label="Дан"
+            />
+            <el-table-column
+              align="center"
+              prop="to"
+              label="Гача"
+            />
+            <el-table-column
+              align="center"
+              prop="days_left"
+              label="Кун - қолди"
+            />
+          </el-table>
+        </div>
+      </div>
     </div>
   </el-col>
 </template>
@@ -84,6 +88,55 @@ export default {
         },
         {
           product_name: 'Nilufar-1',
+          days_left: 13,
+          from: '12 oct',
+          to: '20 nov',
+          percent: 80
+        },
+        {
+          product_name: 'Nilufar-1',
+          days_left: 13,
+          from: '12 oct',
+          to: '20 nov',
+          percent: 80
+        },
+        {
+          product_name: 'Nilufar-1',
+          days_left: 13,
+          from: '12 oct',
+          to: '20 nov',
+          percent: 80
+        },
+        {
+          product_name: 'Nilufar-1',
+          days_left: 13,
+          from: '12 oct',
+          to: '20 nov',
+          percent: 80
+        },
+        {
+          product_name: 'Nilufar-1',
+          days_left: 13,
+          from: '12 oct',
+          to: '20 nov',
+          percent: 80
+        },
+        {
+          product_name: 'Nilufar-1',
+          days_left: 13,
+          from: '12 oct',
+          to: '20 nov',
+          percent: 80
+        },
+        {
+          product_name: 'Nilufar-1',
+          days_left: 13,
+          from: '12 oct',
+          to: '20 nov',
+          percent: 80
+        },
+        {
+          product_name: 'Nilufar-1',
           days_left: 12,
           from: '12 oct',
           to: '20 nov',
@@ -92,7 +145,7 @@ export default {
         },
         {
           product_name: 'Nilufar-1',
-          days_left: 24,
+          days_left: 123,
           from: '12 oct',
           to: '20 nov',
           percent: 50
@@ -207,15 +260,17 @@ export default {
 .custom-table > .el-table__body-wrapper::-webkit-scrollbar-thumb  {
   background-color: #224d79;
   border-radius: 8px;
+  height: 5px;
 }
 
 .custom-table > .el-table__body-wrapper::-webkit-scrollbar-track {
   background-color: #0a2e52;
   border-radius: 0px;
+  height: 5px;
 }
 
 .el-table__body tr.current-row.table-row-style> td{
-  background-color: #0d3c6b! important;
+  background-color: #09345f! important;
   color: #fff;
 }
 

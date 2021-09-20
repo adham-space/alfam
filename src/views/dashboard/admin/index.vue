@@ -27,6 +27,7 @@
     </el-row>
     <el-row :gutter="10" style="margin-top: 10px">
       <targetChart :filterdate="filterdate" />
+      <Debitors />
     </el-row>
   </div>
 </template>
@@ -40,6 +41,7 @@ import stuffRating from './components/stuffRatings'
 // import polarAreaForProducts from './components/polarAreaForProducts'
 import PieChart from './components/PieChart/index.vue'
 import targetChart from './components/targetChart/index.vue'
+import Debitors from './components/Debitors'
 export default {
   name: 'DashboardAdmin',
   components: {
@@ -50,7 +52,8 @@ export default {
     stuffRating,
     targetChart,
     // polarAreaForProducts,
-    PieChart
+    PieChart,
+    Debitors
   },
   data() {
     return {

@@ -54,7 +54,7 @@ export default {
         // color: ['#fac858', '#6094ea', '#ff4800', '#17ead9', '#91cc75', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
         color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
         title: {
-          text: 'МАХСУЛОТДАН ҚОНИҚИШ ТАХОМЕТЕРИ',
+          text: '',
           left: 'center',
           top: 15,
           textStyle: {

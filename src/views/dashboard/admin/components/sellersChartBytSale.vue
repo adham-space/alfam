@@ -103,7 +103,7 @@ export default {
             shadeIntensity: 0.5,
             inverseColors: true,
             opacityFrom: 1,
-            opacityTo: 0.8,
+            opacityTo: 1,
             stops: [0, 100],
             gradientToColors: ['#F55555', '#6078ea', '#6094ea']
           }
