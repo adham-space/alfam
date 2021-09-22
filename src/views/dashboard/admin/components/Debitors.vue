@@ -10,7 +10,7 @@
 
     <div style="background: #0a2e52; width: 100%; height: 375px; overflow: hidden; border-radius: 10px; padding: 0 1em">
       <h4 style="text-align: center; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px">ҚАРЗДОРЛАР</h4>
-      <el-input v-model="filterTableValue" prefix-icon="el-icon-search" class="filter-input" />
+      <el-input v-model="filterTableValue" clearable style="width: 50%" prefix-icon="el-icon-search" class="filter-input" />
 
       <el-table
         :data="tableData"

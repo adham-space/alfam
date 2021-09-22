@@ -17,7 +17,7 @@
           @getBySize="sizeChangedHandler"
         />
         <div style="background: #0a2e52; width: 60%; height: 360px; overflow: hidden; border-top-right-radius: 10px;  border-bottom-right-radius: 10px;">
-          <el-input v-model="filterTableValue" prefix-icon="el-icon-search" class="filter-input" />
+          <el-input v-model="filterTableValue" style="width: 50%" clearable prefix-icon="el-icon-search" class="filter-input" />
           <el-table
             :data="tableData"
             height="275"
@@ -185,7 +185,7 @@ export default {
     }
 
 .filter-input > .el-input__inner {
-  width: 50% !important;
+  /* width: 50% !important; */
   background-color: transparent !important;
   color: white;
   border-width: 0 0 1px 0;
