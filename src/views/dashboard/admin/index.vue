@@ -17,15 +17,15 @@
       <totalAreachart1st ref="totalAreachart1stRef" />
       <totalCostOfProductsBySizeChart ref="totalCostOfProductsBySizeChartRef" />
     </el-row>
-    <el-row :gutter="10" style="margin-top: 10px">
+    <el-row :gutter="10">
       <ordersCashAmount ref="ordersCashAmountRef" :filterdate="filterdate" />
       <PieChart :filterdate="filterdate" />
     </el-row>
-    <el-row :gutter="10" style="margin-top: 10px">
+    <el-row :gutter="10">
       <sellersChartBytSale ref="sellersChartBytSaleRef" :filterdate="filterdate" />
       <stuffRating ref="stuffRatingRef" :filterdate="filterdate" />
     </el-row>
-    <el-row :gutter="10" style="margin-top: 10px">
+    <el-row :gutter="10">
       <targetChart :filterdate="filterdate" />
       <Debitors />
     </el-row>
@@ -160,7 +160,7 @@ export default {
   color: white;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1em;
+  // margin-bottom: 1em;
   .current-date {
     border-bottom: 1px solid wheat;
   }

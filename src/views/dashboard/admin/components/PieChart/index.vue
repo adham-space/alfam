@@ -5,6 +5,7 @@
     :sm="{span: 24}"
     :xm="{span: 24}"
     class="custom-e-charts-panel"
+    style="margin-top: 10px"
   >
     <PieChart
       ref="PieChartRef"

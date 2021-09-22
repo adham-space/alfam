@@ -67,7 +67,7 @@ export default {
           type: 'gauge',
           axisLine: {
             lineStyle: {
-              width: 8,
+              width: 10,
               color: [
                 [0.5, '#fd666d'],
                 [0.7, '#fffb00'],
@@ -82,7 +82,7 @@ export default {
           },
           axisTick: {
             distance: -5,
-            length: 4,
+            length: 0,
             lineStyle: {
               color: '#fff',
               width: 1

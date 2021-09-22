@@ -5,6 +5,7 @@
     :sm="{span: 24}"
     :xm="{span: 24}"
     class="char-body-1st"
+    style="margin-top: 10px"
   >
     <vue-apex-charts
       ref="totalCostRef"

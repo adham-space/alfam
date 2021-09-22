@@ -4,6 +4,7 @@
     :lg="{span: 12}"
     :sm="{span: 24}"
     :xm="{span: 24}"
+    style="margin-top: 10px"
   >
     <vue-apex-charts
       ref="chart2nd"

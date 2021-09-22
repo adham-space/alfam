@@ -5,9 +5,9 @@
     :sm="{span: 24}"
     :xm="{span: 24}"
     class="custom-e-charts-panel tahometer-table"
-    style="border-radius: 10px; overflow: hidden; display: flex; flex-flow: column"
+    style="border-radius: 10px; overflow: hidden; display: flex; flex-flow: column; margin-top: 10px"
   >
-    <div style="background: #0a2e52; height: 350px; overflow: hidden; border-radius: 10px;  border-radius: 10px;">
+    <div style="background: #0a2e52; height: 375px; overflow: hidden; border-radius: 10px;  border-radius: 10px;">
       <h4 style="text-align: center; color: white; font-size: 12px">МАХСУЛОТДАН ҚОНИҚИШ ТАХОМЕТЕРИ</h4>
       <div style="display: flex;">
         <targetChart
@@ -16,10 +16,11 @@
           :current-product="current_product"
           @getBySize="sizeChangedHandler"
         />
-        <div style="background: #0a2e52; width: 60%; height: 350px; overflow: hidden; border-top-right-radius: 10px;  border-bottom-right-radius: 10px;">
+        <div style="background: #0a2e52; width: 60%; height: 360px; overflow: hidden; border-top-right-radius: 10px;  border-bottom-right-radius: 10px;">
+          <el-input v-model="filterTableValue" prefix-icon="el-icon-search" class="filter-input" />
           <el-table
-            :data="data"
-            height="280"
+            :data="tableData"
+            height="275"
             :header-cell-class-name="headerCellClassName"
             :row-class-name="rowClassName"
             :header-row-class-name="headerRowClassName"
@@ -31,21 +32,25 @@
             <el-table-column
               align="center"
               prop="product_name"
+              :min-width="150"
               label="Махсулот"
             />
             <el-table-column
               align="center"
               prop="from"
               label="Дан"
+              :min-width="100"
             />
             <el-table-column
               align="center"
               prop="to"
               label="Гача"
+              :min-width="100"
             />
             <el-table-column
               align="center"
               prop="days_left"
+              :min-width="100"
               label="Кун - қолди"
             />
           </el-table>
@@ -78,7 +83,7 @@ export default {
         to: '20 nov',
         percent: 80
       },
-      data: [
+      table_data: [
         {
           product_name: 'Nilufar-1',
           days_left: 13,
@@ -87,75 +92,30 @@ export default {
           percent: 80
         },
         {
-          product_name: 'Nilufar-1',
+          product_name: 'Pesochni-1',
           days_left: 13,
           from: '12 oct',
           to: '20 nov',
-          percent: 80
-        },
-        {
-          product_name: 'Nilufar-1',
-          days_left: 13,
-          from: '12 oct',
-          to: '20 nov',
-          percent: 80
-        },
-        {
-          product_name: 'Nilufar-1',
-          days_left: 13,
-          from: '12 oct',
-          to: '20 nov',
-          percent: 80
-        },
-        {
-          product_name: 'Nilufar-1',
-          days_left: 13,
-          from: '12 oct',
-          to: '20 nov',
-          percent: 80
-        },
-        {
-          product_name: 'Nilufar-1',
-          days_left: 13,
-          from: '12 oct',
-          to: '20 nov',
-          percent: 80
-        },
-        {
-          product_name: 'Nilufar-1',
-          days_left: 13,
-          from: '12 oct',
-          to: '20 nov',
-          percent: 80
-        },
-        {
-          product_name: 'Nilufar-1',
-          days_left: 13,
-          from: '12 oct',
-          to: '20 nov',
-          percent: 80
-        },
-        {
-          product_name: 'Nilufar-1',
-          days_left: 12,
-          from: '12 oct',
-          to: '20 nov',
-          percent: 30
-
-        },
-        {
-          product_name: 'Nilufar-1',
-          days_left: 123,
-          from: '12 oct',
-          to: '20 nov',
-          percent: 50
+          percent: 60
         }
-
       ],
+      filterTableValue: '',
       currentSize: '',
       gettingData: false,
       sizeOptions: []
 
+    }
+  },
+  computed: {
+    tableData() {
+      if (this.filterTableValue) {
+        return this.table_data.filter(d => {
+          if (d.product_name.toLowerCase().includes(this.filterTableValue.toLowerCase())) { return true }
+          return false
+        })
+      } else {
+        return this.table_data
+      }
     }
   },
   mounted() {
@@ -224,6 +184,20 @@ export default {
         left: 12px;
     }
 
+.filter-input > .el-input__inner {
+  width: 50% !important;
+  background-color: transparent !important;
+  color: white;
+  border-width: 0 0 1px 0;
+  border-radius: 0;
+  border-color: rgb(22, 75, 155);
+
+}
+
+.filter-input > .el-input__inner:focus {
+  border-color: rgb(255, 255, 255);
+}
+
 .el-select.select-size > .el-input > .el-input__inner {
   background-color: transparent !important;
   color: white !important;
@@ -260,13 +234,41 @@ export default {
 .custom-table > .el-table__body-wrapper::-webkit-scrollbar-thumb  {
   background-color: #224d79;
   border-radius: 8px;
-  height: 5px;
 }
 
 .custom-table > .el-table__body-wrapper::-webkit-scrollbar-track {
   background-color: #0a2e52;
   border-radius: 0px;
   height: 5px;
+  background: #0a2e52;
+  position: relative !important;
+}
+
+.custom-table > .el-table__body-wrapper::-webkit-scrollbar-corner {
+  background: #0a2e52;
+}
+
+.custom-table > .el-table__body-wrapper::-webkit-scrollbar-track::after {
+  content: 'aa';
+  width: 8px;
+  background: rgb(27, 220, 20) !important;
+  height: 8px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 100000;
+}
+
+.custom-table > .el-table__body-wrapper::-webkit-scrollbar {
+    height: 8px !important;
+    width:  8px !important;
+    background: rgba(220, 20, 60, 0) !important;
+}
+.custom-table.el-table::before {
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 0px;
 }
 
 .el-table__body tr.current-row.table-row-style> td{
@@ -276,13 +278,6 @@ export default {
 
 .el-table.custom-table {
   background: #0a2e52 !important;
-}
-
-.custom-table.el-table::before {
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 0px;
 }
 
 .custom-table > .el-table__body-wrapper {

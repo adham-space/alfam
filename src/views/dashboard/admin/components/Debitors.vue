@@ -5,13 +5,15 @@
     :sm="{span: 24}"
     :xm="{span: 24}"
     class="custom-e-charts-panel tahometer-table"
-    style="border-radius: 10px; overflow: hidden;"
+    style="border-radius: 10px; overflow: hidden; margin-top: 10px"
   >
 
-    <div style="background: #0a2e52; width: 100%; height: 350px; overflow: hidden; border-radius: 10px; padding: 0 1em">
-      <h4 style="text-align: center; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px">МАХСУЛОТДАН ҚОНИҚИШ ТАХОМЕТЕРИ</h4>
+    <div style="background: #0a2e52; width: 100%; height: 375px; overflow: hidden; border-radius: 10px; padding: 0 1em">
+      <h4 style="text-align: center; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px">ҚАРЗДОРЛАР</h4>
+      <el-input v-model="filterTableValue" prefix-icon="el-icon-search" class="filter-input" />
+
       <el-table
-        :data="data"
+        :data="tableData"
         height="280"
         :header-cell-class-name="headerCellClassName"
         :row-class-name="rowClassName"
@@ -68,82 +70,32 @@ export default {
         to: '20 nov',
         percent: 80
       },
-      data: [
+      table_data: [
         {
           product_name: 'Nilufar-1',
           customer: 'Adham Muhammadjonov',
           debt_return_date: '12 oct',
           cost: 1200,
           area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1200,
-          area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1200,
-          area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1200,
-          area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1200,
-          area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1200,
-          area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1200,
-          area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1200,
-          area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1200,
-          area: 250
-        },
-        {
-          product_name: 'Nilufar-1',
-          customer: 'Adham Muhammadjonov',
-          debt_return_date: '12 oct',
-          cost: 1233,
-          area: 257
         }
       ],
+      filterTableValue: '',
       currentSize: '',
       gettingData: false,
       sizeOptions: []
 
+    }
+  },
+  computed: {
+    tableData() {
+      if (this.filterTableValue) {
+        return this.table_data.filter(d => {
+          if (d.product_name.toLowerCase().includes(this.filterTableValue.toLowerCase()) || d.customer.toLowerCase().includes(this.filterTableValue.toLowerCase())) { return true }
+          return false
+        })
+      } else {
+        return this.table_data
+      }
     }
   },
   mounted() {
