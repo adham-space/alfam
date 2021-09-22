@@ -37,6 +37,21 @@
             />
             <el-table-column
               align="center"
+              prop="area"
+              :min-width="100"
+            >
+              <template slot="header">
+                Қолгани  М<sup>3</sup>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="days_left"
+              :min-width="100"
+              label="Кун - қолди"
+            />
+            <el-table-column
+              align="center"
               prop="from"
               label="Дан"
               :min-width="100"
@@ -47,12 +62,7 @@
               label="Гача"
               :min-width="100"
             />
-            <el-table-column
-              align="center"
-              prop="days_left"
-              :min-width="100"
-              label="Кун - қолди"
-            />
+
           </el-table>
         </div>
       </div>
@@ -89,14 +99,16 @@ export default {
           days_left: 13,
           from: '12 oct',
           to: '20 nov',
-          percent: 80
+          percent: 80,
+          area: 245
         },
         {
           product_name: 'Pesochni-1',
           days_left: 13,
           from: '12 oct',
           to: '20 nov',
-          percent: 60
+          percent: 60,
+          area: 245
         }
       ],
       filterTableValue: '',
