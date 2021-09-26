@@ -19,7 +19,7 @@
       />
       <el-table-column
         width="150"
-        label="СПЕЦИФИКАЦИЯСИ"
+        label="ТУРИ"
         prop="type_name"
         align="center"
       >
@@ -108,7 +108,7 @@
       >
         <template slot="header" slot-scope="">
           <span>ТОВАРНИ УМУМИЙ</span><br>
-          <span>ПОЧКАСИНИЙ</span><br>
+          <span>ПОЧКАСИНИНГ</span><br>
           <span>(МИҚДОРИ)</span><br>
         </template>
         <el-table-column
@@ -149,11 +149,12 @@
         align="center"
       >
         <template slot="header" slot-scope="">
-          <span>ТАН НАРХИ</span><br>
-          <span>m2 / Dona</span>
+          <!-- <span>КАССА</span><br>
+          <span>НАРХИ</span><br> -->
+          <span>м2 / ДОНА</span>
         </template>
         <template slot-scope="scope">
-          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.base_priceBy ? 'Price by item number' : 'Price by area (m2)'" placement="left">
+          <el-tooltip style="margin-right: 1em" effect="dark" :content=" scope.row.base_priceBy ? 'Донаси бўйича' : 'м2 бўйича'" placement="left">
             <el-switch :value="scope.row.base_priceBy" active-color="#13ce66" inactive-color="" @change="calcPriceprice_byChanged($event, scope.row)" />
           </el-tooltip>
         </template>
@@ -161,10 +162,13 @@
 
       <el-table-column
         width="120"
-        label="ТАН НАРХИ"
         prop="base_price"
         align="center"
       >
+        <template slot="header">
+          <span>КАССА</span><br>
+          <span>НАРХИ</span>
+        </template>
         <template slot-scope="scope">
           <span>{{ scope.row.base_price }}</span>
         </template>
@@ -176,6 +180,8 @@
         align="center"
       >
         <template slot="header">
+          <span>МАХСУЛОТНИНГ</span><br>
+          <span>УМУМИЙ</span><br>
           <span>КАССА</span><br>
           <span>НАРХИ</span>
         </template>
@@ -191,7 +197,8 @@
       >
         <template slot="header">
           <span>ЎЗГАРГАН</span><br>
-          <span>ТАН НАРХИ</span>
+          <span>КАССА</span><br>
+          <span>НАРХИ</span>
         </template>
 
         <template slot-scope="scope">
@@ -222,7 +229,13 @@
         label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"
         prop="weight"
         align="center"
-      />
+      >
+        <template slot="header">
+          <span>ТОВАРНИ</span><br>
+          <span>УМУМИЙ</span><br>
+          <span>КИЛОГРАММИ</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
         align="center"

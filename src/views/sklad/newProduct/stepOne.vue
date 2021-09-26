@@ -8,7 +8,7 @@
         <el-input
           v-model="typeObject.name"
           style="width: 70%"
-          placeholder="Янги тур"
+          placeholder="Янги тури"
           @keyup.native.enter="addNewType()"
         />
         <el-button @click="addNewType()">Қўшиш</el-button>
@@ -17,7 +17,7 @@
     <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="types">
         <el-table
-          empty-text="Махсулот ҳали киритилмади"
+          empty-text="Махсулот тури ҳали киритилмади"
           :show-header="false"
           :data="types"
           width="100%"

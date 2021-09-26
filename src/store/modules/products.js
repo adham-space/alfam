@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+// import { Message } from 'element-ui'
 function getProductTypes() {
   return request({
     url: '/products/get_product_types',
@@ -47,10 +47,38 @@ function save_sample(data) {
     data
   })
 }
+
+// function save_to_sklad() {
+//   return request({
+//     url: '/products/add-product',
+//     method: 'POST',
+//     data: sendData
+//   })
+//     .then((res) => {
+//       this.isSaving = false
+//       this.editTarget = false
+//       Message({
+//         message: 'Product stored successfully',
+//         duration: 2000,
+//         type: 'success'
+//       })
+//       this.resetAll()
+//     })
+//     .catch((err) => {
+//       this.isSaving = false
+//       Message({
+//         message: 'Error: product store ' + err.response.data,
+//         duration: 4000,
+//         type: 'error'
+//       })
+//     })
+// }
+
 const d = new Date()
 
 const state = {
   products: [],
+  new_batch_of_product: [],
   product_with_types: [],
   product_with_types_table_loading: false,
   products_types: [],
@@ -79,6 +107,28 @@ const state = {
 }
 
 const mutations = {
+  REMOVE_FROM_NEW_BATCH: (state, ind) => {
+    state.new_batch_of_product.splice(ind, 1)
+  },
+  SET_NEW_BATCH_OF_PRODUCTS: (state, data) => {
+    if (data === -1) {
+      state.new_batch_of_product = []
+    } else {
+      if (data.broken) {
+        if (data.editing_same_type) {
+          const index = state.new_batch_of_product.findIndex(pr => pr.product_type === data.product_type && pr.broken)
+          state.new_batch_of_product[index] = data
+        } else {
+          state.new_batch_of_product.push(data)
+        }
+      } else if (data.editing_same_type) {
+        const index = state.new_batch_of_product.findIndex(pr => pr.product_type === data.product_type)
+        state.new_batch_of_product[index] = data
+      } else {
+        state.new_batch_of_product.push(data)
+      }
+    }
+  },
   SET_PRODUCT_TYPES: (state, types) => {
     state.products_types = types
   },
@@ -254,9 +304,11 @@ const actions = {
       getTodaysProductInfo(params).then(res => {
         // num_of_todays_product
         commit('SET_TODAYS_PRODUCT_NUM', res.data)
+        resolve()
       }).catch(err => {
         console.log(err)
         commit('SET_TODAYS_PRODUCT_NUM', -1)
+        reject(err)
       })
     })
   }

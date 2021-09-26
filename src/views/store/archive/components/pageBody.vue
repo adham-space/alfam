@@ -1,8 +1,7 @@
 <template>
   <el-col :span="24" class="archive-page-body">
     <el-table
-      v-loading="tblLoading"
-      border
+      v-loading="tableLoading"
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
       :data="archiveTable"
@@ -45,7 +44,6 @@
     </el-table>
     <div class="pgntion">
       <Pagination
-        style="background-color: transparent"
         :total="102"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
@@ -70,7 +68,7 @@ export default {
     }
   }),
   computed: {
-    ...mapState('archive', ['archiveTable', 'tblLoading'])
+    ...mapState('archive', ['archiveTable', 'tableLoading'])
   },
   beforeDestroy() {
     // this.SET_SHOP(null)
@@ -90,7 +88,7 @@ export default {
     getList() {
       this.SET_QUERY_PARAM({ key: 'perPage', value: this.listQuery.limit })
       this.SET_QUERY_PARAM({ key: 'currentPage', value: this.listQuery.page })
-      this.GET_archive()
+      this.GET_ARCHIVE()
     }
   }
 

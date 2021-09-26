@@ -4,7 +4,7 @@
       <el-select
         v-model="belongsTo"
         style="width: 49.5%"
-        placeholder="Name"
+        placeholder="Партнер номи"
         :loading="gettingOthers"
         @change="belongsChanging"
       >
@@ -25,23 +25,23 @@
           />
         </el-option>
       </el-select>
-      <el-input v-model="name" style="width: 49.5%" placeholder="Name" @change="nameChanging" />
+      <el-input v-model="name" style="width: 49.5%" placeholder="Махсулот номи" @change="nameChanging" />
     </el-col>
     <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="newType">
         <el-input
           v-model="typeObject.name"
           style="width: 90%"
-          placeholder="New type"
+          placeholder="Янги тури"
           @keyup.native.enter="addNewType()"
         />
-        <el-button @click="addNewType()">Add</el-button>
+        <el-button @click="addNewType()">Қўшиш</el-button>
       </div>
     </el-col>
     <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="types">
         <el-table
-          :empty-text="'Type not inserted'"
+          empty-text="Махсулот тури ҳали киритилмади"
           :show-header="false"
           :data="types"
           width="100%"
@@ -84,24 +84,24 @@
       </div>
     </el-col>
 
-    <el-dialog title="Add other" :visible.sync="openNewItemAddDialog" width="35%" align="center">
+    <el-dialog title="Партнер қўшиш" :visible.sync="openNewItemAddDialog" width="35%" align="center">
       <el-row :gutter="10">
         <el-col :span="12" style="margin-bottom: 10px">
-          <el-input v-model="newOther.firstName" placeholder="First name" />
+          <el-input v-model="newOther.firstName" placeholder="Исми" />
         </el-col>
         <el-col :span="12" style="margin-bottom: 10px">
-          <el-input v-model="newOther.lastName" placeholder="Last name" />
+          <el-input v-model="newOther.lastName" placeholder="Фамиляси" />
         </el-col>
         <el-col :span="12">
-          <el-input v-model="newOther.shop" placeholder="Shop name" />
+          <el-input v-model="newOther.shop" placeholder="Дўкон номи" />
         </el-col>
         <el-col :span="12">
-          <el-input v-model="newOther.phone" placeholder="Phone" />
+          <el-input v-model="newOther.phone" placeholder="Телефон рақами" />
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancel()">Cancel</el-button>
-        <el-button :loading="saving" :disabled="saving" type="primary" @click="save()">Save</el-button>
+        <el-button type="danger" @click="cancel()">Отмена</el-button>
+        <el-button :loading="saving" :disabled="saving" type="primary" @click="save()">Сохранить</el-button>
       </span>
     </el-dialog>
   </el-row>

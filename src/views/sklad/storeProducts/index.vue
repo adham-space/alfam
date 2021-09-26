@@ -1,198 +1,230 @@
 <template>
   <el-row style="padding: 1em">
-    <el-form ref="storeFormRef" :model="formDataObj" :rules="rules">
-      <el-col
-        class="toolbar-store"
-        :lg="{ offset: 6, span: 12 }"
-        :md="{ offset: 4, span: 16 }"
-      >
-        <el-form-item prop="currentProduct">
-          <el-select
-            v-model="formDataObj.currentProduct"
-            style="margin-right: 1em"
-            placeholder="Select product type"
-          >
-            <el-option
-              v-for="type in products_types"
-              :key="type._id"
-              :label="type.product_name"
-              :value="type._id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="current_subType">
-          <el-select
-            v-model="formDataObj.current_subType"
-            style="margin-right: 1em"
-            placeholder="Select sub type"
-            @change="setCurrentType"
-          >
-            <el-option
-              v-for="subType in subTypes"
-              :key="subType._id"
-              :label="subType.type_name"
-              :value="subType._id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="singan">
-          <el-checkbox
-            :value="formDataObj.singan"
-            style="margin-left: 1rem"
-            @change="changedBrokenState"
-          >Singan</el-checkbox>
-        </el-form-item>
-      </el-col>
-      <el-col :lg="{ offset: 6, span: 12 }" :md="{ offset: 4, span: 16 }">
-        <p>
-          PARTIYA:
-          <span style="background-color: green; color: white">{{
-            partiya_title
-          }}</span>
-        </p>
-      </el-col>
-      <el-col
-        class="store-bdy"
-        :lg="{ offset: 6, span: 12 }"
-        :md="{ offset: 4, span: 16 }"
-      >
-        <el-card v-if="!hidePacketField" shadow="hover" class="box-card">
-          <div slot="header" class="clearfix">
-            <span>Create one packet</span>
-          </div>
-          <div class="one-packet">
-            <span><span
-                    style="color: darkgray; margin-right: 1rem"
-                  >AREA OF ONE ITEM: </span>{{
-                    Object.keys(currentType).length > 0 ? areaOfOneItem() : "_"
-                  }}
-              <span style="color: darkgray">M<sup>2</sup></span></span>
+    <el-col :span="11" style="height: calc(100vh - 85px); overflow-y: auto;">
+      <el-form ref="storeFormRef" :model="formDataObj" :rules="rules">
+        <el-col
+          class="toolbar-store"
+          :lg="{ offset: 0, span: 24 }"
+          :md="{ offset: 0, span: 24 }"
+        >
+          <el-form-item prop="currentProduct">
+            <el-select
+              :value="formDataObj.currentProduct"
+              style="margin-right: 1em"
+              placeholder="Махсулот номи"
+              @change="currentProductIsGoingToChange"
+            >
+              <el-option
+                v-for="type in products_types"
+                :key="type._id"
+                :label="type.product_name"
+                :value="type._id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="current_subType">
+            <el-select
+              v-model="formDataObj.current_subType"
+              style="margin-right: 1em"
+              placeholder="Турлари"
+              @change="setCurrentType"
+            >
+              <el-option
+                v-for="subType in subTypes"
+                :key="subType._id"
+                :label="subType.type_name"
+                :value="subType._id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="singan">
+            <el-checkbox
+              :value="formDataObj.singan"
+              style="margin-left: 1rem"
+              @change="changedBrokenState"
+            >Синган</el-checkbox>
+          </el-form-item>
+        </el-col>
+        <el-col :lg="{ offset: 0, span: 24 }" :md="{ offset: 0, span: 24 }">
+          <p>
+            ПАРТИЯ:
+            <span style="background-color: green; color: white">{{
+              partiya_title
+            }}</span>
+          </p>
+        </el-col>
+        <el-col
+          class="store-bdy"
+          :lg="{ offset: 0, span: 24 }"
+          :md="{ offset: 0, span: 24 }"
+        >
+          <el-card v-if="!hidePacketField" shadow="hover" class="box-card">
+            <div slot="header" class="clearfix">
+              <span>1 ТА КАРОБКАНИ МАъЛУМОТИ</span>
+            </div>
+            <div class="one-packet">
+              <span><span
+                      style="color: darkgray; margin-right: 1rem"
+                    >ДОНАСИНИ ЮЗАСИ: </span>{{
+                      Object.keys(currentType).length > 0 ? areaOfOneItem() : "_"
+                    }}
+                <span style="color: darkgray">M<sup>2</sup></span></span>
 
-            <div class="amountAndWeight">
+              <div class="amountAndWeight">
+                <span
+                  style="margin-top: 1rem"
+                ><span
+                   style="color: darkgray; margin-right: 1rem"
+                 >1 КАРОБКАДАГИ ДОНАСИ:
+                 </span>
+                  <el-form-item prop="numberOfItems">
+                    <el-input
+                      v-model="formDataObj.numberOfItems"
+                      style="width: 150px"
+                      type="number"
+                      placeholder="Num"
+                    /> </el-form-item></span>
+                <span
+                  style="margin-top: 1rem; margin-left: 1rem"
+                ><span
+                   style="color: darkgray; margin-right: 1rem"
+                 >1 ТА КАРОБКАНИНГ УМУМИЙ ОҒИРЛИГИ:
+                 </span>
+                  <el-form-item prop="weightOfPacket">
+                    <el-input
+                      v-model="formDataObj.weightOfPacket"
+                      style="width: 150px"
+                      type="number"
+                      placeholder="Kg"
+                    />
+                  </el-form-item>
+                </span>
+              </div>
               <span
                 style="margin-top: 1rem"
               ><span
                  style="color: darkgray; margin-right: 1rem"
-               >NUMBER OF ITEMS:
-               </span>
-                <el-form-item prop="numberOfItems">
-                  <el-input
-                    v-model="formDataObj.numberOfItems"
-                    style="width: 150px"
-                    type="number"
-                    placeholder="Num"
-                  /> </el-form-item></span>
-              <span
-                style="margin-top: 1rem; margin-left: 1rem"
-              ><span
-                 style="color: darkgray; margin-right: 1rem"
-               >WEIGHT OF ONE PACKED:
-               </span>
-                <el-form-item prop="weightOfPacket">
-                  <el-input
-                    v-model="formDataObj.weightOfPacket"
-                    style="width: 150px"
-                    type="number"
-                    placeholder="Kg"
-                  />
-                </el-form-item>
-              </span>
-            </div>
-            <span
-              style="margin-top: 1rem"
-            ><span
-               style="color: darkgray; margin-right: 1rem"
-             >AREA OF ONE PACKET: </span>{{ formDataObj.numberOfItems === "" ? "_" : areaOfOnePacket() }}
-              <span style="color: darkgray">M<sup>2</sup></span></span>
-            <span
-              style="margin-top: 1rem"
-            ><span
-               style="color: darkgray; margin-right: 1rem"
-             >WEIGHT OF AN ITEM: </span>{{ formDataObj.weightOfPacket === "" ? "_" : wightOfOneItem() }}
-              <span style="color: darkgray">Kg</span></span>
-
-            <div class="amountAndWeight">
+               >1 ТА КАРОБКАНИНГ УМУМИЙ ЮЗАСИ: </span>{{ formDataObj.numberOfItems === "" ? "_" : areaOfOnePacket() }}
+                <span style="color: darkgray">M<sup>2</sup></span></span>
               <span
                 style="margin-top: 1rem"
               ><span
                  style="color: darkgray; margin-right: 1rem"
-               >BASE PRICE:
-               </span>
-                <el-form-item prop="base_price">
-                  <el-input
-                    v-model="formDataObj.base_price"
-                    style="width: 150px"
-                    type="number"
-                    placeholder="Base price"
-                  />
-                </el-form-item>
-              </span>
-              <span
-                style="margin-top: 1rem; margin-left: 1rem"
-              ><span
-                 style="color: darkgray; margin-right: 1rem"
-               >PRICE BY:
-               </span>
-                <el-form-item prop="base_priceBy">
-                  <el-switch v-model="formDataObj.base_priceBy" />
-                  {{ base_priceByText }}
-                </el-form-item>
-              </span>
-            </div>
-            <div>
-              <span
-                style="margin-top: 1rem;"
-              ><span
-                 style="color: darkgray; margin-right: 1rem"
-               >TARGET:
-               </span>
-                <el-form-item prop="target_date">
-                  <el-date-picker
-                    v-model="formDataObj.target_date"
-                    type="daterange"
-                    range-separator="To"
-                    start-placeholder="Start date"
-                    end-placeholder="End date"
-                  />
-                </el-form-item>
-              </span>
-            </div>
-          </div>
-        </el-card>
+               >1 ТА ДОНАСИНИ ОҒИРЛИГИ: </span>{{ formDataObj.weightOfPacket === "" ? "_" : wightOfOneItem() }}
+                <span style="color: darkgray">Kg</span></span>
 
-        <el-card shadow="hover" class="box-card" style="margin-top: 1rem">
-          <div slot="header" style="height: 4rem">Store To Sklad</div>
-          <div class="one-packet">
-            <!-- <el-form-item prop="target_from">
+              <div class="amountAndWeight">
+                <span
+                  style="margin-top: 1rem"
+                ><span
+                   style="color: darkgray; margin-right: 1rem"
+                 >КАССА НАРХИ:
+                 </span>
+                  <el-form-item prop="base_price">
+                    <el-input
+                      v-model="formDataObj.base_price"
+                      style="width: 150px"
+                      type="number"
+                      placeholder="Base price"
+                    />
+                  </el-form-item>
+                </span>
+                <span
+                  style="margin-top: 1rem; margin-left: 1rem"
+                ><span
+                   style="color: darkgray; margin-right: 1rem"
+                 >БЎЙИЧА:
+                 </span>
+                  <el-form-item prop="base_priceBy">
+                    <el-switch v-model="formDataObj.base_priceBy" />
+                    {{ base_priceByText }}
+                  </el-form-item>
+                </span>
+              </div>
+              <div style="display: flex; align-items: center">
+                <span
+                  style="margin-top: 1rem;"
+                ><span
+                   style="color: darkgray; margin-right: 1rem"
+                 >МАҚСАД:
+                 </span>
+                  <el-form-item prop="target_date">
+                    <el-date-picker
+                      v-model="formDataObj.target_date"
+                      :disabled="disableDatePicker"
+                      type="date"
+                      placeholder="МАҚСАД"
+                    />
+                  </el-form-item>
+                </span>
+                <el-button v-if="isTargetSet" icon="el-icon-edit" type="text" style="margin-left: 1em" @click="editTarget = true" />
+              </div>
+            </div>
+          </el-card>
+
+          <el-card shadow="hover" class="box-card" style="margin-top: 1rem">
+            <div slot="header" style="height: 4rem">Складга сақлаш</div>
+            <div class="one-packet">
+              <!-- <el-form-item prop="target_from">
 
             </el-form-item> -->
 
-            <span
-              style="color: darkgray; margin-right: 1rem"
-            >TOTAL AREA:
-            </span>
-            <el-form-item prop="totalArea">
-              <el-input
-                v-model="formDataObj.totalArea"
-                style="width: 150px"
-                type="number"
-                placeholder="M2"
-              />
-            </el-form-item>
-            <span
-              style="margin-top: 1rem"
-            ><span style="color: darkgray">TOTAL NUMBER OF ITEMS: </span>{{
+              <span
+                style="color: darkgray; margin-right: 1rem"
+              >УМИМИЙ ЮЗАСИ:
+              </span>
+              <el-form-item prop="totalArea">
+                <el-input
+                  v-model="formDataObj.totalArea"
+                  style="width: 150px"
+                  type="number"
+                  placeholder="M2"
+                  @input="totalAreaChanged"
+                />
+              </el-form-item>
+              <span
+                style="margin-top: 1rem"
+              ><span style="color: darkgray">УМИМИЙ ДОНАСИНИ СОНИ: </span>
+                <el-form-item prop="totalNumberOfItem">
+                  <el-input
+                    :value="parseFloat(formDataObj.totalNumberOfItem)"
+                    style="width: 150px"
+                    type="number"
+                    placeholder="Umumiy donasi"
+                    @input="changedTotalNumber"
+                  /> dona
+                </el-form-item>
+                <!-- {{
               Object.keys(currentType).length > 0 &&
                 formDataObj.totalArea !== ""
                 ? totalNumberOfItems()
                 : "_"
-            }}
-              dona</span>
-
-            <span
-              style="margin-top: 1rem"
-            ><span style="color: darkgray">TOTAL NUMBER OF PACKETS: </span><span :style="{ color: errorOccured ? 'red' : 'black' }">
-              {{
+            }} -->
+              </span>
+              <span
+                style="margin-top: 1rem"
+              ><span style="color: darkgray">УМИМИЙ ПАКЕТЛАРИНИ СОНИ: </span><span :style="{ color: errorOccured ? 'red' : 'black' }">
+                <div style="display: flex">
+                  <el-form-item prop="numberOfPacket">
+                    <el-input
+                      :value="parseFloat(formDataObj.numberOfPacket)"
+                      style="width: 150px"
+                      type="number"
+                      placeholder="Umumiy pochkasini donasi"
+                      @input="changedTotalPacketNumber"
+                    /> /
+                  </el-form-item>
+                  <el-form-item prop="overPacketNumberOfItems">
+                    <el-input
+                      :value="parseFloat(formDataObj.overPacketNumberOfItems)"
+                      style="width: 150px"
+                      type="number"
+                      placeholder="dona"
+                      @input="notCompletePacketItem"
+                    /> dona
+                  </el-form-item>
+                </div>
+              <!-- {{
                 Object.keys(currentType).length > 0 &&
                   formDataObj.totalArea !== ""
                   ? numberOfPackets() +
@@ -200,63 +232,135 @@
                     notCompletePacketItems() +
                     " dona"
                   : "_"
+              }} -->
+              </span>
+
+                <el-tooltip
+                  v-if="errorOccured"
+                  class="item"
+                  effect="dark"
+                  content="(m2) MA'LUMOTI XATO KIRITILGAN"
+                  placement="top"
+                >
+                  <i style="color: red" class="el-icon-circle-close"> ХАТО</i>
+                </el-tooltip>
+              </span>
+
+              <span
+                style="margin-top: 1rem"
+              ><span style="color: darkgray">УМИМИЙ ОҒИРЛИГИ: </span>{{
+                Object.keys(currentType).length > 0 &&
+                  formDataObj.totalArea !== ""
+                  ? totalWeight()
+                  : "_"
               }}
-            </span>
+                Кг</span>
+            </div>
+          </el-card>
 
-              <el-tooltip
-                v-if="errorOccured"
-                class="item"
-                effect="dark"
-                content="(m2) MA'LUMOTI XATO KIRITILGAN"
-                placement="top"
-              >
-                <i style="color: red" class="el-icon-circle-close"> XATO</i>
-              </el-tooltip>
-            </span>
-
-            <span
-              style="margin-top: 1rem"
-            ><span style="color: darkgray">TOTAL WEIGHT OF PACKETS: </span>{{
-              Object.keys(currentType).length > 0 &&
-                formDataObj.totalArea !== ""
-                ? totalWeight()
-                : "_"
-            }}
-              Kg</span>
-          </div>
-        </el-card>
-
-        <el-form-item prop="description" style="width: 100%">
-          <el-input
-            v-model="formDataObj.description"
-            type="textarea"
-            style="margin: 1em 0; width: 100%"
-            placeholder="Description"
-          />
-        </el-form-item>
-        <el-button
-          :loading="isSaving"
-          style="color: green"
-          @click="storeToSklad()"
-        >Store to sklad</el-button>
-      </el-col>
-    </el-form>
+          <el-form-item prop="description" style="width: 100%">
+            <el-input
+              v-model="formDataObj.description"
+              type="textarea"
+              style="margin: 1em 0; width: 100%"
+              placeholder="Description"
+            />
+          </el-form-item>
+          <el-button
+            :loading="isSaving"
+            style="color: green"
+            @click="storeToSklad()"
+          >Сохранить</el-button>
+        </el-col>
+      </el-form>
+    </el-col>
+    <el-col :span="13" style="height: calc(100vh - 180px); overflow-y: auto">
+      <el-table
+        :key="currentTableKey"
+        border
+        :data="new_batch_of_product"
+      >
+        <el-table-column fixed="left" align="center" width="150" label="ТУРИ" prop="product_type_name">
+          <template slot-scope="scope">
+            {{ scope.row.product_type_name + (scope.row.broken ? '-синган': '') }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="150" label="ДОНАСИНИ ЮЗАСИ" prop="area_of_an_item">
+          <template slot="header">
+            <span>ДОНАСИНИ <br> ЮЗАСИ</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="150" label="1 КАРОБКАДАГИ ДОНАСИ" prop="number_of_items">
+          <template />
+        </el-table-column>
+        <el-table-column align="center" width="150" label="1 ТА КАРОБКАНИНГ ОҒИРЛИГИ" prop="wight_of_one_packet" />
+        <el-table-column align="center" width="150" label="1 ТА ДОНАСИНИ ОҒИРЛИГИ" prop="weight_of_an_item" />
+        <el-table-column align="center" width="150" label="1 ТА КАРОБКАНИНГ ЮЗАСИ" prop="area_of_one_packet" />
+        <el-table-column align="center" width="150" label="КАССА НАРХИ" prop="base_price" />
+        <el-table-column align="center" width="150" label="БЎЙИЧА" prop="price_by">\
+          <template slot-scope="scope">
+            {{ scope.row.price_by ? 'Донаси': 'Юзаси (м2)' }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="150" label="МАҚСАД" prop="target_date">
+          <template slot-scope="scope">
+            {{ getDate(scope.row.target_date) }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="150" label="УМИМИЙ ЮЗАСИ" prop="total_area" />
+        <el-table-column align="center" width="150" label="УМИМИЙ ДОНАСИНИ СОНИ:" prop="total_number_of_items" />
+        <el-table-column align="center" width="150" label="УМИМИЙ ПАКЕТЛАРИНИ СОНИ:" prop="total_number_of_packets" />
+        <el-table-column align="center" width="150" label="УМИМИЙ ОҒИРЛИГИ" prop="total_wight_of_packets" />
+        <el-table-column align="center" width="150" label="ПАКЕТДАН ОРТИҚЧА" prop="total_number_of_over_packet" />
+        <el-table-column fixed="right">
+          <template slot-scope="scope">
+            <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.rowIndex)" />
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+    <el-dialog
+      align="center"
+      title="Tips"
+      :visible.sync="product_changing_warnig"
+      width="30%"
+    >
+      <span>Siz maxsulotni o'zgartiryapsiz oldingi o'zgarishlar yo'qotiladi oldingi o'zgarishlarni <br> soxranit qiling yoki bu o'zgarishlar o'chirishga ruxsat berasizmi?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="donotDeleteCurrentWork()">Cancel</el-button>
+        <el-button type="primary" @click="deleteAllWorkAndSetNewProduct()">Confirm</el-button>
+      </span>
+    </el-dialog>
   </el-row>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import request from '@/utils/request'
 import { Message } from 'element-ui'
 export default {
   data() {
     return {
+      there_is_product_type: false,
+      currentTableKey: 0,
+      editing_same_type: false,
+      temp_current_product: '',
+      product_changing_warnig: false,
+      isTargetSet: false,
+      editTarget: false,
+      pickerOptions: {
+        disabledDate: this.disabledDate,
+        onPick: this.onpick
+      },
       hidePacketField: false,
       formDataObj: {
+        totalNumberOfItem: '',
+        numberOfPacket: '',
         currentProduct: '',
         current_subType: '',
         numberOfItems: '',
         weightOfPacket: '',
+        overPacketNumberOfItems: '',
         base_price: '',
         base_priceBy: false,
         singan: false,
@@ -274,7 +378,7 @@ export default {
               if (value) {
                 cb()
               } else {
-                cb(new Error('target_date should be set'))
+                cb(new Error('Мақсад санаси киритилиши керак'))
               }
             }
           }
@@ -357,6 +461,45 @@ export default {
               }
             }
           }
+        ],
+        overPacketNumberOfItems: [
+          {
+            trigger: 'change',
+            required: true,
+            validator: (rule, value, cb) => {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('overPacketNumberOfItems should be enetered'))
+              }
+            }
+          }
+        ],
+        numberOfPacket: [
+          {
+            trigger: 'change',
+            required: true,
+            validator: (rule, value, cb) => {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('numberOfPacket should be enetered'))
+              }
+            }
+          }
+        ],
+        totalNumberOfItem: [
+          {
+            trigger: 'change',
+            required: true,
+            validator: (rule, value, cb) => {
+              if (value) {
+                cb()
+              } else {
+                cb(new Error('totalNumberOfItem should be enetered'))
+              }
+            }
+          }
         ]
       },
       currentType: {},
@@ -367,16 +510,26 @@ export default {
   },
   computed: {
     ...mapState('products', [
+      'new_batch_of_product',
       'products_types',
       'products',
       'todays_product_nums',
-      'isThereBroken',
-      'there_is_product_type'
+      'isThereBroken'
     ]),
+    disableDatePicker() {
+      if (this.isTargetSet) {
+        return !this.editTarget
+      } else {
+        return false
+      }
+    },
     canISave() {
       if (this.isThereBroken && this.formDataObj.singan) return false
       if (!this.there_is_product_type && this.formDataObj.singan) return false
       return true
+    },
+    disabledDate(date) {
+      return (new Date()) > date
     },
     partiya_title() {
       const date = new Date()
@@ -385,7 +538,7 @@ export default {
         Message({
           message:
             'You could not enter more brokens because in this batch already stored, Or first need to save not-broken product type',
-          duration: 4500,
+          duration: 3500,
           type: 'error'
         })
       }
@@ -410,6 +563,8 @@ export default {
     },
     errorOccured() {
       const checkNum = this.notCompletePacketItems()
+
+      console.log('checkNum', checkNum)
       const errorInNum = checkNum - parseInt(checkNum)
       return errorInNum > 0.0
     },
@@ -426,17 +581,39 @@ export default {
     this.GET_PRODUCTS()
   },
   methods: {
+    ...mapMutations('products', [
+      'SET_NEW_BATCH_OF_PRODUCTS',
+      'REMOVE_FROM_NEW_BATCH'
+    ]),
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCTS',
       'GET_TODAYS_PRODUCTS'
     ]),
+    currentProductIsGoingToChange(product) {
+      if (this.formDataObj.currentProduct) {
+        this.product_changing_warnig = true
+        this.temp_current_product = product
+      } else {
+        this.formDataObj.currentProduct = product
+      }
+    },
+    donotDeleteCurrentWork() {
+      this.product_changing_warnig = false
+      this.temp_current_product = ''
+    },
+    deleteAllWorkAndSetNewProduct() {
+      this.product_changing_warnig = false
+      this.temp_current_product = ''
+      this.SET_NEW_BATCH_OF_PRODUCTS(-1)
+    },
     storeToSklad() {
       const sendData = {
         partiya: this.todays_product_nums + (this.formDataObj.singan ? 0 : 1),
         title: this.partiya_title,
         product: this.formDataObj.currentProduct,
         product_type: this.formDataObj.current_subType,
+        product_type_name: this.typeName,
         area_of_an_item: parseFloat(this.areaOfOneItem()),
         number_of_items: parseFloat(this.formDataObj.numberOfItems),
         wight_of_one_packet: parseFloat(this.formDataObj.weightOfPacket),
@@ -446,39 +623,20 @@ export default {
         price_by: this.formDataObj.base_priceBy,
         broken: this.formDataObj.singan,
         total_area: parseFloat(this.formDataObj.totalArea),
-        total_number_of_items: parseFloat(this.totalNumberOfItems()),
-        total_number_of_packets: parseFloat(this.numberOfPackets()),
+        total_number_of_items: parseFloat(this.formDataObj.totalNumberOfItem),
+        total_number_of_packets: parseFloat(this.formDataObj.numberOfPacket),
         total_wight_of_packets: parseFloat(this.totalWeight()),
         total_number_of_over_packet: parseFloat(this.notCompletePacketItems()),
         description: this.formDataObj.description,
-        target_start_date: this.formDataObj.target_date[0],
-        target_end_date: this.formDataObj.target_date[1]
+        target_date: this.formDataObj.target_date,
+        editTargetDate: this.editTarget,
+        editing_same_type: this.editing_same_type
       }
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {
-          this.isSaving = true
-          request({
-            url: '/products/add-product',
-            method: 'POST',
-            data: sendData
-          })
-            .then((res) => {
-              this.isSaving = false
-              Message({
-                message: 'Product stored successfully',
-                duration: 2000,
-                type: 'success'
-              })
-              this.resetAll()
-            })
-            .catch((err) => {
-              this.isSaving = false
-              Message({
-                message: 'Error: product store ' + err.response.data,
-                duration: 4000,
-                type: 'error'
-              })
-            })
+          this.SET_NEW_BATCH_OF_PRODUCTS(sendData)
+          this.currentTableKey = Math.floor(Math.random() * 100)
+          this.resetAll()
         } else {
           return false
         }
@@ -486,36 +644,33 @@ export default {
     },
 
     changedBrokenState(val) {
-      if (!this.isThereBroken && this.there_is_product_type) {
+      const indexOfExistingProductType = this.new_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType)
+      this.there_is_product_type = indexOfExistingProductType !== -1
+      const indexOfBrokenExistingProductType = this.new_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType && pr.broken)
+      if (this.there_is_product_type) {
         if (val) {
-          this.hidePacketField = true
+          // this.hidePacketField = true
           this.formDataObj.singan = true
-          request({
-            url: '/products/get-product-of-type',
-            method: 'GET',
-            params: {
-              partiya:
-                this.todays_product_nums + (this.formDataObj.singan ? 0 : 1),
-              product_type: this.formDataObj.current_subType,
-              product: this.formDataObj.currentProduct
-            }
-          })
-            .then((res) => {
-              // console.log(res.data)
-              this.currentType = res.data.product_type
-              this.formDataObj.numberOfItems = res.data.number_of_items
-              this.formDataObj.weightOfPacket = res.data.wight_of_one_packet
-              this.formDataObj.base_price = res.data.base_price
-              this.formDataObj.base_priceBy = res.data.price_by
-            })
-            .catch((err) => {
-              Message({
-                message: err.response.data,
-                type: 'error',
-                duration: 4000
-              })
-            })
+
+          if (indexOfBrokenExistingProductType > -1) {
+            this.formDataObj.totalArea = this.new_batch_of_product[indexOfBrokenExistingProductType].total_area
+            this.formDataObj.overPacketNumberOfItems = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_over_packet
+            this.formDataObj.numberOfPacket = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_packets
+            this.formDataObj.totalNumberOfItem = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_items
+          } else {
+            this.editing_same_type = false
+            this.formDataObj.totalArea = ''
+            this.formDataObj.overPacketNumberOfItems = ''
+            this.formDataObj.numberOfPacket = ''
+            this.formDataObj.totalNumberOfItem = ''
+          }
+
+          this.formDataObj.numberOfItems = this.new_batch_of_product[indexOfExistingProductType].number_of_items
+          this.formDataObj.weightOfPacket = this.new_batch_of_product[indexOfExistingProductType].wight_of_one_packet
+          this.formDataObj.base_price = this.new_batch_of_product[indexOfExistingProductType].base_price
+          this.formDataObj.base_priceBy = this.new_batch_of_product[indexOfExistingProductType].price_by
         } else {
+          this.setIfAlreadyEnteredType(this.formDataObj.current_subType)
           this.hidePacketField = false
           this.formDataObj.singan = false
         }
@@ -530,13 +685,20 @@ export default {
     },
 
     resetAll() {
-      this.formDataObj.currentProduct = ''
+      console.log('resetting all...')
+      this.editing_same_type = false
+      const currentProduct = this.formDataObj.currentProduct
       this.formDataObj.current_subType = ''
+      this.formDataObj.current_subTypeName = ''
       this.formDataObj.base_priceBy = false
       this.formDataObj.singan = false
       this.formDataObj.totalArea = ''
+      this.formDataObj.target_date = ''
       this.formDataObj.base_price = ''
       this.formDataObj.weightOfPacket = ''
+      this.formDataObj.overPacketNumberOfItems = ''
+      this.formDataObj.numberOfPacket = ''
+      this.formDataObj.totalNumberOfItem = ''
       this.formDataObj.numberOfItems = ''
       this.currentType = {}
       this.formDataObj.description = ''
@@ -548,11 +710,12 @@ export default {
       this.totalWeight()
       this.areaOfOneItem()
       this.typeName = ''
-      this.productName = ''
       this.$refs.storeFormRef.resetFields()
+      this.formDataObj.currentProduct = currentProduct
       this.hidePacketField = false
     },
     setCurrentType(val) {
+      this.setIfAlreadyEnteredType(val)
       this.formDataObj.singan = false
       const pr = this.products_types.find(
         (product) => product._id === this.formDataObj.currentProduct
@@ -564,6 +727,11 @@ export default {
           product: this.formDataObj.currentProduct,
           product_type: this.formDataObj.current_subType,
           isBroken: this.formDataObj.singan
+        }).then(() => {
+          // this.getTargetDate({
+          //   productId: this.formDataObj.currentProduct,
+          //   batch: this.todays_product_nums + (this.formDataObj.singan ? 0 : 1)
+          // })
         })
       } else {
         this.currentType = {}
@@ -589,7 +757,21 @@ export default {
     totalWeight() {
       return (this.wightOfOneItem() * this.totalNumberOfItems()).toFixed(2)
     },
-
+    totalAreaChanged() {
+      this.formDataObj.totalNumberOfItem = parseFloat((this.formDataObj.totalArea / this.areaOfOneItem()).toFixed(2))
+      this.formDataObj.numberOfPacket = parseInt((this.formDataObj.totalNumberOfItem / this.formDataObj.numberOfItems).toFixed(2))
+    },
+    changedTotalNumber(num) {
+      this.formDataObj.totalNumberOfItem = Number(num)
+      this.formDataObj.numberOfPacket = parseInt(this.formDataObj.totalNumberOfItem / this.formDataObj.numberOfItems)
+      console.log(this.formDataObj.numberOfPacket)
+      this.formDataObj.totalArea = parseFloat((this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4))
+    },
+    changedTotalPacketNumber(num) {
+      this.formDataObj.numberOfPacket = Number(num)
+      this.formDataObj.totalNumberOfItem = this.formDataObj.numberOfItems * this.formDataObj.numberOfPacket + this.formDataObj.overPacketNumberOfItems
+      this.formDataObj.totalArea = parseFloat((this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4))
+    },
     totalNumberOfItems() {
       return (this.formDataObj.totalArea / this.areaOfOneItem()).toFixed(3)
     },
@@ -598,9 +780,89 @@ export default {
         this.totalNumberOfItems() / this.formDataObj.numberOfItems
       )
     },
-
+    getDate(d) {
+      const date = new Date(d)
+      return `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`
+    },
     notCompletePacketItems() {
-      return this.totalNumberOfItems() % this.formDataObj.numberOfItems
+      return (this.formDataObj.totalNumberOfItem) % this.formDataObj.numberOfItems
+    },
+    notCompletePacketItem(num) {
+      this.formDataObj.overPacketNumberOfItems = Number(num)
+      if (this.formDataObj.numberOfPacket) {
+        this.formDataObj.totalNumberOfItem = this.formDataObj.numberOfPacket * this.formDataObj.numberOfItems + Number(num)
+        this.formDataObj.totalArea = parseFloat((this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4))
+      }
+    },
+    async getTargetDate(params) {
+      try {
+        const result = await request({
+          url: '/products/get-targetdate',
+          params
+        })
+        if (result.data) {
+          console.log('result', result)
+          this.isTargetSet = true
+          this.formDataObj.target_date = result.data.target_date
+        } else {
+          this.isTargetSet = false
+          this.formDataObj.target_date = ''
+        }
+      } catch (error) {
+        console.eror
+      }
+    },
+    removeFromNewBatch(ind) {
+      this.REMOVE_FROM_NEW_BATCH(ind)
+    },
+    setIfAlreadyEnteredType(type_id) {
+      const typeObj = this.new_batch_of_product.find(pr => pr.product_type === type_id)
+
+      if (typeObj) {
+        this.editing_same_type = true
+        console.log('editing_same_type')
+        this.formDataObj.base_priceBy = typeObj.price_by
+        this.formDataObj.singan = typeObj.broken
+        this.formDataObj.base_price = typeObj.base_price
+        this.formDataObj.target_date = typeObj.target_date
+        this.formDataObj.weightOfPacket = typeObj.wight_of_one_packet
+        this.formDataObj.numberOfItems = typeObj.number_of_items
+
+        this.formDataObj.totalArea = typeObj.total_area
+        this.formDataObj.overPacketNumberOfItems = typeObj.total_number_of_over_packet
+        this.formDataObj.numberOfPacket = typeObj.total_number_of_packets
+        this.formDataObj.totalNumberOfItem = typeObj.total_number_of_items
+        // this.currentType = {}
+        this.formDataObj.description = typeObj.description
+        this.areaOfOneItem()
+        this.areaOfOnePacket()
+        this.wightOfOneItem()
+        this.totalNumberOfItems()
+        this.numberOfPackets()
+        this.totalWeight()
+        this.areaOfOneItem()
+      } else {
+        this.editing_same_type = false
+        this.formDataObj.base_priceBy = false
+        this.formDataObj.singan = ''
+        this.formDataObj.totalArea = ''
+        this.formDataObj.target_date = ''
+        this.formDataObj.base_price = ''
+        this.formDataObj.weightOfPacket = ''
+        this.formDataObj.overPacketNumberOfItems = ''
+        this.formDataObj.numberOfPacket = ''
+        this.formDataObj.totalNumberOfItem = ''
+        this.formDataObj.numberOfItems = ''
+        // this.currentType = {}
+        this.formDataObj.description = ''
+        this.areaOfOneItem()
+        this.areaOfOnePacket()
+        this.wightOfOneItem()
+        this.totalNumberOfItems()
+        this.numberOfPackets()
+        this.totalWeight()
+        this.areaOfOneItem()
+      }
     }
   }
 }

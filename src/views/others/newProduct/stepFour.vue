@@ -5,7 +5,7 @@
         <el-select
           v-model="formDataObj.current_subType"
           style="margin-bottom: 1em"
-          placeholder="Select sub type"
+          placeholder="Турлари"
           @change="setCurrentType"
         >
           <el-option
@@ -19,11 +19,11 @@
       <el-col :offset="2" :span="20" class="top-inputs">
         <el-card shadow="hover" class="box-card">
           <div slot="header" class="clearfix">
-            <span>Create one packet</span>
+            <span>1 ТА КАРОБКАНИ МАъЛУМОТИ</span>
           </div>
           <div class="one-packet">
             <span>
-              <span style="color: darkgray; margin-right: 1rem">AREA OF ONE ITEM:</span>
+              <span style="color: darkgray; margin-right: 1rem">ДОНАСИНИ ЮЗАСИ:</span>
               {{
                 Object.keys(currentType).length > 0 ? areaOfOneItem() : "_"
               }}
@@ -37,7 +37,7 @@
 
             <div class="amountAndWeight">
               <span style="margin-top: 1rem">
-                <span style="color: darkgray; margin-right: 1rem">NUMBER OF ITEMS:</span>
+                <span style="color: darkgray; margin-right: 1rem">1 КАРОБКАДАГИ ДОНАСИ:</span>
                 <el-form-item prop="numberOfItems">
                   <el-input
                     v-model="formDataObj.numberOfItems"
@@ -48,7 +48,7 @@
                 </el-form-item>
               </span>
               <span style="margin-top: 1rem; margin-left: 1rem">
-                <span style="color: darkgray; margin-right: 1rem">WEIGHT OF ONE PACKED:</span>
+                <span style="color: darkgray; margin-right: 1rem">1 ТА КАРОБКАНИНГ УМУМИЙ ОҒИРЛИГИ</span>
                 <el-form-item prop="weightOfPacket">
                   <el-input
                     v-model="formDataObj.weightOfPacket"
@@ -60,7 +60,7 @@
               </span>
             </div>
             <span style="margin-top: 1rem">
-              <span style="color: darkgray; margin-right: 1rem">AREA OF ONE PACKET:</span>
+              <span style="color: darkgray; margin-right: 1rem">1 ТА КАРОБКАНИНГ УМУМИЙ ЮЗАСИ:</span>
               {{ formDataObj.numberOfItems === "" ? "_" : areaOfOnePacket() }}
               <span
                 style="color: darkgray"
@@ -70,7 +70,7 @@
               </span>
             </span>
             <span style="margin-top: 1rem">
-              <span style="color: darkgray; margin-right: 1rem">WEIGHT OF AN ITEM:</span>
+              <span style="color: darkgray; margin-right: 1rem">1 ТА ДОНАСИНИ ОҒИРЛИГИ:</span>
               {{ formDataObj.weightOfPacket === "" ? "_" : wightOfOneItem() }}
               <span
                 style="color: darkgray"
@@ -79,18 +79,18 @@
 
             <div class="amountAndWeight">
               <span style="margin-top: 1rem">
-                <span style="color: darkgray; margin-right: 1rem">BASE PRICE:</span>
+                <span style="color: darkgray; margin-right: 1rem">КАССА НАРХИ:</span>
                 <el-form-item prop="base_price">
                   <el-input
                     v-model="formDataObj.base_price"
                     style="width: 150px"
                     type="number"
-                    placeholder="Base price"
+                    placeholder="касса нархи"
                   />
                 </el-form-item>
               </span>
               <span style="margin-top: 1rem; margin-left: 1rem">
-                <span style="color: darkgray; margin-right: 1rem">PRICE BY:</span>
+                <span style="color: darkgray; margin-right: 1rem">БЎЙИЧА:</span>
                 <el-form-item prop="base_priceBy">
                   <el-switch v-model="formDataObj.base_priceBy" />
                   {{ base_priceByText }}
@@ -100,7 +100,7 @@
             <el-button
               style="color: green"
               @click="savePacket()"
-            >Save Packet</el-button>
+            >Сохранить</el-button>
           </div>
 
         </el-card>
@@ -200,9 +200,9 @@ export default {
     },
     base_priceByText() {
       if (this.formDataObj.base_priceBy) {
-        return 'By item num'
+        return 'Донаси'
       } else {
-        return 'Area (m2)'
+        return 'м2'
       }
     }
   },

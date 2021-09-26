@@ -21,7 +21,7 @@
         <stepThree />
       </tab-content>
       <template slot="custom-buttons-right" style="pardding-right: 2rem">
-        <el-button style="color: red; margin-right: 1rem" @click="cancelConfirmDialog = true">Отмена</el-button>
+        <el-button type="danger" style="margin-right: 1rem" @click="cancelConfirmDialog = true">Отмена</el-button>
       </template>
       <template slot="finish">
         <el-button type="primary" :loading="finishing" :disabled="finishing">Янги махсулотни сақлаш</el-button>
@@ -36,7 +36,7 @@
     <el-dialog
       title="Янги махсулот яратишни бекор қилиш"
       :visible.sync="cancelConfirmDialog"
-      width="30%"
+      width="50%"
       align="center"
     >
       <span>Янги махсулот яратишни бекор қилишга розимисиз?</span>

@@ -31,8 +31,6 @@ export default {
     .inventars-page-body {
         background-color: white;
         border-radius: 8px;
-    }
-    .inventars-page-body {
         margin-top: 1rem;
         height: calc(100vh - 6rem - 50px);
     }

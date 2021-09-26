@@ -73,6 +73,7 @@ export default {
                 [0.7, '#fffb00'],
                 [1, '#67e0e3']
               ]
+
             }
           },
           pointer: {

@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="24" class="archgive-page-tools">
+  <el-col :span="24" class="inventars-page-tools">
     <div style="display: flex">
       <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Search for driver">
         <el-select
@@ -16,7 +16,7 @@
           <el-option label="Shopping amount" :value="5" />
         </el-select>
       </el-input>
-      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="GET_archgive()" />
+      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="GET_INVENTARS()" />
     </div>
     <div style="display: flex">
 <!--      <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
@@ -36,11 +36,11 @@ export default {
     delete_Dialog: false
   }),
   computed: {
-    ...mapState('archgive', ['currentOrder'])
+    ...mapState('inventars', ['currentOrder'])
   },
   methods: {
-    ...mapMutations('archgive', ['SET_QUERY']),
-    ...mapActions('archgive', ['GET_archgive']),
+    ...mapMutations('inventars', ['SET_QUERY']),
+    ...mapActions('inventars', ['GET_INVENTARS']),
     searchTypeChanged(t) {
       this.SET_QUERY({
         key: 'search_input',
@@ -52,12 +52,12 @@ export default {
 </script>
 
 <style>
-     .archgive-page-tools {
-         /* background-color: white; */
+     .inventars-page-tools {
+         background-color: white;
         border-radius: 8px;
     }
 
-    .archgive-page-tools {
+    .inventars-page-tools {
         height: 3rem;
         /* border: 1px solid red; */
         display: flex;
@@ -66,6 +66,6 @@ export default {
     }
 
     .el-input-group__append, .el-input-group__prepend {
-        /* background-color: white; */
+        background-color: white;
     }
 </style>

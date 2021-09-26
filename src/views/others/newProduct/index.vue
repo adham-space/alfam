@@ -10,39 +10,48 @@
       subtitle=""
       @on-complete="onComplete"
     >
-      <tab-content class="tb-cnt" title="Name/Types">
+      <tab-content class="tb-cnt" title="Номланиши/Тури">
         <stepOne ref="stepOneRef" />
       </tab-content>
-      <tab-content :lazy="true" class="tb-cnt" title="Types details">
+      <tab-content :lazy="true" class="tb-cnt" title="Турларни детализатсияси">
         <stepTwo />
       </tab-content>
-      <tab-content :lazy="true" class="tb-cnt" title="Packet details">
+      <tab-content :lazy="true" class="tb-cnt" title="Упаковка детализатсияси">
         <stepFour />
       </tab-content>
-      <tab-content :lazy="true" class="tb-cnt" title="Preview">
+      <tab-content :lazy="true" class="tb-cnt" title="Ревизия">
         <stepThree />
       </tab-content>
-      <template slot="custom-buttons-right" style="pardding-right: 2rem">
+      <!-- <template slot="custom-buttons-right" style="pardding-right: 2rem">
         <el-button style="color: red; margin-right: 1rem" @click="cancelConfirmDialog = true">cancel</el-button>
+      </template> -->
+      <template slot="custom-buttons-right" style="pardding-right: 2rem">
+        <el-button type="danger" style="margin-right: 1rem" @click="cancelConfirmDialog = true">Отмена</el-button>
+      </template>
+      <template slot="next">
+        <el-button type="primary">Следуюший</el-button>
+      </template>
+      <template slot="prev">
+        <el-button type="primary">Назад</el-button>
       </template>
       <template slot="finish">
-        <el-button type="primary" :loading="finishing" :disabled="finishing">Save new product</el-button>
+        <el-button type="primary" :loading="finishing" :disabled="finishing">Янги махсулотни сақлаш</el-button>
       </template>
     </form-wizard>
 
     <el-dialog
-      title="Cancel new product"
+      title="Янги махсулот яратишни бекор қилиш"
       :visible.sync="cancelConfirmDialog"
-      width="30%"
+      width="50%"
       align="center"
     >
-      <span>Are you sure want to cancel creating new product?</span>
+      <span>Янги махсулот яратишни бекор қилишга розимисиз?</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelConfirmDialog = false">No</el-button>
+        <el-button @click="cancelConfirmDialog = false">Йўқ</el-button>
         <el-button
           type="danger"
           @click="Cancel()"
-        >Yes</el-button>
+        >Ха</el-button>
       </span>
     </el-dialog>
   </el-row>
