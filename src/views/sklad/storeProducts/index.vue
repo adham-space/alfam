@@ -752,9 +752,7 @@ export default {
       return (
         this.formDataObj.weightOfPacket / this.formDataObj.numberOfItems
       ).toFixed(2)
-    },
-
-    totalWeight() {
+    }, totalWeight() {
       return (this.wightOfOneItem() * this.totalNumberOfItems()).toFixed(2)
     },
     totalAreaChanged() {
