@@ -35,15 +35,20 @@
           </el-col> -->
         </el-form-item>
 
-        <el-form-item>
-          <el-col :span="12">
+        <el-form-item style="">
+          <el-col :span="8">
             <el-form-item label="Бўйига (cм)">
               <el-input v-model="formTwo.height" placeholder="Бўйига (cм)" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="Энига (cм)">
               <el-input v-model="formTwo.width" placeholder="Энига (cм)" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" style="height: 4.5rem; display: flex; align-items: flex-end">
+            <el-form-item label="">
+              <el-checkbox v-model="formTwo.isMain">Асоосий размер</el-checkbox>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -90,7 +95,8 @@ export default {
       formTwo: {
         code: '',
         height: '',
-        width: ''
+        width: '',
+        isMain: false
       }
     }
   },
@@ -113,13 +119,15 @@ export default {
       type.height = parseFloat(this.formTwo.height)
       type.width = parseFloat(this.formTwo.width)
       type.size = `${type.height}*${type.width}`
+      type.isMain = this.formTwo.isMain
       type.photo = this.photo[0]
       const index = this.types.findIndex((typ) => typ.id + '' === type.id + '')
       this.$store.commit('newProduct/SET_TYPE', { index: index, type })
       this.formTwo = {
         code: '',
         height: '',
-        width: ''
+        width: '',
+        isMain: false
       }
       this.photo = []
       this.currentType = ''
@@ -138,10 +146,12 @@ export default {
       console.log(val)
       const type = this.types.find((typ) => typ.id === val)
       if (type) {
+        console.log('isMain', type.isMain)
         this.formTwo = {
           code: type.code ? type.code : '',
           height: type.height ? type.height : '',
-          width: type.width ? type.width : ''
+          width: type.width ? type.width : '',
+          isMain: type.isMain ? type.isMain : false
         }
         this.photo = type.photo ? [type.photo] : []
       }
