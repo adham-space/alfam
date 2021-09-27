@@ -40,4 +40,8 @@ export default {
   ::-webkit-scrollbar-thumb:hover {
     background: rgb(170, 170, 170);
   }
+
+.el-table--scrollable-x .el-table__body-wrapper {
+  z-index : 1;
+}
 </style>

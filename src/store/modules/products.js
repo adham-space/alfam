@@ -48,32 +48,6 @@ function save_sample(data) {
   })
 }
 
-// function save_to_sklad() {
-//   return request({
-//     url: '/products/add-product',
-//     method: 'POST',
-//     data: sendData
-//   })
-//     .then((res) => {
-//       this.isSaving = false
-//       this.editTarget = false
-//       Message({
-//         message: 'Product stored successfully',
-//         duration: 2000,
-//         type: 'success'
-//       })
-//       this.resetAll()
-//     })
-//     .catch((err) => {
-//       this.isSaving = false
-//       Message({
-//         message: 'Error: product store ' + err.response.data,
-//         duration: 4000,
-//         type: 'error'
-//       })
-//     })
-// }
-
 const d = new Date()
 
 const state = {
