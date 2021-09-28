@@ -219,6 +219,7 @@ export default {
       }
     },
     async sizeChangedHandler(size) {
+      this.currentName = ''
       this.gettingData = true
       try {
         const res = await request({
