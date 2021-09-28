@@ -38,6 +38,7 @@
 <script>
 import request from '@/utils/request'
 import PieChart from './PieChart.vue'
+import { mapState } from 'vuex'
 export default {
   components: {
     PieChart
@@ -52,10 +53,11 @@ export default {
   data() {
     return {
       currentSize: '',
-      gettingData: false,
-      sizeOptions: []
-
+      gettingData: false
     }
+  },
+  computed: {
+    ...mapState('dashboard', ['sizeOptions'])
   },
   mounted() {
     this.sizeChangedHandler('')

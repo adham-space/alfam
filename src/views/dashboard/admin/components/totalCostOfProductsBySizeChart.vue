@@ -41,6 +41,7 @@
 import VueApexCharts from 'vue-apexcharts'
 import request from '@/utils/request'
 import { toThousandFilter } from '@/filters/index'
+import { mapState } from 'vuex'
 export default {
   components: {
     VueApexCharts
@@ -48,7 +49,6 @@ export default {
   data() {
     return {
       gettingData: false,
-      sizeOptions: [],
       currentSize: '',
       total_area: 0,
       seriesBar: [
@@ -149,19 +149,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('dashboard', ['sizeOptions'])
+  },
   mounted() {
     this.sizeChangedHandler('')
-    request({
-      url: '/dashboard/get-product-sizes',
-      method: 'GET'
-    })
-      .then(res => {
-        this.sizeOptions = res.data
-      })
-      .catch(err => {
-        console.error(err)
-        this.sizeOptions = []
-      })
   },
   methods: {
     async sizeChangedHandler(size) {

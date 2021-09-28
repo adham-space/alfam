@@ -569,14 +569,14 @@ export default {
       if (!this.canISave) {
         Message({
           message:
-            'You could not enter more brokens because in this batch already stored, Or first need to save not-broken product type',
+            'Сиз синган киритолмайсиз, чунки бу тўпламда ушбу турда бутун махсулот сақланмаган, ёки аввал синмаган маҳсулот турини сақлаш керак',
           duration: 3500,
           type: 'error'
         })
       }
       console.log(this.formDataObj.singan ? 0 : 1)
       return `${this.productName}-${this.typeName}-${
-        this.todays_product_nums + (this.formDataObj.singan ? 0 : 1)
+        this.todays_product_nums + 1
       }${this.formDataObj.singan ? '-broken' : ''}-${date.getDate()}/${
         date.getMonth() + 1
       }/${date.getFullYear()}`
@@ -642,7 +642,7 @@ export default {
     },
     storeToSklad() {
       const sendData = {
-        partiya: this.todays_product_nums + (this.formDataObj.singan ? 0 : 1),
+        partiya: this.todays_product_nums + 1,
         title: this.partiya_title,
         product: this.formDataObj.currentProduct,
         product_type: this.formDataObj.current_subType,
@@ -710,7 +710,7 @@ export default {
       } else {
         Message({
           message:
-            'You could not enter more brokens because in this batch already stored, Or first need to save not-broken product type',
+            'Сиз синган киритолмайсиз, чунки бу тўпламда ушбу турда бутун махсулот сақланмаган, ёки аввал синмаган маҳсулот турини сақлаш керак',
           duration: 4500,
           type: 'error'
         })
@@ -896,14 +896,15 @@ export default {
       request({
         url: '/products/add-product',
         method: 'POST',
-        data: { new_batch: this.new_batch_of_product }
+        data: { new_batch: this.new_batch_of_product },
+        timeout: 30000
       })
         .then((res) => {
           this.isSaving = false
           this.editTarget = false
           this.SET_NEW_BATCH_OF_PRODUCTS(-1)
           Message({
-            message: 'Product stored successfully',
+            message: 'Махсулот мувоффақиятли сақланди',
             duration: 2000,
             type: 'success'
           })
@@ -912,7 +913,7 @@ export default {
         .catch((err) => {
           this.isSaving = false
           Message({
-            message: 'Error: product store ' + err.response.data,
+            message: 'Махсулот сақлашда хатолик: ' + err.response.data,
             duration: 4000,
             type: 'error'
           })

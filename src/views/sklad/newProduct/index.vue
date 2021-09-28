@@ -94,7 +94,7 @@ export default {
         }
         await this.UPLOAD_TYPES(dataObj)
         Message({
-          message: 'Success:  types are saved',
+          message: 'Янги махсулот мувоффақиятли яратилди',
           duration: 3000,
           type: 'success'
         })

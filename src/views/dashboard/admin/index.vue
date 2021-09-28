@@ -146,6 +146,7 @@ export default {
 .char-body {
   background-color: #0a2e52;
   padding: 20px;
+  padding-bottom: 3rem;
   border-radius: 10px;
   // margin: 20px 20px 0 0;
 }

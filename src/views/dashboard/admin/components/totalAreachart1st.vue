@@ -4,7 +4,7 @@
     :lg="{ span: 12 }"
     :sm="{ span: 24 }"
     :xm="{ span: 24 }"
-    style="margin-top: 10px"
+    style="margin-top: 10px;"
     class="char-body-1st"
   >
     <vue-apex-charts
@@ -15,7 +15,7 @@
       :options="chartOptionsBar"
       :series="seriesBar"
     />
-    <div class="select-size-wrapper">
+    <div class="select-size-wrapper-1" :style="currentSize !== '' ? {'right': '50%'}: {'right': '45%'}">
       <el-select
         v-model="currentSize"
         clearable
@@ -32,7 +32,26 @@
           :value="size.size"
         />
       </el-select>
-      <i style="color: white" :class="gettingData ? 'el-icon-loading' : ''" />
+      <i :style="gettingData ? {color: 'white'} : {color: 'transparent'}" class="el-icon-loading" />
+    </div>
+    <div v-if="currentSize !== ''" class="select-name-wrapper">
+      <el-select
+        v-model="currentName"
+        clearable
+        align="center"
+        style="width: 9em"
+        class="select-size"
+        @change="nameChangedHandler"
+      >
+        <el-option label="Хаммаси" :value="''" />
+        <el-option
+          v-for="(name, index) in this.chartOptionsBar.xaxis.categories"
+          :key="index"
+          :label="name"
+          :value="name"
+        />
+      </el-select>
+      <i :style="gettingDataByName ? {color: 'white'} : {color: 'transparent'}" class="el-icon-loading" />
     </div>
   </el-col>
 </template>
@@ -41,6 +60,7 @@
 import VueApexCharts from 'vue-apexcharts'
 import request from '@/utils/request'
 import { toThousandFilter } from '@/filters/index'
+import { mapActions, mapState } from 'vuex'
 export default {
   components: {
     VueApexCharts
@@ -48,8 +68,10 @@ export default {
   data() {
     return {
       gettingData: false,
-      sizeOptions: [],
       currentSize: '',
+      currentName: '',
+      nameOptions: '',
+      gettingDataByName: false,
       total_area: 0,
       seriesBar: [
         {
@@ -112,6 +134,7 @@ export default {
         title: {
           text: 'МИҚДОРЛИ ГИСТОГРАММА ИНДЕКСИ (м2)',
           align: 'center',
+          formatter: 'МИҚДОРЛИ ГИСТОГРАММА <br> ИНДЕКСИ (м2)',
           style: {
             fontSize: '12px',
             fontWeight: 'light'
@@ -147,21 +170,54 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('dashboard', ['sizeOptions'])
+  },
   mounted() {
     this.sizeChangedHandler('')
-    request({
-      url: '/dashboard/get-product-sizes',
-      method: 'GET'
-    })
-      .then((res) => {
-        this.sizeOptions = res.data
-      })
-      .catch((err) => {
-        console.error(err)
-        this.sizeOptions = []
-      })
+    this.GET_SIZES()
   },
   methods: {
+    ...mapActions('dashboard', ['GET_SIZES']),
+    async nameChangedHandler(product_name) {
+      this.gettingDataByName = true
+      try {
+        const res = await request({
+          url: '/dashboard/get-inventar-area',
+          method: 'GET',
+          params: {
+            product_name,
+            size: this.currentSize
+          }
+        })
+        this.gettingDataByName = false
+        const chart1st = res.data
+        this.seriesBar[0].data = []
+        this.chartOptionsBar.xaxis.categories = []
+        chart1st.forEach((ch) => {
+          // if (size === '') {
+          if (product_name === '') {
+            this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+            this.chartOptionsBar.xaxis.categories.push(ch.product_name)
+          } else {
+            this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+            this.chartOptionsBar.xaxis.categories.push(ch.size + ' ' + ch.type_name)
+          }
+          this.chartOptionsBar.subtitle.text =
+            'Жами: ' +
+            toThousandFilter(
+              parseFloat(
+                this.seriesBar[0].data.reduce((a, b) => a + b, 0).toFixed(2)
+              )
+            )
+        })
+        console.log('need to be changed')
+        this.$refs.chart1Ref.refresh()
+      } catch (err) {
+        this.gettingData = false
+        console.error(err)
+      }
+    },
     async sizeChangedHandler(size) {
       this.gettingData = true
       try {
@@ -206,15 +262,21 @@ export default {
 .char-body-1st {
   position: relative;
 }
-.select-size-wrapper {
+.select-size-wrapper-1 {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  bottom: 10px;
+  right: 50%;
+}
+
+.select-name-wrapper {
+  position: absolute;
+  bottom: 10px;
+  left: 55%;
 }
 
 .el-select.select-size > .el-input > .el-input__inner {
   background-color: transparent !important;
   color: white !important;
-  border: 1px solid transparent;
+  border: 1px solid rgba(184, 184, 184, 0) !important;
 }
 </style>
