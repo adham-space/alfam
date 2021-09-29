@@ -15,7 +15,7 @@
       :options="chartOptionsBar"
       :series="seriesBar"
     />
-    <div class="select-size-wrapper">
+    <div class="select-size-wrapper-1">
       <el-select
         v-model="currentSize"
         clearable
@@ -32,7 +32,26 @@
           :value="size.size"
         />
       </el-select>
-      <i style="color: white" :class="gettingData ? 'el-icon-loading': ''" />
+      <i :style="gettingData ? {color: 'white'} : {color: 'transparent'}" class="el-icon-loading" />
+    </div>
+    <div v-if="currentSize !== ''" class="select-name-wrapper">
+      <el-select
+        v-model="currentName"
+        clearable
+        align="center"
+        style="width: 9em"
+        class="select-size"
+        @change="nameChangedHandler"
+      >
+        <el-option label="Хаммаси" :value="''" />
+        <el-option
+          v-for="(name, index) in this.chartOptionsBar.xaxis.categories"
+          :key="index"
+          :label="name"
+          :value="name"
+        />
+      </el-select>
+      <i :style="gettingDataByName ? {color: 'white'} : {color: 'transparent'}" class="el-icon-loading" />
     </div>
   </el-col>
 </template>
@@ -50,7 +69,9 @@ export default {
     return {
       gettingData: false,
       currentSize: '',
+      currentName: '',
       total_area: 0,
+      gettingDataByName: false,
       seriesBar: [
         {
           name: '',
@@ -69,6 +90,9 @@ export default {
               if (this.currentSize === '' && e.dataPointIndex >= 0) {
                 this.currentSize = e.config.xaxis.categories[e.dataPointIndex]
                 this.sizeChangedHandler(this.currentSize)
+              } else if (this.currentSize !== '' && this.currentName === '') {
+                this.currentName = e.config.xaxis.categories[e.dataPointIndex]
+                this.nameChangedHandler(this.currentName)
               }
             }
           }
@@ -156,6 +180,44 @@ export default {
     this.sizeChangedHandler('')
   },
   methods: {
+    async nameChangedHandler(product_name) {
+      this.gettingDataByName = true
+      try {
+        const res = await request({
+          url: '/dashboard/get-inventar-cost',
+          method: 'GET',
+          params: {
+            product_name,
+            size: this.currentSize
+          }
+        })
+        this.gettingDataByName = false
+        const chart1st = res.data
+        this.seriesBar[0].data = []
+        this.chartOptionsBar.xaxis.categories = []
+        chart1st.forEach((ch) => {
+          if (product_name === '') {
+            this.seriesBar[0].data.push(parseFloat((ch.total_cost).toFixed(2)))
+            this.chartOptionsBar.xaxis.categories.push(ch.product_name)
+          } else {
+            this.seriesBar[0].data.push(parseFloat((ch.base_price * ch.total_area).toFixed(2)))
+            this.chartOptionsBar.xaxis.categories.push(ch.size + ' ' + ch.type_name)
+          }
+          this.chartOptionsBar.subtitle.text =
+            'Жами: ' +
+            toThousandFilter(
+              parseFloat(
+                this.seriesBar[0].data.reduce((a, b) => a + b, 0).toFixed(2)
+              )
+            )
+        })
+        console.log('need to be changed')
+        this.$refs.totalCostRef.refresh()
+      } catch (err) {
+        this.gettingData = false
+        console.error(err)
+      }
+    },
     async sizeChangedHandler(size) {
       this.gettingData = true
 

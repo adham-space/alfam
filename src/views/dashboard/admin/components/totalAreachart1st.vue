@@ -91,6 +91,9 @@ export default {
               if (this.currentSize === '' && e.dataPointIndex >= 0) {
                 this.currentSize = e.config.xaxis.categories[e.dataPointIndex]
                 this.sizeChangedHandler(this.currentSize)
+              } else if (this.currentSize !== '' && this.currentName === '') {
+                this.currentName = e.config.xaxis.categories[e.dataPointIndex]
+                this.nameChangedHandler(this.currentName)
               }
             }
           }

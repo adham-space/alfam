@@ -61,17 +61,6 @@ export default {
   },
   mounted() {
     this.sizeChangedHandler('')
-    request({
-      url: '/dashboard/get-product-sizes',
-      method: 'GET'
-    })
-      .then(res => {
-        this.sizeOptions = res.data
-      })
-      .catch(err => {
-        console.error(err)
-        this.sizeOptions = []
-      })
   },
   methods: {
 

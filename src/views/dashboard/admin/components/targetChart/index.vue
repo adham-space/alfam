@@ -38,16 +38,16 @@
             <el-table-column
               align="center"
               prop="area"
-              :min-width="100"
+              :min-width="110"
             >
               <template slot="header">
-                Қолгани  М<sup>3</sup>
+                Қолгани  М<sup>2</sup>
               </template>
             </el-table-column>
             <el-table-column
               align="center"
               prop="days_left"
-              :min-width="100"
+              :min-width="110"
               label="Кун - қолди"
             />
             <el-table-column

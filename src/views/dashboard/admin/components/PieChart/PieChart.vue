@@ -20,7 +20,7 @@ export default {
     },
     height: {
       type: String,
-      default: '340px'
+      default: '368px'
     },
     currentSize: {
       type: String,
