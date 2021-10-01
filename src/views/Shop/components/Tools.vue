@@ -1,18 +1,17 @@
 <template>
   <div class="tools-wrapper">
-    <p>List №: {{ order.order_name }}</p>
-
+    <p><span>Инвойс №:</span><br> {{ order.order_name }}</p>
     <el-form
       ref="toolBarFormRef"
       :model="toolBarForm"
       :rules="rules"
       style="width: 100%"
     >
-      <el-form-item prop="currentProduct" label="Product">
+      <el-form-item prop="currentProduct" label="Махсулот номи">
         <el-select
           v-model="toolBarForm.currentProduct"
           style="width: 100%; background-color: transparent"
-          placeholder="Choose a product"
+          placeholder="Махсулотни танланг"
           @change="getProducts"
         >
           <el-option
@@ -36,7 +35,7 @@
           v-model="toolBarForm.currentcustomer"
           class="tools-wrapper-item"
           style="width: 100%"
-          placeholder="Choose a customer"
+          placeholder="Клиентни танланг"
           @change="customerChanged"
         >
           <el-option
@@ -53,12 +52,12 @@
           v-model="toolBarForm.currentStatus"
           style="width: 100%"
           class="tools-wrapper-item"
-          placeholder="Choose action"
+          placeholder="Жараённи танланг"
           @change="procedureChanged"
         >
-          <el-option label="Sotib olish" :value="1" />
-          <el-option label="Barter (Almashtirish)" :value="2" />
-          <el-option label="Qaytarish" :value="3" />
+          <el-option label="Сотиб олиш" :value="1" />
+          <el-option label="Бартер (Алмаштириш)" :value="2" />
+          <el-option label="Қайтариш" :value="3" />
         </el-select>
       </el-form-item>
 
@@ -67,7 +66,7 @@
           v-model="toolBarForm.currentDriver"
           class="tools-wrapper-item"
           style="width: 100%"
-          placeholder="Choose a Driver"
+          placeholder="Шоферни танланг"
           @change="currentDriverChanged"
         >
           <el-option
@@ -84,21 +83,21 @@
           v-model="toolBarForm.costOfUpload"
           type="number"
           class="tools-wrapper-item"
-          placeholder="Cost to upload (so'm)"
+          placeholder="Погрузка суммаси"
           @change="costOfUploadChanging"
         />
       </el-form-item>
-      <el-form-item prop="totalPrice" label="Discount price (last price)">
+      <el-form-item prop="totalPrice" label="Скидка нархи (охирги нархи)">
         <el-input
           :value="totalPrice"
           type="number"
           class="tools-wrapper-item"
-          placeholder="Discount price"
+          placeholder="Скидка нархи (охирги нархи)"
           @input="changebase_price"
         />
       </el-form-item>
 
-      <el-form-item label="Is debt?" prop="isDebt">
+      <el-form-item label="Қазргами ?" prop="isDebt">
         <el-switch
           v-model="toolBarForm.isDebt"
           active-color="#13ce66"
@@ -109,7 +108,7 @@
 
       <el-form-item
         v-if="toolBarForm.isDebt"
-        label="Debt return date"
+        label="Қазрни қайтариш санаси"
         prop="debtDate"
       >
         <el-date-picker
@@ -118,14 +117,14 @@
           format="yyyy-MM-dd"
           value-format="timestamp"
           style="margin-bottom: 1em"
-          placeholder="Debt back date"
+          placeholder="Қазрни қайтариш санаси"
           @change="setReturnDebtDate"
         />
       </el-form-item>
 
       <el-form-item
         v-if="toolBarForm.isDebt"
-        label="Debt description"
+        label="Изоҳ"
         prop="debtDescription"
       >
         <el-input
@@ -143,8 +142,8 @@
         :disabled="order_saving"
         :loading="order_saving"
         @click="validateOrder()"
-      >Save</el-button>
-      <el-button type="danger" @click="reset_all()">Cancel</el-button>
+      >Сохранить</el-button>
+      <el-button type="danger" @click="reset_all()">Отмена</el-button>
     </div>
   </div>
 </template>

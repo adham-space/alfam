@@ -2,9 +2,9 @@
   <div class="dashboard-editor-container">
     <div class="range-buttons__wrapper">
       <div class="btn-group">
-        <div class="range-btn" :class="filterdate === 'day' ? 'active': ''" @click="filterdate = 'day'">КУН</div>
-        <div class="range-btn" :class="filterdate === 'month' ? 'active': ''" @click="filterdate = 'month'">ОЙ</div>
-        <div class="range-btn" :class="filterdate === 'year' ? 'active': ''" @click="filterdate = 'year'">ЙИЛ</div>
+        <div class="range-btn" :class="filterdate === 'day' ? 'active': ''" @click="filterdateChanged('day')">КУН</div>
+        <div class="range-btn" :class="filterdate === 'month' ? 'active': ''" @click="filterdateChanged('month')">ОЙ</div>
+        <div class="range-btn" :class="filterdate === 'year' ? 'active': ''" @click="filterdateChanged('year')">ЙИЛ</div>
       </div>
       <div class="refresh-and-date">
         <el-button type="text" :icon="refreshing? 'el-icon-loading' : 'el-icon-refresh-right' " @click="refreshAllCharts()" />
@@ -19,7 +19,7 @@
     </el-row>
     <el-row :gutter="10">
       <ordersCashAmount ref="ordersCashAmountRef" :filterdate="filterdate" />
-      <PieChart :filterdate="filterdate" />
+      <PieChart ref="pichartsOrdersRef" :filterdate="filterdate" />
     </el-row>
     <el-row :gutter="10">
       <sellersChartBytSale ref="sellersChartBytSaleRef" :filterdate="filterdate" />
@@ -82,13 +82,18 @@ export default {
     }
   },
   methods: {
+    filterdateChanged(d) {
+      this.filterdate = d
+      this.refreshAllCharts()
+    },
     async refreshAllCharts() {
       const {
         totalAreachart1stRef,
         totalCostOfProductsBySizeChartRef,
         ordersCashAmountRef,
         sellersChartBytSaleRef,
-        stuffRatingRef
+        stuffRatingRef,
+        pichartsOrdersRef
       } = this.$refs
 
       try {
@@ -96,6 +101,7 @@ export default {
         await totalAreachart1stRef.sizeChangedHandler('')
         await totalCostOfProductsBySizeChartRef.sizeChangedHandler('')
         await ordersCashAmountRef.getOrdersHistory(this.filterdate)
+        await pichartsOrdersRef.sizeChangedHandler('')
         await sellersChartBytSaleRef.sizeChangedHandler(this.filterdate)
         await stuffRatingRef.sizeChangedHandler(this.filterdate)
         this.refreshing = false

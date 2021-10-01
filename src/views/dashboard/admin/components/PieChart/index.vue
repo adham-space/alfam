@@ -72,7 +72,8 @@ export default {
           url: '/dashboard/product-share-orders',
           method: 'GET',
           params: {
-            size: size
+            size: size,
+            filterdate: this.filterdate
           }
         })
         this.gettingData = false
