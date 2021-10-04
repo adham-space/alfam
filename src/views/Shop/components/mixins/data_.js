@@ -16,7 +16,8 @@ export default {
       currentNotification: null,
       currentProduct: {},
       brokenPropotionArr: [],
-      totalPrice: 0
+      totalPrice: 0,
+      totalKassaPrice: 0
     }
   },
   computed: {

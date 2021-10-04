@@ -11,7 +11,7 @@
       ref="chart1Ref"
       class="char-body"
       width="100%"
-      height="300"
+      height="380"
       style="padding: 1rem"
       :options="chartOptionsBar"
       :series="seriesBar"
@@ -59,7 +59,7 @@
 
 <script>
 import VueApexCharts from 'vue-apexcharts'
-// import request from '@/utils/request'
+import request from '@/utils/request'
 import { toThousandFilter } from '@/filters/index'
 import { mapActions, mapState } from 'vuex'
 export default {
@@ -77,15 +77,15 @@ export default {
       seriesBar: [
         {
           name: 'касса нархи',
-          data: [1800, 3200, 4100, 1200, 5000, 3000]
+          data: []
         },
         {
           name: 'сотув нархи',
-          data: [1300, 3600, 2500, 2300, 2500, 3300]
+          data: []
         },
         {
           name: 'фойда/зарар суммаси',
-          data: [-500, 400, -600, 1100, -2500, 300]
+          data: []
         }
       ],
       chartOptionsBar: {
@@ -113,25 +113,8 @@ export default {
         },
         plotOptions: {
           bar: {
-            colors: {
-              ranges: [{
-                from: 0,
-                to: -1000000,
-                color: '#ff0000'
-              }
-                // {
-                //   from: 0,
-                //   to: 100000,
-                //   color: '#FCCF31'
-                // },
-                // {
-                //   from: 0,
-                //   to: 100000,
-                //   color: '#17ead9'
-                // }
-              ]
-            },
-            columnWidth: '50%'
+
+            columnWidth: '25%'
             // distributed: true,
           }
         },
@@ -208,81 +191,33 @@ export default {
   },
   methods: {
     ...mapActions('dashboard', ['GET_SIZES']),
-    // async nameChangedHandler(product_name) {
-    //   this.gettingDataByName = true
-    //   try {
-    //     const res = await request({
-    //       url: '/dashboard/get-inventar-area',
-    //       method: 'GET',
-    //       params: {
-    //         product_name,
-    //         size: this.currentSize
-    //       }
-    //     })
-    //     this.gettingDataByName = false
-    //     const chart1st = res.data
-    //     this.seriesBar[0].data = []
-    //     this.chartOptionsBar.xaxis.categories = []
-    //     chart1st.forEach((ch) => {
-    //       // if (size === '') {
-    //       if (product_name === '') {
-    //         this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
-    //         this.chartOptionsBar.xaxis.categories.push(ch.product_name)
-    //       } else {
-    //         this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
-    //         this.chartOptionsBar.xaxis.categories.push(ch.size + ' ' + ch.type_name)
-    //       }
-    //       this.chartOptionsBar.subtitle.text =
-    //         'Жами: ' +
-    //         toThousandFilter(
-    //           parseFloat(
-    //             this.seriesBar[0].data.reduce((a, b) => a + b, 0).toFixed(2)
-    //           )
-    //         )
-    //     })
-    //     console.log('need to be changed')
-    //     this.$refs.chart1Ref.refresh()
-    //   } catch (err) {
-    //     this.gettingData = false
-    //     console.error(err)
-    //   }
-    // },
+
     async sizeChangedHandler(size) {
-      // this.currentName = ''
-      // this.gettingData = true
-      // try {
-      //   const res = await request({
-      //     url: '/dashboard/get-inventar-area',
-      //     method: 'GET',
-      //     params: {
-      //       size: size
-      //     }
-      //   })
-      //   this.gettingData = false
-      //   const chart1st = res.data
-      //   this.seriesBar[0].data = []
-      //   this.chartOptionsBar.xaxis.categories = []
-      //   chart1st.forEach((ch) => {
-      //     if (size === '') {
-      //       this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
-      //       this.chartOptionsBar.xaxis.categories.push(ch.size)
-      //     } else {
-      //       this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
-      //       this.chartOptionsBar.xaxis.categories.push(ch.product_name)
-      //     }
-      //     this.chartOptionsBar.subtitle.text =
-      //       'Жами: ' +
-      //       toThousandFilter(
-      //         parseFloat(
-      //           this.seriesBar[0].data.reduce((a, b) => a + b, 0).toFixed(2)
-      //         )
-      //       )
-      //   })
-      //   this.$refs.chart1Ref.refresh()
-      // } catch (err) {
-      //   this.gettingData = false
-      //   console.error(err)
-      // }
+      this.currentName = ''
+      this.gettingData = true
+      try {
+        const res = await request({
+          url: '/dashboard/get-profit-or-loss',
+          method: 'GET',
+          params: {
+            size: size
+          }
+        })
+        this.gettingData = false
+        const chart1st = res.data
+        this.seriesBar[0].data = []
+        this.chartOptionsBar.xaxis.categories = []
+        chart1st.forEach((ch) => {
+          this.seriesBar[0].data.push(parseFloat(ch.last_sum_kassa.toFixed(2)))
+          this.seriesBar[1].data.push(parseFloat(ch.last_sum.toFixed(2)))
+          this.seriesBar[2].data.push(parseFloat((ch.last_sum - ch.last_sum_kassa).toFixed(2)))
+          this.chartOptionsBar.xaxis.categories.push(ch._id)
+        })
+        this.$refs.chart1Ref.refresh()
+      } catch (err) {
+        this.gettingData = false
+        console.error(err)
+      }
     }
   }
 }

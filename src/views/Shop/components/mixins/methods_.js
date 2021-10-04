@@ -1,7 +1,8 @@
+import { mapMutations } from 'vuex'
 export default {
   methods: {
     // area value is changing
-
+    ...mapMutations('products', ['SET_ORDER']),
     areaIsChanging(newArea, currentRow) {
       console.log('area is changing', newArea)
       this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
@@ -124,9 +125,11 @@ export default {
     },
     base_priceIsChanging(base_price_changed, currentRow) { // area value is changing
       this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
+      const item_num = this.currentProduct.item_num === '' ? 0 : parseFloat(this.currentProduct.item_num)
+      const area = this.currentProduct.packTotalArea === '' ? 0 : parseFloat(this.currentProduct.packTotalArea)
       if (base_price_changed) {
         this.currentProduct.base_price_changed = parseFloat(base_price_changed) // set new area to its object
-        this.currentProduct.sum = parseFloat((this.currentProduct.base_price_changed * this.currentProduct.packTotalArea).toFixed(4))
+        this.currentProduct.sum = parseFloat((this.currentProduct.base_price_changed * (this.currentProduct.price_by ? item_num : area)).toFixed(4))
         this.calculateTotalPrice()
       } else {
         this.currentProduct.base_price_changed = base_price_changed
@@ -173,6 +176,7 @@ export default {
     calcPrice() { // this.currentProduct.sum
       const item_num = this.currentProduct.item_num === '' ? 0 : parseFloat(this.currentProduct.item_num)
       const area = this.currentProduct.packTotalArea === '' ? 0 : parseFloat(this.currentProduct.packTotalArea)
+      console.log('this.currentProduct.price_by', this.currentProduct.price_by)
       this.currentProduct.sum = this.currentProduct.base_price_changed * (this.currentProduct.price_by ? item_num : area)
       this.currentProduct.sum_kassa = this.currentProduct.base_price * (this.currentProduct.price_by ? item_num : area)
     },
@@ -190,6 +194,12 @@ export default {
     },
 
     calculateTotalPrice() {
+      this.totalKassaPrice = this.truncateToDecimals(this.tableDataComputed.reduce(function(a, b) {
+        return a + (b.sum_kassa === '' ? 0 : parseFloat(b.sum_kassa))
+      }, 0), 4)
+
+      this.SET_ORDER({ key: 'last_sum_kassa', value: parseFloat(this.totalKassaPrice) })
+
       this.$emit('calculateTotalPrice', this.truncateToDecimals(this.tableDataComputed.reduce(function(a, b) {
         return a + (b.sum === '' ? 0 : parseFloat(b.sum))
       }, 0), 4))

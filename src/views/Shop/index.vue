@@ -1,10 +1,21 @@
 <template>
   <el-row :gutter="15" class="packing-list-body">
     <el-col :span="18" style="height: 100%; ">
-      <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
+      <Table
+        ref="packingListTableRef"
+        :broken="broken"
+        @calculateTotalPrice="calculateTotalPrice"
+      />
     </el-col>
     <el-col :span="6" style="height: 100%; overflow-y: auto;   ">
-      <Tools :is-table-valid="isTableValid" :total-price="totalPrice" @checkTable="checkTableValididty()" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
+      <Tools
+        :is-table-valid="isTableValid"
+        :total-price="totalPrice"
+        @checkTable="checkTableValididty()"
+        @closeNotification="closeNotification_"
+        @totalPriceChanged="totalPriceChanged"
+        @brokenState="changedBrokenState"
+      />
     </el-col>
   </el-row>
 </template>

@@ -72,6 +72,7 @@ const state = {
     upload_cost: '',
     isSample: false,
     last_sum: '',
+    last_sum_kassa: '',
     is_debt: false,
     date_of_return_debt: '',
     description_of_debt: '',
