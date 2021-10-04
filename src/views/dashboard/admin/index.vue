@@ -98,13 +98,11 @@ export default {
         ordersCashAmountRef,
         sellersChartBytSaleRef,
         stuffRatingRef,
-        pichartsOrdersRef,
-        showTheProfitAndDownRef
+        pichartsOrdersRef
       } = this.$refs
 
       try {
         this.refreshing = true
-        await showTheProfitAndDownRef.sizeChangedHandler('')
         await totalAreachart1stRef.sizeChangedHandler('')
         await totalCostOfProductsBySizeChartRef.sizeChangedHandler('')
         await ordersCashAmountRef.getOrdersHistory(this.filterdate)

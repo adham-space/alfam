@@ -8,7 +8,7 @@
     class="char-body-1st"
   >
     <vue-apex-charts
-      ref="chart1Ref"
+      ref="chartProfitOrLossRef"
       class="char-body"
       width="100%"
       height="380"
@@ -68,12 +68,6 @@ export default {
   },
   data() {
     return {
-      gettingData: false,
-      currentSize: '',
-      currentName: '',
-      nameOptions: '',
-      gettingDataByName: false,
-      total_area: 0,
       seriesBar: [
         {
           name: 'касса нархи',
@@ -172,7 +166,7 @@ export default {
           }
         },
         xaxis: {
-          categories: ['Nulifar-1', 'Tugmacha-1', 'Tugmacha-1', 'Tugmacha-1', 'Tugmacha-1', 'Tugmacha-1'],
+          categories: [],
           labels: {
             style: {
               fontSize: '12px'
@@ -187,23 +181,16 @@ export default {
   },
   mounted() {
     this.sizeChangedHandler('')
-    this.GET_SIZES()
   },
   methods: {
     ...mapActions('dashboard', ['GET_SIZES']),
 
-    async sizeChangedHandler(size) {
-      this.currentName = ''
-      this.gettingData = true
+    async sizeChangedHandler() {
       try {
         const res = await request({
           url: '/dashboard/get-profit-or-loss',
-          method: 'GET',
-          params: {
-            size: size
-          }
+          method: 'GET'
         })
-        this.gettingData = false
         const chart1st = res.data
         this.seriesBar[0].data = []
         this.chartOptionsBar.xaxis.categories = []
@@ -213,7 +200,7 @@ export default {
           this.seriesBar[2].data.push(parseFloat((ch.last_sum - ch.last_sum_kassa).toFixed(2)))
           this.chartOptionsBar.xaxis.categories.push(ch._id)
         })
-        this.$refs.chart1Ref.refresh()
+        this.$refs.chartProfitOrLossRef.refresh()
       } catch (err) {
         this.gettingData = false
         console.error(err)
