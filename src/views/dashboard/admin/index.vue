@@ -14,6 +14,9 @@
       </div>
     </div>
     <el-row :gutter="10">
+      <showTheProfitOrDown ref="showTheProfitAndDownRef" />
+    </el-row>
+    <el-row :gutter="10">
       <totalAreachart1st ref="totalAreachart1stRef" />
       <totalCostOfProductsBySizeChart ref="totalCostOfProductsBySizeChartRef" />
     </el-row>
@@ -42,6 +45,7 @@ import stuffRating from './components/stuffRatings'
 import PieChart from './components/PieChart/index.vue'
 import targetChart from './components/targetChart/index.vue'
 import Debitors from './components/Debitors'
+import showTheProfitOrDown from './components/showTheProfitOrDown'
 export default {
   name: 'DashboardAdmin',
   components: {
@@ -53,7 +57,8 @@ export default {
     targetChart,
     // polarAreaForProducts,
     PieChart,
-    Debitors
+    Debitors,
+    showTheProfitOrDown
   },
   data() {
     return {
@@ -93,11 +98,13 @@ export default {
         ordersCashAmountRef,
         sellersChartBytSaleRef,
         stuffRatingRef,
-        pichartsOrdersRef
+        pichartsOrdersRef,
+        showTheProfitAndDownRef
       } = this.$refs
 
       try {
         this.refreshing = true
+        await showTheProfitAndDownRef.sizeChangedHandler('')
         await totalAreachart1stRef.sizeChangedHandler('')
         await totalCostOfProductsBySizeChartRef.sizeChangedHandler('')
         await ordersCashAmountRef.getOrdersHistory(this.filterdate)

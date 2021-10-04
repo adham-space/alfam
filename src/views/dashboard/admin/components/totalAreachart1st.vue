@@ -45,7 +45,7 @@
       >
         <el-option label="Хаммаси" :value="''" />
         <el-option
-          v-for="(name, index) in this.chartOptionsBar.xaxis.categories"
+          v-for="(name, index) in chartOptionsBar.xaxis.categories"
           :key="index"
           :label="name"
           :value="name"
