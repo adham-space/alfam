@@ -40,6 +40,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('SET_TABLE_LOADER')
       getInventars(state.queryParams).then(res => {
+        const data = res.data
+        data.forEach(d => {
+          const products = d.products
+          products.forEach(pr => {
+            delete pr.product.product_types
+            delete pr.product.updatedAt
+            delete pr.product.createdAt
+            delete pr.product.__v
+          })
+        })
         commit('SET_INVENTARS', res.data)
         commit('SET_TABLE_LOADER')
         resolve()
