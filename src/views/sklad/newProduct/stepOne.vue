@@ -73,12 +73,12 @@ export default {
     return {
       name: '',
       types: [
-        { type_name: 'ОЧИ' },
-        { type_name: 'ТЎҚИ' },
-        { type_name: 'ДЕКОР' },
-        { type_name: 'СИГАРА' },
-        { type_name: 'ПОЛ' },
-        { type_name: 'ФРИЗ' }
+        { id: 0, type_name: 'ОЧИ' },
+        { id: 1, type_name: 'ТЎҚИ' },
+        { id: 2, type_name: 'ДЕКОР' },
+        { id: 3, type_name: 'СИГАРА' },
+        { id: 4, type_name: 'ПОЛ' },
+        { id: 5, type_name: 'ФРИЗ' }
       ],
       editing: {
         status: false,
@@ -90,17 +90,35 @@ export default {
       editedType: ''
     }
   },
+  mounted() {
+    this.$store.commit('newProduct/SET_TYPES', [
+      { id: 0, type_name: 'ОЧИ' },
+      { id: 1, type_name: 'ТЎҚИ' },
+      { id: 2, type_name: 'ДЕКОР' },
+      { id: 3, type_name: 'СИГАРА' },
+      { id: 4, type_name: 'ПОЛ' },
+      { id: 5, type_name: 'ФРИЗ' }
+    ])
+  },
   methods: {
     reset() {
       this.name = ''
       this.types = [
-        { type_name: 'ОЧИ' },
-        { type_name: 'ТЎҚИ' },
-        { type_name: 'ДЕКОР' },
-        { type_name: 'СИГАРА' },
-        { type_name: 'ПОЛ' },
-        { type_name: 'ФРИЗ' }
+        { id: 0, type_name: 'ОЧИ' },
+        { id: 1, type_name: 'ТЎҚИ' },
+        { id: 2, type_name: 'ДЕКОР' },
+        { id: 3, type_name: 'СИГАРА' },
+        { id: 4, type_name: 'ПОЛ' },
+        { id: 5, type_name: 'ФРИЗ' }
       ]
+      this.$store.commit('newProduct/SET_TYPES', [
+        { id: 0, type_name: 'ОЧИ' },
+        { id: 1, type_name: 'ТЎҚИ' },
+        { id: 2, type_name: 'ДЕКОР' },
+        { id: 3, type_name: 'СИГАРА' },
+        { id: 4, type_name: 'ПОЛ' },
+        { id: 5, type_name: 'ФРИЗ' }
+      ])
       this.editing = {
         status: false,
         id: null
