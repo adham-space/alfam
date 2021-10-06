@@ -834,6 +834,12 @@ export default {
       if (typeObj) {
         this.isTargetSet = true
         this.formDataObj.target_date = typeObj.target_date
+        this.formDataObj.numberOfItems = typeObj.number_of_items
+        this.areaOfOnePacket()
+        this.formDataObj.weightOfPacket = typeObj.wight_of_one_packet
+        this.wightOfOneItem()
+        this.formDataObj.base_price = typeObj.base_price
+        this.formDataObj.base_priceBy = typeObj.price_by
       } else {
         this.isTargetSet = false
         this.formDataObj.target_date = ''
