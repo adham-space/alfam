@@ -72,7 +72,14 @@ export default {
   data() {
     return {
       name: '',
-      types: [],
+      types: [
+        { type_name: 'ОЧИ' },
+        { type_name: 'ТЎҚИ' },
+        { type_name: 'ДЕКОР' },
+        { type_name: 'СИГАРА' },
+        { type_name: 'ПОЛ' },
+        { type_name: 'ФРИЗ' }
+      ],
       editing: {
         status: false,
         id: null
