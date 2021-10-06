@@ -93,7 +93,14 @@ export default {
   methods: {
     reset() {
       this.name = ''
-      this.types = []
+      this.types = [
+        { type_name: 'ОЧИ' },
+        { type_name: 'ТЎҚИ' },
+        { type_name: 'ДЕКОР' },
+        { type_name: 'СИГАРА' },
+        { type_name: 'ПОЛ' },
+        { type_name: 'ФРИЗ' }
+      ]
       this.editing = {
         status: false,
         id: null
