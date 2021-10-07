@@ -28,6 +28,7 @@
               >
                 <template slot-scope="scope">
                   {{ productTypeMap[scope.row.product_type].code }}
+                  {{ scope.row.broken ? 'синган':'' }}
                 </template>
               </el-table-column>
               <el-table-column
