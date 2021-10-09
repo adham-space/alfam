@@ -16,9 +16,9 @@
         height="calc(100vh - 10rem)"
       >
         <el-table-column width="50" type="expand" fixed="left">
-          <template slot-scope="scope">
+          <template slot-scope="scope_">
             <el-table
-              :data="scope.row.product_types"
+              :data="scope_.row.product_types"
               :show-header="true"
               height="100%"
               style="width: 100%; border: 1px solid #cecece"
@@ -43,18 +43,28 @@
                 align="center"
               />
               <el-table-column
-                width="150"
-                label="ТОВАРНИ РАСМИ"
+                width="170"
+                label="Товарни расми"
                 prop="photo"
                 align="center"
               >
                 <template slot-scope="scope">
-                  <el-image
-                    style="width: 30px; height: 30px"
-                    :src="baseApi + scope.row.photo_path"
-                    fit="scale-down"
-                    @click="openImg(baseApi + scope.row.photo_path)"
-                  />
+                    <div style="display: flex; justify-content: space-around">
+                        <el-image
+                            style="width: 30px; height: 30px"
+                            :src="baseApi + scope.row.photo_path"
+                            fit="scale-down"
+                            @click="openImg(baseApi + scope.row.photo_path)"
+                        />
+                        <editTheImage 
+                            @updateTable="getData()"
+                            :product_id="scope_.row._id" 
+                            :type_id="scope.row._id" 
+                            :index="scope.$index"
+                            :old_image="scope.row.photo_path"
+                            :imageUrl="baseApi + scope.row.photo_path"
+                        />
+                    </div>
                 </template>
               </el-table-column>
               <el-table-column
@@ -90,7 +100,11 @@
 
 <script>
 import request from '@/utils/request'
+import editTheImage from './editTheImage'
 export default {
+  components: {
+    editTheImage
+  },
   data() {
     return {
       tableData: [],
@@ -101,21 +115,24 @@ export default {
     }
   },
   mounted() {
-    this.gettingTableData = true
-    request({
-      url: '/products/get_product_types',
-      method: 'GET'
-
-    }).then(res => {
-      this.gettingTableData = false
-      this.tableData = res.data
-    }).catch(err => {
-      this.tableData = []
-      this.gettingTableData = false
-      console.error(err)
-    })
+    this.getData()
   },
   methods: {
+    getData() {
+      this.gettingTableData = true
+      request({
+        url: '/products/get_product_types',
+        method: 'GET'
+
+      }).then(res => {
+        this.gettingTableData = false
+        this.tableData = res.data
+      }).catch(err => {
+        this.tableData = []
+        this.gettingTableData = false
+        console.error(err)
+      })
+    },
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
