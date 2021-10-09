@@ -16,7 +16,7 @@ const skladRouter = {
       path: 'newproduct',
       component: () => import('@/views/sklad/newProduct/index'),
       name: 'NewProduct',
-      meta: { title: 'Махсулот яратиш', noCache: true }
+      meta: { title: 'Қўшиш/тахрирлаш', noCache: true }
     },
     {
       path: 'edit-new-product/:id',

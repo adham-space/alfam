@@ -9,6 +9,7 @@
       highlight-current-row
       @row-click="driverChosed"
     >
+      <!-- eslint-disable  -->
       <el-table-column width="50" type="expand" fixed="left">
         <!-- eslint-disable-next-line -->
         <template slot-scope="scope">
@@ -66,6 +67,7 @@
                     fit="scale-down"
                     @click="openImg(baseApi + productTypeMap[scope.row.product_type].photo_path)"
                   />
+                  <!-- <editImage /> -->
                 </template>
               </el-table-column>
 

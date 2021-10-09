@@ -20,6 +20,7 @@
           empty-text="Махсулот тури ҳали киритилмади"
           :show-header="false"
           :data="types"
+          height="100%"
           width="100%"
           border
         >
