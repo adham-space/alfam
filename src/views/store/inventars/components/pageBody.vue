@@ -102,7 +102,7 @@
                   <span>УМУМИЙ <br> ПАCКЕТ/ОРТИҚЧА <br> СОНИ</span>
                 </template>
                 <template slot-scope="scope">
-                  {{ toThousandFilter(scope.row.total_number_of_items) }} /  {{ scope.row.total_number_of_over_packet }}
+                  {{ toThousandFilter(scope.row.total_number_of_packets) }} /  {{ scope.row.total_number_of_over_packet }}
                 </template>
               </el-table-column>
 
@@ -189,7 +189,7 @@
     </el-table>
     <div class="pgntion">
       <Pagination
-        :total="102"
+        :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getList"
@@ -224,7 +224,7 @@ export default {
     }
   }),
   computed: {
-    ...mapState('inventars', ['inventarData', 'tblLoading'])
+    ...mapState('inventars', ['inventarData', 'tblLoading', 'total'])
   },
   beforeDestroy() {
     // this.SET_SHOP(null)

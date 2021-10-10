@@ -82,8 +82,8 @@
         </el-table-column>
         <el-table-column label="Махсулот номи" prop="product_name" />
         <el-table-column width="80">
-          <template slot-scope="scope">
-            <el-button icon="el-icon-edit" style="border: 1px solid transparent" />
+          <template slot-scope="scope_">
+            <el-button icon="el-icon-edit" style="border: 1px solid transparent" @click="editProduct(scope_.row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -101,6 +101,7 @@
 <script>
 import request from '@/utils/request'
 import editTheImage from './editTheImage'
+import { mapMutations } from 'vuex'
 export default {
   components: {
     editTheImage
@@ -118,6 +119,7 @@ export default {
     this.getData()
   },
   methods: {
+    ...mapMutations('newProduct', ['SET_EDIT_STATUS', 'SET_DATA_TO_EDIT']),
     getData() {
       this.gettingTableData = true
       request({
@@ -136,6 +138,16 @@ export default {
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
+    },
+    clone(obj) {
+      if (obj == null || typeof (obj) !== 'object') { return obj }
+      var temp = new obj.constructor()
+      for (var key in obj) { temp[key] = this.clone(obj[key]) }
+      return temp
+    },
+    editProduct(product) {
+      this.SET_EDIT_STATUS(true)
+      this.SET_DATA_TO_EDIT(this.clone(product))
     }
   }
 }

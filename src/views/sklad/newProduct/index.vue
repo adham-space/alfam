@@ -1,7 +1,7 @@
 <template>
   <el-row class="new-product-body">
-    <!-- <newWizard /> -->
-    <editWizard />
+    <editWizard v-if="is_editing" />
+    <newWizard v-else />
     <el-col :span="14">
       <productsListPage />
     </el-col>
@@ -11,13 +11,14 @@
 <script>
 
 import productsListPage from './productsListPage/index'
-// import newWizard from './newWizard'
+import newWizard from './newWizard'
 import editWizard from './editWizard'
+import { mapState } from 'vuex'
 export default {
   name: 'NewProduct',
   components: {
     editWizard,
-    // newWizard,
+    newWizard,
     productsListPage
   },
   data() {
@@ -25,6 +26,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('newProduct', ['is_editing'])
   },
   methods: {
 

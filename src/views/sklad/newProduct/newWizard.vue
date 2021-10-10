@@ -1,5 +1,6 @@
 <template>
   <el-col :span="10" class="left-side">
+    <h3 style="text-align: center; color: gray">Янги махсулот қўшиш</h3>
     <form-wizard
       ref="FormWizardRef"
       color="#20a0ff"

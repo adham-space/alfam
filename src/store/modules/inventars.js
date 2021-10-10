@@ -15,14 +15,19 @@ const state = {
     currentPage: 1,
     perPage: 20
   },
+  total: 0,
   inventarData: [],
   tblLoading: false,
   currentInventar: null
 }
 
 const mutations = {
-  SET_INVENTARS: (state, data) => {
+  SET_INVENTARS: (state, d) => {
+    console.log(d)
+    const { data, metadata } = d[0]
     state.inventarData = data
+    state.queryParams.currentPage = metadata[0].page
+    state.total = metadata[0].total
   },
   SET_INVENTAR: (state, data) => {
     state.currentInventar = data
@@ -40,16 +45,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('SET_TABLE_LOADER')
       getInventars(state.queryParams).then(res => {
-        const data = res.data
-        data.forEach(d => {
-          const products = d.products
-          products.forEach(pr => {
-            delete pr.product.product_types
-            delete pr.product.updatedAt
-            delete pr.product.createdAt
-            delete pr.product.__v
-          })
-        })
         commit('SET_INVENTARS', res.data)
         commit('SET_TABLE_LOADER')
         resolve()

@@ -1,5 +1,6 @@
 <template>
   <el-col :span="10" class="left-side">
+    <h3 style="text-align: center; color: gray">Тахрирлаш </h3>
     <form-wizard
       ref="FormWizardRef"
       color="#20a0ff"
@@ -78,23 +79,17 @@ export default {
     ...mapState('newProduct', ['types', 'product_name'])
   },
   methods: {
-    ...mapActions('newProduct', ['UPLOAD_IMAGES', 'UPLOAD_TYPES']),
+    ...mapActions('newProduct', ['UPLOAD_TYPES']),
     async onComplete() {
       try {
         this.finishing = true
-        for (let i = 0; i < this.types.length; i++) {
-          const formData = new FormData()
-          formData.append('image', this.types[i].photo.raw)
-          const filePath = await this.UPLOAD_IMAGES(formData)
-          this.types[i].photo_path = filePath.data.path
-        }
         const dataObj = {
           product_name: this.product_name,
           product_types: this.types
         }
         await this.UPLOAD_TYPES(dataObj)
         Message({
-          message: 'Янги махсулот мувоффақиятли яратилди',
+          message: 'Махсулот мувоффақиятли тахрирланди',
           duration: 3000,
           type: 'success'
         })

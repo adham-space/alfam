@@ -11,7 +11,7 @@
       ref="chart1Ref"
       class="char-body"
       width="100%"
-      height="300"
+      height="400"
       :options="chartOptionsBar"
       :series="seriesBar"
     />
