@@ -29,6 +29,7 @@ function editProducttype(data) {
 const state = {
   product_name: '',
   types: [],
+  editing_product_id: '',
   is_editing: false
 }
 
@@ -38,7 +39,7 @@ const mutations = {
   },
   SET_DATA_TO_EDIT: (state, data) => {
     state.product_name = data.product_name
-    console.log(data)
+    state.editing_product_id = data._id
     state.types = data.product_types
   },
   SET_NAME: (state, name) => {

@@ -25,7 +25,7 @@
         <el-button type="danger" style="margin-right: 1rem" @click="cancelConfirmDialog = true">Отмена</el-button>
       </template>
       <template slot="finish">
-        <el-button type="primary" :loading="finishing" :disabled="finishing">Янги махсулотни сақлаш</el-button>
+        <el-button type="primary" :loading="finishing" :disabled="finishing">Ўзгаришни сақалаш</el-button>
       </template>
       <template slot="next">
         <el-button type="primary">Следуюший</el-button>
@@ -40,7 +40,7 @@
       width="50%"
       align="center"
     >
-      <span>Янги махсулот яратишни бекор қилишга розимисиз?</span>
+      <span>Махсулотни тахрирлашни бекор қилишни розимисиз?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelConfirmDialog = false">Йўқ</el-button>
         <el-button
@@ -76,18 +76,19 @@ export default {
     }
   },
   computed: {
-    ...mapState('newProduct', ['types', 'product_name'])
+    ...mapState('newProduct', ['types', 'product_name', 'editing_product_id'])
   },
   methods: {
-    ...mapActions('newProduct', ['UPLOAD_TYPES']),
+    ...mapActions('newProduct', ['EDIT_TYPES']),
     async onComplete() {
       try {
         this.finishing = true
         const dataObj = {
           product_name: this.product_name,
-          product_types: this.types
+          product_types: this.types,
+          product_id: this.editing_product_id
         }
-        await this.UPLOAD_TYPES(dataObj)
+        await this.EDIT_TYPES(dataObj)
         Message({
           message: 'Махсулот мувоффақиятли тахрирланди',
           duration: 3000,
@@ -98,7 +99,7 @@ export default {
       } catch (error) {
         this.finishing = false
         Message({
-          message: error.response.data,
+          message: error,
           type: 'error',
           duration: 2000
         })
@@ -110,6 +111,7 @@ export default {
       this.$refs.FormWizardRef.reset()
       this.$store.commit('newProduct/SET_TYPES', [])
       this.$store.commit('newProduct/SET_NAME', '')
+      this.$store.commit('newProduct/SET_EDIT_STATUS', false)
       this.$refs.stepOneRef.reset()
     }
   }

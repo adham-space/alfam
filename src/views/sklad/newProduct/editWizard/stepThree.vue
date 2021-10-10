@@ -25,25 +25,8 @@
             {{ scope.row.height }}*{{ scope.row.width }}
           </template>
         </el-table-column>
-        <el-table-column label="Расми" align="center">
-          <template slot-scope="scope">
-            <el-image
-              style="width: 25px; height: 25px"
-              :src="!!scope.row.photo ? scope.row.photo.url: ''"
-              fit="scale-down"
-              @click="showImage(scope.row.name, !!scope.row.photo ? scope.row.photo.url: '')"
-            />
-          </template>
-        </el-table-column>
       </el-table>
     </el-col>
-    <el-dialog title="" :visible.sync="showImageDilog" width="40%">
-      <el-image
-        style="width: 90%; height: 90%"
-        :src="imageUrl"
-        fit="scale-down"
-      />
-    </el-dialog>
   </el-row>
 </template>
 
@@ -52,20 +35,13 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      showImageDilog: false,
-      currentType: '',
-      imageUrl: ''
+      currentType: ''
     }
   },
   computed: {
     ...mapState('newProduct', ['types'])
   },
   methods: {
-    showImage(name, url) {
-      this.showImageDilog = true
-      this.currentType = name
-      this.imageUrl = url
-    }
   }
 }
 </script>
