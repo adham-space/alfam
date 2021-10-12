@@ -1,7 +1,7 @@
 <template>
   <el-col
-    :md="{ span: 12 }"
-    :lg="{ span: 12 }"
+    :md="{ span: 24 }"
+    :lg="{ span: 24 }"
     :sm="{ span: 24 }"
     :xm="{ span: 24 }"
     style="margin-top: 10px;"
@@ -11,7 +11,7 @@
       ref="chart1Ref"
       class="char-body"
       width="100%"
-      height="400"
+      height="500"
       :options="chartOptionsBar"
       :series="seriesBar"
     />
@@ -88,12 +88,14 @@ export default {
           },
           events: {
             click: (chart, w, e) => {
-              if (this.currentSize === '' && e.dataPointIndex >= 0) {
-                this.currentSize = e.config.xaxis.categories[e.dataPointIndex]
-                this.sizeChangedHandler(this.currentSize)
-              } else if (this.currentSize !== '' && this.currentName === '') {
-                this.currentName = e.config.xaxis.categories[e.dataPointIndex]
-                this.nameChangedHandler(this.currentName)
+              if (e.dataPointIndex >= 0) {
+                if (this.currentSize === '') {
+                  this.currentSize = e.config.xaxis.categories[e.dataPointIndex]
+                  this.sizeChangedHandler(this.currentSize)
+                } else if (this.currentSize !== '' && this.currentName === '') {
+                  this.currentName = e.config.xaxis.categories[e.dataPointIndex]
+                  this.nameChangedHandler(this.currentName)
+                }
               }
             }
           }
@@ -104,8 +106,9 @@ export default {
         },
         plotOptions: {
           bar: {
-            columnWidth: '25%'
+            // columnWidth: '25%'
             // distributed: true,
+            borderRadius: 4
           }
         },
         dataLabels: {
@@ -163,6 +166,7 @@ export default {
           }
         },
         xaxis: {
+          rotate: -55,
           categories: [],
           labels: {
             style: {
@@ -204,6 +208,7 @@ export default {
             this.chartOptionsBar.xaxis.categories.push(ch.product_name)
           } else {
             this.seriesBar[0].data.push(parseFloat(ch.total_area.toFixed(2)))
+            // this.chartOptionsBar.xaxis.categories.push(ch.size + ' ' + ch.type_name)
             this.chartOptionsBar.xaxis.categories.push(ch.size + ' ' + ch.type_name)
           }
           this.chartOptionsBar.subtitle.text =

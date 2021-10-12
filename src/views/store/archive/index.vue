@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row :gutter="10" class="archive-body">
+    <el-row :gutter="10" class="inventars-body">
       <Tools />
       <page-body />
     </el-row>
@@ -11,7 +11,7 @@
 import Tools from './components/tools.vue'
 import pageBody from './components/pageBody.vue'
 export default {
-  name: 'Inventars',
+  name: 'Archive',
   components: {
     Tools,
     pageBody
@@ -21,14 +21,14 @@ export default {
 </script>
 
 <style>
-    .archive-body {
+    .inventars-body {
          background-color: #dae2de;
         height: calc(100vh - 50px);
         width: 100%;
         padding: 1rem;
     }
 
-    .archive-page-body {
+    .inventars-page-body {
         background-color: white;
         border-radius: 8px;
         margin-top: 1rem;

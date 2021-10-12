@@ -19,11 +19,11 @@ const skladRouter = {
       meta: { title: 'Қўшиш/тахрирлаш', noCache: true }
     },
     {
-      path: 'edit-new-product/:id',
-      component: () => import('@/views/sklad/editNewProduct/index'),
-      name: 'EditNewProduct',
+      path: 'edit-archive-product/:id',
+      component: () => import('@/views/sklad/editArchive/index'),
+      name: 'EditArchive',
       hidden: true,
-      meta: { title: 'Янги махсулотни тахрирлаш', noCache: true }
+      meta: { title: 'Архивни тахрирлаш', noCache: true }
     },
     {
       path: 'storetproduct',

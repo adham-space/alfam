@@ -86,7 +86,19 @@ export default {
         for (let i = 0; i < this.types.length; i++) {
           const formData = new FormData()
           formData.append('image', this.types[i].photo.raw)
+          console.log('')
+
           const filePath = await this.UPLOAD_IMAGES(formData)
+
+          await this.uploadToS3(this.types[i].photo.raw, filePath.data.signedRequest)
+
+          // let results3 = await axios({
+          //   url: filePath.data.signedRequest,
+          //   method: 'PUT',
+          //   data: formData,
+          //   headers: { 'Content-Type': 'multipart/form-data' }
+          // })
+          // console.log("result s3", filePath)
           this.types[i].photo_path = filePath.data.path
         }
         const dataObj = {
@@ -103,8 +115,9 @@ export default {
         this.Cancel()
       } catch (error) {
         this.finishing = false
+        console.log(error)
         Message({
-          message: error.response.data,
+          message: error,
           type: 'error',
           duration: 2000
         })
@@ -117,6 +130,23 @@ export default {
       this.$store.commit('newProduct/SET_TYPES', [])
       this.$store.commit('newProduct/SET_NAME', '')
       this.$refs.stepOneRef.reset()
+    },
+    uploadToS3(file, url) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.open('PUT', url)
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              resolve()
+            } else {
+              reject()
+              alert('Could not upload file.')
+            }
+          }
+        }
+        xhr.send(file)
+      })
     }
   }
 }

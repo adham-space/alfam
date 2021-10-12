@@ -11,6 +11,7 @@
             <el-select
               :value="formDataObj.currentProduct"
               style="margin-right: 1em"
+              disabled
               placeholder="Махсулот номи"
               @change="currentProductIsGoingToChange"
             >
@@ -269,8 +270,9 @@
           <el-button
             :disabled="isSaving"
             style="color: green"
-            @click="storeToSklad()"
-          >+</el-button>
+            icon="el-icon-check"
+            @click="storeEditedToSklad()"
+          />
         </el-col>
       </el-form>
     </el-col>
@@ -279,16 +281,16 @@
         :disabled="isSaving"
         :loading="isSaving"
         style="margin: 0 0 .5em .5em; text-align: right"
-        @click="saveAllToSklad()"
+        @click="saveAllEditedToSklad()"
       >Сохранить</el-button>
       <el-table
         :key="currentTableKey"
         border
-        :data="new_batch_of_product"
+        :data="edit_batch_of_product"
       >
         <el-table-column fixed="left" align="center" width="150" label="ТУРИ" prop="product_type_name">
           <template slot-scope="scope">
-            {{ scope.row.product_type_name + (scope.row.broken ? '-синган': '') }}
+            {{ getProductTypeName(scope.row.product_type) + (scope.row.broken ? '-синган': '') }}
           </template>
         </el-table-column>
         <el-table-column align="center" width="150" label="ДОНАСИНИ ЮЗАСИ" prop="area_of_an_item">
@@ -344,11 +346,11 @@
             <span>ПАКЕТДАН<br>ОРТИҚЧА</span>
           </template>
         </el-table-column>
-        <el-table-column fixed="right">
+        <!-- <el-table-column fixed="right">
           <template slot-scope="scope">
             <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.rowIndex)" />
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </el-col>
     <el-dialog
@@ -542,7 +544,8 @@ export default {
   },
   computed: {
     ...mapState('products', [
-      'new_batch_of_product',
+      'edit_batch_of_product',
+      'editing_product_id',
       'products_types',
       'products',
       'todays_product_nums',
@@ -609,20 +612,56 @@ export default {
       }
     }
   },
+  beforeMount() {
+    window.addEventListener('beforeunload', this.preventNav)
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('beforeunload', this.preventNav)
+  },
   mounted() {
-    this.GET_PRODUCT_TYPES()
-    this.GET_PRODUCTS()
+    setTimeout(() => {
+      this.GET_TARGETS(this.editing_product_id)
+        .then(() => {
+          setTimeout(() => {
+            this.currentTableKey++
+          }, 120)
+        })
+    }, 200)
+    this.formDataObj.currentProduct = this.editing_product_id
+    // this.GET_PRODUCT_TYPES()
+    // this.GET_PRODUCTS()
+  },
+  beforeRouteLeave(to, from, next) {
+    // if (this.isEditing) {
+    if (!window.confirm('Тахрирлашни сақланг! Ўзгариш сақалангман, ўзгаришалар ўчирилишига розимисиз')) {
+      return
+    }
+    // }
+    next()
   },
   methods: {
     ...mapMutations('products', [
       'SET_NEW_BATCH_OF_PRODUCTS',
-      'REMOVE_FROM_NEW_BATCH'
+      'REMOVE_FROM_NEW_BATCH',
+      'SET_EDIT_BATCH_OF_PRODUCTS',
+      'SET_TARGETS'
     ]),
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCTS',
-      'GET_TODAYS_PRODUCTS'
+      'GET_TODAYS_PRODUCTS',
+      'GET_TARGETS'
     ]),
+    preventNav(event) {
+      // if (!this.isEditing) return
+      event.preventDefault()
+      event.returnValue = ''
+    },
+
+    getProductTypeName(id) {
+      return this.products_types[0].product_types.find(pr => pr._id === id).type_name
+    },
     currentProductIsGoingToChange(product) {
       if (this.formDataObj.currentProduct) {
         this.product_changing_warnig = true
@@ -641,7 +680,7 @@ export default {
       this.temp_current_product = ''
       this.SET_NEW_BATCH_OF_PRODUCTS(-1)
     },
-    storeToSklad() {
+    storeEditedToSklad() {
       const sendData = {
         partiya: this.todays_product_nums + 1,
         title: this.partiya_title,
@@ -666,9 +705,14 @@ export default {
         editTargetDate: this.editTarget,
         editing_same_type: this.editing_same_type
       }
+      console.log('send', sendData)
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {
-          this.SET_NEW_BATCH_OF_PRODUCTS(sendData)
+          this.SET_EDIT_BATCH_OF_PRODUCTS(sendData)
+          if (this.editTarget) {
+            this.SET_TARGETS({ target: this.formDataObj.target_date })
+          }
+          this.editTarget = false
           this.currentTableKey = Math.floor(Math.random() * 100)
           this.resetAll()
         } else {
@@ -678,19 +722,19 @@ export default {
     },
 
     changedBrokenState(val) {
-      const indexOfExistingProductType = this.new_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType)
+      const indexOfExistingProductType = this.edit_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType)
       this.there_is_product_type = indexOfExistingProductType !== -1
-      const indexOfBrokenExistingProductType = this.new_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType && pr.broken)
+      const indexOfBrokenExistingProductType = this.edit_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType && pr.broken)
       if (this.there_is_product_type) {
         if (val) {
           this.hidePacketField = true
           this.formDataObj.singan = true
 
           if (indexOfBrokenExistingProductType > -1) {
-            this.formDataObj.totalArea = this.new_batch_of_product[indexOfBrokenExistingProductType].total_area
-            this.formDataObj.overPacketNumberOfItems = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_over_packet
-            this.formDataObj.numberOfPacket = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_packets
-            this.formDataObj.totalNumberOfItem = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_items
+            this.formDataObj.totalArea = this.edit_batch_of_product[indexOfBrokenExistingProductType].total_area
+            this.formDataObj.overPacketNumberOfItems = this.edit_batch_of_product[indexOfBrokenExistingProductType].total_number_of_over_packet
+            this.formDataObj.numberOfPacket = this.edit_batch_of_product[indexOfBrokenExistingProductType].total_number_of_packets
+            this.formDataObj.totalNumberOfItem = this.edit_batch_of_product[indexOfBrokenExistingProductType].total_number_of_items
           } else {
             this.editing_same_type = false
             this.formDataObj.totalArea = ''
@@ -699,10 +743,10 @@ export default {
             this.formDataObj.totalNumberOfItem = ''
           }
 
-          this.formDataObj.numberOfItems = this.new_batch_of_product[indexOfExistingProductType].number_of_items
-          this.formDataObj.weightOfPacket = this.new_batch_of_product[indexOfExistingProductType].wight_of_one_packet
-          this.formDataObj.base_price = this.new_batch_of_product[indexOfExistingProductType].base_price
-          this.formDataObj.base_priceBy = this.new_batch_of_product[indexOfExistingProductType].price_by
+          this.formDataObj.numberOfItems = this.edit_batch_of_product[indexOfExistingProductType].number_of_items
+          this.formDataObj.weightOfPacket = this.edit_batch_of_product[indexOfExistingProductType].wight_of_one_packet
+          this.formDataObj.base_price = this.edit_batch_of_product[indexOfExistingProductType].base_price
+          this.formDataObj.base_priceBy = this.edit_batch_of_product[indexOfExistingProductType].price_by
         } else {
           this.setIfAlreadyEnteredType(this.formDataObj.current_subType)
           this.hidePacketField = false
@@ -828,19 +872,19 @@ export default {
     },
     getTargetDate(type) {
       let typeObj
-      if (this.new_batch_of_product.length > 0) {
-        typeObj = this.new_batch_of_product[0]
+      if (this.edit_batch_of_product.length > 0) {
+        typeObj = this.edit_batch_of_product[0]
       }
 
       if (typeObj) {
         this.isTargetSet = true
         this.formDataObj.target_date = typeObj.target_date
-        this.formDataObj.numberOfItems = typeObj.number_of_items
-        this.areaOfOnePacket()
-        this.formDataObj.weightOfPacket = typeObj.wight_of_one_packet
-        this.wightOfOneItem()
-        this.formDataObj.base_price = typeObj.base_price
-        this.formDataObj.base_priceBy = typeObj.price_by
+        // this.formDataObj.numberOfItems = typeObj.number_of_items
+        // this.areaOfOnePacket()
+        // this.formDataObj.weightOfPacket = typeObj.wight_of_one_packet
+        // this.wightOfOneItem()
+        // this.formDataObj.base_price = typeObj.base_price
+        // this.formDataObj.base_priceBy = typeObj.price_by
       } else {
         this.isTargetSet = false
         this.formDataObj.target_date = ''
@@ -850,7 +894,7 @@ export default {
       this.REMOVE_FROM_NEW_BATCH(ind)
     },
     setIfAlreadyEnteredType(type_id) {
-      const typeObj = this.new_batch_of_product.find(pr => pr.product_type === type_id)
+      const typeObj = this.edit_batch_of_product.find(pr => pr.product_type === type_id)
 
       if (typeObj) {
         this.editing_same_type = true
@@ -898,12 +942,12 @@ export default {
         this.areaOfOneItem()
       }
     },
-    saveAllToSklad() {
+    saveAllEditedToSklad() {
       this.isSaving = true
       request({
         url: '/products/add-product',
         method: 'POST',
-        data: { new_batch: this.new_batch_of_product },
+        data: { new_batch: this.edit_batch_of_product },
         timeout: 30000
       })
         .then((res) => {

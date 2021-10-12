@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="24" class="inventars-page-tools">
+  <el-col :span="24" class="archive-page-tools">
     <div style="display: flex">
       <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Search for driver">
         <el-select
@@ -16,7 +16,7 @@
           <el-option label="Shopping amount" :value="5" />
         </el-select>
       </el-input>
-      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="GET_INVENTARS()" />
+      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="GET_ARCHIVE()" />
     </div>
     <div style="display: flex">
 <!--      <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     ...mapMutations('inventars', ['SET_QUERY']),
-    ...mapActions('inventars', ['GET_INVENTARS']),
+    ...mapActions('inventars', ['GET_ARCHIVE']),
     searchTypeChanged(t) {
       this.SET_QUERY({
         key: 'search_input',
@@ -52,12 +52,12 @@ export default {
 </script>
 
 <style>
-     .inventars-page-tools {
+     .archive-page-tools {
          background-color: white;
         border-radius: 8px;
     }
 
-    .inventars-page-tools {
+    .archive-page-tools {
         height: 3rem;
         /* border: 1px solid red; */
         display: flex;

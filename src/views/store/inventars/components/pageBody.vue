@@ -21,19 +21,19 @@
               stripe
             >
               <el-table-column
-                label="КАФЕЛНИ КОДИ"
+                label="Кафелни коди"
                 prop="code"
                 :min-width="150"
                 fixed="left"
                 align="center"
               >
                 <template slot-scope="scope">
-                  {{ productTypeMap[scope.row.product_type].code }}
+                  {{productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].code : scope.$index }}
                   {{ scope.row.broken ? 'синган':'' }}
                 </template>
               </el-table-column>
               <el-table-column
-                label="СПЕЦИФИКАЦИЯСИ"
+                label="Спецификацияси"
                 prop="type_name"
                 :min-width="180"
                 align="center"
@@ -43,7 +43,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="ТОВАРНИ РАЗМЕРИ"
+                label="Товарни размери"
                 prop="size"
                 :min-width="180"
                 align="center"
@@ -53,7 +53,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="ТОВАРНИ РАСМИ"
+                label="Товарни расми"
                 prop="photo"
                 :min-width="160"
                 align="center"
@@ -63,16 +63,36 @@
 
                   <el-image
                     style="width: 30px; height: 30px"
-                    :src="baseApi + productTypeMap[scope.row.product_type].photo_path"
+                    :src="productTypeMap[scope.row.product_type].photo_path"
                     fit="scale-down"
-                    @click="openImg(baseApi + productTypeMap[scope.row.product_type].photo_path)"
+                    @click="openImg(productTypeMap[scope.row.product_type].photo_path)"
                   />
                   <!-- <editImage /> -->
                 </template>
               </el-table-column>
-
+               <el-table-column
+                label="Касса нархи"
+                prop="total_area"
+                :min-width="160"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  {{ toThousandFilter(scope.row.base_price) }}
+                  <span v-if="!scope.row.price_by">(м<sup>2</sup>)</span>
+                  <span v-else>(дона)</span>
+                </template>
+              </el-table-column>
               <el-table-column
-                label="УМУМИЙ ЮЗАСИ"
+                label="Умумий суммаси ($)"
+                :min-width="160"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  {{ toThousandFilter(scope.row.total_area * scope.row.base_price) }}
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="Умумий юзаси"
                 prop="total_area"
                 :min-width="160"
                 align="center"
@@ -82,7 +102,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="УМУМИЙ СОНИ"
+                label="Умумий сони"
                 :min-width="160"
                 prop="total_number_of_items"
                 align="center"
@@ -93,13 +113,13 @@
               </el-table-column>
 
               <el-table-column
-                label="УМУМИЙ ПАCКЕТ/ОРТИҚЧА СОНИ"
+                label="Умумий пакет / ортиқча сони"
                 prop="total_number_of_packets"
                 align="center"
                 :min-width="160"
               >
                 <template slot="header">
-                  <span>УМУМИЙ <br> ПАCКЕТ/ОРТИҚЧА <br> СОНИ</span>
+                  <span>Умумий <br>пакет / ортиқча <br> сони</span>
                 </template>
                 <template slot-scope="scope">
                   {{ toThousandFilter(scope.row.total_number_of_packets) }} /  {{ scope.row.total_number_of_over_packet }}
@@ -113,24 +133,24 @@
                 align="center"
               >
                 <template slot="header">
-                  <span>УМУМИЙ <br> ОҒИРЛИГИ</span>
+                  <span>Умумий  <br> оғирлиги</span>
                 </template>
                 <template slot-scope="scope">
                   {{ toThousandFilter(scope.row.total_wight_of_packets) }}
                 </template>
               </el-table-column>
               <el-table-column
-                label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
+                label="1-та почкадаги каличество ўлчов бирлиги"
                 align="center"
               >
                 <el-table-column
-                  label="ПОЧКАСИДИГИ (м2)"
+                  label="Почкасини (м2)"
                   align="center"
                   :min-width="160"
                   prop="area_of_one_packet"
                 />
                 <el-table-column
-                  label="1-ДОНАСИНИ (м2)"
+                  label="1-донасини (м2)"
                   :min-width="160"
                   prop="area_of_an_item"
                   align="center"
@@ -139,16 +159,16 @@
                   align="center"
                   prop="number_of_items"
                   :min-width="160"
-                  label="УМУМИЙ ДОНАСИ"
+                  label="Умумий донаси"
                 />
                 <el-table-column
-                  label="ПОЧКАСИДИГИ (КГ)"
+                  label="Почкасини (КГ)"
                   align="center"
                   :min-width="160"
                   prop="wight_of_one_packet"
                 />
                 <el-table-column
-                  label="1-ДОНАСИНИ  (КГ)"
+                  label="1-донасини  (КГ)"
                   align="center"
                   :min-width="160"
                   prop="weight_of_an_item"
@@ -176,7 +196,7 @@
           {{ toThousandFilter(scope.row.total_number_of_items) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Пакетлар/ортиқча сони" prop="total_number_of_packets" :min-width="180">
+      <el-table-column align="center" label="Пакетлар / ортиқча сони" prop="total_number_of_packets" :min-width="180">
         <template slot-scope="scope">
           {{ toThousandFilter(scope.row.total_number_of_packets) }} / {{ scope.row.total_number_of_over_packet }}
         </template>
@@ -184,6 +204,11 @@
       <el-table-column align="center" label="Умумий оғирлиги (кг)" prop="total_wight_of_packets" :min-width="180">
         <template slot-scope="scope">
           {{ toThousandFilter(scope.row.total_wight_of_packets) }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Умумий суммаси ($)" prop="total_price" :min-width="180">
+        <template slot-scope="scope">
+          {{ toThousandFilter(scope.row.total_price) }}
         </template>
       </el-table-column>
     </el-table>
@@ -259,7 +284,9 @@ export default {
     getList() {
       this.SET_QUERY_PARAM({ key: 'perPage', value: this.listQuery.limit })
       this.SET_QUERY_PARAM({ key: 'currentPage', value: this.listQuery.page })
-      this.GET_INVENTARS()
+      this.GET_INVENTARS().then(() => {
+        this.mapProductTypes()
+      })
     }
   }
 

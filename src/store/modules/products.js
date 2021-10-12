@@ -7,6 +7,16 @@ function getProductTypes() {
   })
 }
 
+function getTargets(id) {
+  return request({
+    url: '/products/get-targets',
+    method: 'GET',
+    params: {
+      productId: id
+    }
+  })
+}
+
 function getProducts() {
   return request({
     url: '/products/all-products',
@@ -53,6 +63,8 @@ const d = new Date()
 const state = {
   products: [],
   new_batch_of_product: [],
+  edit_batch_of_product: [],
+  editing_product_id: '',
   product_with_types: [],
   product_with_types_table_loading: false,
   products_types: [],
@@ -82,8 +94,29 @@ const state = {
 }
 
 const mutations = {
+  SET_TARGETS: (state, targets) => {
+    for (let i = 0; i < state.edit_batch_of_product.length; i++) {
+      console.log('targets.target', targets.target)
+      state.edit_batch_of_product[i].target_date = targets.target
+    }
+  },
+  SET_EDIT_PRODUCT: (state, pr) => {
+    state.products_types = [pr._id.product]
+    state.editing_product_id = pr._id.product._id
+    state.edit_batch_of_product = pr.products
+    console.log('pr', pr)
+  },
   REMOVE_FROM_NEW_BATCH: (state, ind) => {
     state.new_batch_of_product.splice(ind, 1)
+  },
+  SET_EDIT_BATCH_OF_PRODUCTS: (state, data) => {
+    const currnetProductIndex = state.edit_batch_of_product.findIndex(pr => pr.product_type === data.product_type)
+    if (currnetProductIndex > -1) {
+      state.edit_batch_of_product[currnetProductIndex] = {
+        ...state.edit_batch_of_product[currnetProductIndex],
+        ...data
+      }
+    }
   },
   SET_NEW_BATCH_OF_PRODUCTS: (state, data) => {
     if (data === -1) {
@@ -111,6 +144,7 @@ const mutations = {
     state.products = products
   },
   SET_TODAYS_PRODUCT_NUM: (state, num) => {
+    console.log('num:', num)
     state.todays_product_nums = num.partiya
     state.isThereBroken = num.isThereBroken
     state.there_is_product_type = num.there_is_product_type
@@ -241,6 +275,14 @@ const actions = {
           message: 'You inserted wrong value to: ' + state.wrong_format_product
         })
       }
+    })
+  },
+  GET_TARGETS({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      getTargets(id).then(res => {
+        commit('SET_TARGETS', res.data)
+        resolve()
+      }).catch(err => reject(err))
     })
   },
   GET_PRODUCT_BY_TYPE_ID({ commit }, id) {

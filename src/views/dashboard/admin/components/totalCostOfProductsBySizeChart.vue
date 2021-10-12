@@ -1,7 +1,7 @@
 <template>
   <el-col
-    :md="{span: 12}"
-    :lg="{span: 12}"
+    :md="{span: 24}"
+    :lg="{span: 24}"
     :sm="{span: 24}"
     :xm="{span: 24}"
     class="char-body-1st"
@@ -11,7 +11,7 @@
       ref="totalCostRef"
       class="char-body"
       width="100%"
-      height="400"
+      height="500"
       :options="chartOptionsBar"
       :series="seriesBar"
     />
@@ -163,6 +163,7 @@ export default {
           }
         },
         xaxis: {
+          rotate: -55,
           categories: [],
           labels: {
             style: {
