@@ -62,7 +62,7 @@
                             :type_id="scope.row._id" 
                             :index="scope.$index"
                             :old_image="scope.row.photo_path"
-                            :imageUrl="baseApi + scope.row.photo_path"
+                            :imageUrl="scope.row.photo_path"
                         />
                     </div>
                 </template>

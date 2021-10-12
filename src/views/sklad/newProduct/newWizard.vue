@@ -86,9 +86,9 @@ export default {
         for (let i = 0; i < this.types.length; i++) {
           const formData = new FormData()
           formData.append('image', this.types[i].photo.raw)
-          console.log('')
+          console.log('this.types[i].photo', this.types[i].photo)
 
-          const filePath = await this.UPLOAD_IMAGES(formData)
+          const filePath = await this.UPLOAD_IMAGES({ name: this.types[i].photo.raw.name, type: this.types[i].photo.raw.type })
 
           await this.uploadToS3(this.types[i].photo.raw, filePath.data.signedRequest)
 

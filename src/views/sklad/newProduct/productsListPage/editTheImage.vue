@@ -46,6 +46,7 @@
 import { Message } from 'element-ui'
 import request from '@/utils/request'
 export default {
+  /* eslint-disable */
   props: {
     old_image: {
       type: String,
@@ -90,6 +91,9 @@ export default {
       try {
         this.imageSaving = true
         let error = false
+        let name = this.imageUrl.split('/')
+        name = name[name.length - 1]
+        await this.delete_photo(name)
         const photo_path = await this.uploadImages(this.photo[0]).catch(err => {
           Message({
             message: err.response.data,
@@ -98,6 +102,7 @@ export default {
           })
           error = true
         })
+        await this.uploadToS3(this.photo[0].raw, photo_path.data.signedRequest)
         if (!error) {
           await this.editThePhoto({
             product_id: this.product_id,
@@ -122,14 +127,18 @@ export default {
         this.imageSaving = false
       }
     },
+    delete_photo(name) {
+      return request({
+        url: '/products/delete-image',
+        method: 'DELETE',
+        data: {name}
+      })
+    },
     uploadImages(photo) {
-      const formData = new FormData()
-      formData.append('image', photo.raw)
       return request({
         url: '/products/upload-images',
         method: 'POST',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' }
+        data: {name: photo.raw.name, type:  photo.raw.type}
       })
     },
     editThePhoto(data) {
@@ -137,6 +146,23 @@ export default {
         url: '/products/update-type-photo',
         data,
         method: 'PUT'
+      })
+    },
+    uploadToS3(file, url) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.open('PUT', url)
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              resolve()
+            } else {
+              reject()
+              alert('Could not upload file.')
+            }
+          }
+        }
+        xhr.send(file)
       })
     }
   }

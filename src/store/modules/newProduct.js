@@ -5,8 +5,8 @@ function uploadImages(data) {
   return request({
     url: '/products/upload-images',
     method: 'POST',
-    data,
-    headers: { 'Content-Type': 'multipart/form-data' }
+    data
+    // headers: { 'Content-Type': 'multipart/form-data' }
   })
 }
 
