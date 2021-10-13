@@ -6,6 +6,7 @@
       title="Расмни ўзгартириш"
       :visible.sync="dialogVisible"
       width="40%"
+      append-to-body
     >
       <span>
         <el-image

@@ -106,7 +106,7 @@ export default {
         },
         plotOptions: {
           bar: {
-            // columnWidth: '25%'
+            columnWidth: '25%',
             // distributed: true,
             borderRadius: 4
           }
