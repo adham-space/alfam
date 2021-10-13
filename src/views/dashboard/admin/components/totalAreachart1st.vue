@@ -166,11 +166,11 @@ export default {
           }
         },
         xaxis: {
-          rotate: -55,
+          rotate: -60,
           categories: [],
           labels: {
             style: {
-              fontSize: '12px'
+              fontSize: '11px'
             }
           }
         }
