@@ -346,7 +346,7 @@
         </el-table-column>
         <el-table-column fixed="right">
           <template slot-scope="scope">
-            <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.rowIndex)" />
+            <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.$index)" />
           </template>
         </el-table-column>
       </el-table>
