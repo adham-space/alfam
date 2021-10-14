@@ -163,7 +163,7 @@
           </el-card>
 
           <el-card shadow="hover" class="box-card" style="margin-top: 1rem">
-            <div slot="header" style="height: 4rem">Складга сақлаш</div>
+            <div slot="header" style="height: 4rem">Складга келтирилган махсулот миқдори</div>
             <div class="one-packet">
               <!-- <el-form-item prop="target_from">
 
@@ -281,75 +281,89 @@
         style="margin: 0 0 .5em .5em; text-align: right"
         @click="saveAllToSklad()"
       >Сохранить</el-button>
-      <el-table
-        :key="currentTableKey"
-        border
-        :data="new_batch_of_product"
+      <el-table-draggable
+        :key="dragKey"
+        ref="draggableTable"
       >
-        <el-table-column fixed="left" align="center" width="150" label="ТУРИ" prop="product_type_name">
-          <template slot-scope="scope">
-            {{ scope.row.product_type_name + (scope.row.broken ? '-синган': '') }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="ДОНАСИНИ ЮЗАСИ" prop="area_of_an_item">
-          <template slot="header">
-            <span>ДОНАСИНИ <br> ЮЗАСИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="1 КАРОБКАДАГИ ДОНАСИ" prop="number_of_items">
-          <template slot="header">
-            <span>1 КАРОБКАДАГИ<br>ДОНАСИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="160" label="1 ТА КАРОБКАНИНГ ОҒИРЛИГИ" prop="wight_of_one_packet">
-          <template slot="header">
-            <span>1 ТА КАРОБКАНИНГ<br>ОҒИРЛИГИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="1 ТА ДОНАСИНИ ОҒИРЛИГИ" prop="weight_of_an_item">
-          <template slot="header">
-            <span>1 ТА ДОНАСИНИ<br>ОҒИРЛИГИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="160" label="1 ТА КАРОБКАНИНГ ЮЗАСИ" prop="area_of_one_packet">
-          <template slot="header">
-            <span>1 ТА КАРОБКАНИНГ <br> ЮЗАСИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="КАССА НАРХИ" prop="base_price" />
-        <el-table-column align="center" width="150" label="БЎЙИЧА" prop="price_by">\
-          <template slot-scope="scope">
-            {{ scope.row.price_by ? 'Донаси': 'Юзаси (м2)' }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="МАҚСАД" prop="target_date">
-          <template slot-scope="scope">
-            {{ getDate(scope.row.target_date) }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="УМИМИЙ ЮЗАСИ" prop="total_area" />
-        <el-table-column align="center" width="150" label="УМИМИЙ ДОНАСИНИ" prop="total_number_of_items" />
-        <el-table-column align="center" width="150" label="УМИМИЙ ПАКЕТЛАРИНИ" prop="total_number_of_packets">
-          <template slot="header">
-            <span>УМИМИЙ<br>ПАКЕТЛАРИНИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="УМИМИЙ ОҒИРЛИГИ" prop="total_wight_of_packets">
-          <template slot="header">
-            <span>УМИМИЙ<br>ОҒИРЛИГИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="ПАКЕТДАН ОРТИҚЧА" prop="total_number_of_over_packet">
-          <template slot="header">
-            <span>ПАКЕТДАН<br>ОРТИҚЧА</span>
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right">
-          <template slot-scope="scope">
-            <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.$index)" />
-          </template>
-        </el-table-column>
-      </el-table>
+        <el-table
+          :key="currentTableKey"
+          border
+          row-key="product_type"
+          :data="new_batch_of_product"
+        >
+          <el-table-column align="center" width="150" label="Тури" prop="product_type_name">
+            <template slot-scope="scope">
+              {{ scope.row.product_type_name + (scope.row.broken ? '-синган': '') }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="Умумий юзаси" prop="total_area" />
+          <el-table-column align="center" width="150" label="Умумий донаси" prop="total_number_of_items" />
+          <el-table-column align="center" width="150" label="Умумий пакелтлари" prop="total_number_of_packets">
+            <template slot="header">
+              <span>Умумий<br>пакелтлари</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="Пакетдан ортиқча" prop="total_number_of_over_packet">
+            <template slot="header">
+              <span>Пакетдан<br>ортиқча</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="Касса нархи" prop="base_price" />
+          <el-table-column align="center" width="150" label="Бўйича" prop="price_by">\
+            <template slot-scope="scope">
+              {{ scope.row.price_by ? 'Донаси': 'Юзаси (м2)' }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="Донасини юзаси" prop="area_of_an_item">
+            <template slot="header">
+              <span>Донасини <br> юзаси</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="1 Почкадаги донаси" prop="number_of_items">
+            <template slot="header">
+              <span>1 Почкадаги<br>донаси</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="160" label="1 Почкасини оғирлиги" prop="wight_of_one_packet">
+            <template slot="header">
+              <span>1 Почкасини<br>оғирлиги</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="1 Донасиини оғирлиги" prop="weight_of_an_item">
+            <template slot="header">
+              <span>1 Донасиини<br>оғирлиги</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="160" label="1 Почкасини юзаси" prop="area_of_one_packet">
+            <template slot="header">
+              <span>1 Почкасини <br> юзаси</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" width="150" label="Мақсад" prop="target_date">
+            <template slot-scope="scope">
+              {{ getDate(scope.row.target_date) }}
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" width="150" label="Умумий оғирлиги" prop="total_wight_of_packets">
+            <template slot="header">
+              <span>Умумий<br>оғирлиги</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column fixed="right">
+            <template slot-scope="scope">
+              <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.$index)" />
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-table-draggable>
+      <div>
+        <p v-for="pr in new_batch_of_product_to_be_send" :key="pr._id">
+          {{ pr.product_type_name }}
+        </p>
+      </div>
     </el-col>
     <el-dialog
       align="center"
@@ -369,8 +383,12 @@
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex'
 import request from '@/utils/request'
+import ElTableDraggable from 'el-table-draggable'
 import { Message } from 'element-ui'
 export default {
+  components: {
+    ElTableDraggable
+  },
   data() {
     return {
       there_is_product_type: false,
@@ -535,6 +553,7 @@ export default {
         ]
       },
       currentType: {},
+      dragKey: 102,
       productName: '',
       typeName: '',
       isSaving: false
@@ -542,8 +561,9 @@ export default {
   },
   computed: {
     ...mapState('products', [
-      'new_batch_of_product',
       'products_types',
+      'new_batch_of_product',
+      'new_batch_of_product_to_be_send',
       'products',
       'todays_product_nums',
       'isThereBroken'
@@ -612,11 +632,18 @@ export default {
   mounted() {
     this.GET_PRODUCT_TYPES()
     this.GET_PRODUCTS()
+    setTimeout(() => {
+      console.log(this.$refs.draggableTable)
+      this.$refs.draggableTable._sortable.options.onEnd = (evn) => {
+        console.log('EVN', evn)
+      }
+    }, 100)
   },
   methods: {
     ...mapMutations('products', [
       'SET_NEW_BATCH_OF_PRODUCTS',
-      'REMOVE_FROM_NEW_BATCH'
+      'REMOVE_FROM_NEW_BATCH',
+      'SET_NEW_BATCH_OF_PRODUCTS_DRAG'
     ]),
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
@@ -669,6 +696,13 @@ export default {
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {
           this.SET_NEW_BATCH_OF_PRODUCTS(sendData)
+          this.dragKey = Math.floor(Math.random() * 200)
+          setTimeout(() => {
+            this.$refs.draggableTable._sortable.options.onEnd = (evn) => {
+              const { newDraggableIndex, newIndex, oldDraggableIndex, oldIndex } = evn
+              this.SET_NEW_BATCH_OF_PRODUCTS_DRAG({ newDraggableIndex, newIndex, oldDraggableIndex, oldIndex })
+            }
+          }, 250)
           this.currentTableKey = Math.floor(Math.random() * 100)
           this.resetAll()
         } else {
@@ -762,7 +796,6 @@ export default {
           product_type: this.formDataObj.current_subType,
           isBroken: this.formDataObj.singan
         }).then(() => {
-          console.log('getting target date aa')
           this.getTargetDate(this.formDataObj.current_subType)
         })
       } else {
@@ -903,7 +936,7 @@ export default {
       request({
         url: '/products/add-product',
         method: 'POST',
-        data: { new_batch: this.new_batch_of_product },
+        data: { new_batch: this.new_batch_of_product_to_be_send },
         timeout: 30000
       })
         .then((res) => {
