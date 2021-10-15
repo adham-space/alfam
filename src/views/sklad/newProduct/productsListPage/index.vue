@@ -21,6 +21,7 @@
               :data="scope_.row.product_types"
               :show-header="true"
               height="100%"
+              :row-class-name="rowClassName"
               style="width: 100%; border: 1px solid #cecece"
               stripe
             >
@@ -67,7 +68,7 @@
                     </div>
                 </template>
               </el-table-column>
-              <el-table-column
+              <!-- <el-table-column
                 label="Асосийлиги"
                 prop="isMain"
                 :min-width="150"
@@ -76,7 +77,7 @@
                 <template slot-scope="scope">
                   {{ scope.row.isMain ? 1 : 0 }}
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
           </template>
         </el-table-column>
@@ -148,6 +149,11 @@ export default {
     editProduct(product) {
       this.SET_EDIT_STATUS(true)
       this.SET_DATA_TO_EDIT(this.clone(product))
+    },
+    rowClassName({ row }) {
+      if (row.isMain) {
+        return 'is-main-type'
+      }
     }
   }
 }
@@ -160,5 +166,8 @@ export default {
         align-items: center;
         justify-content: flex-end;
         padding: 0 1em;
+    }
+    .el-table .is-main-type {
+      background: rgb(231, 255, 206);
     }
 </style>
