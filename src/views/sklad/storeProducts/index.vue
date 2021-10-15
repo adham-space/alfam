@@ -359,11 +359,6 @@
           </el-table-column>
         </el-table>
       </el-table-draggable>
-      <div>
-        <p v-for="pr in new_batch_of_product_to_be_send" :key="pr._id">
-          {{ pr.product_type_name }}
-        </p>
-      </div>
     </el-col>
     <el-dialog
       align="center"
