@@ -121,6 +121,7 @@ export default {
   },
   methods: {
     ...mapMutations('newProduct', ['SET_EDIT_STATUS', 'SET_DATA_TO_EDIT']),
+
     getData() {
       this.gettingTableData = true
       request({

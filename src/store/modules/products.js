@@ -62,8 +62,6 @@ const d = new Date()
 
 const state = {
   products: [],
-  new_batch_of_product: [],
-  new_batch_of_product_to_be_send: [],
   edit_batch_of_product: [],
   editing_product_id: '',
   product_with_types: [],
@@ -95,28 +93,7 @@ const state = {
 }
 
 const mutations = {
-  SET_NEW_BATCH_OF_PRODUCTS_DRAG: (state, { newIndex, oldIndex }) => {
-    const clone = state.new_batch_of_product_to_be_send.length > 0 ? [...state.new_batch_of_product_to_be_send] : [...state.new_batch_of_product]
-    clone.splice(oldIndex, 1)
-    if (newIndex - oldIndex > 0) {
-      // down
-      const upperPeace = clone.slice(0, newIndex)
-      console.log('upperPeace', upperPeace)
-      const lowerPeace = clone.slice(newIndex, clone.length)
-      console.log('lowerPeace', lowerPeace)
-      state.new_batch_of_product_to_be_send = [...upperPeace,
-        state.new_batch_of_product_to_be_send.length > 0 ? state.new_batch_of_product_to_be_send[oldIndex] : state.new_batch_of_product[oldIndex],
-        ...lowerPeace
-      ]
-    } else if (newIndex - oldIndex < 0) {
-      // down
-      const upperPeace = clone.slice(0, newIndex)
-      const lowerPeace = clone.slice(newIndex, clone.length)
-      state.new_batch_of_product_to_be_send = [...upperPeace,
-        state.new_batch_of_product_to_be_send.length > 0 ? state.new_batch_of_product_to_be_send[oldIndex] : state.new_batch_of_product[oldIndex],
-        ...lowerPeace]
-    }
-  },
+
   SET_TARGETS: (state, targets) => {
     for (let i = 0; i < state.edit_batch_of_product.length; i++) {
       console.log('targets.target', targets.target)
@@ -127,12 +104,6 @@ const mutations = {
     state.products_types = [pr._id.product]
     state.editing_product_id = pr._id.product._id
     state.edit_batch_of_product = pr.products
-    console.log('pr', pr)
-  },
-  REMOVE_FROM_NEW_BATCH: (state, ind) => {
-    state.new_batch_of_product = [...state.new_batch_of_product_to_be_send]
-    state.new_batch_of_product.splice(ind, 1)
-    state.new_batch_of_product_to_be_send.splice(ind, 1)
   },
   SET_EDIT_BATCH_OF_PRODUCTS: (state, data) => {
     const currnetProductIndex = state.edit_batch_of_product.findIndex(pr => pr.product_type === data.product_type)
@@ -143,30 +114,6 @@ const mutations = {
       }
     }
   },
-  SET_NEW_BATCH_OF_PRODUCTS: (state, data) => {
-    if (data === -1) {
-      state.new_batch_of_product = []
-      state.new_batch_of_product_to_be_send = []
-    } else {
-      if (data.broken) {
-        if (data.editing_same_type) {
-          const index = state.new_batch_of_product.findIndex(pr => pr.product_type === data.product_type && pr.broken)
-          state.new_batch_of_product[index] = data
-          state.new_batch_of_product_to_be_send[index] = data
-        } else {
-          state.new_batch_of_product.push(data)
-          state.new_batch_of_product_to_be_send.push(data)
-        }
-      } else if (data.editing_same_type) {
-        const index = state.new_batch_of_product.findIndex(pr => pr.product_type === data.product_type)
-        state.new_batch_of_product[index] = data
-        state.new_batch_of_product_to_be_send[index] = data
-      } else {
-        state.new_batch_of_product.push(data)
-        state.new_batch_of_product_to_be_send.push(data)
-      }
-    }
-  },
   SET_PRODUCT_TYPES: (state, types) => {
     state.products_types = types
   },
@@ -174,7 +121,6 @@ const mutations = {
     state.products = products
   },
   SET_TODAYS_PRODUCT_NUM: (state, num) => {
-    console.log('num:', num)
     state.todays_product_nums = num.partiya
     state.isThereBroken = num.isThereBroken
     state.there_is_product_type = num.there_is_product_type
@@ -204,8 +150,6 @@ const mutations = {
         i = 1000000
         return
       }
-      console.log('PREPARE PHOTO:', current_product[i])
-
       if (state.order.includes_brokens) {
         const pro_obj = {
           id: current_product[i]._id,

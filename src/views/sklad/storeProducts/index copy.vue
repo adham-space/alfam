@@ -281,81 +281,83 @@
         style="margin: 0 0 .5em .5em; text-align: right"
         @click="saveAllToSklad()"
       >Сохранить</el-button>
-      <el-table
-        :key="currentTableKey"
-        row-key="title"
-        border
-        :data="new_batch_of_product"
-        @filter-change="handlerFilterChange"
+      <el-table-draggable
+        :key="dragKey"
+        ref="draggableTable"
       >
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Тури" prop="product_type_name">
-          <template slot-scope="scope">
-            {{ scope.row.product_type_name + (scope.row.broken ? '-синган': '') }}
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий юзаси" prop="total_area" />
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий донаси" prop="total_number_of_items" />
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий пакелтлари" prop="total_number_of_packets">
-          <template slot="header">
-            <span>Умумий<br>пакелтлари</span>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Пакетдан ортиқча" prop="total_number_of_over_packet">
-          <template slot="header">
-            <span>Пакетдан<br>ортиқча</span>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Касса нархи" prop="base_price" />
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Бўйича" prop="price_by">\
-          <template slot-scope="scope">
-            {{ scope.row.price_by ? 'Донаси': 'Юзаси (м2)' }}
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Донасини юзаси" prop="area_of_an_item">
-          <template slot="header">
-            <span>Донасини <br> юзаси</span>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="1 Почкадаги донаси" prop="number_of_items">
-          <template slot="header">
-            <span>1 Почкадаги<br>донаси</span>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="160" label="1 Почкасини оғирлиги" prop="wight_of_one_packet">
-          <template slot="header">
-            <span>1 Почкасини<br>оғирлиги</span>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="1 Донасиини оғирлиги" prop="weight_of_an_item">
-          <template slot="header">
-            <span>1 Донасиини<br>оғирлиги</span>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="160" label="1 Почкасини юзаси" prop="area_of_one_packet">
-          <template slot="header">
-            <span>1 Почкасини <br> юзаси</span>
-          </template>
-        </el-table-column>
+        <el-table
+          :key="currentTableKey+dragKey"
+          border
+          :data="new_batch_of_product"
+        >
+          <el-table-column align="center" width="150" label="Тури" prop="product_type_name">
+            <template slot-scope="scope">
+              {{ scope.row.product_type_name + (scope.row.broken ? '-синган': '') }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="Умумий юзаси" prop="total_area" />
+          <el-table-column align="center" width="150" label="Умумий донаси" prop="total_number_of_items" />
+          <el-table-column align="center" width="150" label="Умумий пакелтлари" prop="total_number_of_packets">
+            <template slot="header">
+              <span>Умумий<br>пакелтлари</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="Пакетдан ортиқча" prop="total_number_of_over_packet">
+            <template slot="header">
+              <span>Пакетдан<br>ортиқча</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="Касса нархи" prop="base_price" />
+          <el-table-column align="center" width="150" label="Бўйича" prop="price_by">\
+            <template slot-scope="scope">
+              {{ scope.row.price_by ? 'Донаси': 'Юзаси (м2)' }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="Донасини юзаси" prop="area_of_an_item">
+            <template slot="header">
+              <span>Донасини <br> юзаси</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="1 Почкадаги донаси" prop="number_of_items">
+            <template slot="header">
+              <span>1 Почкадаги<br>донаси</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="160" label="1 Почкасини оғирлиги" prop="wight_of_one_packet">
+            <template slot="header">
+              <span>1 Почкасини<br>оғирлиги</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="150" label="1 Донасиини оғирлиги" prop="weight_of_an_item">
+            <template slot="header">
+              <span>1 Донасиини<br>оғирлиги</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" width="160" label="1 Почкасини юзаси" prop="area_of_one_packet">
+            <template slot="header">
+              <span>1 Почкасини <br> юзаси</span>
+            </template>
+          </el-table-column>
 
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Мақсад" prop="target_date">
-          <template slot-scope="scope">
-            {{ getDate(scope.row.target_date) }}
-          </template>
-        </el-table-column>
+          <el-table-column align="center" width="150" label="Мақсад" prop="target_date">
+            <template slot-scope="scope">
+              {{ getDate(scope.row.target_date) }}
+            </template>
+          </el-table-column>
 
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий оғирлиги" prop="total_wight_of_packets">
-          <template slot="header">
-            <span>Умумий<br>оғирлиги</span>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Partiya title" prop="title" />
+          <el-table-column align="center" width="150" label="Умумий оғирлиги" prop="total_wight_of_packets">
+            <template slot="header">
+              <span>Умумий<br>оғирлиги</span>
+            </template>
+          </el-table-column>
 
-        <el-table-column show-overflow-tooltip fixed="right">
-          <template slot-scope="scope">
-            <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.$index)" />
-          </template>
-        </el-table-column>
-      </el-table>
+          <el-table-column fixed="right">
+            <template slot-scope="scope">
+              <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.$index)" />
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-table-draggable>
     </el-col>
     <el-dialog
       align="center"
@@ -373,15 +375,13 @@
 </template>
 
 <script>
-// eslint-disable-next-line
 import { mapActions, mapState, mapMutations } from 'vuex'
 import request from '@/utils/request'
+import ElTableDraggable from 'el-table-draggable'
 import { Message } from 'element-ui'
-import Sortable from 'sortablejs'
 export default {
   components: {
-    // eslint-disable-next-line
-    Sortable
+    ElTableDraggable
   },
   data() {
     return {
@@ -547,8 +547,7 @@ export default {
         ]
       },
       currentType: {},
-      new_batch_of_product: [],
-      id: 0,
+      dragKey: 102,
       productName: '',
       typeName: '',
       isSaving: false
@@ -557,6 +556,8 @@ export default {
   computed: {
     ...mapState('products', [
       'products_types',
+      'new_batch_of_product',
+      'new_batch_of_product_to_be_send',
       'products',
       'todays_product_nums',
       'isThereBroken'
@@ -625,28 +626,24 @@ export default {
   mounted() {
     this.GET_PRODUCT_TYPES()
     this.GET_PRODUCTS()
-    this.refreshRegistartionOfSortable()
+    setTimeout(() => {
+      console.log(this.$refs.draggableTable)
+      this.$refs.draggableTable._sortable.options.onEnd = (evn) => {
+        console.log('EVN', evn)
+      }
+    }, 100)
   },
   methods: {
-    refreshRegistartionOfSortable() {
-      const table = document.querySelector('.el-table__body-wrapper tbody')
-      const self = this
-      Sortable.create(table, {
-        onEnd({ newIndex, oldIndex }) {
-          console.log(newIndex, oldIndex)
-          const targetRow = self.new_batch_of_product.splice(oldIndex, 1)[0]
-          self.new_batch_of_product.splice(newIndex, 0, targetRow)
-        }
-      })
-    },
+    ...mapMutations('products', [
+      'SET_NEW_BATCH_OF_PRODUCTS',
+      'REMOVE_FROM_NEW_BATCH',
+      'SET_NEW_BATCH_OF_PRODUCTS_DRAG'
+    ]),
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCTS',
       'GET_TODAYS_PRODUCTS'
     ]),
-    handlerFilterChange(fp) {
-      console.log('filterchange', fp)
-    },
     currentProductIsGoingToChange(product) {
       if (this.formDataObj.currentProduct) {
         this.product_changing_warnig = true
@@ -663,7 +660,7 @@ export default {
       this.product_changing_warnig = false
       this.formDataObj.currentProduct = this.temp_current_product
       this.temp_current_product = ''
-      this.setNewBatchOfProduct(-1)
+      this.SET_NEW_BATCH_OF_PRODUCTS(-1)
     },
     storeToSklad() {
       const sendData = {
@@ -692,7 +689,15 @@ export default {
       }
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {
-          this.setNewBatchOfProduct(sendData)
+          this.SET_NEW_BATCH_OF_PRODUCTS(sendData)
+          this.dragKey = Math.floor(Math.random() * 200)
+          setTimeout(() => {
+            this.$refs.draggableTable._sortable.options.onEnd = (evn) => {
+              const { newDraggableIndex, newIndex, oldDraggableIndex, oldIndex } = evn
+              this.SET_NEW_BATCH_OF_PRODUCTS_DRAG({ newDraggableIndex, newIndex, oldDraggableIndex, oldIndex })
+            }
+          }, 250)
+          this.currentTableKey = Math.floor(Math.random() * 100)
           this.resetAll()
         } else {
           return false
@@ -710,14 +715,12 @@ export default {
           this.formDataObj.singan = true
 
           if (indexOfBrokenExistingProductType > -1) {
-            this.currentTableKey++
             this.formDataObj.totalArea = this.new_batch_of_product[indexOfBrokenExistingProductType].total_area
             this.formDataObj.overPacketNumberOfItems = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_over_packet
             this.formDataObj.numberOfPacket = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_packets
             this.formDataObj.totalNumberOfItem = this.new_batch_of_product[indexOfBrokenExistingProductType].total_number_of_items
           } else {
             this.editing_same_type = false
-            this.refreshRegistartionOfSortable()
             this.formDataObj.totalArea = ''
             this.formDataObj.overPacketNumberOfItems = ''
             this.formDataObj.numberOfPacket = ''
@@ -742,29 +745,7 @@ export default {
         })
       }
     },
-    setNewBatchOfProduct(data) {
-      if (data === -1) {
-        this.new_batch_of_product = []
-      } else {
-        if (data.broken) {
-          if (data.editing_same_type) {
-            const index = this.new_batch_of_product.findIndex(pr => pr.product_type === data.product_type && pr.broken)
-            this.new_batch_of_product[index] = data
-          } else {
-            this.new_batch_of_product.push(data)
-          }
-        } else if (data.editing_same_type) {
-          const index = this.new_batch_of_product.findIndex(pr => pr.product_type === data.product_type)
-          this.new_batch_of_product[index] = data
-        } else {
-          this.new_batch_of_product.push(data)
-        }
-      }
-      this.currentTableKey++
-      setTimeout(() => {
-        this.refreshRegistartionOfSortable()
-      }, 190)
-    },
+
     resetAll() {
       console.log('resetting all...')
       this.editing_same_type = false
@@ -893,14 +874,14 @@ export default {
       }
     },
     removeFromNewBatch(ind) {
-      this.new_batch_of_product.splice(ind, 1)
+      this.REMOVE_FROM_NEW_BATCH(ind)
     },
     setIfAlreadyEnteredType(type_id) {
       const typeObj = this.new_batch_of_product.find(pr => pr.product_type === type_id)
 
       if (typeObj) {
         this.editing_same_type = true
-        this.currentTableKey++
+        console.log('editing_same_type')
         this.formDataObj.base_priceBy = typeObj.price_by
         this.formDataObj.singan = typeObj.broken
         this.formDataObj.base_price = typeObj.base_price
@@ -923,7 +904,6 @@ export default {
         this.areaOfOneItem()
       } else {
         this.editing_same_type = false
-        this.refreshRegistartionOfSortable()
         this.formDataObj.base_priceBy = false
         this.formDataObj.singan = ''
         this.formDataObj.totalArea = ''
@@ -950,13 +930,13 @@ export default {
       request({
         url: '/products/add-product',
         method: 'POST',
-        data: { new_batch: this.new_batch_of_product },
+        data: { new_batch: this.new_batch_of_product_to_be_send },
         timeout: 30000
       })
         .then((res) => {
           this.isSaving = false
           this.editTarget = false
-          this.setNewBatchOfProduct(-1)
+          this.SET_NEW_BATCH_OF_PRODUCTS(-1)
           Message({
             message: 'Махсулот мувоффақиятли сақланди',
             duration: 2000,
