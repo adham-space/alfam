@@ -60,7 +60,7 @@
         >
           <el-card v-show="!hidePacketField" shadow="hover" class="box-card">
             <div slot="header" class="clearfix">
-              <span>1 ТА КАРОБКАНИ МАъЛУМОТИ</span>
+              <span>1 ТА КАРОБКАНИ МАЪЛУМОТИ</span>
             </div>
             <div class="one-packet">
               <span><span
@@ -875,7 +875,7 @@ export default {
     getTargetDate(type) {
       let typeObj
       if (this.new_batch_of_product.length > 0) {
-        typeObj = this.new_batch_of_product[0]
+        typeObj = this.new_batch_of_product[this.new_batch_of_product.length - 1]
       }
 
       if (typeObj) {

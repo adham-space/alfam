@@ -73,14 +73,7 @@ export default {
   data() {
     return {
       name: '',
-      types: [
-        { id: 0, type_name: 'ОЧИ' },
-        { id: 1, type_name: 'ТЎҚИ' },
-        { id: 2, type_name: 'ДЕКОР' },
-        { id: 3, type_name: 'СИГАРА' },
-        { id: 4, type_name: 'ПОЛ' },
-        { id: 5, type_name: 'ФРИЗ' }
-      ],
+      types: [],
       editing: {
         status: false,
         id: null
@@ -92,34 +85,50 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit('newProduct/SET_TYPES', [
-      { id: 0, type_name: 'ОЧИ' },
-      { id: 1, type_name: 'ТЎҚИ' },
-      { id: 2, type_name: 'ДЕКОР' },
-      { id: 3, type_name: 'СИГАРА' },
-      { id: 4, type_name: 'ПОЛ' },
-      { id: 5, type_name: 'ФРИЗ' }
-    ])
+    this.workWithLocalStorage()
   },
   methods: {
+    checkAndStoreToLocalHost(name) {
+      const types = JSON.parse(localStorage.getItem('types'))
+      if (types) {
+        const indexOfType = types.findIndex(t => t.type_name === name)
+        if (indexOfType === -1) {
+          types.push({
+            id: types[types.length - 1].id + 1,
+            type_name: name
+          })
+          localStorage.setItem('types', JSON.stringify(types))
+        }
+      }
+    },
+    workWithLocalStorage() {
+      const lcs = localStorage.getItem('types')
+      if (lcs === null) {
+        localStorage.setItem('types', JSON.stringify([
+          { id: 0, type_name: 'ОЧИ' },
+          { id: 1, type_name: 'ТЎҚИ' },
+          { id: 2, type_name: 'ДЕКОР' },
+          { id: 3, type_name: 'СИГАРА' },
+          { id: 4, type_name: 'ПОЛ' },
+          { id: 5, type_name: 'ФРИЗ' }
+        ]))
+        this.types = [
+          { id: 0, type_name: 'ОЧИ' },
+          { id: 1, type_name: 'ТЎҚИ' },
+          { id: 2, type_name: 'ДЕКОР' },
+          { id: 3, type_name: 'СИГАРА' },
+          { id: 4, type_name: 'ПОЛ' },
+          { id: 5, type_name: 'ФРИЗ' }
+        ]
+        this.$store.commit('newProduct/SET_TYPES', this.types)
+      } else {
+        this.types = JSON.parse(localStorage.getItem('types'))
+        this.$store.commit('newProduct/SET_TYPES', this.types)
+      }
+    },
     reset() {
       this.name = ''
-      this.types = [
-        { id: 0, type_name: 'ОЧИ' },
-        { id: 1, type_name: 'ТЎҚИ' },
-        { id: 2, type_name: 'ДЕКОР' },
-        { id: 3, type_name: 'СИГАРА' },
-        { id: 4, type_name: 'ПОЛ' },
-        { id: 5, type_name: 'ФРИЗ' }
-      ]
-      this.$store.commit('newProduct/SET_TYPES', [
-        { id: 0, type_name: 'ОЧИ' },
-        { id: 1, type_name: 'ТЎҚИ' },
-        { id: 2, type_name: 'ДЕКОР' },
-        { id: 3, type_name: 'СИГАРА' },
-        { id: 4, type_name: 'ПОЛ' },
-        { id: 5, type_name: 'ФРИЗ' }
-      ])
+      this.workWithLocalStorage()
       this.editing = {
         status: false,
         id: null
@@ -135,16 +144,20 @@ export default {
     },
     addNewType() {
       const nm = this.typeObject.name + ''
-      if (this.types.length === 0) {
-        this.types.push({ id: 0, type_name: nm })
-      } else {
-        this.types.push({
-          id: this.types[this.types.length - 1].id + 1,
-          type_name: nm
-        })
+      const indexOfType = this.types.findIndex(t => t.type_name === nm)
+      if (indexOfType === -1) {
+        if (this.types.length === 0) {
+          this.types.push({ id: 0, type_name: nm })
+        } else {
+          this.checkAndStoreToLocalHost(nm)
+          this.types.push({
+            id: this.types[this.types.length - 1].id + 1,
+            type_name: nm
+          })
+        }
+        this.typeObject.name = ''
+        this.$store.commit('newProduct/SET_TYPES', this.types)
       }
-      this.typeObject.name = ''
-      this.$store.commit('newProduct/SET_TYPES', this.types)
     },
     editThis(row) {
       console.log('row: ', row)

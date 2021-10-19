@@ -50,7 +50,7 @@ export default {
   font-size: 24px !important;
 }
 .new-product-body {
-  border: 1px solid green;
+  /* border: 1px solid rgb(128, 0, 0); */
   height: calc(100vh - 50px);
   overflow: hidden;
   background-color: white;
