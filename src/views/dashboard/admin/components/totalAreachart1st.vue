@@ -213,6 +213,7 @@ export default {
     },
     ...mapActions('dashboard', ['GET_SIZES']),
     async nameChangedHandler(product_name) {
+      this.listQuery.page = 1
       this.gettingDataByName = true
       try {
         const res = await request({
@@ -248,6 +249,7 @@ export default {
     },
     async sizeChangedHandler(size) {
       this.currentName = ''
+      this.listQuery.page = 1
       this.gettingData = true
       try {
         const res = await request({
@@ -317,12 +319,18 @@ export default {
   background-color: transparent !important;
 }
 
+.pagination > .pagination-container > .el-pagination > .el-pagination__total {
+  color: white !important;
+}
+
 .pagination > .pagination-container > .el-pagination > .el-pager > .number  {
-  background-color: rgba(247, 247, 247, 0.11) !important;
+  background-color: rgba(247, 247, 247, 0.425) !important;
+  color: black !important;
 }
 
 .pagination > .pagination-container > .el-pagination > .el-pager > .number.active  {
   background-color: rgb(0, 153, 255) !important;
+  color: white !important;
 }
 
 .select-name-wrapper {

@@ -45,9 +45,9 @@
 
                   <el-image
                     style="width: 30px; height: 30px"
-                    :src="baseApi + scope.row.photo_path"
+                    :src="scope.row.photo_path"
                     fit="scale-down"
-                    @click="openImg(baseApi + scope.row.photo_path)"
+                    @click="openImg(scope.row.photo_path)"
                   />
                 </template>
               </el-table-column>

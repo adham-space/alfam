@@ -3,7 +3,7 @@ export default {
     // area value is changing
 
     areaIsChanging(newArea, currentRow) {
-      this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
       // set new area to its object
       if (newArea) {
         newArea = parseFloat(newArea)
@@ -54,7 +54,7 @@ export default {
     },
 
     item_numIsChanging(newItemNum, currentRow) { // total item num is inserting
-      this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
       if (newItemNum) {
         this.currentProduct.item_num = parseInt(newItemNum)
         this.currentProduct.packTotalArea = this.truncateToDecimals(parseFloat(this.currentProduct.item_num * this.currentProduct.area_of_an_item), 4)
@@ -76,7 +76,7 @@ export default {
       }
     },
     pack_numIsChanging(newPacketNum, currentRow) { // packet_num is inserting
-      this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
       if (newPacketNum) {
         this.currentProduct.pack_num = parseInt(newPacketNum)
         this.currentProduct.item_num =
@@ -99,7 +99,7 @@ export default {
       }
     },
     over_pack_numIsChanging(newOverPacketNum, currentRow) { // over_packet items num calculation
-      this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
       if (newOverPacketNum) {
         this.currentProduct.over_pack_num = parseInt(newOverPacketNum) > this.currentProduct.number_of_items ? this.currentProduct.number_of_items : parseInt(newOverPacketNum)
         // calc item num
@@ -122,7 +122,7 @@ export default {
       }
     },
     base_priceIsChanging(base_price_changed, currentRow) { // area value is changing
-      this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
       if (base_price_changed) {
         this.currentProduct.base_price_changed = parseFloat(base_price_changed) // set new area to its object
         this.currentProduct.sum = parseFloat((this.currentProduct.base_price_changed * this.currentProduct.packTotalArea).toFixed(4))
@@ -177,7 +177,7 @@ export default {
     },
 
     calcPriceprice_byChanged(val, currentRow) {
-      this.currentProduct = this.tableDataComputed.find((item) => item.code === currentRow.code)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
       this.currentProduct.price_by = val
       this.calcPrice()
       this.calculateTotalPrice()

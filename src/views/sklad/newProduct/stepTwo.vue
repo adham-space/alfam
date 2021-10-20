@@ -84,6 +84,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { Message } from 'element-ui'
 export default {
   data() {
     return {
@@ -92,6 +93,7 @@ export default {
       code: '',
       size: '',
       photo: [],
+      last_changedId: -1,
       formTwo: {
         code: '',
         height: '',
@@ -121,16 +123,27 @@ export default {
       type.size = `${type.height}*${type.width}`
       type.isMain = this.formTwo.isMain
       type.photo = this.photo[0]
+      this.last_changedId = type.id
       const index = this.types.findIndex((typ) => typ.id + '' === type.id + '')
-      this.$store.commit('newProduct/SET_TYPE', { index: index, type })
-      this.formTwo = {
-        code: '',
-        height: '',
-        width: '',
-        isMain: false
+      const isThereTheCode = this.types.find(typ => typ.id !== type.id && typ.code === type.code)
+      if (isThereTheCode) {
+        Message({
+          message: 'Bir hil Kod Mumkin emas',
+          type: 'error',
+          duration: 3000
+        })
+      } else {
+        this.$store.commit('newProduct/SET_TYPE', { index: index, type })
+        this.formTwo = {
+          id: '',
+          code: '',
+          height: '',
+          width: '',
+          isMain: false
+        }
+        this.photo = []
+        this.currentType = ''
       }
-      this.photo = []
-      this.currentType = ''
     },
     handleChange(file, fileList) {
       this.photo = [file]
@@ -143,15 +156,36 @@ export default {
       this.photo = [fileList[0]]
     },
     typeChoosen(val) {
-      console.log(val)
+      console.log(val, 'type changed')
       const type = this.types.find((typ) => typ.id === val)
-      if (type) {
-        console.log('isMain', type.isMain)
+      console.log('types', type)
+      if (type && !!type.code === false) {
         this.formTwo = {
-          code: type.code ? type.code : '',
-          height: type.height ? type.height : '',
-          width: type.width ? type.width : '',
-          isMain: type.isMain ? type.isMain : false
+          id: type.id,
+          code: '',
+          height: '',
+          width: '',
+          isMain: false
+        }
+        if (this.types.length >= 0 && this.last_changedId > -1) {
+          const type = this.types.find(ty => ty.id === this.last_changedId)
+          console.log('last_changedId', this.last_changedId)
+          this.formTwo = {
+            id: type.id ? type.id : '',
+            code: type.code,
+            height: type.height,
+            width: type.width,
+            isMain: false
+          }
+        }
+        this.photo = type.photo ? [type.photo] : []
+      } else if (type && !!type.code === true) {
+        this.formTwo = {
+          id: type.id,
+          code: type.code,
+          height: type.height,
+          width: type.width,
+          isMain: false
         }
         this.photo = type.photo ? [type.photo] : []
       }
