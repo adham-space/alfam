@@ -15,7 +15,16 @@
       :options="chartOptionsBar"
       :series="seriesBar"
     />
-    <div class="select-size-wrapper-1">
+    <div class="pagination" :style="{'left': '2%', 'width': '20rem', 'background-color': 'transparent'}">
+      <Pagination
+        :total="total"
+        :page.sync="listQuery.page"
+        :limit.sync="listQuery.limit"
+        layout="prev, pager, next, total"
+        @pagination="getList"
+      />
+    </div>
+    <div class="select-size-wrapper-1" :style="currentSize !== '' ? {'right': '50%'}: {'right': '45%'}">
       <el-select
         v-model="currentSize"
         clearable
@@ -59,14 +68,21 @@
 <script>
 import VueApexCharts from 'vue-apexcharts'
 import request from '@/utils/request'
+import Pagination from '@/components/Pagination'
 import { toThousandFilter } from '@/filters/index'
 import { mapState } from 'vuex'
 export default {
   components: {
-    VueApexCharts
+    VueApexCharts,
+    Pagination
   },
   data() {
     return {
+      listQuery: {
+        page: 1,
+        limit: 15
+      },
+      total: 0,
       gettingData: false,
       currentSize: '',
       currentName: '',
@@ -78,6 +94,13 @@ export default {
           data: []
         }
       ],
+      seriesBarAll: [
+        {
+          name: '',
+          data: []
+        }
+      ],
+      categoriesAll: [],
       chartOptionsBar: {
         chart: {
           type: 'bar',
@@ -184,6 +207,7 @@ export default {
   },
   methods: {
     async nameChangedHandler(product_name) {
+      this.listQuery.page = 1
       this.gettingDataByName = true
       try {
         const res = await request({
@@ -195,16 +219,25 @@ export default {
           }
         })
         this.gettingDataByName = false
+        this.seriesBarAll[0].data = []
+        this.categoriesAll = []
         const chart1st = res.data
         this.seriesBar[0].data = []
         this.chartOptionsBar.xaxis.categories = []
         chart1st.forEach((ch) => {
           if (product_name === '') {
-            this.seriesBar[0].data.push(parseFloat((ch.total_cost).toFixed(2)))
-            this.chartOptionsBar.xaxis.categories.push(ch.product_name)
+            this.total = res.data.length
+            this.seriesBarAll[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.categoriesAll.push(ch.product_name)
+            // this.seriesBar[0].data.push(parseFloat((ch.total_cost).toFixed(2)))
+            // this.chartOptionsBar.xaxis.categories.push(ch.product_name)
           } else {
-            this.seriesBar[0].data.push(parseFloat((ch.base_price * ch.total_area).toFixed(2)))
-            this.chartOptionsBar.xaxis.categories.push(ch.size + ' ' + ch.type_name)
+            this.total = res.data.length
+            this.seriesBarAll[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.categoriesAll.push(ch.size + ' ' + ch.type_name)
+
+            // this.seriesBar[0].data.push(parseFloat((ch.base_price * ch.total_area).toFixed(2)))
+            // this.chartOptionsBar.xaxis.categories.push(ch.size + ' ' + ch.type_name)
           }
           this.chartOptionsBar.subtitle.text =
             'Жами: ' +
@@ -214,8 +247,9 @@ export default {
               )
             )
         })
+        this.setWithPagination()
         console.log('need to be changed')
-        this.$refs.totalCostRef.refresh()
+        // this.$refs.totalCostRef.refresh()
       } catch (err) {
         this.gettingData = false
         console.error(err)
@@ -223,6 +257,7 @@ export default {
     },
     async sizeChangedHandler(size) {
       this.gettingData = true
+      this.listQuery.page = 1
 
       try {
         const res = await request({
@@ -234,26 +269,46 @@ export default {
         })
         this.gettingData = false
         const chart1st = res.data
-        this.seriesBar[0].data = []
-        this.chartOptionsBar.xaxis.categories = []
+        this.seriesBarAll[0].data = []
+        this.categoriesAll = []
         chart1st.forEach(ch => {
           if (size === '') {
-            this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
-            this.chartOptionsBar.xaxis.categories.push(ch.size)
+            this.total = res.data.length
+            this.seriesBarAll[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.categoriesAll.push(ch.size)
+
+            // this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            // this.chartOptionsBar.xaxis.categories.push(ch.size)
           } else {
-            this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
-            this.chartOptionsBar.xaxis.categories.push(ch.product_name)
+            this.total = res.data.length
+            this.seriesBarAll[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.categoriesAll.push(ch.product_name)
+
+            // this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            // this.chartOptionsBar.xaxis.categories.push(ch.product_name)
           }
           this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
         })
 
         // this.seriesBar[0].data = this.seriesBar[0].data.map(value => toThousandFilter(value))
+        this.setWithPagination()
 
-        this.$refs.totalCostRef.refresh()
+        // this.$refs.totalCostRef.refresh()
       } catch (error) {
         this.gettingData = false
         console.error(error)
       }
+    },
+    setWithPagination() {
+      this.$refs.totalCostRef.updateOptions({
+        xaxis: {
+          categories: this.categoriesAll.slice((this.listQuery.page - 1) * 15, (this.listQuery.page - 1) * 15 + this.listQuery.limit)
+        },
+        series: [{
+          name: '',
+          data: this.seriesBarAll[0].data.slice((this.listQuery.page - 1) * 15, (this.listQuery.page - 1) * 15 + this.listQuery.limit)
+        }]
+      }, false, true, false)
     }
   }
 }

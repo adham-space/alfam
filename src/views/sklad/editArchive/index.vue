@@ -268,8 +268,9 @@
             />
           </el-form-item>
           <el-button
-            :disabled="isSaving"
+            :disabled="isSaving || errorOccured"
             style="color: green"
+
             icon="el-icon-check"
             @click="storeEditedToSklad()"
           />
@@ -288,69 +289,66 @@
         border
         :data="edit_batch_of_product"
       >
-        <el-table-column fixed="left" align="center" width="150" label="ТУРИ" prop="product_type_name">
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Тури" prop="product_type_name">
           <template slot-scope="scope">
             {{ getProductTypeName(scope.row.product_type) + (scope.row.broken ? '-синган': '') }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="150" label="ДОНАСИНИ ЮЗАСИ" prop="area_of_an_item">
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий юзаси" prop="total_area" />
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий донаси" prop="total_number_of_items" />
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий пакелтлари" prop="total_number_of_packets">
           <template slot="header">
-            <span>ДОНАСИНИ <br> ЮЗАСИ</span>
+            <span>Умумий<br>пакелтлари</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" width="150" label="1 КАРОБКАДАГИ ДОНАСИ" prop="number_of_items">
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Пакетдан ортиқча" prop="total_number_of_over_packet">
           <template slot="header">
-            <span>1 КАРОБКАДАГИ<br>ДОНАСИ</span>
+            <span>Пакетдан<br>ортиқча</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" width="160" label="1 ТА КАРОБКАНИНГ ОҒИРЛИГИ" prop="wight_of_one_packet">
-          <template slot="header">
-            <span>1 ТА КАРОБКАНИНГ<br>ОҒИРЛИГИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="1 ТА ДОНАСИНИ ОҒИРЛИГИ" prop="weight_of_an_item">
-          <template slot="header">
-            <span>1 ТА ДОНАСИНИ<br>ОҒИРЛИГИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="160" label="1 ТА КАРОБКАНИНГ ЮЗАСИ" prop="area_of_one_packet">
-          <template slot="header">
-            <span>1 ТА КАРОБКАНИНГ <br> ЮЗАСИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="КАССА НАРХИ" prop="base_price" />
-        <el-table-column align="center" width="150" label="БЎЙИЧА" prop="price_by">\
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Касса нархи" prop="base_price" />
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Бўйича" prop="price_by">\
           <template slot-scope="scope">
             {{ scope.row.price_by ? 'Донаси': 'Юзаси (м2)' }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="150" label="МАҚСАД" prop="target_date">
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Донасини юзаси" prop="area_of_an_item">
+          <template slot="header">
+            <span>Донасини <br> юзаси</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip align="center" width="150" label="1 Почкадаги донаси" prop="number_of_items">
+          <template slot="header">
+            <span>1 Почкадаги<br>донаси</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip align="center" width="160" label="1 Почкасини оғирлиги" prop="wight_of_one_packet">
+          <template slot="header">
+            <span>1 Почкасини<br>оғирлиги</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip align="center" width="150" label="1 Донасиини оғирлиги" prop="weight_of_an_item">
+          <template slot="header">
+            <span>1 Донасиини<br>оғирлиги</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip align="center" width="160" label="1 Почкасини юзаси" prop="area_of_one_packet">
+          <template slot="header">
+            <span>1 Почкасини <br> юзаси</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Мақсад" prop="target_date">
           <template slot-scope="scope">
             {{ getDate(scope.row.target_date) }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="150" label="УМИМИЙ ЮЗАСИ" prop="total_area" />
-        <el-table-column align="center" width="150" label="УМИМИЙ ДОНАСИНИ" prop="total_number_of_items" />
-        <el-table-column align="center" width="150" label="УМИМИЙ ПАКЕТЛАРИНИ" prop="total_number_of_packets">
+
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий оғирлиги" prop="total_wight_of_packets">
           <template slot="header">
-            <span>УМИМИЙ<br>ПАКЕТЛАРИНИ</span>
+            <span>Умумий<br>оғирлиги</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" width="150" label="УМИМИЙ ОҒИРЛИГИ" prop="total_wight_of_packets">
-          <template slot="header">
-            <span>УМИМИЙ<br>ОҒИРЛИГИ</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="ПАКЕТДАН ОРТИҚЧА" prop="total_number_of_over_packet">
-          <template slot="header">
-            <span>ПАКЕТДАН<br>ОРТИҚЧА</span>
-          </template>
-        </el-table-column>
-        <!-- <el-table-column fixed="right">
-          <template slot-scope="scope">
-            <el-button type="danger" icon="el-icon-delete" @click="removeFromNewBatch(scope.rowIndex)" />
-          </template>
-        </el-table-column> -->
       </el-table>
     </el-col>
     <el-dialog
@@ -372,9 +370,12 @@
 import { mapActions, mapState, mapMutations } from 'vuex'
 import request from '@/utils/request'
 import { Message } from 'element-ui'
+import serachProduct from './mixins/searchForProduct'
 export default {
+  mixins: [serachProduct],
   data() {
     return {
+      todays_product_nums: '',
       there_is_product_type: false,
       currentTableKey: 0,
       editing_same_type: false,
@@ -548,7 +549,7 @@ export default {
       'editing_product_id',
       'products_types',
       'products',
-      'todays_product_nums',
+      // 'todays_product_nums',
       'isThereBroken'
     ]),
     disableDatePicker() {
@@ -578,9 +579,8 @@ export default {
         })
       }
       console.log(this.formDataObj.singan ? 0 : 1)
-      console.log('todays_product_nums', this.todays_product_nums)
       return `${this.productName}-${this.typeName}-${
-        this.todays_product_nums + 1
+        this.todays_product_nums
       }${this.formDataObj.singan ? '-broken' : ''}-${date.getDate()}/${
         date.getMonth() + 1
       }/${date.getFullYear()}`
@@ -629,6 +629,12 @@ export default {
         })
     }, 200)
     this.formDataObj.currentProduct = this.editing_product_id
+    setTimeout(() => {
+      let batch = this.$route.params.id.split('-')
+      batch = Number(batch[batch.length - 1])
+      this.getInventarForProduct(this.editing_product_id, batch)
+      this.todays_product_nums = batch
+    }, 250)
     // this.GET_PRODUCT_TYPES()
     // this.GET_PRODUCTS()
   },
@@ -682,7 +688,7 @@ export default {
     },
     storeEditedToSklad() {
       const sendData = {
-        partiya: this.todays_product_nums + 1,
+        partiya: this.todays_product_nums,
         title: this.partiya_title,
         product: this.formDataObj.currentProduct,
         product_type: this.formDataObj.current_subType,
@@ -708,19 +714,46 @@ export default {
       console.log('send', sendData)
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {
-          this.SET_EDIT_BATCH_OF_PRODUCTS(sendData)
-          if (this.editTarget) {
-            this.SET_TARGETS({ target: this.formDataObj.target_date })
+          if (this.checkIfWrongAmount(this.sendData.product_type)) {
+            this.SET_EDIT_BATCH_OF_PRODUCTS(sendData)
+            if (this.editTarget) {
+              this.SET_TARGETS({ target: this.formDataObj.target_date })
+            }
+            this.editTarget = false
+            this.currentTableKey = Math.floor(Math.random() * 100)
+            this.resetAll()
           }
-          this.editTarget = false
-          this.currentTableKey = Math.floor(Math.random() * 100)
-          this.resetAll()
+          // else {
+
+          // }
         } else {
           return false
         }
       })
     },
-
+    checkIfWrongAmount(product_type, total_number_of_items) {
+      return true
+      // const current_inventar = inventar.find(inv => inv.product_type === product_type)
+      // if (current_inventar) {
+      //   if (total_number_of_items - current_inventar.total_number_of_items >= 0) {
+      //     return true
+      //   } else {
+      //     Message({
+      //       message: 'Inventardagi maxsulot miqdori kiritilgandan kam qolgan ',
+      //       type: 'warning',
+      //       duration: 1500
+      //     })
+      //     return false
+      //   }
+      // } else {
+      //   Message({
+      //     message: 'Inventar topilmadi',
+      //     type: 'warning',
+      //     duration: 1500
+      //   })
+      //   return false
+      // }
+    },
     changedBrokenState(val) {
       const indexOfExistingProductType = this.edit_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType)
       this.there_is_product_type = indexOfExistingProductType !== -1
@@ -801,14 +834,13 @@ export default {
       if (pr) {
         this.currentType = pr.product_types.find((type) => type._id === val)
         this.typeName = this.currentType.type_name
-        this.GET_TODAYS_PRODUCTS({
-          product: this.formDataObj.currentProduct,
-          product_type: this.formDataObj.current_subType,
-          isBroken: this.formDataObj.singan
-        }).then(() => {
-          console.log('getting target date aa')
-          this.getTargetDate(this.formDataObj.current_subType)
-        })
+        // this.GET_TODAYS_PRODUCTS({
+        //   product: this.formDataObj.currentProduct,
+        //   product_type: this.formDataObj.current_subType,
+        //   isBroken: this.formDataObj.singan
+        // }).then(() => {
+        this.getTargetDate(this.formDataObj.current_subType)
+        // })
       } else {
         this.currentType = {}
         this.formDataObj.weightOfPacket = ''

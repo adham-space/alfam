@@ -113,6 +113,7 @@ export default {
         })
         this.finishing = false
         this.Cancel()
+        this.$emit('updateProductsList')
       } catch (error) {
         this.finishing = false
         console.log(error)

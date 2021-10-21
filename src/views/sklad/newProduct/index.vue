@@ -1,9 +1,9 @@
 <template>
   <el-row class="new-product-body">
-    <editWizard v-if="is_editing" />
-    <newWizard v-else />
+    <editWizard v-if="is_editing" @updateProductsList="updateProductsList()" />
+    <newWizard v-else @updateProductsList="updateProductsList()" />
     <el-col :span="14">
-      <productsListPage />
+      <productsListPage ref="productListPageRef" />
     </el-col>
   </el-row>
 </template>
@@ -29,7 +29,9 @@ export default {
     ...mapState('newProduct', ['is_editing'])
   },
   methods: {
-
+    updateProductsList() {
+      this.$refs.productListPageRef.getData()
+    }
   }
 }
 </script>

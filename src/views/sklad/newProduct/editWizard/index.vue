@@ -95,6 +95,7 @@ export default {
           type: 'success'
         })
         this.finishing = false
+        this.$emit('updateProductsList')
         this.Cancel()
       } catch (error) {
         this.finishing = false
