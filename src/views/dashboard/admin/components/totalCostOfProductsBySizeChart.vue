@@ -206,6 +206,9 @@ export default {
     this.sizeChangedHandler('')
   },
   methods: {
+    getList() {
+      this.setWithPagination()
+    },
     async nameChangedHandler(product_name) {
       this.listQuery.page = 1
       this.gettingDataByName = true
@@ -233,7 +236,7 @@ export default {
             // this.chartOptionsBar.xaxis.categories.push(ch.product_name)
           } else {
             this.total = res.data.length
-            this.seriesBarAll[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.seriesBarAll[0].data.push(parseFloat(((ch.base_price * ch.total_area)).toFixed(2)))
             this.categoriesAll.push(ch.size + ' ' + ch.type_name)
 
             // this.seriesBar[0].data.push(parseFloat((ch.base_price * ch.total_area).toFixed(2)))

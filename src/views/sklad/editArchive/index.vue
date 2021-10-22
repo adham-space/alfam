@@ -84,6 +84,7 @@
                       style="width: 150px"
                       type="number"
                       placeholder="Донаси"
+                      @input="packetSizeChanged"
                     /> </el-form-item></span>
                 <span
                   style="margin-top: 1rem; margin-left: 1rem"
@@ -97,6 +98,7 @@
                       style="width: 150px"
                       type="number"
                       placeholder="Кг"
+                      @input="packetSizeChanged"
                     />
                   </el-form-item>
                 </span>
@@ -714,7 +716,7 @@ export default {
       console.log('send', sendData)
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {
-          if (this.checkIfWrongAmount(this.sendData.product_type)) {
+          if (this.checkIfWrongAmount(sendData.product_type, sendData.total_number_of_items)) {
             this.SET_EDIT_BATCH_OF_PRODUCTS(sendData)
             if (this.editTarget) {
               this.SET_TARGETS({ target: this.formDataObj.target_date })
@@ -732,27 +734,29 @@ export default {
       })
     },
     checkIfWrongAmount(product_type, total_number_of_items) {
-      return true
-      // const current_inventar = inventar.find(inv => inv.product_type === product_type)
-      // if (current_inventar) {
-      //   if (total_number_of_items - current_inventar.total_number_of_items >= 0) {
-      //     return true
-      //   } else {
-      //     Message({
-      //       message: 'Inventardagi maxsulot miqdori kiritilgandan kam qolgan ',
-      //       type: 'warning',
-      //       duration: 1500
-      //     })
-      //     return false
-      //   }
-      // } else {
-      //   Message({
-      //     message: 'Inventar topilmadi',
-      //     type: 'warning',
-      //     duration: 1500
-      //   })
-      //   return false
-      // }
+      const current_inventar = this.inventar.findIndex(inv => inv.product_type === product_type)
+      if (current_inventar >= 0) {
+        console.log('this.edit_batch_of_product[current_inventar].total_number_of_items', this.edit_batch_of_product[current_inventar].total_number_of_items, 'total_number', total_number_of_items)
+        if (this.edit_batch_of_product[current_inventar].total_number_of_items - total_number_of_items <= 0 ||
+        this.edit_batch_of_product[current_inventar].total_number_of_items - total_number_of_items <= this.inventar[current_inventar].total_number_of_items) {
+          return true
+        } else {
+          Message({
+            message: 'Inventardagi maxsulot miqdori kamaytiriligan miqdordan kam qolgan: ' +
+            `Kamaygan miqdor: ${this.edit_batch_of_product[current_inventar].total_number_of_items - total_number_of_items} va Inventardagi miqdor: ${this.inventar[current_inventar].total_number_of_items}`,
+            type: 'error',
+            duration: 3500
+          })
+          return false
+        }
+      } else {
+        Message({
+          message: 'Inventar topilmadi',
+          type: 'warning',
+          duration: 1500
+        })
+        return false
+      }
     },
     changedBrokenState(val) {
       const indexOfExistingProductType = this.edit_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType)
@@ -868,6 +872,7 @@ export default {
       this.formDataObj.numberOfPacket = parseInt((this.formDataObj.totalNumberOfItem / this.formDataObj.numberOfItems).toFixed(2))
     },
     changedTotalNumber(num) {
+      console.log('and total number triggers', num)
       this.formDataObj.totalNumberOfItem = Number(num)
       this.formDataObj.numberOfPacket = parseInt(this.formDataObj.totalNumberOfItem / this.formDataObj.numberOfItems)
       this.formDataObj.overPacketNumberOfItems = this.formDataObj.totalNumberOfItem % this.formDataObj.numberOfItems
@@ -1001,6 +1006,13 @@ export default {
             type: 'error'
           })
         })
+    },
+    packetSizeChanged(num) {
+      console.log('this.formDataObj.numberOfItems', this.formDataObj.numberOfItems)
+      if (num && this.formDataObj.totalNumberOfItem) {
+        this.changedTotalNumber(this.formDataObj.totalNumberOfItem)
+        this.totalWeight()
+      }
     }
   }
 }

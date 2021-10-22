@@ -23,6 +23,8 @@ export default {
           type: 'error'
         })
       })
+      this.inventar = this.inventar.data
+      console.log('Inventars', this.inventar)
     }
   }
 }
