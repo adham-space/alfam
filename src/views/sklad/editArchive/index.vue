@@ -281,7 +281,7 @@
     </el-col>
     <el-col :span="13" style="height: calc(100vh - 180px); overflow-y: auto">
       <el-button
-        :disabled="isSaving"
+        :disabled="isSaving|| true"
         :loading="isSaving"
         style="margin: 0 0 .5em .5em; text-align: right"
         @click="saveAllEditedToSklad()"
