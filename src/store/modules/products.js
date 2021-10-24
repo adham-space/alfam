@@ -93,7 +93,9 @@ const state = {
 }
 
 const mutations = {
-
+  PUSH_EDIT_BATCH_OF_PRODUCTS: (state, data) => {
+    state.edit_batch_of_product.push(data)
+  },
   SET_TARGETS: (state, targets) => {
     for (let i = 0; i < state.edit_batch_of_product.length; i++) {
       console.log('targets.target', targets.target)
@@ -106,7 +108,7 @@ const mutations = {
     state.edit_batch_of_product = pr.products
   },
   SET_EDIT_BATCH_OF_PRODUCTS: (state, data) => {
-    const currnetProductIndex = state.edit_batch_of_product.findIndex(pr => pr.product_type === data.product_type)
+    const currnetProductIndex = state.edit_batch_of_product.findIndex(pr => pr.product_type === data.product_type && data.broken === pr.broken)
     if (currnetProductIndex > -1) {
       state.edit_batch_of_product[currnetProductIndex] = {
         ...state.edit_batch_of_product[currnetProductIndex],

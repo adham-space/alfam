@@ -281,7 +281,7 @@
     </el-col>
     <el-col :span="13" style="height: calc(100vh - 180px); overflow-y: auto">
       <el-button
-        :disabled="isSaving|| true"
+        :disabled="isSaving"
         :loading="isSaving"
         style="margin: 0 0 .5em .5em; text-align: right"
         @click="saveAllEditedToSklad()"
@@ -614,13 +614,13 @@ export default {
       }
     }
   },
-  beforeMount() {
-    window.addEventListener('beforeunload', this.preventNav)
-  },
+  // beforeMount() {
+  //   window.addEventListener('beforeunload', this.preventNav)
+  // },
 
-  beforeDestroy() {
-    window.removeEventListener('beforeunload', this.preventNav)
-  },
+  // beforeDestroy() {
+  //   window.removeEventListener('beforeunload', this.preventNav)
+  // },
   mounted() {
     setTimeout(() => {
       this.GET_TARGETS(this.editing_product_id)
@@ -640,17 +640,17 @@ export default {
     // this.GET_PRODUCT_TYPES()
     // this.GET_PRODUCTS()
   },
-  beforeRouteLeave(to, from, next) {
-    // if (this.isEditing) {
-    if (!window.confirm('Тахрирлашни сақланг! Ўзгариш сақалангман, ўзгаришалар ўчирилишига розимисиз')) {
-      return
-    }
-    // }
-    next()
-  },
+  // beforeRouteLeave(to, from, next) {
+  //   // if (this.isEditing) {
+  //   if (!window.confirm('Тахрирлашни сақланг! Ўзгариш сақалангман, ўзгаришалар ўчирилишига розимисиз')) {
+  //     return
+  //   }
+  //   // }
+  //   next()
+  // },
   methods: {
     ...mapMutations('products', [
-      'SET_NEW_BATCH_OF_PRODUCTS',
+      'PUSH_EDIT_BATCH_OF_PRODUCTS',
       'REMOVE_FROM_NEW_BATCH',
       'SET_EDIT_BATCH_OF_PRODUCTS',
       'SET_TARGETS'
@@ -661,11 +661,11 @@ export default {
       'GET_TODAYS_PRODUCTS',
       'GET_TARGETS'
     ]),
-    preventNav(event) {
-      // if (!this.isEditing) return
-      event.preventDefault()
-      event.returnValue = ''
-    },
+    // preventNav(event) {
+    //   // if (!this.isEditing) return
+    //   event.preventDefault()
+    //   event.returnValue = ''
+    // },
 
     getProductTypeName(id) {
       return this.products_types[0].product_types.find(pr => pr._id === id).type_name
@@ -711,23 +711,37 @@ export default {
         description: this.formDataObj.description,
         target_date: this.formDataObj.target_date,
         editTargetDate: this.editTarget,
-        editing_same_type: this.editing_same_type
+        editing_same_type: this.editing_same_type,
+        new: false
       }
       console.log('send', sendData)
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {
-          if (this.checkIfWrongAmount(sendData.product_type, sendData.total_number_of_items)) {
-            this.SET_EDIT_BATCH_OF_PRODUCTS(sendData)
-            if (this.editTarget) {
-              this.SET_TARGETS({ target: this.formDataObj.target_date })
-            }
-            this.editTarget = false
+          let isThereBroken = 0
+          if (this.formDataObj.singan) { // agar singan bo'lsa tekshirish garak singon avvaldan bomi adi
+            isThereBroken = this.edit_batch_of_product.findIndex(
+              pr => pr.product_type === sendData.product_type && pr.broken
+            )
+          }
+          if (isThereBroken === -1) {
+            sendData.new = true
+            this.PUSH_EDIT_BATCH_OF_PRODUCTS(sendData)
             this.currentTableKey = Math.floor(Math.random() * 100)
             this.resetAll()
-          }
-          // else {
+          } else {
+            if (this.checkIfWrongAmount(sendData.product_type, sendData.total_number_of_items)) {
+              this.SET_EDIT_BATCH_OF_PRODUCTS(sendData)
+              if (this.editTarget) {
+                this.SET_TARGETS({ target: this.formDataObj.target_date })
+              }
+              this.editTarget = false
+              this.currentTableKey = Math.floor(Math.random() * 100)
+              this.resetAll()
+            }
+            // else {
 
-          // }
+            // }
+          }
         } else {
           return false
         }
@@ -932,7 +946,6 @@ export default {
     },
     setIfAlreadyEnteredType(type_id) {
       const typeObj = this.edit_batch_of_product.find(pr => pr.product_type === type_id)
-
       if (typeObj) {
         this.editing_same_type = true
         console.log('editing_same_type')
@@ -942,7 +955,6 @@ export default {
         this.formDataObj.target_date = typeObj.target_date
         this.formDataObj.weightOfPacket = typeObj.wight_of_one_packet
         this.formDataObj.numberOfItems = typeObj.number_of_items
-
         this.formDataObj.totalArea = typeObj.total_area
         this.formDataObj.overPacketNumberOfItems = typeObj.total_number_of_over_packet
         this.formDataObj.numberOfPacket = typeObj.total_number_of_packets
@@ -982,21 +994,22 @@ export default {
     saveAllEditedToSklad() {
       this.isSaving = true
       request({
-        url: '/products/add-product',
-        method: 'POST',
+        url: '/products/edit-product',
+        method: 'PUT',
         data: { new_batch: this.edit_batch_of_product },
         timeout: 30000
       })
         .then((res) => {
           this.isSaving = false
           this.editTarget = false
-          this.SET_NEW_BATCH_OF_PRODUCTS(-1)
+          this.SET_EDIT_BATCH_OF_PRODUCTS(-1)
           Message({
-            message: 'Махсулот мувоффақиятли сақланди',
+            message: 'Махсулот мувоффақиятли edited',
             duration: 2000,
             type: 'success'
           })
           this.resetAll()
+          this.$router.push('/store/archive')
         })
         .catch((err) => {
           this.isSaving = false
