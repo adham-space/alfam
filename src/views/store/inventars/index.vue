@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row :gutter="10" class="inventars-body">
-      <Tools />
-      <page-body />
+      <Tools @setMapOfProductType="setProductMap" />
+      <page-body ref="pBodyInv" />
     </el-row>
   </div>
 </template>
@@ -15,6 +15,11 @@ export default {
   components: {
     Tools,
     pageBody
+  },
+  methods: {
+    setProductMap() {
+      this.$refs.pBodyInv.mapProductTypes()
+    }
   }
 
 }

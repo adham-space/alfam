@@ -18,13 +18,13 @@ function getArchive(params) {
 
 const state = {
   queryParamsArchive: {
-    search_input: 1,
+    search_input: 'name',
     search_text: '',
     currentPage: 1,
     perPage: 20
   },
   queryParams: {
-    search_input: 1,
+    search_input: 'name',
     search_text: '',
     currentPage: 1,
     perPage: 20
@@ -34,16 +34,19 @@ const state = {
   inventarData: [],
   archiveData: [],
   tblLoading: false,
+  tblLoadingInvs: false,
   currentInventar: null,
   currentArchive: null
 }
 
 const mutations = {
   SET_INVENTARS: (state, d) => {
-    const { data, metadata } = d[0]
+    const { data, metadata } = d[0] ? d[0] : { data: [], metadata: [] }
     state.inventarData = data
-    state.queryParams.currentPage = metadata[0].page
-    state.total = metadata[0].total
+    if (data.length && metadata.length) {
+      state.queryParams.currentPage = metadata[0].page
+      state.total = metadata[0].total
+    }
   },
   SET_ARCHIVES: (state, d) => {
     console.log(d)
@@ -61,6 +64,9 @@ const mutations = {
   SET_TABLE_LOADER: (state) => {
     state.tblLoading = !state.tblLoading
   },
+  SET_TABLE_LOADER_INV: (state, st) => {
+    state.tblLoadingInvs = st
+  },
   SET_QUERY_PARAM(state, data) {
     state.queryParams[data.key] = data.value
   },
@@ -72,14 +78,14 @@ const mutations = {
 const actions = {
   GET_INVENTARS({ commit, state }) {
     return new Promise((resolve, reject) => {
-      commit('SET_TABLE_LOADER')
+      commit('SET_TABLE_LOADER_INV', true)
       getInventars(state.queryParams).then(res => {
         commit('SET_INVENTARS', res.data)
-        commit('SET_TABLE_LOADER')
+        commit('SET_TABLE_LOADER_INV', false)
         resolve()
       }).catch(err => {
         commit('SET_INVENTARS', [])
-        commit('SET_TABLE_LOADER')
+        commit('SET_TABLE_LOADER_INV', false)
         reject(err)
       })
     })

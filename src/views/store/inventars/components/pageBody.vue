@@ -1,7 +1,7 @@
 <template>
   <el-col :span="24" class="inventars-page-body">
     <el-table
-      v-loading="tblLoading"
+      v-loading="tblLoadingInvs"
       style="width: 100%;"
       height="calc(100% - 3.5rem)"
       :data="inventarData"
@@ -39,7 +39,7 @@
                 align="center"
               >
                 <template slot-scope="scope">
-                  {{ productTypeMap[scope.row.product_type].type_name }}
+                  {{ productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].type_name: ''+scope.row.product_type }}
                 </template>
               </el-table-column>
               <el-table-column
@@ -49,7 +49,7 @@
                 align="center"
               >
                 <template slot-scope="scope">
-                  {{ productTypeMap[scope.row.product_type].size }}
+                  {{ productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].size : ''}}
                 </template>
               </el-table-column>
               <el-table-column
@@ -63,9 +63,9 @@
 
                   <el-image
                     style="width: 30px; height: 30px"
-                    :src="productTypeMap[scope.row.product_type].photo_path"
+                    :src="productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].photo_path : ''"
                     fit="scale-down"
-                    @click="openImg(productTypeMap[scope.row.product_type].photo_path)"
+                    @click="openImg(productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].photo_path : '')"
                   />
                   <!-- <editImage /> -->
                 </template>
@@ -249,7 +249,7 @@ export default {
     }
   }),
   computed: {
-    ...mapState('inventars', ['inventarData', 'tblLoading', 'total'])
+    ...mapState('inventars', ['inventarData', 'tblLoadingInvs', 'total'])
   },
   beforeDestroy() {
     // this.SET_SHOP(null)
@@ -276,7 +276,6 @@ export default {
           this.productTypeMap[pr._id] = pr
         })
       })
-      console.log('inventarData', this.productTypeMap)
     },
     toThousandFilter(num) {
       return toThousandFilter(parseFloat(num.toFixed(3)))

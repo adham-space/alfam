@@ -59,7 +59,7 @@
           :lg="{ offset: 0, span: 24 }"
           :md="{ offset: 0, span: 24 }"
         >
-          <el-card v-show="!hidePacketField" shadow="hover" class="box-card">
+          <el-card shadow="hover" class="box-card">
             <div slot="header" class="clearfix">
               <span>1 ТА КАРОБКАНИ МАъЛУМОТИ</span>
             </div>
@@ -81,6 +81,7 @@
                   <el-form-item prop="numberOfItems">
                     <el-input
                       v-model="formDataObj.numberOfItems"
+                      :disabled="hidePacketField"
                       style="width: 150px"
                       type="number"
                       placeholder="Донаси"
@@ -95,6 +96,7 @@
                   <el-form-item prop="weightOfPacket">
                     <el-input
                       v-model="formDataObj.weightOfPacket"
+                      :disabled="hidePacketField"
                       style="width: 150px"
                       type="number"
                       placeholder="Кг"
@@ -139,7 +141,7 @@
                  >БЎЙИЧА:
                  </span>
                   <el-form-item prop="base_priceBy">
-                    <el-switch v-model="formDataObj.base_priceBy" />
+                    <el-switch v-model="formDataObj.base_priceBy" :disabled="hidePacketField" />
                     {{ base_priceByText }}
                   </el-form-item>
                 </span>
@@ -154,13 +156,13 @@
                   <el-form-item prop="target_date">
                     <el-date-picker
                       v-model="formDataObj.target_date"
-                      :disabled="disableDatePicker"
+                      :disabled="disableDatePicker || hidePacketField"
                       type="date"
                       placeholder="МАҚСАД"
                     />
                   </el-form-item>
                 </span>
-                <el-button v-if="isTargetSet" icon="el-icon-edit" type="text" style="margin-left: 1em" @click="editTarget = true" />
+                <el-button v-if="isTargetSet" :disabled="hidePacketField" icon="el-icon-edit" type="text" style="margin-left: 1em" @click="editTarget = true" />
               </div>
             </div>
           </el-card>
@@ -178,6 +180,7 @@
               </span>
               <el-form-item prop="totalArea">
                 <el-input
+
                   v-model="formDataObj.totalArea"
                   style="width: 150px"
                   type="number"

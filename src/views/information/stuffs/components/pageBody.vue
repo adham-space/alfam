@@ -23,7 +23,7 @@
       <el-table-column width="260" align="center" prop="phone" label="Phone number" />
       <el-table-column width="150" align="center" prop="shop" label="Shop">
         <template slot-scope="scope">
-          {{ scope.row.shop.name }}
+          {{ scope.row.shop ? scope.row.shop.name: '' }}
         </template>
       </el-table-column>
       <el-table-column width="150" align="center" prop="date" label="Registred date">

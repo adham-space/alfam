@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row :gutter="10" class="inventars-body">
-      <Tools />
-      <page-body />
+      <Tools @setMapOfProductTypeArch="setProductMap" />
+      <page-body ref="pBodyArc" />
     </el-row>
   </div>
 </template>
@@ -15,6 +15,12 @@ export default {
   components: {
     Tools,
     pageBody
+  },
+  methods: {
+    setProductMap() {
+      console.log('pressed')
+      this.$refs.pBodyArc.mapProductTypes()
+    }
   }
 
 }

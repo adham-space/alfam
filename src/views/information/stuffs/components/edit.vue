@@ -93,7 +93,7 @@ export default {
         lastName: this.currentStuff.lastName,
         address: this.currentStuff.address,
         phone: this.currentStuff.phone,
-        shopId: this.currentStuff.shop._id
+        shopId: this.currentStuff.shop ? this.currentStuff.shop._id : ''
       }
     },
     cancel() {

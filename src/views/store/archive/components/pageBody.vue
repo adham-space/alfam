@@ -39,7 +39,7 @@
                 align="center"
               >
                 <template slot-scope="scope">
-                  {{ productTypeMap[scope.row.product_type].type_name }}
+                  {{ productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].type_name : '' }}
                 </template>
               </el-table-column>
               <el-table-column
@@ -49,7 +49,7 @@
                 align="center"
               >
                 <template slot-scope="scope">
-                  {{ productTypeMap[scope.row.product_type].size }}
+                  {{ productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].size : ''}}
                 </template>
               </el-table-column>
               <el-table-column
@@ -63,9 +63,9 @@
 
                   <el-image
                     style="width: 30px; height: 30px"
-                    :src="productTypeMap[scope.row.product_type].photo_path"
+                    :src="productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].photo_path : ''"
                     fit="scale-down"
-                    @click="openImg(productTypeMap[scope.row.product_type].photo_path)"
+                    @click="openImg(productTypeMap[scope.row.product_type] ? productTypeMap[scope.row.product_type].photo_path : '') "
                   />
                   <!-- <editImage /> -->
                 </template>
@@ -273,13 +273,13 @@ export default {
       this.$router.push('/sklad/edit-archive-product/' + row._id.product.product_name + '-' + row._id.batch)
     },
     mapProductTypes() {
+      console.log('Setting map')
       this.archiveData.forEach(data => {
         const prTypes = data._id.product.product_types
         prTypes.forEach(pr => {
           this.productTypeMap[pr._id] = pr
         })
       })
-      console.log('inventarData', this.productTypeMap)
     },
     toThousandFilter(num) {
       return toThousandFilter(parseFloat(num.toFixed(3)))

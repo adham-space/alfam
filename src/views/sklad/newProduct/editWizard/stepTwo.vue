@@ -38,12 +38,12 @@
         <el-form-item style="">
           <el-col :span="8">
             <el-form-item label="Бўйига (cм)">
-              <el-input v-model="formTwo.height" disabled placeholder="Бўйига (cм)" />
+              <el-input v-model="formTwo.height" placeholder="Бўйига (cм)" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="Энига (cм)">
-              <el-input v-model="formTwo.width" disabled placeholder="Энига (cм)" />
+              <el-input v-model="formTwo.width" placeholder="Энига (cм)" />
             </el-form-item>
           </el-col>
           <el-col :span="8" style="height: 4.5rem; display: flex; align-items: flex-end">

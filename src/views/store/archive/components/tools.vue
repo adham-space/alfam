@@ -1,22 +1,19 @@
 <template>
   <el-col :span="24" class="archive-page-tools">
     <div style="display: flex">
-      <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Search for driver">
+      <el-input v-model="search_input" clearable style="border: 1px solid transparent" placeholder="Search for driver" @input="searchTypeChanged">
         <el-select
           slot="prepend"
           v-model="search_type"
-          :style="search_type == 1 || search_type == 2 ? {'width': '5.5rem'} : {'width': '10rem'} "
+          :style="{'width': '6rem'} "
           placeholder="Select"
           @change="searchTypeChanged"
         >
-          <el-option label="ID" :value="1" />
-          <el-option label="Name" :value="2" />
-          <el-option label="Registred date" :value="3" />
-          <el-option label="Shopping times" :value="4" />
-          <el-option label="Shopping amount" :value="5" />
+          <el-option label="Номи" :value="'name'" />
+          <el-option label="Размер" :value="'size'" />
         </el-select>
       </el-input>
-      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="GET_ARCHIVE()" />
+      <el-button style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="search()" />
     </div>
     <div style="display: flex">
 <!--      <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
@@ -30,7 +27,7 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     search_input: '',
-    search_type: 1,
+    search_type: 'name',
     addDialog: false,
     editDialog: false,
     delete_Dialog: false
@@ -39,12 +36,27 @@ export default {
     ...mapState('inventars', ['currentOrder'])
   },
   methods: {
-    ...mapMutations('inventars', ['SET_QUERY']),
+    ...mapMutations('inventars', ['SET_QUERY_PARAM_ARCHIVE']),
     ...mapActions('inventars', ['GET_ARCHIVE']),
+    search() {
+      // this.$router.replace({ name: "Archive", query: {[this.search_type]: this.search_input} })
+      this.GET_ARCHIVE().then(() => {
+        console.log('got archive')
+        this.$emit('setMapOfProductTypeArch')
+      })
+      this.SET_QUERY_PARAM_ARCHIVE({
+        key: 'currentPage',
+        value: 1
+      })
+    },
     searchTypeChanged(t) {
-      this.SET_QUERY({
+      this.SET_QUERY_PARAM_ARCHIVE({
         key: 'search_input',
-        value: t
+        value: this.search_type
+      })
+      this.SET_QUERY_PARAM_ARCHIVE({
+        key: 'search_text',
+        value: this.search_input
       })
     }
   }
