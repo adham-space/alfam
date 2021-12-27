@@ -22,6 +22,7 @@
         label="СПЕЦИФИКАЦИЯСИ"
         prop="type_name"
         align="center"
+        fixed="left"
       >
         <template slot-scope="scope">
           {{ scope.row.type_name + (scope.row.broken ? ' - broken': '') }}

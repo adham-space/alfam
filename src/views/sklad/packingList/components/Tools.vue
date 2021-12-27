@@ -1,6 +1,6 @@
 <template>
   <div class="tools-wrapper">
-    <p>List №: {{ order.order_name }}</p>
+    <p>Буюртма №: {{ order.order_name }}</p>
 
     <el-form
       ref="toolBarFormRef"
@@ -8,11 +8,12 @@
       :rules="rules"
       style="width: 100%"
     >
-      <el-form-item prop="currentProduct" label="Product">
+      <el-form-item prop="currentProduct" label="Махсулот">
         <el-select
           v-model="toolBarForm.currentProduct"
           style="width: 100%; background-color: transparent"
-          placeholder="Choose a product"
+          placeholder="Махсулот"
+          filterable
           @change="getProducts"
         >
           <el-option
@@ -33,21 +34,21 @@
           v-model="toolBarForm.isSample"
           style="width: 100%"
           @change="sampleStateChanged"
-        >Sample</el-checkbox>
+        >Образец</el-checkbox>
       </el-form-item>
       <el-form-item v-if="!toolBarForm.isSample" prop="withBorken">
         <el-checkbox
           v-model="toolBarForm.withBorken"
           style="width: 100%"
           @change="brokenStateChanged"
-        >Include borkens</el-checkbox>
+        >Синганлари билан</el-checkbox>
       </el-form-item>
       <el-form-item v-if="!toolBarForm.isSample" prop="currentcustomer">
         <el-select
           v-model="toolBarForm.currentcustomer"
           class="tools-wrapper-item"
           style="width: 100%"
-          placeholder="Choose a customer"
+          placeholder="Ҳаридорни танланг"
           @change="customerChanged"
         >
           <el-option
@@ -65,7 +66,7 @@
           v-model="toolBarForm.currentShop"
           class="tools-wrapper-item"
           style="width: 100%"
-          placeholder="Choose a shop"
+          placeholder="Дўкон"
           @change="shopChanged"
         >
           <el-option
@@ -83,12 +84,12 @@
           v-model="toolBarForm.currentStatus"
           style="width: 100%"
           class="tools-wrapper-item"
-          placeholder="Choose action"
+          placeholder="Жараённи танланг"
           @change="procedureChanged"
         >
-          <el-option label="Sotib olish" :value="1" />
-          <el-option label="Barter (Almashtirish)" :value="2" />
-          <el-option label="Qaytarish" :value="3" />
+          <el-option label="Сотиб олиш" :value="1" />
+          <el-option label="Бартер (Алмаштириш)" :value="2" />
+          <el-option label="Қайтариш" :value="3" />
         </el-select>
       </el-form-item>
 
@@ -97,7 +98,7 @@
           v-model="toolBarForm.currentDriver"
           class="tools-wrapper-item"
           style="width: 100%"
-          placeholder="Choose a Driver"
+          placeholder="Ҳайдовчи"
           @change="currentDriverChanged"
         >
           <el-option
@@ -114,12 +115,12 @@
           v-model="toolBarForm.costOfUpload"
           type="number"
           class="tools-wrapper-item"
-          placeholder="Cost to upload (so'm)"
+          placeholder="Пагрузка пули"
           @change="costOfUploadChanging"
         />
       </el-form-item>
 
-      <el-form-item v-if="!toolBarForm.isSample" label="Is debt?" prop="isDebt">
+      <el-form-item v-if="!toolBarForm.isSample" label="Қарзгами?" prop="isDebt">
         <el-switch
           v-model="toolBarForm.isDebt"
           active-color="#13ce66"
@@ -130,7 +131,7 @@
 
       <el-form-item
         v-if="toolBarForm.isDebt"
-        label="Debt return date"
+        label="Қарзни қайтариш санаси"
         prop="debtDate"
       >
         <el-date-picker
@@ -139,14 +140,14 @@
           format="yyyy-MM-dd"
           value-format="timestamp"
           style="margin-bottom: 1em"
-          placeholder="Debt back date"
+          placeholder="Қарзни қайтариш санаси"
           @change="setReturnDebtDate"
         />
       </el-form-item>
 
       <el-form-item
         v-if="toolBarForm.isDebt"
-        label="Debt description"
+        label="Қарзни изоҳи"
         prop="debtDescription"
       >
         <el-input
@@ -164,8 +165,8 @@
         :disabled="order_saving"
         :loading="order_saving"
         @click="validateOrder()"
-      >Save</el-button>
-      <el-button type="danger" @click="reset_all()">Cancel</el-button>
+      >Сохранить</el-button>
+      <el-button type="danger" @click="reset_all()">Отменить</el-button>
     </div>
   </div>
 </template>

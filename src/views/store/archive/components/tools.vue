@@ -35,13 +35,23 @@ export default {
   computed: {
     ...mapState('inventars', ['currentOrder'])
   },
+  mounted() {
+    if ('size' in this.$route.query) {
+      this.search_type = 'size'
+      this.search_input = this.$route.query.size
+      this.searchTypeChanged()
+    } else if ('name' in this.$route.query) {
+      this.search_type = 'name'
+      this.search_input = this.$route.query.name
+      this.searchTypeChanged()
+    }
+  },
   methods: {
     ...mapMutations('inventars', ['SET_QUERY_PARAM_ARCHIVE']),
     ...mapActions('inventars', ['GET_ARCHIVE']),
     search() {
-      // this.$router.replace({ name: "Archive", query: {[this.search_type]: this.search_input} })
+      this.$router.replace({ name: 'Archive', query: { [this.search_type]: this.search_input }})
       this.GET_ARCHIVE().then(() => {
-        console.log('got archive')
         this.$emit('setMapOfProductTypeArch')
       })
       this.SET_QUERY_PARAM_ARCHIVE({
@@ -49,7 +59,7 @@ export default {
         value: 1
       })
     },
-    searchTypeChanged(t) {
+    searchTypeChanged() {
       this.SET_QUERY_PARAM_ARCHIVE({
         key: 'search_input',
         value: this.search_type

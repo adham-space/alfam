@@ -249,12 +249,16 @@ export default {
     }
   }),
   computed: {
-    ...mapState('inventars', ['archiveData', 'tblLoading', 'total_archive'])
+    ...mapState('inventars', ['archiveData', 'tblLoading', 'total_archive', 'queryParamsArchive'])
   },
   beforeDestroy() {
     // this.SET_SHOP(null)
   },
   mounted() {
+    this.listQuery = {
+      page: this.queryParamsArchive.currentPage,
+      limit: this.queryParamsArchive.perPage
+    }
     this.GET_ARCHIVE().then(() => {
       this.mapProductTypes()
     })

@@ -41,19 +41,29 @@ const state = {
 
 const mutations = {
   SET_INVENTARS: (state, d) => {
-    const { data, metadata } = d[0] ? d[0] : { data: [], metadata: [] }
-    state.inventarData = data
+    const { data, metadata } = d[0]
+
     if (data.length && metadata.length) {
+      state.inventarData = data
       state.queryParams.currentPage = metadata[0].page
       state.total = metadata[0].total
+    } else {
+      state.inventarData = []
+      state.queryParams.currentPage = 1
+      state.total = 0
     }
   },
   SET_ARCHIVES: (state, d) => {
-    console.log(d)
     const { data, metadata } = d[0]
-    state.archiveData = data
-    state.queryParamsArchive.currentPage = metadata[0].page
-    state.total_archive = metadata[0].total
+    if (data.length && metadata.length) {
+      state.archiveData = data
+      state.queryParamsArchive.currentPage = metadata[0].page
+      state.total_archive = metadata[0].total
+    } else {
+      state.archiveData = []
+      state.queryParamsArchive.currentPage = 1
+      state.total_archive = 0
+    }
   },
   SET_INVENTAR: (state, data) => {
     state.currentInventar = data
@@ -61,8 +71,8 @@ const mutations = {
   SET_ARCHIVE: (state, data) => {
     state.currentArchive = data
   },
-  SET_TABLE_LOADER: (state) => {
-    state.tblLoading = !state.tblLoading
+  SET_TABLE_LOADER: (state, status) => {
+    state.tblLoading = status
   },
   SET_TABLE_LOADER_INV: (state, st) => {
     state.tblLoadingInvs = st
@@ -92,14 +102,14 @@ const actions = {
   },
   GET_ARCHIVE({ commit, state }) {
     return new Promise((resolve, reject) => {
-      commit('SET_TABLE_LOADER')
+      commit('SET_TABLE_LOADER', true)
       getArchive(state.queryParamsArchive).then(res => {
         commit('SET_ARCHIVES', res.data)
-        commit('SET_TABLE_LOADER')
+        commit('SET_TABLE_LOADER', false)
         resolve()
       }).catch(err => {
         commit('SET_ARCHIVES', [])
-        commit('SET_TABLE_LOADER')
+        commit('SET_TABLE_LOADER', false)
         reject(err)
       })
     })

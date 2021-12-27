@@ -146,15 +146,15 @@ export default {
             fontWeight: 'light'
           }
         },
-        subtitle: {
-          text: 'Жами: ',
-          floating: true,
-          align: 'right',
-          offsetY: 0,
-          style: {
-            fontSize: '14px'
-          }
-        },
+        // subtitle: {
+        //   text: 'Жами: ',
+        //   floating: true,
+        //   align: 'right',
+        //   offsetY: 0,
+        //   style: {
+        //     fontSize: '14px'
+        //   }
+        // },
         tooltip: {
           theme: 'dark'
         },

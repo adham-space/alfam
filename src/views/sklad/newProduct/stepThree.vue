@@ -4,7 +4,11 @@
       <h2>{{ $store.state.newProduct.product_name }}</h2>
     </el-col>
     <el-col :span="24">
-      <el-table width="100%" :data="types">
+      <el-table
+        width="100%"
+        :data="types"
+        :row-class-name="tableRowClassName"
+      >
         <el-table-column
           type="index"
           label="№"
@@ -65,6 +69,12 @@ export default {
       this.showImageDilog = true
       this.currentType = name
       this.imageUrl = url
+    },
+    tableRowClassName({ row, rowIndex }) {
+      if (row.isMain) {
+        return 'success-row'
+      }
+      return ''
     }
   }
 }
@@ -76,4 +86,12 @@ export default {
   display: flex;
   justify-content: center;
 }
+
+.el-table .warning-row {
+    background: rgb(255, 208, 208);
+  }
+
+  .el-table .success-row {
+    background: #c5ffa6;
+  }
 </style>

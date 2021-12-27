@@ -26,7 +26,7 @@ export default {
               if (value) {
                 cb()
               } else {
-                cb(new Error('Select debt date'))
+                cb(new Error('Карз қайтариш санасини киритинг'))
               }
             } else {
               cb()
@@ -40,7 +40,7 @@ export default {
             if (value !== '') {
               cb()
             } else {
-              cb(new Error('Enter price'))
+              cb(new Error('Нархини киритинг'))
             }
           }
         }],
@@ -51,7 +51,7 @@ export default {
             if (value) {
               cb()
             } else {
-              cb(new Error('Select driver'))
+              cb(new Error('Ҳайдовчини танланг'))
             }
           }
         }],
@@ -62,7 +62,7 @@ export default {
             if (value) {
               cb()
             } else {
-              cb(new Error('Select action'))
+              cb(new Error('Жараённи танланг'))
             }
           }
         }],
@@ -73,7 +73,7 @@ export default {
             if (value) {
               cb()
             } else {
-              cb(new Error('Select product'))
+              cb(new Error('Махсулотни танланг'))
             }
           }
         }],
@@ -83,7 +83,7 @@ export default {
             if (value) {
               cb()
             } else {
-              cb(new Error('Select customer'))
+              cb(new Error('Ҳаридорни танланг'))
             }
           }
         }]

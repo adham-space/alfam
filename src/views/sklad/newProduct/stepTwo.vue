@@ -175,7 +175,7 @@ export default {
             code: type.code,
             height: type.height,
             width: type.width,
-            isMain: false
+            isMain: type.isMain
           }
         }
         this.photo = type.photo ? [type.photo] : []
@@ -185,7 +185,7 @@ export default {
           code: type.code,
           height: type.height,
           width: type.width,
-          isMain: false
+          isMain: type.isMain
         }
         this.photo = type.photo ? [type.photo] : []
       }

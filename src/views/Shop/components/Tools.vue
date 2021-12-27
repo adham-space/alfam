@@ -12,6 +12,7 @@
           v-model="toolBarForm.currentProduct"
           style="width: 100%; background-color: transparent"
           placeholder="Махсулотни танланг"
+          filterable
           @change="getProducts"
         >
           <el-option
@@ -28,7 +29,7 @@
           v-model="toolBarForm.withBorken"
           style="width: 100%"
           @change="brokenStateChanged"
-        >Include borkens</el-checkbox>
+        >Синганлари билан</el-checkbox>
       </el-form-item>
       <el-form-item prop="currentcustomer">
         <el-select
@@ -44,6 +45,12 @@
             :label="pr.firstName + ' ' + pr.lastName"
             :value="pr._id"
           />
+          <el-option :value="'addNewItem'" style="padding: 0">
+            <el-button
+              style="border: 1px solid transparent; width: 100%; margin: 0"
+              icon="el-icon-plus"
+            />
+          </el-option>
         </el-select>
       </el-form-item>
 
@@ -86,6 +93,7 @@
           placeholder="Погрузка суммаси"
           @change="costOfUploadChanging"
         />
+        <p>Umumiy: 12333</p>
       </el-form-item>
       <el-form-item prop="totalPrice" label="Скидка нархи (охирги нархи)">
         <el-input
@@ -145,14 +153,19 @@
       >Сохранить</el-button>
       <el-button type="danger" @click="reset_all()">Отмена</el-button>
     </div>
+    <AddCustomerDialog :dialog-visible="customerAddDailog" @closeDialog="closeForm()" />
   </div>
 </template>
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex'
+import AddCustomerDialog from '@/views/information/customers/components/addCustomer.vue'
 import request from '@/utils/request'
 import { Message } from 'element-ui'
 import tools_mixin from './mixins/tools.mixin'
 export default {
+  components: {
+    AddCustomerDialog
+  },
   mixins: [tools_mixin],
   props: {
     totalPrice: {
@@ -166,7 +179,8 @@ export default {
   },
   data: () => ({
     order_saving: false,
-    batches: []
+    batches: [],
+    customerAddDailog: false
   }),
   computed: {
     ...mapState('products', ['products_types', 'product', 'order']),
@@ -315,8 +329,18 @@ export default {
       this.SET_ORDER({ key: 'driver', value: val })
     },
     customerChanged(val) {
-      this.SET_ORDER({ key: 'customer', value: val })
-      this.getLastActionOfCustomer()
+      if (val === 'addNewItem') {
+        this.customerAddDailog = true
+      } else {
+        this.SET_ORDER({ key: 'customer', value: val })
+        this.getLastActionOfCustomer()
+      }
+    },
+    closeForm() {
+      this.customerAddDailog = false
+      this.SET_ORDER({ key: 'customer', value: '' })
+      this.toolBarForm.currentcustomer = ''
+      this.GET_CUSTOMERS()
     },
     reset_all() {
       this.toolBarForm.withBorken = false

@@ -35,10 +35,22 @@ export default {
   computed: {
     ...mapState('inventars', ['currentOrder'])
   },
+  mounted() {
+    if ('size' in this.$route.query) {
+      this.search_type = 'size'
+      this.search_input = this.$route.query.size
+      this.searchTypeChanged()
+    } else if ('name' in this.$route.query) {
+      this.search_type = 'name'
+      this.search_input = this.$route.query.name
+      this.searchTypeChanged()
+    }
+  },
   methods: {
     ...mapMutations('inventars', ['SET_QUERY_PARAM']),
     ...mapActions('inventars', ['GET_INVENTARS']),
     search() {
+      this.$router.replace({ name: 'Inventars', query: { [this.search_type]: this.search_input }})
       this.GET_INVENTARS().then(() => {
         this.$emit('setMapOfProductType')
       })

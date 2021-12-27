@@ -304,6 +304,9 @@ export default {
     },
     setWithPagination() {
       this.$refs.totalCostRef.updateOptions({
+        subtitle: {
+          text: 'Жами: ' + toThousandFilter(this.seriesBarAll[0].data.reduce((a, b) => a + b, 0).toFixed(2))
+        },
         xaxis: {
           categories: this.categoriesAll.slice((this.listQuery.page - 1) * 15, (this.listQuery.page - 1) * 15 + this.listQuery.limit)
         },

@@ -1,6 +1,6 @@
 <template>
   <el-row style="height: calc(100vh - 50px)">
-    <el-col :span="9" style="height: calc(100vh - 50px);">
+    <el-col :span="10" style="height: calc(100vh - 50px);">
       <el-table
         v-loading="tableLoading"
         :data="zavskladOrders"
@@ -42,7 +42,7 @@
           label="Action"
         >
           <template slot-scope="scope">
-            <div class="action-btns">
+            <div v-if="scope.row.status === -1" class="action-btns">
               <el-tooltip effect="dark" content="Accept" placement="left-start">
                 <el-button :disabled="order_processing" :icon="order_processing ?'el-icon-loading' :'el-icon-check'" class="action-btn" @click="accept(scope.row._id)" />
               </el-tooltip>
@@ -54,12 +54,13 @@
         </el-table-column>
       </el-table>
     </el-col>
-    <el-col :span="15" style="height: calc(100vh - 50px)">
+    <el-col :span="14" style="height: calc(100vh - 50px)">
       <el-table
         height="100%"
         style="width: 100%"
         size="small"
         :data="currentOrderProducts"
+        :row-class-name="tableRowClassName"
       >
         <el-table-column
           width="150"
@@ -227,6 +228,12 @@ export default {
         console.error(err)
         this.order_processing = false
       })
+    },
+    tableRowClassName({ row, rowIndex }) {
+      if (row.isReturning) {
+        return 'warning-row'
+      }
+      return ''
     }
   }
 }
@@ -245,4 +252,12 @@ export default {
     border: 1px solid transparent;
     margin: 0 !important
 }
+
+ .el-table .warning-row {
+    background: rgb(255, 208, 208);
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>

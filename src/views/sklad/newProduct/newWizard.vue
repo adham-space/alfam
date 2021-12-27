@@ -22,10 +22,18 @@
         <stepThree />
       </tab-content>
       <template slot="custom-buttons-right" style="pardding-right: 2rem">
-        <el-button type="danger" style="margin-right: 1rem" @click="cancelConfirmDialog = true">Отмена</el-button>
+        <el-button
+          type="danger"
+          style="margin-right: 1rem"
+          @click="cancelConfirmDialog = true"
+        >Отмена</el-button>
       </template>
       <template slot="finish">
-        <el-button type="primary" :loading="finishing" :disabled="finishing">Янги махсулотни сақлаш</el-button>
+        <el-button
+          type="primary"
+          :loading="finishing"
+          :disabled="finishing"
+        >Янги махсулотни сақлаш</el-button>
       </template>
       <template slot="next">
         <el-button type="primary">Следуюший</el-button>
@@ -43,10 +51,7 @@
       <span>Янги махсулот яратишни бекор қилишга розимисиз?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelConfirmDialog = false">Йўқ</el-button>
-        <el-button
-          type="danger"
-          @click="Cancel()"
-        >Ха</el-button>
+        <el-button type="danger" @click="Cancel()">Ха</el-button>
       </span>
     </el-dialog>
   </el-col>
@@ -83,42 +88,69 @@ export default {
     async onComplete() {
       try {
         this.finishing = true
+        let main_size_counter = 0
         for (let i = 0; i < this.types.length; i++) {
-          const formData = new FormData()
-          formData.append('image', this.types[i].photo.raw)
-          console.log('this.types[i].photo', this.types[i].photo)
-
-          const filePath = await this.UPLOAD_IMAGES({ name: this.types[i].photo.raw.name, type: this.types[i].photo.raw.type })
-
-          await this.uploadToS3(this.types[i].photo.raw, filePath.data.signedRequest)
-
-          // let results3 = await axios({
-          //   url: filePath.data.signedRequest,
-          //   method: 'PUT',
-          //   data: formData,
-          //   headers: { 'Content-Type': 'multipart/form-data' }
-          // })
-          // console.log("result s3", filePath)
-          this.types[i].photo_path = filePath.data.path
+          if (this.types[i].isMain) {
+            main_size_counter++
+          }
         }
-        const dataObj = {
-          product_name: this.product_name,
-          product_types: this.types
+
+        if (main_size_counter === 1) {
+          for (let i = 0; i < this.types.length; i++) {
+            const formData = new FormData()
+            formData.append('image', this.types[i].photo.raw)
+            console.log('this.types[i].photo', this.types[i].photo)
+
+            const filePath = await this.UPLOAD_IMAGES({
+              name: this.types[i].photo.raw.name,
+              type: this.types[i].photo.raw.type
+            })
+
+            await this.uploadToS3(
+              this.types[i].photo.raw,
+              filePath.data.signedRequest
+            )
+
+            // let results3 = await axios({
+            //   url: filePath.data.signedRequest,
+            //   method: 'PUT',
+            //   data: formData,
+            //   headers: { 'Content-Type': 'multipart/form-data' }
+            // })
+            // console.log("result s3", filePath)
+            this.types[i].photo_path = filePath.data.path
+          }
+
+          const dataObj = {
+            product_name: this.product_name,
+            product_types: this.types
+          }
+
+          // / count mains if there is no any so count is = 0
+
+          await this.UPLOAD_TYPES(dataObj)
+          Message({
+            message: 'Янги махсулот мувоффақиятли яратилди',
+            duration: 3000,
+            type: 'success'
+          })
+          this.finishing = false
+          this.Cancel()
+          this.$emit('updateProductsList')
+          main_size_counter = 0
+        } else {
+          this.finishing = false
+          this.$notify({
+            message: 'Сиз асосий размерни танламагансиз ёки кўп асосий размер белгилагансиз',
+            duration: 3500,
+            type: 'error'
+          })
         }
-        await this.UPLOAD_TYPES(dataObj)
-        Message({
-          message: 'Янги махсулот мувоффақиятли яратилди',
-          duration: 3000,
-          type: 'success'
-        })
-        this.finishing = false
-        this.Cancel()
-        this.$emit('updateProductsList')
       } catch (error) {
         this.finishing = false
         console.log(error)
         Message({
-          message: error,
+          message: error.response.data.message,
           type: 'error',
           duration: 2000
         })
@@ -154,5 +186,4 @@ export default {
 </script>
 
 <style>
-
 </style>
