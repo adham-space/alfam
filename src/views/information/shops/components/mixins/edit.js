@@ -2,7 +2,8 @@ export default {
   data() {
     return {
       newShop: {
-        name: ''
+        name: '',
+        isOther: false
       },
       rules: {
         name: [{

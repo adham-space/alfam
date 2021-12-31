@@ -16,6 +16,12 @@
       </el-table-column>
       <el-table-column align="center" prop="name" label="Name" />
       <el-table-column align="center" prop="sellers" label="Workers" />
+      <el-table-column align="center" prop="isOther" label="isOther">
+        <template slot-scope="scope">
+          <i v-if="scope.row.isOther" class="el-icon-check" style="color: green" />
+          <i v-else class="el-icon-close" style="color: red" />
+        </template>
+      </el-table-column>
     </el-table>
     <div class="pgntion">
       <Pagination

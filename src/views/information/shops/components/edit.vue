@@ -11,9 +11,14 @@
   >
     <el-form ref="newShopRef" :model="newShop" :rules="rules">
       <el-form-item>
-        <el-col :span="24">
+        <el-col :span="18">
           <el-form-item prop="name">
             <el-input v-model="newShop.name" placeholder="Name" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item prop="isOther">
+            <el-checkbox v-model="newShop.isOther">Бегона</el-checkbox>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -66,6 +71,7 @@ export default {
           this.saving = true
           this.EDIT_SHOP({
             name: this.newShop.name,
+            isOther: this.newShop.isOther,
             id: this.newShop._id
           }).then(res => {
             this.saving = false

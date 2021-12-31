@@ -39,18 +39,19 @@
           placeholder="Клиентни танланг"
           @change="customerChanged"
         >
-          <el-option
-            v-for="(pr, i) in customers"
-            :key="i"
-            :label="pr.firstName + ' ' + pr.lastName"
-            :value="pr._id"
-          />
           <el-option :value="'addNewItem'" style="padding: 0">
             <el-button
               style="border: 1px solid transparent; width: 100%; margin: 0"
               icon="el-icon-plus"
             />
           </el-option>
+          <el-option
+            v-for="(pr, i) in customers"
+            :key="i"
+            :label="pr.firstName + ' ' + pr.lastName"
+            :value="pr._id"
+          />
+
         </el-select>
       </el-form-item>
 
@@ -93,7 +94,7 @@
           placeholder="Погрузка суммаси"
           @change="costOfUploadChanging"
         />
-        <p>Umumiy: 12333</p>
+        <p>Пагрузка: {{ toThousandFilter(Math.ceil(total_Area_for_invoice * toolBarForm.costOfUpload)) }}</p>
       </el-form-item>
       <el-form-item prop="totalPrice" label="Скидка нархи (охирги нархи)">
         <el-input
@@ -162,6 +163,7 @@ import AddCustomerDialog from '@/views/information/customers/components/addCusto
 import request from '@/utils/request'
 import { Message } from 'element-ui'
 import tools_mixin from './mixins/tools.mixin'
+import { toThousandFilter } from '@/filters'
 export default {
   components: {
     AddCustomerDialog
@@ -183,7 +185,7 @@ export default {
     customerAddDailog: false
   }),
   computed: {
-    ...mapState('products', ['products_types', 'product', 'order']),
+    ...mapState('products', ['products_types', 'product', 'order', 'total_Area_for_invoice']),
     drivers() {
       return this.$store.state.drivers.tableData
     },
@@ -209,6 +211,9 @@ export default {
       })
   },
   methods: {
+    toThousandFilter(num) {
+      return toThousandFilter(num)
+    },
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCT_BY_TYPE_ID',

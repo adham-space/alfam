@@ -139,6 +139,8 @@
           placeholder="Погрузка суммаси"
           @change="costOfUploadChanging"
         />
+        <p>Пагрузка: {{ toThousandFilter(Math.ceil(total_Area_for_invoice * toolBarForm.costOfUpload)) }}</p>
+
       </el-form-item>
 
       <el-form-item prop="totalPrice" label="Скидка нархи (охирги нархи)">
@@ -198,6 +200,7 @@ import { mapMutations, mapActions, mapState } from 'vuex'
 import request from '@/utils/request'
 import { Message } from 'element-ui'
 import tools_mixin from './mixins/tools.mixin'
+import { toThousandFilter } from '@/filters'
 export default {
   mixins: [tools_mixin],
   props: {
@@ -219,7 +222,7 @@ export default {
   }),
   computed: {
     ...mapState('others/products', ['products']),
-    ...mapState('others/products', ['product', 'order']),
+    ...mapState('others/products', ['product', 'order', 'total_Area_for_invoice']),
     ...mapState('shops', ['shops']),
     drivers() {
       return this.$store.state.drivers.tableData
@@ -265,6 +268,9 @@ export default {
       })
   },
   methods: {
+    toThousandFilter(num) {
+      return toThousandFilter(num)
+    },
     ...mapActions('others/products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCT_BY_TYPE_ID',

@@ -51,12 +51,24 @@
           placeholder="Ҳаридорни танланг"
           @change="customerChanged"
         >
+          <el-option :value="'addNewItemDiller'" style="padding: 0">
+            <el-button
+              style="border: 1px solid transparent; width: 100%; margin: 0"
+              icon="el-icon-plus"
+            >Янги диллер</el-button>
+          </el-option>
           <el-option
             v-for="(pr, i) in customers"
             :key="i"
             :label="pr.firstName + ' ' + pr.lastName"
             :value="pr._id"
           />
+          <!-- <el-option :value="'addNewItemCustomer'" style="padding: 0">
+            <el-button
+              style="border: 1px solid transparent; width: 100%; margin: 0"
+              icon="el-icon-plus"
+            >Янги харидор</el-button>
+          </el-option> -->
         </el-select>
       </el-form-item>
 
@@ -69,6 +81,12 @@
           placeholder="Дўкон"
           @change="shopChanged"
         >
+          <el-option :value="'addNewItemDiller'" style="padding: 0">
+            <el-button
+              style="border: 1px solid transparent; width: 100%; margin: 0"
+              icon="el-icon-plus"
+            >Янги диллер</el-button>
+          </el-option>
           <el-option
             v-for="(pr, i) in shops"
             :key="i"
@@ -118,6 +136,7 @@
           placeholder="Пагрузка пули"
           @change="costOfUploadChanging"
         />
+        <p>Пагрузка: {{ toThousandFilter(Math.ceil(total_Area_for_invoice * toolBarForm.costOfUpload)) }}</p>
       </el-form-item>
 
       <el-form-item v-if="!toolBarForm.isSample" label="Қарзгами?" prop="isDebt">
@@ -168,14 +187,24 @@
       >Сохранить</el-button>
       <el-button type="danger" @click="reset_all()">Отменить</el-button>
     </div>
+    <!-- <AddCustomerDialog :dialog-visible="customerAddDailog" @closeDialog="closeForm()" /> -->
+    <AddDillerDialog :dialog-visible="dillerAddDailog" @closeDialog="closeForm()" />
+
   </div>
 </template>
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex'
+// import AddCustomerDialog from '@/views/information/customers/components/addCustomer.vue'
+import AddDillerDialog from '@/views/information/shops/components/add.vue'
 import request from '@/utils/request'
 import { Message } from 'element-ui'
 import tools_mixin from './mixins/tools.mixin'
+import { toThousandFilter } from '@/filters'
 export default {
+  components: {
+    // AddCustomerDialog,
+    AddDillerDialog
+  },
   mixins: [tools_mixin],
   props: {
     totalPrice: {
@@ -189,11 +218,13 @@ export default {
   },
   data: () => ({
     order_saving: false,
-    batches: []
+    batches: [],
+    customerAddDailog: false,
+    dillerAddDailog: false
 
   }),
   computed: {
-    ...mapState('products', ['products_types', 'product', 'order']),
+    ...mapState('products', ['products_types', 'product', 'order', 'total_Area_for_invoice']),
     ...mapState('shops', ['shops']),
     drivers() {
       return this.$store.state.drivers.tableData
@@ -221,6 +252,16 @@ export default {
       })
   },
   methods: {
+    closeForm() {
+      this.customerAddDailog = false
+      this.dillerAddDailog = false
+      this.SET_ORDER({ key: 'customer', value: '' })
+      this.toolBarForm.currentcustomer = ''
+      this.GET_CUSTOMERS()
+    },
+    toThousandFilter(num) {
+      return toThousandFilter(num)
+    },
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCT_BY_TYPE_ID',
@@ -350,8 +391,14 @@ export default {
       this.SET_ORDER({ key: 'driver', value: val })
     },
     customerChanged(val) {
-      this.SET_ORDER({ key: 'customer', value: val })
-      this.getLastActionOfCustomer()
+      if (val === 'addNewItemDiller') {
+        this.dillerAddDailog = true
+      } else if (val === 'addNewItemCustomer') {
+        this.customerAddDailog = true
+      } else {
+        this.SET_ORDER({ key: 'customer', value: val })
+        this.getLastActionOfCustomer()
+      }
     },
     shopChanged(val) {
       this.SET_ORDER({ key: 'shop', value: val })

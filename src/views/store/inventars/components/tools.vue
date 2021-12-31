@@ -1,7 +1,7 @@
 <template>
   <el-col :span="24" class="inventars-page-tools">
     <div style="display: flex">
-      <el-input v-model="search_input" clearable style="border: 1px solid transparent" placeholder="Search for driver" @input="searchTypeChanged">
+      <el-input v-model="search_input" clearable style="border: 1px solid transparent" placeholder="Қидириш" @input="searchTypeChanged">
         <el-select
           slot="prepend"
           v-model="search_type"

@@ -1,7 +1,7 @@
 <template>
   <el-col :span="24" class="drivers-page-tools">
     <div style="display: flex">
-      <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Search for driver">
+      <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Қидириш">
         <el-select
           slot="prepend"
           v-model="search_type"

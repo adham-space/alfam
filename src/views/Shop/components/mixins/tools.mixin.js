@@ -10,6 +10,7 @@ export default {
         currentcustomer: '',
         currentStatus: '',
         currentDriver: '',
+        costOfUploadPerMeter: 0,
         costOfUpload: '',
         totalPrice: this.totalPrice,
         isDebt: false,

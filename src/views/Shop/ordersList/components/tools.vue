@@ -4,7 +4,7 @@
       <el-input
         v-model="search_input"
         style="border: 1px solid transparent"
-        placeholder="Search for driver"
+        placeholder="Қидириш"
       >
         <el-select
           slot="prepend"

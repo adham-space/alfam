@@ -38,6 +38,7 @@ const state = {
   products: [],
   product: {}, // this is for types like: Ochi To'qi
   getting_product: false,
+  total_Area_for_invoice: 0,
   order: {
     other_id: '',
     batch_: '',
@@ -73,6 +74,9 @@ const mutations = {
   },
   SET_ORDER: (state, order) => {
     state.order[order.key] = order.value
+    state.total_Area_for_invoice = state.product_with_types.reduce((acc, elem) => {
+      return acc + (elem.packTotalArea === '' ? 0 : elem.packTotalArea)
+    }, 0)
   },
   PREPARE_ORDER: (state) => {
     state.order.products = []

@@ -455,7 +455,7 @@ export default {
             trigger: 'change',
             required: true,
             validator: (rule, value, cb) => {
-              if (value) {
+              if (value >= 0) {
                 cb()
               } else {
                 cb(new Error('Number should be enetered'))
@@ -468,7 +468,7 @@ export default {
             trigger: 'change',
             required: true,
             validator: (rule, value, cb) => {
-              if (value) {
+              if (value >= 0) {
                 cb()
               } else {
                 cb(new Error('Wight of packet should be enetered'))
@@ -481,7 +481,7 @@ export default {
             trigger: 'change',
             required: true,
             validator: (rule, value, cb) => {
-              if (value) {
+              if (value >= 0) {
                 cb()
               } else {
                 cb(new Error('Price should be enetered'))
@@ -494,7 +494,7 @@ export default {
             trigger: 'change',
             required: true,
             validator: (rule, value, cb) => {
-              if (value) {
+              if (value >= 0) {
                 cb()
               } else {
                 cb(new Error('Total area should be enetered'))
@@ -520,7 +520,7 @@ export default {
             trigger: 'change',
             required: true,
             validator: (rule, value, cb) => {
-              if (value || value === 0) {
+              if (value >= 0) {
                 cb()
               } else {
                 cb(new Error('numberOfPacket should be enetered'))
@@ -533,7 +533,7 @@ export default {
             trigger: 'change',
             required: true,
             validator: (rule, value, cb) => {
-              if (value) {
+              if (value >= 0) {
                 cb()
               } else {
                 cb(new Error('totalNumberOfItem should be enetered'))
@@ -759,8 +759,7 @@ export default {
           return true
         } else {
           Message({
-            message: 'Inventardagi maxsulot miqdori kamaytiriligan miqdordan kam qolgan: ' +
-            `Kamaygan miqdor: ${this.edit_batch_of_product[current_inventar].total_number_of_items - total_number_of_items} va Inventardagi miqdor: ${this.inventar[current_inventar].total_number_of_items}`,
+            message: `Инвентардаги махсулот миқдори камайтирилиган миқдордан кам қолган: Камайган миқдор: ${this.edit_batch_of_product[current_inventar].total_number_of_items - total_number_of_items} ва Инвентардаги миқдор: ${this.inventar[current_inventar].total_number_of_items}`,
             type: 'error',
             duration: 3500
           })

@@ -10,9 +10,14 @@
   >
     <el-form ref="newShopRef" :model="newShop" :rules="rules">
       <el-form-item>
-        <el-col :span="24">
+        <el-col :span="18">
           <el-form-item prop="name">
             <el-input v-model="newShop.name" placeholder="Name" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item prop="isOther">
+            <el-checkbox v-model="newShop.isOther">Бегона</el-checkbox>
           </el-form-item>
         </el-col>
       </el-form-item>

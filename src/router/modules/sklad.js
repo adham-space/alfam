@@ -38,6 +38,12 @@ const skladRouter = {
       meta: { title: 'Упаковочний лист', noCache: true }
     },
     {
+      path: 'samples-list',
+      component: () => import('@/views/sklad/samplesList/index'),
+      name: 'SamplesList',
+      meta: { title: 'Образецлар листи', noCache: true }
+    },
+    {
       path: 'orders',
       component: () => import('@/views/sklad/ordersPage/index'),
       name: 'Orders',

@@ -65,6 +65,7 @@ const state = {
   edit_batch_of_product: [],
   editing_product_id: '',
   product_with_types: [],
+  total_Area_for_invoice: 0,
   product_with_types_table_loading: false,
   products_types: [],
   todays_product_nums: 0,
@@ -130,6 +131,7 @@ const mutations = {
   SET_PRODUCT: (state, product) => {
     if (product === -1) {
       state.product_with_types = []
+      state.total_Area_for_invoice = 0
     } else {
       state.product_with_types = product
     }
@@ -139,6 +141,9 @@ const mutations = {
   },
   SET_ORDER: (state, order) => {
     state.order[order.key] = order.value
+    state.total_Area_for_invoice = state.product_with_types.reduce((acc, elem) => {
+      return acc + (elem.packTotalArea === '' ? 0 : elem.packTotalArea)
+    }, 0)
   },
   PREPARE_ORDER: (state) => {
     state.order.products = []
