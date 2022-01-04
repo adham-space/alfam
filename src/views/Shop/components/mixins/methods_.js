@@ -199,10 +199,14 @@ export default {
       }, 0), 4)
 
       this.SET_ORDER({ key: 'last_sum_kassa', value: parseFloat(this.totalKassaPrice) })
-
-      this.$emit('calculateTotalPrice', this.truncateToDecimals(this.tableDataComputed.reduce(function(a, b) {
+      const last_sum = this.truncateToDecimals(this.tableDataComputed.reduce(function(a, b) {
         return a + (b.sum === '' ? 0 : parseFloat(b.sum))
-      }, 0), 4))
+      }, 0), 4)
+      // last_sum = parseFloat(last_sum.toFixed(4))
+      // let error_range = 1 - parseFloat((last_sum - parseInt(last_sum)).toFixed(4))
+      // if(error_range <= 0.0005)
+      //   last_sum = Math.ceil(last_sum)
+      this.$emit('calculateTotalPrice', parseFloat(last_sum.toFixed(2)))
     },
 
     closeNotification() {

@@ -23,7 +23,7 @@
 <script>
 import Table from './components/Table'
 import Tools from './components/Tools'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'ShopPackingList',
   components: {
@@ -36,6 +36,9 @@ export default {
       broken: false,
       isTableValid: false
     }
+  },
+  computed: {
+    ...mapState('products', ['order'])
   },
   methods: {
     ...mapMutations('products', ['SET_ORDER']),

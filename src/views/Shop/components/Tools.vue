@@ -217,7 +217,8 @@ export default {
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCT_BY_TYPE_ID',
-      'SAVE_ORDER'
+      'SAVE_ORDER',
+      'SET_ORDER_BASE_PRICE'
     ]),
     ...mapActions('customers', ['GET_CUSTOMERS']),
     ...mapActions('drivers', ['GET_DRIVERS']),
@@ -286,11 +287,19 @@ export default {
           })
           .catch((err) => {
             this.order_saving = false
-            Message({
-              message: err.response.data,
-              type: 'error',
-              duration: 3000
-            })
+            if (err.response.statusCode === 409) {
+              Message({
+                message: err.response.message,
+                type: 'error',
+                duration: 3500
+              })
+            } else {
+              Message({
+                message: err.response.data,
+                type: 'error',
+                duration: 3000
+              })
+            }
           })
       }, 200)
     },
@@ -339,6 +348,11 @@ export default {
       } else {
         this.SET_ORDER({ key: 'customer', value: val })
         this.getLastActionOfCustomer()
+        this.SET_ORDER_BASE_PRICE().then(res => {
+          if (!res) {
+            this.getProducts(this.toolBarForm.currentProduct)
+          }
+        })
       }
     },
     closeForm() {

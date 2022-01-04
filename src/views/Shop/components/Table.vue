@@ -330,7 +330,12 @@ export default {
                 return prev
               }
             }, 0)
-            sums[index] = parseFloat(val.toFixed(4))
+            // let last_sum = val
+            // last_sum = parseFloat(last_sum.toFixed(4))
+            // let error_range = 1 - parseFloat((last_sum - parseInt(last_sum)).toFixed(4))
+            // if(error_range <= 0.0005)
+            //   last_sum = Math.ceil(last_sum)
+            sums[index] = parseFloat(val.toFixed(2))
           } else {
             sums[index] = ''
           }

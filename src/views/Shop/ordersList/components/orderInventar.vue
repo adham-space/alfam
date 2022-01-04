@@ -86,29 +86,23 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column width="100" align="center" prop="_id" label="ID">
-        <template slot-scope="scope">
-          {{ scope.row._id.substr(0, 6) }}
-        </template>
-      </el-table-column>
       <el-table-column
         width="160"
         align="center"
         prop="order_name"
-        label="Order No"
+        label="Инвойс №"
       />
       <el-table-column
         width="170"
         align="center"
         prop="product"
-        label="Product"
+        label="Махсулот"
       />
       <el-table-column width="170" align="center">
         <template slot="header">
-          <span>Area m<sup>2</sup></span>
+          <span>Умумий м<sup>2</sup></span>
         </template>
         <template slot-scope="scope">
-
           <el-popover
             placement="right"
             trigger="hover"
@@ -124,7 +118,7 @@
 
         </template>
       </el-table-column>
-      <el-table-column width="170" align="center" label="Number of items">
+      <el-table-column width="170" align="center" label="Умумий донаси">
         <template slot-scope="scope">
 
           <el-popover
@@ -139,15 +133,14 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column width="170" align="center" label="Pack / Overpack num">
+      <el-table-column width="170" align="center" label="Почкаси / Донаси">
         <template slot-scope="scope">
           {{ getPackNumber(scope.row.products).pack_num }} / {{ getOverPackNumber(scope.row.products).over_pack_num }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="last_sum" label="Price">
+      <el-table-column align="center" prop="last_sum" label="Кассаси">
         <template slot-scope="scope">
-
           <el-popover
             placement="right"
             trigger="hover"
@@ -177,7 +170,7 @@
         width="180"
         align="center"
         prop="customer"
-        label="Customer"
+        label="Ҳаридор"
       >
         <template slot-scope="scope">
           {{ `${scope.row.customer.firstName} ${scope.row.customer.lastName}` }}
@@ -193,28 +186,28 @@
         width="230"
         align="center"
         prop="address"
-        label="Address"
+        label="Манзил"
       >
         <template slot-scope="scope">
           {{ scope.row.customer.address }}
         </template>
       </el-table-column>
-      <el-table-column width="180" align="center" prop="driver" label="Driver">
+      <el-table-column width="180" align="center" prop="driver" label="Ҳайдовчи">
         <template slot-scope="scope">
           {{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}
         </template>
       </el-table-column>
-      <el-table-column v-if="roles.includes('admin')" width="180" align="center" label="Stuff">
+      <el-table-column v-if="roles.includes('admin')" width="180" align="center" label="Ходим">
         <template slot-scope="scope">
           {{ scope.row.user.stuff.firstName + ' ' + scope.row.user.stuff.lastName }}
         </template>
       </el-table-column>
-      <el-table-column width="80" align="center" label="Actuality" fixed="right">
+      <el-table-column width="120" align="center" label="Актуальность" fixed="right">
         <template slot-scope="scope">
           <el-tooltip
             class="item"
             effect="dark"
-            :content="scope.row.actuality_status ? 'Open':'Closed'"
+            :content="scope.row.actuality_status ? 'Очиқ':'Ёпилган'"
             placement="left-start"
           >
             <el-checkbox
@@ -360,11 +353,12 @@ export default {
       return data
     },
     closeCurrentOrder(row) {
-      console.log('row:', row)
-      this.CLOSE_CURRENT_ORDER({ order_id: row._id, consumer: row.customer._id, product_id: row.product_id }).then(() => {
-        this.GET_ORDERS()
-      }).catch(err => {
-        console.error(err)
+      this.$confirm('Ушбу сотув жараёни тугатишин тасдиқланг', 'Жараён статуси').then(() => {
+        this.CLOSE_CURRENT_ORDER({ order_id: row._id, consumer: row.customer._id, product_id: row.product_id }).then(() => {
+          this.GET_ORDERS()
+        }).catch(err => {
+          console.error(err)
+        })
       })
     }
   }

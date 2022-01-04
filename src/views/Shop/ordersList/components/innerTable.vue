@@ -85,26 +85,21 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column width="180" align="center" prop="_id" label="ID">
-        <template slot-scope="scope">
-          {{ scope.row._id.substr(0, 6) }}
-        </template>
-      </el-table-column>
       <el-table-column
         width="180"
         align="center"
         prop="order_name"
-        label="Order No"
+        label="Инвойс №"
       />
       <el-table-column width="180" align="center">
         <template slot="header">
-          <span>Area m<sup>2</sup></span>
+          <span>Умумий м<sup>2</sup></span>
         </template>
         <template slot-scope="scope">
           {{ parseFloat(getTotalAre(scope.row.products).packTotalArea.toFixed(4)) }}
         </template>
       </el-table-column>
-      <el-table-column width="180" align="center" label="Number of items">
+      <el-table-column width="180" align="center" label="Умумий донаси">
         <template slot-scope="scope">
 
           <el-popover
@@ -125,13 +120,13 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column width="180" align="center" label="Pack / Overpack num">
+      <el-table-column width="180" align="center" label="Почкаси / Донаси">
         <template slot-scope="scope">
           {{ getPackNumber(scope.row.products).pack_num }} / {{ getOverPackNumber(scope.row.products).over_pack_num }}
         </template>
       </el-table-column>
 
-      <el-table-column width="180" align="center" prop="last_sum" label="Price">
+      <el-table-column width="180" align="center" prop="last_sum" label="Кассаси">
         <template slot-scope="scope">
 
           <el-popover
@@ -181,18 +176,18 @@
           {{ scope.row.customer.address }}
         </template>
       </el-table-column> -->
-      <el-table-column width="180" align="center" prop="driver" label="Driver">
+      <el-table-column width="180" align="center" prop="driver" label="Ҳайдовчи">
         <template slot-scope="scope">
           {{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}
         </template>
       </el-table-column>
-      <el-table-column v-if="roles.includes('admin')" width="180" align="center" label="Stuff">
+      <el-table-column v-if="roles.includes('admin')" width="180" align="center" label="Ходим">
         <template slot-scope="scope">
           {{ scope.row.user.stuff.firstName + ' ' + scope.row.user.stuff.lastName }}
         </template>
       </el-table-column>
 
-      <el-table-column prop="status" width="100" align="center" label="Status" fixed="right">
+      <el-table-column prop="status" width="100" align="center" label="Статус" fixed="right">
         <template slot-scope="scope">
           <i v-if="scope.row.status === -1" class="el-icon-loading" />
           <i v-if="scope.row.status === 1" style="color: green" class="el-icon-success" />
@@ -200,7 +195,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="action" width="100" align="center" :label="!!currentOrderHeader.order_name ? 'Action' : 'Last action'" fixed="right">
+      <el-table-column prop="action" width="100" align="center" :label="!!currentOrderHeader.order_name ? 'Процесс' : 'Last action'" fixed="right">
         <template slot-scope="scope">
           {{ actions[scope.row.action] }}
         </template>
@@ -232,9 +227,9 @@ export default {
     showImageDilog: false,
     actuality: false,
     imageUrl: '',
-    actions: ['', 'Buying', 'Barter', 'Returning'],
+    actions: ['', 'Сотув', 'Бартер', 'Возврат'],
     statuses: ['el-icon-loading', 'el-icon-error', 'el-icon-success'],
-    statuses_text: ['Waiting approvement', 'Order ejected', 'Order accepted'],
+    statuses_text: ['Тасдиқлаш кутилмоқда', 'Заказ рад қилинди', 'Заказ қабул қилинди'],
     statuses_color: ['gray', 'red', 'green']
   }),
   computed: {

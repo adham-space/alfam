@@ -217,7 +217,7 @@
       <el-table-column
         prop="shop"
         align="center"
-        label="Diller/Do'kon"
+        label="Диллер/Дўкон"
         :min-width="180"
       >
         <template slot-scope="scope">
@@ -234,9 +234,12 @@
       <el-table-column
         prop="totalArea"
         align="center"
-        label="Umumiy M2"
+        label=""
         :min-width="180"
       >
+        <template slot="header">
+          Умумий м<sup>2</sup>
+        </template>
         <template slot-scope="scope">
           {{ scope.row.totalArea ? scope.row.totalArea.toFixed(2) : "" }}
         </template>
@@ -244,7 +247,7 @@
       <el-table-column
         prop="totalNumber"
         align="center"
-        label="Umumiy donasi"
+        label="Умумий донаси"
         :min-width="180"
       >
         <template slot-scope="scope">
@@ -254,14 +257,14 @@
       <el-table-column
         prop="partiya"
         align="center"
-        label="Partiya"
+        label="Партия"
         :min-width="180"
       >
       </el-table-column>
       <el-table-column
         prop="isReturned"
         align="center"
-        label="Qaytarildi"
+        label="Қайтарилди"
         :min-width="180"
       >
         <template slot-scope="scope">
@@ -275,7 +278,7 @@
       <el-table-column
         prop="createdAt"
         align="center"
-        label="Berilgan vaqti"
+        label="Берилган вақти"
         :min-width="180"
       >
         <template slot-scope="scope">
@@ -285,7 +288,7 @@
       <el-table-column
         prop="updatedAt"
         align="center"
-        label="Qaytarilgan vaqti"
+        label="Қайтарилган вақти"
         :min-width="180"
       >
         <template slot-scope="scope">

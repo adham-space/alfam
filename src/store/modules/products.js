@@ -58,6 +58,14 @@ function save_sample(data) {
   })
 }
 
+function get_last_base_price(params) {
+  return request({
+    url: '/orders/get-last-base-price',
+    method: 'GET',
+    params
+  })
+}
+
 const d = new Date()
 
 const state = {
@@ -174,8 +182,8 @@ const mutations = {
           price_by: current_product[i].price_by,
           base_price: current_product[i].base_price,
           base_price_changed: current_product[i].base_price_changed,
-          sum_kassa: current_product[i].sum_kassa,
-          sum: current_product[i].sum,
+          sum_kassa: parseFloat(current_product[i].sum_kassa.toFixed(2)),
+          sum: parseFloat(current_product[i].sum.toFixed(2)),
           area_of_one_packet: current_product[i].area_of_one_packet,
           area_of_an_item: current_product[i].area_of_an_item,
           number_of_items: current_product[i].number_of_items,
@@ -200,8 +208,8 @@ const mutations = {
           price_by: current_product[i].price_by,
           base_price: current_product[i].base_price,
           base_price_changed: current_product[i].base_price_changed,
-          sum_kassa: current_product[i].sum_kassa,
-          sum: current_product[i].sum,
+          sum_kassa: parseFloat(current_product[i].sum_kassa.toFixed(2)),
+          sum: parseFloat(current_product[i].sum.toFixed(2)),
           area_of_one_packet: current_product[i].area_of_one_packet,
           area_of_an_item: current_product[i].area_of_an_item,
           number_of_items: current_product[i].number_of_items,
@@ -228,13 +236,36 @@ const mutations = {
       date_of_return_debt: '',
       description_of_debt: ''
     }
+  },
+  SET_ORDER_BASE_PRICE_M: (state, data) => {
+    const { products } = data
+    for (let i = 0; i < products.length; i++) {
+      const indexOfProduct = state.product_with_types.findIndex(pr => pr.code === products[i].code)
+      if (indexOfProduct !== -1) {
+        state.product_with_types[indexOfProduct].base_price_changed = products[i].base_price_changed
+      }
+    }
   }
 }
 
 const actions = {
+  SET_ORDER_BASE_PRICE({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      get_last_base_price({ product: state.order.product.product_id, customer: state.order.customer }).then(res => {
+        if (res.data) {
+          commit('SET_ORDER_BASE_PRICE_M', res.data)
+          resolve(true)
+        } else {
+          resolve(null)
+        }
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
   SAVE_ORDER({ commit, state }) {
     return new Promise((resolve, reject) => {
-      console.log('Is Sample:', state.order.isSample)
+      // console.log('Is Sample:', state.order.isSample)
       if (!state.wrong_format) {
         if (state.order.isSample) {
           save_sample(state.order).then(res => {

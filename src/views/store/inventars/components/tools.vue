@@ -46,6 +46,12 @@ export default {
       this.searchTypeChanged()
     }
   },
+  beforeDestroy() {
+    this.SET_QUERY_PARAM({
+      key: 'search_text',
+      value: ''
+    })
+  },
   methods: {
     ...mapMutations('inventars', ['SET_QUERY_PARAM']),
     ...mapActions('inventars', ['GET_INVENTARS']),
