@@ -211,6 +211,16 @@
           {{ toThousandFilter(scope.row.total_price) }}
         </template>
       </el-table-column>
+      <el-table-column align="center" label="Ўчириш"> 
+        <template slot-scope="scope">
+          <el-button 
+            type="text" 
+            icon="el-icon-delete" 
+            style="color: red"
+            @click="setCurrentProductForDelete(scope.row) "
+            ></el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="pgntion">
       <Pagination
@@ -227,6 +237,21 @@
         fit="scale-down"
       />
     </el-dialog>
+     <el-dialog 
+      title="Махсулотни ўчириш" 
+      :visible.sync="deleteArchiveModal"  
+      width="40%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      align="center"
+    >
+      <p>Сиз ушбу номи: {{ current_product_name }} бўлган ва партияси {{current_product_batch}} бўлган ўчирмоқчимисиз</p>
+      <span slot="footer" class="dialog-footer">
+        <el-button :disabled="deletingTheArchive" @click="cancelDelete()">Отменит</el-button>
+        <el-button :disabled="deletingTheArchive" type="danger" :loading="deletingTheArchive" @click="deleteArchive()">Ўчириш</el-button>
+      </span>     
+    </el-dialog>
   </el-col>
 </template>
 
@@ -234,11 +259,17 @@
 import Pagination from '@/components/Pagination'
 import { mapActions, mapMutations, mapState } from 'vuex'
 import { toThousandFilter } from '@/filters/index'
+import request from '@/utils/request'
 export default {
   components: {
     Pagination
   },
   data: () => ({
+    current_product_name: '',
+    current_product_id: '',
+    current_product_batch: '',
+    deleteArchiveModal: false,
+    deletingTheArchive: false,
     baseApi: process.env.VUE_APP_BASE_API,
     showImageDilog: false,
     imageUrl: '',
@@ -267,6 +298,45 @@ export default {
     ...mapMutations('inventars', ['SET_ARCHIVE', 'SET_QUERY_PARAM_ARCHIVE']),
     ...mapActions('inventars', ['GET_ARCHIVE']),
     ...mapMutations('products', ['SET_EDIT_PRODUCT']),
+    cancelDelete() {
+      this.deleteArchiveModal = false
+      this.current_product_id = ''
+      this.current_product_batch = ''
+      this.current_product_name = ''
+    },
+    deleteArchive() {
+      request({
+        url: '/products/delete-archive',
+        method: 'DELETE',
+        data: {
+          product: this.current_product_id,
+          partiya: this.current_product_batch
+        }
+      }).then(res => {
+        this.deleteArchiveModal = false
+        this.current_product_id = ''
+        this.current_product_batch = ''
+        this.current_product_name = ''
+        this.$notify({
+          message: res.data,
+          duration: 2500,
+          type: 'success'
+        })
+      }).catch(err => {
+        this.$notify({
+          message: err.response.data,
+          duration: 2500,
+          type: 'error'
+        })
+      })
+    },
+    setCurrentProductForDelete({ _id: { batch, product: { product_name, _id }}}) {
+      this.current_product_name = product_name
+      this.current_product_batch = batch
+      this.current_product_id = _id
+      console.log(this.current_product_batch, this.current_product_name)
+      this.deleteArchiveModal = true
+    },
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
