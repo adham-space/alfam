@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { Message } from 'element-ui'
 
 function getShops(params) {
   return request({
@@ -8,6 +9,13 @@ function getShops(params) {
   })
 }
 
+function getShopsOthers(params) {
+  return request({
+    url: '/info/get-shops-other',
+    params,
+    method: 'GET'
+  })
+}
 function updateShop(params) {
   return request({
     url: '/info/update-shop',
@@ -16,9 +24,27 @@ function updateShop(params) {
   })
 }
 
+function updateShopOthers(params) {
+  return request({
+    url: '/info/update-shop-other',
+    data: params,
+    method: 'PATCH'
+  })
+}
+
 function deleteShop(params) {
   return request({
     url: '/info/delete-shop',
+    data: {
+      id: params
+    },
+    method: 'DELETE'
+  })
+}
+
+function deleteShopOthers(params) {
+  return request({
+    url: '/info/delete-shop-other',
     data: {
       id: params
     },
@@ -35,6 +61,7 @@ const state = {
   },
   tableData: [],
   shops: [],
+  shops_other: [],
   tblLoading: false,
   currentShop: null
 }
@@ -43,6 +70,9 @@ const mutations = {
   SET_SHOPS: (state, data) => {
     state.tableData = data
     state.shops = data
+  },
+  SET_SHOPS_OTHER: (state, data) => {
+    state.shops_other = data
   },
   SET_SHOP: (state, data) => {
     state.currentShop = data
@@ -70,11 +100,35 @@ const actions = {
       })
     })
   },
+  GET_SHOPS_OTHER({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      commit('SET_TABLE_LOADER')
+      getShopsOthers(state.queryParams).then(res => {
+        commit('SET_SHOPS_OTHER', res.data)
+        commit('SET_TABLE_LOADER')
+        resolve()
+      }).catch(err => {
+        commit('SET_SHOPS', [])
+        commit('SET_TABLE_LOADER')
+        reject(err)
+      })
+    })
+  },
   EDIT_SHOP({ dispatch }, data) {
     return new Promise((resolve, reject) => {
       updateShop(data).then(res => {
         resolve(res)
         dispatch('GET_SHOPS')
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+  EDIT_SHOP_OTHER({ dispatch }, data) {
+    return new Promise((resolve, reject) => {
+      updateShopOthers(data).then(res => {
+        resolve(res)
+        dispatch('GET_SHOPS_OTHER')
       }).catch(err => {
         reject(err)
       })
@@ -86,6 +140,44 @@ const actions = {
         resolve(res)
         dispatch('GET_SHOPS')
       }).catch(err => {
+        console.log(err.response)
+        if (err.response.status === 409) {
+          Message({
+            message: err.response.data.message,
+            duration: 2000,
+            type: 'error'
+          })
+        } else {
+          Message({
+            message: err.response.data,
+            duration: 2000,
+            type: 'error'
+          })
+        }
+        reject(err)
+      })
+    })
+  },
+  DELETE_SHOP_OTHER({ dispatch }, data) {
+    return new Promise((resolve, reject) => {
+      deleteShopOthers(data).then(res => {
+        resolve(res)
+        dispatch('GET_SHOPS_OTHER')
+      }).catch(err => {
+        console.log(err.response)
+        if (err.response.status === 409) {
+          Message({
+            message: err.response.data.message,
+            duration: 2000,
+            type: 'error'
+          })
+        } else {
+          Message({
+            message: err.response.data,
+            duration: 2000,
+            type: 'error'
+          })
+        }
         reject(err)
       })
     })

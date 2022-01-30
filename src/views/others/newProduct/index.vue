@@ -126,7 +126,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .vue-form-wizard, .wizard-header {
   background-color: white;

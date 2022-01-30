@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Add new shop"
+    title="Дўкон қўшиш"
     :visible.sync="dialogVisible"
     width="50%"
     align="center"
@@ -12,19 +12,19 @@
       <el-form-item>
         <el-col :span="18">
           <el-form-item prop="name">
-            <el-input v-model="newShop.name" placeholder="Name" />
+            <el-input v-model="newShop.name" placeholder="Номи" />
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <el-form-item prop="isOther">
             <el-checkbox v-model="newShop.isOther">Бегона</el-checkbox>
           </el-form-item>
-        </el-col>
+        </el-col> -->
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="cancel()">Cancel</el-button>
-      <el-button type="primary" @click="save()">Save</el-button>
+      <el-button @click="cancel()">Отменить</el-button>
+      <el-button type="primary" @click="save()">Сохранить</el-button>
     </span>
   </el-dialog>
 </template>
@@ -47,7 +47,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('shops', ['GET_SHOPS']),
+    ...mapActions('shops', ['GET_SHOPS_OTHER']),
     cancel() {
       this.$emit('closeDialog')
       this.$refs.newShopRef.resetFields()
@@ -60,7 +60,7 @@ export default {
       this.$refs.newShopRef.validate(valid => {
         if (valid) {
           request({
-            url: 'info/add-shop',
+            url: 'info/add-shop-other',
             method: 'POST',
             data: this.newShop
           }).then(res => {
@@ -70,7 +70,7 @@ export default {
               type: 'success',
               duration: 2000
             })
-            this.GET_SHOPS()
+            this.GET_SHOPS_OTHER()
           }).catch(err => {
             this.$notify({
               message: err.response.data,

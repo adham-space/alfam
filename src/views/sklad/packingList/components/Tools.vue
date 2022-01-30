@@ -48,19 +48,19 @@
           v-model="toolBarForm.currentcustomer"
           class="tools-wrapper-item"
           style="width: 100%"
-          placeholder="Ҳаридорни танланг"
+          placeholder="Диллер танланг"
           @change="customerChanged"
         >
-          <el-option :value="'addNewItemDiller'" style="padding: 0">
+          <el-option value="addNewItemDiller" style="padding: 0">
             <el-button
               style="border: 1px solid transparent; width: 100%; margin: 0"
               icon="el-icon-plus"
             >Янги диллер</el-button>
           </el-option>
           <el-option
-            v-for="(pr, i) in customers"
+            v-for="(pr, i) in shops_for_packinglist"
             :key="i"
-            :label="pr.firstName + ' ' + pr.lastName"
+            :label="pr.name"
             :value="pr._id"
           />
           <!-- <el-option :value="'addNewItemCustomer'" style="padding: 0">
@@ -88,7 +88,7 @@
             >Янги диллер</el-button>
           </el-option>
           <el-option
-            v-for="(pr, i) in shops"
+            v-for="(pr, i) in all_shops"
             :key="i"
             :label="pr.name"
             :value="pr._id"
@@ -195,7 +195,7 @@
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex'
 // import AddCustomerDialog from '@/views/information/customers/components/addCustomer.vue'
-import AddDillerDialog from '@/views/information/shops/components/add.vue'
+import AddDillerDialog from '@/views/information/other_shops/components/add.vue'
 import request from '@/utils/request'
 import { Message } from 'element-ui'
 import tools_mixin from './mixins/tools.mixin'
@@ -220,12 +220,16 @@ export default {
     order_saving: false,
     batches: [],
     customerAddDailog: false,
-    dillerAddDailog: false
+    dillerAddDailog: false,
+    shops_for_packinglist: []
 
   }),
   computed: {
     ...mapState('products', ['products_types', 'product', 'order', 'total_Area_for_invoice']),
-    ...mapState('shops', ['shops']),
+    ...mapState('shops', ['shops', 'shops_other']),
+    all_shops() {
+      return this.shops.concat(this.shops_other)
+    },
     drivers() {
       return this.$store.state.drivers.tableData
     },
@@ -239,6 +243,8 @@ export default {
     this.GET_CUSTOMERS()
     this.GET_DRIVERS()
     this.GET_SHOPS()
+    this.GET_SHOPS_OTHER()
+
     request({
       url: '/products/get-batches',
       method: 'GET'
@@ -268,7 +274,7 @@ export default {
       'SAVE_ORDER'
     ]),
     ...mapActions('customers', ['GET_CUSTOMERS']),
-    ...mapActions('shops', ['GET_SHOPS']),
+    ...mapActions('shops', ['GET_SHOPS', 'GET_SHOPS_OTHER']),
     ...mapActions('drivers', ['GET_DRIVERS']),
     ...mapMutations('products', ['SET_ORDER', 'PREPARE_ORDER']),
 
@@ -347,6 +353,7 @@ export default {
       this.SET_ORDER({ key: 'is_debt', value: val })
     },
     getProducts(val) {
+      this.others_list()
       const { _product } = this.batches.find((batch) =>
         batch._id[1].includes(val[1])
       )
@@ -393,15 +400,17 @@ export default {
     customerChanged(val) {
       if (val === 'addNewItemDiller') {
         this.dillerAddDailog = true
-      } else if (val === 'addNewItemCustomer') {
-        this.customerAddDailog = true
       } else {
         this.SET_ORDER({ key: 'customer', value: val })
         this.getLastActionOfCustomer()
       }
     },
     shopChanged(val) {
-      this.SET_ORDER({ key: 'shop', value: val })
+      if (val === 'addNewItemDiller') {
+        this.dillerAddDailog = true
+      } else {
+        this.SET_ORDER({ key: 'shop', value: val })
+      }
     },
     reset_all() {
       this.toolBarForm.withBorken = false
@@ -416,6 +425,21 @@ export default {
       this.toolBarForm.isDebt = false
       this.changebase_price(0)
       this.$refs.toolBarFormRef.resetFields()
+    },
+    others_list() {
+      console.log('aa', this.toolBarForm.currentProduct[1])
+      request({
+        url: '/info/get-shops-list-upakovichniy-other',
+        params: {
+          product_id: this.toolBarForm.currentProduct[1]
+        },
+        method: 'GET'
+      }).then(res => {
+        this.shops_for_packinglist = res.data
+      }).catch(err => {
+        console.error(err)
+        this.shops_for_packinglist = []
+      })
     }
   }
 }

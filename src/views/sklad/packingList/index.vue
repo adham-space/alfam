@@ -37,7 +37,6 @@ export default {
     },
     calculateTotalPrice(val) {
       this.totalPrice = val
-      alert('price last sum' + val)
       this.SET_ORDER({ key: 'last_sum', value: val })
     },
     totalPriceChanged(val) {

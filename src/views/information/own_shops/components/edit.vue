@@ -16,11 +16,11 @@
             <el-input v-model="newShop.name" placeholder="Name" />
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <el-form-item prop="isOther">
             <el-checkbox v-model="newShop.isOther">Бегона</el-checkbox>
           </el-form-item>
-        </el-col>
+        </el-col> -->
       </el-form-item>
 
     </el-form>

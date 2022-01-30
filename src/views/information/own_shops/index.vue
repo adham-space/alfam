@@ -22,8 +22,8 @@ export default {
 
 <style>
     .shops-body {
-        background-color: rgb(243, 243, 243);
-        height: calc(100vh - 89px);
+        background-color: #dae2de;
+        height: calc(100vh - 50px);
         width: 100%;
         padding: 1rem;
     }
@@ -34,7 +34,7 @@ export default {
     }
     .shops-page-body {
         margin-top: 1rem;
-        height: calc(100vh - 6rem - 89px);
+        height: calc(100vh - 6rem - 59px);
     }
     .pgntion {
         height: 3.5rem;

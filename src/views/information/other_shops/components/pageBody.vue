@@ -2,45 +2,25 @@
   <el-col :span="24" class="shops-page-body">
     <el-table
       v-loading="tblLoading"
-      style="width: 100%;"
+      style="width: 100%"
       height="calc(100% - 3.5rem)"
       :data="tableData"
       stripe
       highlight-current-row
       @row-click="driverChosed"
     >
-      <el-table-column width="100" align="center" prop="_id" label="ID">
-        <template slot-scope="scope">
-          {{ scope.row._id.substr(0, 6) }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="name" label="Name" />
-      <el-table-column align="center" prop="sellers" label="Workers" />
-      <el-table-column align="center" prop="isOther" label="isOther">
-        <template slot-scope="scope">
-          <i v-if="scope.row.isOther" class="el-icon-check" style="color: green" />
-          <i v-else class="el-icon-close" style="color: red" />
-        </template>
-      </el-table-column>
+      <el-table-column align="center" prop="name" label="Номи" />
     </el-table>
-    <div class="pgntion">
-      <Pagination
-        :total="102"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        @pagination="getList"
-      />
-    </div>
   </el-col>
 </template>
 
 <script>
-import Pagination from '@/components/Pagination'
+// import Pagination from '@/components/Pagination'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
   components: {
-    Pagination
+    // Pagination
   },
   data: () => ({
     listQuery: {
@@ -66,10 +46,8 @@ export default {
       this.GET_SHOPS()
     }
   }
-
 }
 </script>
 
 <style>
-
 </style>

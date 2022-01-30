@@ -196,7 +196,7 @@
           {{ toThousandFilter(scope.row.total_number_of_items) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Пакетлар / ортиқча сони" prop="total_number_of_packets" :min-width="180">
+      <el-table-column align="center" label="Пакетлар / ортиқча сони" prop="total_number_of_packets" :min-width="190">
         <template slot-scope="scope">
           {{ toThousandFilter(scope.row.total_number_of_packets) }} / {{ scope.row.total_number_of_over_packet }}
         </template>
@@ -211,7 +211,17 @@
           {{ toThousandFilter(scope.row.total_price) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Ўчириш"> 
+      <el-table-column
+        prop="createdAt"
+        align="center"
+        label="Архивга киритилган вақти"
+        :min-width="200"
+      >
+        <template slot-scope="scope">
+          {{ giveDate(scope.row.createdAt_) }}
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" align="center" label="Ўчириш"> 
         <template slot-scope="scope">
           <el-button 
             type="text" 
@@ -303,6 +313,19 @@ export default {
       this.current_product_id = ''
       this.current_product_batch = ''
       this.current_product_name = ''
+    },
+    giveDate(d) {
+      d = new Date(d)
+
+      return (
+        d.toLocaleDateString() +
+        ' ' +
+        d.getHours() +
+        ':' +
+        d.getMinutes() +
+        ':' +
+        d.getSeconds()
+      )
     },
     deleteArchive() {
       request({

@@ -1,7 +1,7 @@
 <template>
   <el-col :span="24" class="shops-page-tools">
     <div style="display: flex">
-      <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Қидириш">
+      <!-- <el-input v-model="search_input" style="border: 1px solid transparent" placeholder="Қидириш">
         <el-select
           slot="prepend"
           v-model="search_type"
@@ -16,7 +16,7 @@
           <el-option label="Shopping amount" :value="5" />
         </el-select>
       </el-input>
-      <el-button :disabled="tblLoading" :loading="tblLoading" style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="search()" />
+      <el-button :disabled="tblLoading" :loading="tblLoading" style=" border: 1px solid transparent; margin-left: .5rem " icon="el-icon-search" @click="search()" /> -->
     </div>
     <div style="display: flex">
 <!--      <el-button style="border: 1px solid transparent"><svg-icon style="color: green" icon-class="excel" /></el-button>
@@ -51,11 +51,14 @@ export default {
   computed: {
     ...mapState('shops', ['currentShop', 'tblLoading'])
   },
+  mounted() {
+    this.search()
+  },
   methods: {
     ...mapMutations('shops', ['SET_QUERY']),
-    ...mapActions('shops', ['GET_SHOPS']),
+    ...mapActions('shops', ['GET_SHOPS_OTHER']),
     search() {
-      this.GET_SHOPS()
+      this.GET_SHOPS_OTHER()
     },
     searchTypeChanged(t) {
       this.SET_QUERY({

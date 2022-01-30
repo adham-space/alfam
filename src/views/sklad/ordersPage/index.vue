@@ -1,28 +1,40 @@
 <template>
   <el-row style="height: calc(100vh - 50px)">
-    <el-col :span="10" style="height: calc(100vh - 50px)">
+    <el-col :span="12" style="height: calc(100vh - 50px)">
       <el-table
         v-loading="tableLoading"
         :data="zavskladOrders"
         style="width: 100%"
         height="100%"
         border
-        stripe
         :highlight-current-row="true"
+        :row-class-name="className"
         @row-click="choseOrder"
       >
-        <el-table-column align="center" label="Диллер / Дўкон номи" width="200">
+        <el-table-column fixed="left" align="center" label="Диллер / Дўкон номи" width="200">
           <template slot-scope="scope">
-            {{
-              !!scope.row.user.stuff.shop ? scope.row.user.stuff.shop.name : ""
-            }}
+            <div v-if="!scope.row.customer">
+              {{
+                scope.row.diller.name
+              }}
+            </div>
+            <div v-else>
+              {{
+                !!scope.row.user.stuff.shop ? scope.row.user.stuff.shop.name : ""
+              }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column align="center" width="200" label="Ҳаридор">
           <template slot-scope="scope">
-            {{
-              scope.row.customer.firstName + " " + scope.row.customer.lastName
-            }}
+            <div v-if="scope.row.customer">
+              {{
+                scope.row.customer.firstName + " " + scope.row.customer.lastName
+              }}
+            </div>
+            <div v-else>
+              {{ scope.row.diller.name }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -75,9 +87,29 @@
             </div>
           </template>
         </el-table-column>
+        <el-table-column
+          prop="createdAt"
+          align="center"
+          label="Буюртма вақти"
+          :min-width="180"
+        >
+          <template slot-scope="scope">
+            {{ giveDate(scope.row.createdAt) }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="updatedAt"
+          align="center"
+          label="Текширилган вақти"
+          :min-width="180"
+        >
+          <template slot-scope="scope">
+            {{ giveDate(scope.row.updatedAt) }}
+          </template>
+        </el-table-column>
       </el-table>
     </el-col>
-    <el-col :span="14" style="height: calc(100vh - 50px)">
+    <el-col :span="12" style="height: calc(100vh - 50px)">
       <el-table
         height="100%"
         style="width: 100%"
@@ -214,9 +246,29 @@ export default {
       this.currentOrderProducts = row.products
       console.log(this.currentOrderProducts)
     },
+    className({ row }) {
+      if (!row.customer) {
+        return 'others-row'
+      } else {
+        return ''
+      }
+    },
     openImg(url) {
       this.showImageDilog = true
       this.imageUrl = url
+    },
+    giveDate(d) {
+      d = new Date(d)
+
+      return (
+        d.toLocaleDateString() +
+        ' ' +
+        d.getHours() +
+        ':' +
+        d.getMinutes() +
+        ':' +
+        d.getSeconds()
+      )
     },
     accept(id) {
       this.$confirm('Ушбу заказни қабул қилишини тасдиқланг', 'Қабул қилиш').then(() => {
@@ -277,5 +329,9 @@ export default {
 
 .el-table .success-row {
   background: #f0f9eb;
+}
+
+.el-table .others-row {
+  background: #e9ffde;
 }
 </style>

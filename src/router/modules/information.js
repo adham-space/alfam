@@ -30,9 +30,17 @@ const informationRouter = {
         title: 'Ҳодимлар', noCache: false }
     },
     {
-      path: 'shops',
-      component: () => import('@/views/information/shops/index'),
+      path: 'own-shops',
+      component: () => import('@/views/information/own_shops/index'),
       name: 'Shops',
+      meta: {
+        roles: ['admin'],
+        title: 'Ўзимизни дўкон', noCache: false }
+    },
+    {
+      path: 'other-shops',
+      component: () => import('@/views/information/other_shops/index'),
+      name: 'Shops Other',
       meta: {
         roles: ['admin'],
         title: 'Диллерлар', noCache: false }

@@ -110,9 +110,7 @@
               >
                 <template slot-scope="scope">
                   {{
-                    toThousandFilter(
-                      scope.row.packTotalArea * scope.row.base_price
-                    )
+                    toThousandFilter((scope.row.price_by ?scope.row.item_num : scope.row.packTotalArea) * scope.row.base_price)
                   }}
                 </template>
               </el-table-column>
@@ -221,7 +219,12 @@
         :min-width="180"
       >
         <template slot-scope="scope">
-          {{ scope.row.shop.name }}
+          <div v-if="scope.row.shop">
+            {{ scope.row.shop.name }}
+          </div>
+          <div v-else>
+            {{ scope.row.other_shop.name }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -237,11 +240,19 @@
         label=""
         :min-width="180"
       >
-        <template slot="header">
-          Умумий м<sup>2</sup>
-        </template>
+        <template slot="header"> Умумий м<sup>2</sup> </template>
         <template slot-scope="scope">
           {{ scope.row.totalArea ? scope.row.totalArea.toFixed(2) : "" }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="Умумий суммаси"
+        prop="total_area"
+        :min-width="160"
+        align="center"
+      >
+        <template slot-scope="scope">
+          {{ toThousandFilter(scope.row.last_sum) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -378,13 +389,15 @@ export default {
       this.$confirm(
         `Сиз ${row.shop.name}-га берилган ${row.product} махсулот образецини қайтармоқчимисиз?`,
         'Образецни қайтариш'
-      ).then(() => {
-        this.DO_RETURN(val)
-          .then(() => {
-            this.GET_SAMPLES()
-          })
-          .catch((err) => console.error(err))
-      }).catch(() => {})
+      )
+        .then(() => {
+          this.DO_RETURN(val)
+            .then(() => {
+              this.GET_SAMPLES()
+            })
+            .catch((err) => console.error(err))
+        })
+        .catch(() => {})
     },
     openImg(url) {
       this.showImageDilog = true

@@ -46,7 +46,7 @@ function save_order(data) {
     url: '/orders/save-order',
     method: 'POST',
     data,
-    timeout: 20 * 1000
+    timeout: 25 * 1000
   })
 }
 

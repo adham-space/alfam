@@ -7,10 +7,9 @@
       :data="orders"
       stripe
       highlight-current-row
-      @row-dblclick="rowChosen"
       @row-click="orderChosed"
     >
-      <el-table-column type="expand" fixed="left">
+      <el-table-column width="50" type="expand" fixed="left">
         <!-- eslint-disable-next-line -->
         <template slot-scope="scope">
           <div class="inner-table">
@@ -45,7 +44,7 @@
               <template slot-scope="scope">
 
                   <el-image
-                    style="width: 50px; height: 50px"
+                    style="width: 30px; height: 30px"
                     :src="scope.row.photo_path"
                     fit="scale-down"
                     @click="openImg(scope.row.photo_path)"
@@ -87,38 +86,20 @@
         </template>
       </el-table-column>
       <el-table-column
-        width="160"
+        width="180"
         align="center"
         prop="order_name"
         label="Инвойс №"
       />
-      <el-table-column
-        width="170"
-        align="center"
-        prop="product"
-        label="Махсулот"
-      />
-      <el-table-column width="170" align="center">
+      <el-table-column width="180" align="center">
         <template slot="header">
           <span>Умумий м<sup>2</sup></span>
         </template>
         <template slot-scope="scope">
-          <el-popover
-            placement="right"
-            trigger="hover"
-          >
-            <el-table :show-header="false" :data="gridDataArea(scope.row.products)">
-              <el-table-column align="center" width="120" property="name" label="name" />
-              <el-table-column align="center" width="100" property="value" label="value" />
-            </el-table>
-            <el-button slot="reference" type="text">
-              {{ parseFloat(getTotalAre(scope.row.products).packTotalArea.toFixed(4)) }}
-            </el-button>
-          </el-popover>
-
+          {{ parseFloat(getTotalAre(scope.row.products).packTotalArea.toFixed(4)) }}
         </template>
       </el-table-column>
-      <el-table-column width="170" align="center" label="Умумий донаси">
+      <el-table-column width="180" align="center" label="Умумий донаси">
         <template slot-scope="scope">
 
           <el-popover
@@ -127,20 +108,27 @@
           >
             <el-table :show-header="false" :data="gridData(scope.row.products)">
               <el-table-column align="center" width="120" property="name" label="name" />
-              <el-table-column align="center" width="100" property="value" label="value" />
+              <el-table-column align="center" width="100" property="value" label="value">
+                <!-- eslint-disable-next-line -->
+                <template slot-scope="scope">
+                  <span v-if="scope.row.isReturning || scope.row.action === 3" style="color: red"> - {{ scope.row.value }}</span>
+                  <span v-else style="color: green"> + {{ scope.row.value }}</span>
+                </template>
+              </el-table-column>
             </el-table>
             <el-button slot="reference" type="text">{{ getTotalNumber(scope.row.products).item_num }}</el-button>
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column width="170" align="center" label="Почкаси / Донаси">
+      <el-table-column width="180" align="center" label="Почкаси / Донаси">
         <template slot-scope="scope">
           {{ getPackNumber(scope.row.products).pack_num }} / {{ getOverPackNumber(scope.row.products).over_pack_num }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="last_sum" label="Кассаси">
+      <el-table-column width="180" align="center" prop="last_sum" label="Кассаси">
         <template slot-scope="scope">
+
           <el-popover
             placement="right"
             trigger="hover"
@@ -150,54 +138,44 @@
               <el-table-column align="center" width="100" property="value" label="value">
                 <!-- eslint-disable-next-line -->
                 <template slot-scope="scope">
-                  <span>  {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
+                  <span v-if="scope.row.isReturning || scope.row.action === 3" style="color: red"> {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
+                  <span v-else style="color: green"> + {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
                 </template>
               </el-table-column>
             </el-table>
             <el-button slot="reference" type="text">
-              {{ parseFloat(scope.row.last_sum.toFixed(4)) }}
+              <span style="">+ {{ getPriceMinusPlus(scope.row.products).plus }}</span> /
+              <span style="color: red">{{ getPriceMinusPlus(scope.row.products).minus }}</span>
             </el-button>
           </el-popover>
         </template>
       </el-table-column>
-
-      <!-- <el-table-column width="170" align="center" prop="last_sum" label="Price">
-        <template slot-scope="scope">
-          {{ parseFloat(scope.row.last_sum.toFixed(4)) }}
-        </template>
-      </el-table-column> -->
-      <el-table-column
+      <!-- <el-table-column
         width="180"
         align="center"
         prop="customer"
-        label="Ҳаридор"
+        label="Customer"
       >
         <template slot-scope="scope">
-          <div v-if="scope.row.customer">
-            {{ `${scope.row.customer.firstName} ${scope.row.customer.lastName}` }}
-          </div>
-          <div v-else />
+          {{ `${scope.row.customer.firstName} ${scope.row.customer.lastName}` }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column
         width="170"
         align="center"
         prop="purchase_amount"
         label="Purchases"
       /> -->
-      <el-table-column
+      <!-- <el-table-column
         width="230"
         align="center"
         prop="address"
-        label="Манзил"
+        label="Address"
       >
         <template slot-scope="scope">
-          <div v-if="scope.row.customer">
-            {{ scope.row.customer.address }}
-          </div>
-          <div v-else />
+          {{ scope.row.customer.address }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column width="180" align="center" prop="driver" label="Ҳайдовчи">
         <template slot-scope="scope">
           {{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}
@@ -208,23 +186,18 @@
           {{ scope.row.user.stuff.firstName + ' ' + scope.row.user.stuff.lastName }}
         </template>
       </el-table-column>
-      <el-table-column width="120" align="center" label="Актуальность" fixed="right">
+
+      <el-table-column prop="status" width="100" align="center" label="Статус" fixed="right">
         <template slot-scope="scope">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            :content="scope.row.actuality_status ? 'Очиқ':'Ёпилган'"
-            placement="left-start"
-          >
-            <el-checkbox
-              :value="scope.row.actuality_status"
-              :disabled="!!!scope.row.actuality_status"
-              @change="closeCurrentOrder(scope.row)"
-            />
-          </el-tooltip>
-          <!-- <el-tooltip v-else>
-            <i class="el-icon-check" />
-          </el-tooltip> -->
+          <i v-if="scope.row.status === -1" class="el-icon-loading" />
+          <i v-if="scope.row.status === 1" style="color: green" class="el-icon-success" />
+          <i v-if="scope.row.status === 0" style="color: red" class="el-icon-error" />
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="action" width="100" align="center" :label="!!currentOrderHeader.order_name ? 'Процесс' : 'Last action'" fixed="right">
+        <template slot-scope="scope">
+          {{ actions[scope.row.action] }}
         </template>
       </el-table-column>
     </el-table>
@@ -244,10 +217,8 @@
 <script>
 import Pagination from '@/components/Pagination'
 import { mapMutations, mapState, mapActions } from 'vuex'
-// import request from '@/utils/request'
-// import { Message } from 'element-ui'
 export default {
-  name: 'OrderInventar',
+  name: 'InnerTable',
   components: {
     Pagination
   },
@@ -256,29 +227,81 @@ export default {
     showImageDilog: false,
     actuality: false,
     imageUrl: '',
+    actions: ['', 'Сотув', 'Бартер', 'Возврат'],
     statuses: ['el-icon-loading', 'el-icon-error', 'el-icon-success'],
-    statuses_text: ['Waiting approvement', 'Order ejected', 'Order accepted'],
+    statuses_text: ['Тасдиқлаш кутилмоқда', 'Заказ рад қилинди', 'Заказ қабул қилинди'],
     statuses_color: ['gray', 'red', 'green']
   }),
   computed: {
     ...mapState('user', ['roles']),
     ...mapState('orders', ['orders', 'tableLoading', 'currentOrderHeader'])
   },
-  mounted() {
-    this.GET_ORDERS()
-  },
   beforeDestroy() {
     this.SET_ORDER(null)
   },
   methods: {
-    ...mapMutations('orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER', 'SET_CURRENT_TABLE']),
-    ...mapActions('orders', ['GET_ORDERS', 'GET_CURRENT_ORDER', 'CLOSE_CURRENT_ORDER']),
-    rowChosen(row) {
-      console.log(row)
-      this.GET_CURRENT_ORDER().then(() => {
-        this.SET_CURRENT_ORDER_HEADER(row)
-        this.SET_CURRENT_TABLE('innerTable')
+    ...mapMutations('orders', ['SET_ORDER', 'SET_CURRENT_ORDER_HEADER']),
+    ...mapActions('orders', ['GET_ORDERS', 'GET_CURRENT_ORDER']),
+    openImg(url) {
+      this.showImageDilog = true
+      this.imageUrl = url
+    },
+    orderChosed(row) {
+      if (row.status === -1) {
+        this.SET_ORDER(row)
+      } else {
+        this.$notify({
+          message: 'You cant edit this order: order already processed by zavsklad',
+          type: 'warning',
+          duration: 4000
+        })
+      }
+    },
+    getTotalAre(products) {
+      return products.reduce((a, b) => ({ packTotalArea: a.packTotalArea + b.packTotalArea }))
+    },
+    getTotalNumber(products) {
+      return products.reduce((a, b) => ({ item_num: a.item_num + b.item_num }))
+    },
+    getPackNumber(products) {
+      return products.reduce((a, b) => ({ pack_num: a.pack_num + b.pack_num }))
+    },
+    getOverPackNumber(products) {
+      return products.reduce((a, b) => ({ over_pack_num: a.over_pack_num + b.over_pack_num }))
+    },
+    gridData(products) {
+      let dataItem = {
+        name: '',
+        value: '',
+        isReturning: false
+      }
+      const data = []
+      products.forEach(product => {
+        dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
+        dataItem.value = product.item_num
+        dataItem.isReturning = product.isReturning
+        data.push(dataItem)
+        dataItem = {
+          name: '',
+          value: '',
+          isReturning: false
+        }
       })
+      return data
+    },
+    getPriceMinusPlus(products) {
+      let minus = 0
+      let plus = 0
+      products.forEach(product => {
+        if (product.isReturning) {
+          minus += product.sum
+        } else {
+          plus += product.sum
+        }
+      })
+      minus = parseFloat(minus.toFixed(4))
+      plus = parseFloat(plus.toFixed(4))
+      return { minus: minus, plus: plus }
     },
     gridDataPrice(products) {
       let dataItem = {
@@ -299,73 +322,6 @@ export default {
         }
       })
       return data
-    },
-
-    gridDataArea(products) {
-      let dataItem = {
-        name: '',
-        value: '',
-        isReturning: false
-      }
-      const data = []
-      products.forEach(product => {
-        dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
-        dataItem.value = product.packTotalArea
-        dataItem.isReturning = product.isReturning
-        data.push(dataItem)
-        dataItem = {
-          name: '',
-          value: '',
-          isReturning: false
-        }
-      })
-      return data
-    },
-
-    openImg(url) {
-      this.showImageDilog = true
-      this.imageUrl = url
-    },
-    orderChosed(row) {
-      this.SET_ORDER(row)
-    },
-    getTotalAre(products) {
-      return products.reduce((a, b) => ({ packTotalArea: a.packTotalArea + b.packTotalArea }))
-    },
-    getTotalNumber(products) {
-      return products.reduce((a, b) => ({ item_num: a.item_num + b.item_num }))
-    },
-    getPackNumber(products) {
-      return products.reduce((a, b) => ({ pack_num: a.pack_num + b.pack_num }))
-    },
-    getOverPackNumber(products) {
-      return products.reduce((a, b) => ({ over_pack_num: a.over_pack_num + b.over_pack_num }))
-    },
-    gridData(products) {
-      let dataItem = {
-        name: '',
-        value: ''
-      }
-      const data = []
-      products.forEach(product => {
-        dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
-        dataItem.value = product.item_num
-        data.push(dataItem)
-        dataItem = {
-          name: '',
-          value: ''
-        }
-      })
-      return data
-    },
-    closeCurrentOrder(row) {
-      this.$confirm('Ушбу сотув жараёни тугатишин тасдиқланг', 'Жараён статуси').then(() => {
-        this.CLOSE_CURRENT_ORDER({ order_id: row._id, consumer: row.customer._id, product_id: row.product_id }).then(() => {
-          this.GET_ORDERS()
-        }).catch(err => {
-          console.error(err)
-        })
-      })
     }
   }
 }

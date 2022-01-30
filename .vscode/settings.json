@@ -5,5 +5,6 @@
         "activityBar.foreground": "#ffffff",
         "statusBar.background": "#333",
         "statusBar.foreground": "#fcfcfc"
-    }
+    },
+    "workbench.sideBar.location": "left"
 }
