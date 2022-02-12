@@ -2,16 +2,39 @@
   <div>
     <el-row :gutter="10" class="orders-body">
       <Tools />
-      <current :is="currentTable" />
+      <current :is="currentTable" :orders="orders">
+        <el-col
+          :span="5"
+          style="border: 0px solid gray; border-radius: 10px; height: 100%"
+        >
+          <div class="PartnerListTool">
+            <el-input
+              v-model="currentPartner"
+              style="width: 100%"
+              placeholder="Partner"
+            />
+          </div>
+          <el-table
+            v-loading="gettingPartners"
+            highlight-current-row
+            height="calc(100% - 4rem)"
+            :data="partnersList"
+            @row-click="getCurrentPartnerOrders"
+          >
+            <el-table-column align="center" prop="name" label="Parners" />
+          </el-table>
+        </el-col>
+      </current>
     </el-row>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import Tools from './components/tools.vue'
 import innerTable from './components/innerTable'
 import orderInventar from './components/orderInventar'
+
 export default {
   name: 'OrdersList',
   components: {
@@ -21,14 +44,22 @@ export default {
   },
   data() {
     return {
-      key: Math.random()
+      orders: [],
+      key: Math.random(),
+      currentPartner: ''
     }
   },
   computed: {
-    ...mapState('orders', ['currentTable'])
+    ...mapState('commertia', ['partners', 'currentTable', 'gettingPartners']),
+    partnersList() {
+      return this.partners.filter((partner) => {
+        return partner.name
+          .toLowerCase()
+          .includes(this.currentPartner.toLowerCase())
+      })
+    }
   },
   beforeDestroy() {
-    console.log('Is destrotying')
     this.SET_CURRENT_TABLE('orderInventar')
     this.SET_CURRENT_ORDER_HEADER({
       customer: '',
@@ -36,10 +67,23 @@ export default {
       order_name: ''
     })
   },
+  mounted() {
+    this.get_partners()
+  },
   methods: {
-    ...mapMutations('orders', ['SET_CURRENT_TABLE', 'SET_CURRENT_ORDER_HEADER'])
+    ...mapMutations('commertia', [
+      'SET_CURRENT_TABLE',
+      'SET_CURRENT_ORDER_HEADER'
+    ]),
+    ...mapActions('commertia', ['get_partners', 'get_outer_table_data']),
+    currentPartnerChanged(val) {
+      this.partnersList(val)
+    },
+    getCurrentPartnerOrders(row) {
+      this.SET_CURRENT_TABLE('orderInventar')
+      this.get_outer_table_data({ id: row._id })
+    }
   }
-
 }
 </script>
 
@@ -64,5 +108,12 @@ export default {
   height: 3.5rem;
   display: flex;
   align-items: center;
+}
+
+.PartnerListTool {
+  display: flex;
+  height: 3.5rem;
+  align-items: center;
+  justify-content: center;
 }
 </style>

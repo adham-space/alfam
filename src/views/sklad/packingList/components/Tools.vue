@@ -97,6 +97,24 @@
       </el-form-item>
       <!-- end of: if is sample then show shops list-->
 
+      <el-form-item v-if="!toolBarForm.isSample && times.length" prop="time">
+        <el-select
+          v-model="toolBarForm.time"
+          style="width: 100%"
+          class="tools-wrapper-item"
+          placeholder="Вақтни танланг"
+          clearable
+          @change="timeChanged"
+        >
+          <el-option
+            v-for="time in times"
+            :key="time"
+            :label="new Date(time).toLocaleString('uz-UZ')"
+            :value="time"
+          />
+        </el-select>
+      </el-form-item>
+
       <el-form-item v-if="!toolBarForm.isSample" prop="currentStatus">
         <el-select
           v-model="toolBarForm.currentStatus"
@@ -105,8 +123,8 @@
           placeholder="Жараённи танланг"
           @change="procedureChanged"
         >
-          <el-option label="Сотиб олиш" :value="1" />
-          <el-option label="Бартер (Алмаштириш)" :value="2" />
+          <el-option v-if="!toolBarForm.time" label="Сотиб олиш" :value="1" />
+          <el-option label="Сотув-2/Бартер (Алмаштириш)" :value="2" />
           <el-option label="Қайтариш" :value="3" />
         </el-select>
       </el-form-item>
@@ -136,10 +154,21 @@
           placeholder="Пагрузка пули"
           @change="costOfUploadChanging"
         />
-        <p>Пагрузка: {{ toThousandFilter(Math.ceil(total_Area_for_invoice * toolBarForm.costOfUpload)) }}</p>
+        <p>
+          Пагрузка:
+          {{
+            toThousandFilter(
+              Math.ceil(total_Area_for_invoice * toolBarForm.costOfUpload)
+            )
+          }}
+        </p>
       </el-form-item>
 
-      <el-form-item v-if="!toolBarForm.isSample" label="Қарзгами?" prop="isDebt">
+      <el-form-item
+        v-if="!toolBarForm.isSample"
+        label="Қарзгами?"
+        prop="isDebt"
+      >
         <el-switch
           v-model="toolBarForm.isDebt"
           active-color="#13ce66"
@@ -188,8 +217,10 @@
       <el-button type="danger" @click="reset_all()">Отменить</el-button>
     </div>
     <!-- <AddCustomerDialog :dialog-visible="customerAddDailog" @closeDialog="closeForm()" /> -->
-    <AddDillerDialog :dialog-visible="dillerAddDailog" @closeDialog="closeForm()" />
-
+    <AddDillerDialog
+      :dialog-visible="dillerAddDailog"
+      @closeDialog="closeForm()"
+    />
   </div>
 </template>
 <script>
@@ -221,11 +252,16 @@ export default {
     batches: [],
     customerAddDailog: false,
     dillerAddDailog: false,
-    shops_for_packinglist: []
-
+    shops_for_packinglist: [],
+    times: []
   }),
   computed: {
-    ...mapState('products', ['products_types', 'product', 'order', 'total_Area_for_invoice']),
+    ...mapState('products', [
+      'products_types',
+      'product',
+      'order',
+      'total_Area_for_invoice'
+    ]),
     ...mapState('shops', ['shops', 'shops_other']),
     all_shops() {
       return this.shops.concat(this.shops_other)
@@ -258,6 +294,27 @@ export default {
       })
   },
   methods: {
+    async getTimes() {
+      try {
+        console.log('asdasd', this.toolBarForm)
+        const { data } = await request({
+          url: '/orders/get-partner-order-times-with-product-bantch',
+          params: {
+            batch: this.toolBarForm.currentProduct[0],
+            product_id: this.toolBarForm.currentProduct[1],
+            customer: this.toolBarForm.currentcustomer
+          }
+        })
+        console.log(
+          'times: ',
+          new Date(data[0].createdAt).toLocaleString('uz-UZ')
+        )
+        this.times = data.map((time) => time.createdAt)
+        console.log('actual times', this.times)
+      } catch (error) {
+        console.error(error)
+      }
+    },
     closeForm() {
       this.customerAddDailog = false
       this.dillerAddDailog = false
@@ -271,7 +328,7 @@ export default {
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCT_BY_TYPE_ID',
-      'SAVE_ORDER'
+      'SAVE_ORDER_ZAVSKLAD'
     ]),
     ...mapActions('customers', ['GET_CUSTOMERS']),
     ...mapActions('shops', ['GET_SHOPS', 'GET_SHOPS_OTHER']),
@@ -280,7 +337,7 @@ export default {
 
     getOrderCount() {
       request({
-        url: '/orders/get-order-count-for-today'
+        url: '/orders/get-order-count-for-today-commertia'
       })
         .then((res) => {
           console.log('orders', res.data)
@@ -327,7 +384,7 @@ export default {
       this.order_saving = true
       this.PREPARE_ORDER()
       setTimeout(() => {
-        this.SAVE_ORDER()
+        this.SAVE_ORDER_ZAVSKLAD()
           .then(() => {
             this.order_saving = false
             Message({
@@ -385,6 +442,9 @@ export default {
     procedureChanged(val) {
       this.SET_ORDER({ key: 'action', value: val })
     },
+    timeChanged(val) {
+      this.SET_ORDER({ key: 'time', value: val })
+    },
     setReturnDebtDate(val) {
       this.SET_ORDER({ key: 'date_of_return_debt', value: val })
     },
@@ -403,6 +463,7 @@ export default {
       } else {
         this.SET_ORDER({ key: 'customer', value: val })
         this.getLastActionOfCustomer()
+        this.getTimes()
       }
     },
     shopChanged(val) {
@@ -434,12 +495,14 @@ export default {
           product_id: this.toolBarForm.currentProduct[1]
         },
         method: 'GET'
-      }).then(res => {
-        this.shops_for_packinglist = res.data
-      }).catch(err => {
-        console.error(err)
-        this.shops_for_packinglist = []
       })
+        .then((res) => {
+          this.shops_for_packinglist = res.data
+        })
+        .catch((err) => {
+          console.error(err)
+          this.shops_for_packinglist = []
+        })
     }
   }
 }

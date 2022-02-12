@@ -41,8 +41,7 @@
                 align="center"
               >
                 <!-- eslint-disable-next-line  -->
-              <template slot-scope="scope">
-
+                <template slot-scope="scope">
                   <el-image
                     style="width: 30px; height: 30px"
                     :src="scope.row.photo_path"
@@ -96,56 +95,96 @@
           <span>Умумий м<sup>2</sup></span>
         </template>
         <template slot-scope="scope">
-          {{ parseFloat(getTotalAre(scope.row.products).packTotalArea.toFixed(4)) }}
+          {{
+            parseFloat(getTotalAre(scope.row.products).packTotalArea.toFixed(4))
+          }}
         </template>
       </el-table-column>
       <el-table-column width="180" align="center" label="Умумий донаси">
         <template slot-scope="scope">
-
-          <el-popover
-            placement="right"
-            trigger="hover"
-          >
+          <el-popover placement="right" trigger="hover">
             <el-table :show-header="false" :data="gridData(scope.row.products)">
-              <el-table-column align="center" width="120" property="name" label="name" />
-              <el-table-column align="center" width="100" property="value" label="value">
+              <el-table-column
+                align="center"
+                width="120"
+                property="name"
+                label="name"
+              />
+              <el-table-column
+                align="center"
+                width="100"
+                property="value"
+                label="value"
+              >
                 <!-- eslint-disable-next-line -->
                 <template slot-scope="scope">
-                  <span v-if="scope.row.isReturning || scope.row.action === 3" style="color: red"> - {{ scope.row.value }}</span>
-                  <span v-else style="color: green"> + {{ scope.row.value }}</span>
+                  <span
+                    v-if="scope.row.isReturning || scope.row.action === 3"
+                    style="color: red"
+                  >
+                    - {{ scope.row.value }}</span>
+                  <span v-else style="color: green">
+                    + {{ scope.row.value }}</span>
                 </template>
               </el-table-column>
             </el-table>
-            <el-button slot="reference" type="text">{{ getTotalNumber(scope.row.products).item_num }}</el-button>
+            <el-button slot="reference" type="text">{{
+              getTotalNumber(scope.row.products).item_num
+            }}</el-button>
           </el-popover>
         </template>
       </el-table-column>
       <el-table-column width="180" align="center" label="Почкаси / Донаси">
         <template slot-scope="scope">
-          {{ getPackNumber(scope.row.products).pack_num }} / {{ getOverPackNumber(scope.row.products).over_pack_num }}
+          {{ getPackNumber(scope.row.products).pack_num }} /
+          {{ getOverPackNumber(scope.row.products).over_pack_num }}
         </template>
       </el-table-column>
 
-      <el-table-column width="180" align="center" prop="last_sum" label="Кассаси">
+      <el-table-column
+        width="180"
+        align="center"
+        prop="last_sum"
+        label="Кассаси"
+      >
         <template slot-scope="scope">
-
-          <el-popover
-            placement="right"
-            trigger="hover"
-          >
-            <el-table :show-header="false" :data="gridDataPrice(scope.row.products)">
-              <el-table-column align="center" width="120" property="name" label="name" />
-              <el-table-column align="center" width="100" property="value" label="value">
+          <el-popover placement="right" trigger="hover">
+            <el-table
+              :show-header="false"
+              :data="gridDataPrice(scope.row.products)"
+            >
+              <el-table-column
+                align="center"
+                width="120"
+                property="name"
+                label="name"
+              />
+              <el-table-column
+                align="center"
+                width="100"
+                property="value"
+                label="value"
+              >
                 <!-- eslint-disable-next-line -->
                 <template slot-scope="scope">
-                  <span v-if="scope.row.isReturning || scope.row.action === 3" style="color: red"> {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
-                  <span v-else style="color: green"> + {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
+                  <span
+                    v-if="scope.row.isReturning || scope.row.action === 3"
+                    style="color: red"
+                  >
+                    {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
+                  <span v-else style="color: green">
+                    + {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
                 </template>
               </el-table-column>
             </el-table>
             <el-button slot="reference" type="text">
-              <span style="">+ {{ getPriceMinusPlus(scope.row.products).plus }}</span> /
-              <span style="color: red">{{ getPriceMinusPlus(scope.row.products).minus }}</span>
+              <span
+                style=""
+              >+ {{ getPriceMinusPlus(scope.row.products).plus }}</span>
+              /
+              <span style="color: red">{{
+                getPriceMinusPlus(scope.row.products).minus
+              }}</span>
             </el-button>
           </el-popover>
         </template>
@@ -176,35 +215,72 @@
           {{ scope.row.customer.address }}
         </template>
       </el-table-column> -->
-      <el-table-column width="180" align="center" prop="driver" label="Ҳайдовчи">
+      <el-table-column
+        width="180"
+        align="center"
+        prop="driver"
+        label="Ҳайдовчи"
+      >
         <template slot-scope="scope">
           {{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}
         </template>
       </el-table-column>
-      <el-table-column v-if="roles.includes('admin')" width="180" align="center" label="Ходим">
+      <el-table-column
+        v-if="roles.includes('admin')"
+        width="180"
+        align="center"
+        label="Ходим"
+      >
         <template slot-scope="scope">
-          {{ scope.row.user.stuff.firstName + ' ' + scope.row.user.stuff.lastName }}
+          {{
+            scope.row.user.stuff.firstName + " " + scope.row.user.stuff.lastName
+          }}
         </template>
       </el-table-column>
 
-      <el-table-column prop="status" width="100" align="center" label="Статус" fixed="right">
+      <el-table-column
+        prop="status"
+        width="100"
+        align="center"
+        label="Статус"
+        fixed="right"
+      >
         <template slot-scope="scope">
           <i v-if="scope.row.status === -1" class="el-icon-loading" />
-          <i v-if="scope.row.status === 1" style="color: green" class="el-icon-success" />
-          <i v-if="scope.row.status === 0" style="color: red" class="el-icon-error" />
+          <i
+            v-if="scope.row.status === 1"
+            style="color: green"
+            class="el-icon-success"
+          />
+          <i
+            v-if="scope.row.status === 0"
+            style="color: red"
+            class="el-icon-error"
+          />
         </template>
       </el-table-column>
 
-      <el-table-column prop="action" width="100" align="center" :label="!!currentOrderHeader.order_name ? 'Процесс' : 'Last action'" fixed="right">
+      <el-table-column
+        prop="action"
+        width="100"
+        align="center"
+        :label="!!currentOrderHeader.order_name ? 'Процесс' : 'Last action'"
+        fixed="right"
+      >
         <template slot-scope="scope">
           {{ actions[scope.row.action] }}
         </template>
       </el-table-column>
     </el-table>
-    <div class="pgntion">
+    <!-- <div class="pgntion">
       <Pagination :total="102" :page="1" :limit="20" />
-    </div>
-    <el-dialog title="" :visible.sync="showImageDilog" append-to-body width="40%">
+    </div> -->
+    <el-dialog
+      title=""
+      :visible.sync="showImageDilog"
+      append-to-body
+      width="40%"
+    >
       <el-image
         style="width: 100%; height: 90%"
         :src="imageUrl"
@@ -215,12 +291,12 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination'
+// import Pagination from '@/components/Pagination'
 import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
   name: 'InnerTable',
   components: {
-    Pagination
+    // Pagination
   },
   data: () => ({
     baseApi: process.env.VUE_APP_BASE_API,
@@ -229,7 +305,11 @@ export default {
     imageUrl: '',
     actions: ['', 'Сотув', 'Бартер', 'Возврат'],
     statuses: ['el-icon-loading', 'el-icon-error', 'el-icon-success'],
-    statuses_text: ['Тасдиқлаш кутилмоқда', 'Заказ рад қилинди', 'Заказ қабул қилинди'],
+    statuses_text: [
+      'Тасдиқлаш кутилмоқда',
+      'Заказ рад қилинди',
+      'Заказ қабул қилинди'
+    ],
     statuses_color: ['gray', 'red', 'green']
   }),
   computed: {
@@ -251,14 +331,17 @@ export default {
         this.SET_ORDER(row)
       } else {
         this.$notify({
-          message: 'You cant edit this order: order already processed by zavsklad',
+          message:
+            'You cant edit this order: order already processed by zavsklad',
           type: 'warning',
           duration: 4000
         })
       }
     },
     getTotalAre(products) {
-      return products.reduce((a, b) => ({ packTotalArea: a.packTotalArea + b.packTotalArea }))
+      return products.reduce((a, b) => ({
+        packTotalArea: a.packTotalArea + b.packTotalArea
+      }))
     },
     getTotalNumber(products) {
       return products.reduce((a, b) => ({ item_num: a.item_num + b.item_num }))
@@ -267,7 +350,9 @@ export default {
       return products.reduce((a, b) => ({ pack_num: a.pack_num + b.pack_num }))
     },
     getOverPackNumber(products) {
-      return products.reduce((a, b) => ({ over_pack_num: a.over_pack_num + b.over_pack_num }))
+      return products.reduce((a, b) => ({
+        over_pack_num: a.over_pack_num + b.over_pack_num
+      }))
     },
     gridData(products) {
       let dataItem = {
@@ -276,8 +361,9 @@ export default {
         isReturning: false
       }
       const data = []
-      products.forEach(product => {
-        dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
+      products.forEach((product) => {
+        dataItem.name =
+          product.type_name + (product.is_broken ? ' - broken' : '')
         dataItem.value = product.item_num
         dataItem.isReturning = product.isReturning
         data.push(dataItem)
@@ -292,7 +378,7 @@ export default {
     getPriceMinusPlus(products) {
       let minus = 0
       let plus = 0
-      products.forEach(product => {
+      products.forEach((product) => {
         if (product.isReturning) {
           minus += product.sum
         } else {
@@ -310,8 +396,9 @@ export default {
         isReturning: false
       }
       const data = []
-      products.forEach(product => {
-        dataItem.name = product.type_name + (product.is_broken ? ' - broken' : '')
+      products.forEach((product) => {
+        dataItem.name =
+          product.type_name + (product.is_broken ? ' - broken' : '')
         dataItem.value = product.sum
         dataItem.isReturning = product.isReturning
         data.push(dataItem)
@@ -328,10 +415,9 @@ export default {
 </script>
 
 <style>
-
-  .inner-table {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
+.inner-table {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 </style>

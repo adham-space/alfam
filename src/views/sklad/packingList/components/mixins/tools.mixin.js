@@ -16,11 +16,11 @@ export default {
         isDebt: false,
         currentShop: '',
         debtDate: '',
+        time: '',
         debtDescription: ''
       },
       rules: {
         currentShop: [{
-
           trigger: 'change',
           validator: (rule, value, cb) => {
             if (this.toolBarForm.isSample) {

@@ -50,6 +50,15 @@ function save_order(data) {
   })
 }
 
+function save_order_zavsklad(data) {
+  return request({
+    url: '/orders/save-order-zavsklad',
+    method: 'POST',
+    data,
+    timeout: 25 * 1000
+  })
+}
+
 function save_sample(data) {
   return request({
     url: '/orders/save-sample',
@@ -84,9 +93,12 @@ const state = {
   order: {
     product: '',
     products: [],
-    order_name: `ALFAM-${1}-${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`,
+    order_name: `ALFAM-${1}-${d.getDate()}/${
+      d.getMonth() + 1
+    }/${d.getFullYear()}`,
     includes_brokens: false,
     action: -1,
+    time: '',
     customer: '',
     driver: '',
     upload_cost: '',
@@ -117,7 +129,9 @@ const mutations = {
     state.edit_batch_of_product = pr.products
   },
   SET_EDIT_BATCH_OF_PRODUCTS: (state, data) => {
-    const currnetProductIndex = state.edit_batch_of_product.findIndex(pr => pr.product_type === data.product_type && data.broken === pr.broken)
+    const currnetProductIndex = state.edit_batch_of_product.findIndex(
+      (pr) => pr.product_type === data.product_type && data.broken === pr.broken
+    )
     if (currnetProductIndex > -1) {
       state.edit_batch_of_product[currnetProductIndex] = {
         ...state.edit_batch_of_product[currnetProductIndex],
@@ -149,9 +163,12 @@ const mutations = {
   },
   SET_ORDER: (state, order) => {
     state.order[order.key] = order.value
-    state.total_Area_for_invoice = state.product_with_types.reduce((acc, elem) => {
-      return acc + (elem.packTotalArea === '' ? 0 : elem.packTotalArea)
-    }, 0)
+    state.total_Area_for_invoice = state.product_with_types.reduce(
+      (acc, elem) => {
+        return acc + (elem.packTotalArea === '' ? 0 : elem.packTotalArea)
+      },
+      0
+    )
   },
   PREPARE_ORDER: (state) => {
     state.order.products = []
@@ -240,9 +257,12 @@ const mutations = {
   SET_ORDER_BASE_PRICE_M: (state, data) => {
     const { products } = data
     for (let i = 0; i < products.length; i++) {
-      const indexOfProduct = state.product_with_types.findIndex(pr => pr.code === products[i].code)
+      const indexOfProduct = state.product_with_types.findIndex(
+        (pr) => pr.code === products[i].code
+      )
       if (indexOfProduct !== -1) {
-        state.product_with_types[indexOfProduct].base_price_changed = products[i].base_price_changed
+        state.product_with_types[indexOfProduct].base_price_changed =
+                    products[i].base_price_changed
       }
     }
   }
@@ -251,16 +271,21 @@ const mutations = {
 const actions = {
   SET_ORDER_BASE_PRICE({ commit, state }) {
     return new Promise((resolve, reject) => {
-      get_last_base_price({ product: state.order.product.product_id, customer: state.order.customer }).then(res => {
-        if (res.data) {
-          commit('SET_ORDER_BASE_PRICE_M', res.data)
-          resolve(true)
-        } else {
-          resolve(null)
-        }
-      }).catch(err => {
-        reject(err)
+      get_last_base_price({
+        product: state.order.product.product_id,
+        customer: state.order.customer
       })
+        .then((res) => {
+          if (res.data) {
+            commit('SET_ORDER_BASE_PRICE_M', res.data)
+            resolve(true)
+          } else {
+            resolve(null)
+          }
+        })
+        .catch((err) => {
+          reject(err)
+        })
     })
   },
   SAVE_ORDER({ commit, state }) {
@@ -268,19 +293,53 @@ const actions = {
       // console.log('Is Sample:', state.order.isSample)
       if (!state.wrong_format) {
         if (state.order.isSample) {
-          save_sample(state.order).then(res => {
-            commit('RESET_ORDER')
-            resolve()
-          }).catch(err => {
-            reject(err)
-          })
+          save_sample(state.order)
+            .then((res) => {
+              commit('RESET_ORDER')
+              resolve()
+            })
+            .catch((err) => {
+              reject(err)
+            })
         } else {
-          save_order(state.order).then(res => {
-            commit('RESET_ORDER')
-            resolve()
-          }).catch(err => {
-            reject(err)
-          })
+          save_order(state.order)
+            .then((res) => {
+              commit('RESET_ORDER')
+              resolve()
+            })
+            .catch((err) => {
+              reject(err)
+            })
+        }
+      } else {
+        this.$notify({
+          message: 'You inserted wrong value to: ' + state.wrong_format_product
+        })
+      }
+    })
+  },
+  SAVE_ORDER_ZAVSKLAD({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      // console.log('Is Sample:', state.order.isSample)
+      if (!state.wrong_format) {
+        if (state.order.isSample) {
+          save_sample(state.order)
+            .then((res) => {
+              commit('RESET_ORDER')
+              resolve()
+            })
+            .catch((err) => {
+              reject(err)
+            })
+        } else {
+          save_order_zavsklad(state.order)
+            .then((res) => {
+              commit('RESET_ORDER')
+              resolve()
+            })
+            .catch((err) => {
+              reject(err)
+            })
         }
       } else {
         this.$notify({
@@ -291,56 +350,75 @@ const actions = {
   },
   GET_TARGETS({ commit }, id) {
     return new Promise((resolve, reject) => {
-      getTargets(id).then(res => {
-        commit('SET_TARGETS', res.data)
-        resolve()
-      }).catch(err => reject(err))
+      getTargets(id)
+        .then((res) => {
+          commit('SET_TARGETS', res.data)
+          resolve()
+        })
+        .catch((err) => reject(err))
     })
   },
   GET_PRODUCT_BY_TYPE_ID({ commit }, id) {
     return new Promise((resolve, reject) => {
-      commit('SET_LOADER', { key: 'product_with_types_table_loading', value: true })
-      getProductById(id).then(res => {
-        commit('SET_LOADER', { key: 'product_with_types_table_loading', value: false })
-        commit('SET_PRODUCT', res.data)
-        resolve()
-      }).catch(err => {
-        commit('SET_LOADER', { key: 'product_with_types_table_loading', value: false })
-        reject(err)
+      commit('SET_LOADER', {
+        key: 'product_with_types_table_loading',
+        value: true
       })
+      getProductById(id)
+        .then((res) => {
+          commit('SET_LOADER', {
+            key: 'product_with_types_table_loading',
+            value: false
+          })
+          commit('SET_PRODUCT', res.data)
+          resolve()
+        })
+        .catch((err) => {
+          commit('SET_LOADER', {
+            key: 'product_with_types_table_loading',
+            value: false
+          })
+          reject(err)
+        })
     })
   },
   GET_PRODUCT_TYPES({ commit }) {
     return new Promise((resolve, reject) => {
-      getProductTypes().then(res => {
-        commit('SET_PRODUCT_TYPES', res.data)
-        resolve()
-      }).catch(err => {
-        reject(err)
-      })
+      getProductTypes()
+        .then((res) => {
+          commit('SET_PRODUCT_TYPES', res.data)
+          resolve()
+        })
+        .catch((err) => {
+          reject(err)
+        })
     })
   },
   GET_PRODUCTS({ commit }) {
     return new Promise((resolve, reject) => {
-      getProducts().then(res => {
-        commit('SET_PRODUCTS', res.data)
-        resolve()
-      }).catch(err => {
-        reject(err)
-      })
+      getProducts()
+        .then((res) => {
+          commit('SET_PRODUCTS', res.data)
+          resolve()
+        })
+        .catch((err) => {
+          reject(err)
+        })
     })
   },
   GET_TODAYS_PRODUCTS({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getTodaysProductInfo(params).then(res => {
-        // num_of_todays_product
-        commit('SET_TODAYS_PRODUCT_NUM', res.data)
-        resolve()
-      }).catch(err => {
-        console.log(err)
-        commit('SET_TODAYS_PRODUCT_NUM', -1)
-        reject(err)
-      })
+      getTodaysProductInfo(params)
+        .then((res) => {
+          // num_of_todays_product
+          commit('SET_TODAYS_PRODUCT_NUM', res.data)
+          resolve()
+        })
+        .catch((err) => {
+          console.log(err)
+          commit('SET_TODAYS_PRODUCT_NUM', -1)
+          reject(err)
+        })
     })
   }
 }
@@ -351,4 +429,3 @@ export default {
   mutations,
   actions
 }
-

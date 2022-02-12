@@ -3,7 +3,12 @@
     <el-table
       v-loading="product_with_types_table_loading"
       :max-height="bodyHeight + ''"
-      style="width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid #bbbbbb;"
+      style="
+        width: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #bbbbbb;
+      "
       size="small"
       :data="tableDataComputed"
       show-summary
@@ -24,7 +29,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.type_name + (scope.row.broken ? ' - broken': '') }}
+          {{ scope.row.type_name + (scope.row.broken ? " - broken" : "") }}
         </template>
       </el-table-column>
       <el-table-column
@@ -46,6 +51,30 @@
             fit="scale-down"
             @click="openImg(scope.row.photo_path)"
           />
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-if="order.action === 2"
+        width="100"
+        prop="isReturning"
+        align="center"
+      >
+        <template slot="header" slot-scope="">
+          <span style="font-weight: bold">+ / -</span>
+        </template>
+        <template slot-scope="scope">
+          <el-tooltip
+            style="margin-right: 1em"
+            effect="dark"
+            :content="scope.row.isReturning ? 'To Remove' : 'To add'"
+            placement="left"
+          >
+            <el-switch
+              v-model="scope.row.isReturning"
+              active-color="#13ce66"
+              inactive-color=""
+            />
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column
@@ -85,20 +114,13 @@
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column
-        width="155"
-        align="center"
-      >
+      <el-table-column width="155" align="center">
         <template slot="header" slot-scope="">
           <span>ТОВАРНИ УМУМИЙ</span><br>
           <span>ПОЧКАСИНИЙ</span><br>
           <span>(МИҚДОРИ)</span><br>
         </template>
-        <el-table-column
-          width="178"
-          align="center"
-          prop="pack_num"
-        >
+        <el-table-column width="178" align="center" prop="pack_num">
           <template slot="header" slot-scope="">
             <span>ТОВАРНИ УМУМИЙ</span><br>
             <span>ДОНАСИНИ</span><br>
@@ -243,7 +265,13 @@
         />
       </el-table-column>
     </el-table>
-    <el-dialog top="1%" title="" :visible.sync="showImageDilog" append-to-body width="40%">
+    <el-dialog
+      top="1%"
+      title=""
+      :visible.sync="showImageDilog"
+      append-to-body
+      width="40%"
+    >
       <el-image
         style="width: 100%; height: 90%"
         :src="imageUrl"
@@ -258,9 +286,7 @@ import { mapState, mapMutations } from 'vuex'
 import data_ from './mixins/data_.js'
 import methods_ from './mixins/methods_.js'
 export default {
-  components: {
-
-  },
+  components: {},
   mixins: [data_, methods_],
   data() {
     return {
@@ -269,14 +295,14 @@ export default {
     }
   },
   computed: {
-    ...mapState('products', ['product_with_types_table_loading'])
+    ...mapState('products', ['product_with_types_table_loading', 'order'])
   },
   mounted() {
     setTimeout(() => {
       this.bodyHeight = this.$refs.tblContainer.clientHeight
       console.log(this.$refs.tblContainer.clientHeight)
     }, 300)
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.bodyHeight = this.$refs.tblContainer.clientHeight
     })
     console.log('asas', this.baseApi)

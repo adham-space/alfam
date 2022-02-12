@@ -1,7 +1,7 @@
 <template>
   <el-col :span="24" class="orders-page-tools">
     <div style="display: flex">
-      <el-input
+      <!-- <el-input
         v-model="search_input"
         style="border: 1px solid transparent"
         placeholder="Қидириш"
@@ -27,7 +27,7 @@
       <el-button
         style="border: 1px solid transparent; margin-left: 0.5rem"
         icon="el-icon-search"
-      />
+      /> -->
     </div>
     <div
       v-if="!!currentOrderHeader.order_name"
@@ -55,13 +55,13 @@
         icon="el-icon-plus"
         @click="$router.push('/shop/shop-packing-list')"
       />
-      <el-button
+      <!-- <el-button
         v-if="currentTable === 'innerTable'"
         :disabled="!!!currentOrder"
         style="border: 1px solid transparent"
         icon="el-icon-edit"
         @click="editDialog = true"
-      />
+      /> -->
       <!-- <el-button
         :disabled="!!!currentOrder"
         style="border: 1px solid transparent; color: red"
@@ -88,7 +88,11 @@ export default {
     delete_Dialog: false
   }),
   computed: {
-    ...mapState('orders', ['currentOrder', 'currentOrderHeader', 'currentTable'])
+    ...mapState('orders', [
+      'currentOrder',
+      'currentOrderHeader',
+      'currentTable'
+    ])
   },
   methods: {
     ...mapMutations('orders', [
