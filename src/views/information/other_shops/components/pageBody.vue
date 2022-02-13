@@ -4,7 +4,7 @@
       v-loading="tblLoading"
       style="width: 100%"
       height="calc(100% - 3.5rem)"
-      :data="tableData"
+      :data="shops_other"
       stripe
       highlight-current-row
       @row-click="driverChosed"
@@ -29,7 +29,7 @@ export default {
     }
   }),
   computed: {
-    ...mapState('shops', ['tableData', 'tblLoading'])
+    ...mapState('shops', ['tableData', 'tblLoading', 'shops_other'])
   },
   beforeDestroy() {
     // this.SET_SHOP(null)
