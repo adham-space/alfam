@@ -1,6 +1,6 @@
 <template>
   <el-row style="padding: 1em">
-    <el-col :span="11" style="height: calc(100vh - 85px); overflow-y: auto;">
+    <el-col :span="11" style="height: calc(100vh - 85px); overflow-y: auto">
       <el-form ref="storeFormRef" :model="formDataObj" :rules="rules">
         <el-col
           class="toolbar-store"
@@ -109,13 +109,17 @@
                 style="margin-top: 1rem"
               ><span
                  style="color: darkgray; margin-right: 1rem"
-               >1 ТА КАРОБКАНИНГ УМУМИЙ ЮЗАСИ: </span>{{ formDataObj.numberOfItems === "" ? "_" : areaOfOnePacket() }}
+               >1 ТА КАРОБКАНИНГ УМУМИЙ ЮЗАСИ: </span>{{
+                 formDataObj.numberOfItems === "" ? "_" : areaOfOnePacket()
+               }}
                 <span style="color: darkgray">M<sup>2</sup></span></span>
               <span
                 style="margin-top: 1rem"
               ><span
                  style="color: darkgray; margin-right: 1rem"
-               >1 ТА ДОНАСИНИ ОҒИРЛИГИ: </span>{{ formDataObj.weightOfPacket === "" ? "_" : wightOfOneItem() }}
+               >1 ТА ДОНАСИНИ ОҒИРЛИГИ: </span>{{
+                 formDataObj.weightOfPacket === "" ? "_" : wightOfOneItem()
+               }}
                 <span style="color: darkgray">Кг</span></span>
 
               <div class="amountAndWeight">
@@ -141,14 +145,17 @@
                  >БЎЙИЧА:
                  </span>
                   <el-form-item prop="base_priceBy">
-                    <el-switch v-model="formDataObj.base_priceBy" :disabled="hidePacketField" />
+                    <el-switch
+                      v-model="formDataObj.base_priceBy"
+                      :disabled="hidePacketField"
+                    />
                     {{ base_priceByText }}
                   </el-form-item>
                 </span>
               </div>
               <div style="display: flex; align-items: center">
                 <span
-                  style="margin-top: 1rem;"
+                  style="margin-top: 1rem"
                 ><span
                    style="color: darkgray; margin-right: 1rem"
                  >МАҚСАД:
@@ -162,7 +169,14 @@
                     />
                   </el-form-item>
                 </span>
-                <el-button v-if="isTargetSet" :disabled="hidePacketField" icon="el-icon-edit" type="text" style="margin-left: 1em" @click="editTarget = true" />
+                <el-button
+                  v-if="isTargetSet"
+                  :disabled="hidePacketField"
+                  icon="el-icon-edit"
+                  type="text"
+                  style="margin-left: 1em"
+                  @click="editTarget = true"
+                />
               </div>
             </div>
           </el-card>
@@ -180,7 +194,6 @@
               </span>
               <el-form-item prop="totalArea">
                 <el-input
-
                   v-model="formDataObj.totalArea"
                   style="width: 150px"
                   type="number"
@@ -198,7 +211,8 @@
                     type="number"
                     placeholder="умумий донаси"
                     @input="changedTotalNumber"
-                  /> дона
+                  />
+                  дона
                 </el-form-item>
                 <!-- {{
               Object.keys(currentType).length > 0 &&
@@ -218,7 +232,8 @@
                       type="number"
                       placeholder="умумий почкасини донаси"
                       @input="changedTotalPacketNumber"
-                    /> /
+                    />
+                    /
                   </el-form-item>
                   <el-form-item prop="overPacketNumberOfItems">
                     <el-input
@@ -227,10 +242,11 @@
                       type="number"
                       placeholder="донаси"
                       @input="notCompletePacketItem"
-                    /> дона
+                    />
+                    дона
                   </el-form-item>
                 </div>
-              <!-- {{
+                <!-- {{
                 Object.keys(currentType).length > 0 &&
                   formDataObj.totalArea !== ""
                   ? numberOfPackets() +
@@ -275,7 +291,6 @@
           <el-button
             :disabled="isSaving || errorOccured"
             style="color: green"
-
             icon="el-icon-check"
             @click="storeEditedToSklad()"
           />
@@ -286,70 +301,155 @@
       <el-button
         :disabled="isSaving"
         :loading="isSaving"
-        style="margin: 0 0 .5em .5em; text-align: right"
+        style="margin: 0 0 0.5em 0.5em; text-align: right"
         @click="saveAllEditedToSklad()"
       >Сохранить</el-button>
-      <el-table
-        :key="currentTableKey"
-        border
-        :data="edit_batch_of_product"
-      >
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Тури" prop="product_type_name">
+      <el-table :key="currentTableKey" border :data="edit_batch_of_product">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Тури"
+          prop="product_type_name"
+        >
           <template slot-scope="scope">
-            {{ getProductTypeName(scope.row.product_type) + (scope.row.broken ? '-синган': '') }}
+            {{
+              getProductTypeName(scope.row.product_type) +
+                (scope.row.broken ? "-синган" : "")
+            }}
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий юзаси" prop="total_area" />
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий донаси" prop="total_number_of_items" />
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий пакелтлари" prop="total_number_of_packets">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Умумий юзаси"
+          prop="total_area"
+        />
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Умумий донаси"
+          prop="total_number_of_items"
+        />
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Умумий пакелтлари"
+          prop="total_number_of_packets"
+        >
           <template slot="header">
             <span>Умумий<br>пакелтлари</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Пакетдан ортиқча" prop="total_number_of_over_packet">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Пакетдан ортиқча"
+          prop="total_number_of_over_packet"
+        >
           <template slot="header">
             <span>Пакетдан<br>ортиқча</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Касса нархи" prop="base_price" />
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Бўйича" prop="price_by">\
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Касса нархи"
+          prop="base_price"
+        />
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Бўйича"
+          prop="price_by"
+        >\
           <template slot-scope="scope">
-            {{ scope.row.price_by ? 'Донаси': 'Юзаси (м2)' }}
+            {{ scope.row.price_by ? "Донаси" : "Юзаси (м2)" }}
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Донасини юзаси" prop="area_of_an_item">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Донасини юзаси"
+          prop="area_of_an_item"
+        >
           <template slot="header">
-            <span>Донасини <br> юзаси</span>
+            <span>Донасини <br>
+              юзаси</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="1 Почкадаги донаси" prop="number_of_items">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="1 Почкадаги донаси"
+          prop="number_of_items"
+        >
           <template slot="header">
             <span>1 Почкадаги<br>донаси</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="160" label="1 Почкасини оғирлиги" prop="wight_of_one_packet">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="160"
+          label="1 Почкасини оғирлиги"
+          prop="wight_of_one_packet"
+        >
           <template slot="header">
             <span>1 Почкасини<br>оғирлиги</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="150" label="1 Донасиини оғирлиги" prop="weight_of_an_item">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="1 Донасиини оғирлиги"
+          prop="weight_of_an_item"
+        >
           <template slot="header">
             <span>1 Донасиини<br>оғирлиги</span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip align="center" width="160" label="1 Почкасини юзаси" prop="area_of_one_packet">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="160"
+          label="1 Почкасини юзаси"
+          prop="area_of_one_packet"
+        >
           <template slot="header">
-            <span>1 Почкасини <br> юзаси</span>
+            <span>1 Почкасини <br>
+              юзаси</span>
           </template>
         </el-table-column>
 
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Мақсад" prop="target_date">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Мақсад"
+          prop="target_date"
+        >
           <template slot-scope="scope">
             {{ getDate(scope.row.target_date) }}
           </template>
         </el-table-column>
 
-        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий оғирлиги" prop="total_wight_of_packets">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="150"
+          label="Умумий оғирлиги"
+          prop="total_wight_of_packets"
+        >
           <template slot="header">
             <span>Умумий<br>оғирлиги</span>
           </template>
@@ -362,10 +462,15 @@
       :visible.sync="product_changing_warnig"
       width="30%"
     >
-      <span>Сиз махсулотни ўзгартиряпсиз олдинги ўзгаришлар<br>ёъқотилади олдинги ўзгаришларни <br> сохранит қилинг ёки бу ўзгаришлар ўчиришга рухсат берасизми?</span>
+      <span>Сиз махсулотни ўзгартиряпсиз олдинги ўзгаришлар<br>ёъқотилади олдинги
+        ўзгаришларни <br>
+        сохранит қилинг ёки бу ўзгаришлар ўчиришга рухсат берасизми?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="donotDeleteCurrentWork()">Отмена</el-button>
-        <el-button type="primary" @click="deleteAllWorkAndSetNewProduct()">Тасдиқлаш</el-button>
+        <el-button
+          type="primary"
+          @click="deleteAllWorkAndSetNewProduct()"
+        >Тасдиқлаш</el-button>
       </span>
     </el-dialog>
   </el-row>
@@ -570,7 +675,7 @@ export default {
       return true
     },
     disabledDate(date) {
-      return (new Date()) > date
+      return new Date() > date
     },
     partiya_title() {
       const date = new Date()
@@ -584,11 +689,9 @@ export default {
         })
       }
       console.log(this.formDataObj.singan ? 0 : 1)
-      return `${this.productName}-${this.typeName}-${
-        this.todays_product_nums
-      }${this.formDataObj.singan ? '-broken' : ''}-${date.getDate()}/${
-        date.getMonth() + 1
-      }/${date.getFullYear()}`
+      return `${this.productName}-${this.typeName}-${this.todays_product_nums}${
+        this.formDataObj.singan ? '-broken' : ''
+      }-${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     },
     subTypes() {
       const pr = this.products_types.find(
@@ -626,12 +729,11 @@ export default {
   // },
   mounted() {
     setTimeout(() => {
-      this.GET_TARGETS(this.editing_product_id)
-        .then(() => {
-          setTimeout(() => {
-            this.currentTableKey++
-          }, 120)
-        })
+      this.GET_TARGETS(this.editing_product_id).then(() => {
+        setTimeout(() => {
+          this.currentTableKey++
+        }, 120)
+      })
     }, 200)
     this.formDataObj.currentProduct = this.editing_product_id
     setTimeout(() => {
@@ -671,7 +773,8 @@ export default {
     // },
 
     getProductTypeName(id) {
-      return this.products_types[0].product_types.find(pr => pr._id === id).type_name
+      return this.products_types[0].product_types.find((pr) => pr._id === id)
+        .type_name
     },
     currentProductIsGoingToChange(product) {
       if (this.formDataObj.currentProduct) {
@@ -721,9 +824,10 @@ export default {
       this.$refs.storeFormRef.validate((valid) => {
         if (valid && this.canISave) {
           let isThereBroken = 0
-          if (this.formDataObj.singan) { // agar singan bo'lsa tekshirish garak singon avvaldan bomi adi
+          if (this.formDataObj.singan) {
+            // agar singan bo'lsa tekshirish garak singon avvaldan bomi adi
             isThereBroken = this.edit_batch_of_product.findIndex(
-              pr => pr.product_type === sendData.product_type && pr.broken
+              (pr) => pr.product_type === sendData.product_type && pr.broken
             )
           }
           if (isThereBroken === -1) {
@@ -732,7 +836,12 @@ export default {
             this.currentTableKey = Math.floor(Math.random() * 100)
             this.resetAll()
           } else {
-            if (this.checkIfWrongAmount(sendData.product_type, sendData.total_number_of_items)) {
+            if (
+              this.checkIfWrongAmount(
+                sendData.product_type,
+                sendData.total_number_of_items
+              )
+            ) {
               this.SET_EDIT_BATCH_OF_PRODUCTS(sendData)
               if (this.editTarget) {
                 this.SET_TARGETS({ target: this.formDataObj.target_date })
@@ -751,15 +860,34 @@ export default {
       })
     },
     checkIfWrongAmount(product_type, total_number_of_items) {
-      const current_inventar = this.inventar.findIndex(inv => inv.product_type === product_type)
+      const current_inventar = this.inventar.findIndex((inv) => {
+        return inv.product_type === product_type
+      })
+      const current_edit_batch_of_product =
+        this.edit_batch_of_product.findIndex((inv) => {
+          return inv.product_type === product_type
+        })
+
       if (current_inventar >= 0) {
-        console.log('this.edit_batch_of_product[current_inventar].total_number_of_items', this.edit_batch_of_product[current_inventar].total_number_of_items, 'total_number', total_number_of_items)
-        if (this.edit_batch_of_product[current_inventar].total_number_of_items - total_number_of_items <= 0 ||
-        this.edit_batch_of_product[current_inventar].total_number_of_items - total_number_of_items <= this.inventar[current_inventar].total_number_of_items) {
+        if (
+          this.edit_batch_of_product[current_edit_batch_of_product]
+            .total_number_of_items -
+            total_number_of_items <=
+            0 ||
+          this.edit_batch_of_product[current_edit_batch_of_product]
+            .total_number_of_items -
+            total_number_of_items <=
+            this.inventar[current_inventar].total_number_of_items
+        ) {
           return true
         } else {
           Message({
-            message: `Инвентардаги махсулот миқдори камайтирилиган миқдордан кам қолган: Камайган миқдор: ${this.edit_batch_of_product[current_inventar].total_number_of_items - total_number_of_items} ва Инвентардаги миқдор: ${this.inventar[current_inventar].total_number_of_items}`,
+            message: `Инвентардаги махсулот миқдори камайтирилиган миқдордан кам қолган: Камайган миқдор: ${
+              this.edit_batch_of_product[current_edit_batch_of_product]
+                .total_number_of_items - total_number_of_items
+            } ва Инвентардаги миқдор: ${
+              this.inventar[current_inventar].total_number_of_items
+            }`,
             type: 'error',
             duration: 3500
           })
@@ -775,19 +903,37 @@ export default {
       }
     },
     changedBrokenState(val) {
-      const indexOfExistingProductType = this.edit_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType)
+      const indexOfExistingProductType = this.edit_batch_of_product.findIndex(
+        (pr) => pr.product_type === this.formDataObj.current_subType
+      )
       this.there_is_product_type = indexOfExistingProductType !== -1
-      const indexOfBrokenExistingProductType = this.edit_batch_of_product.findIndex(pr => pr.product_type === this.formDataObj.current_subType && pr.broken)
+      const indexOfBrokenExistingProductType =
+        this.edit_batch_of_product.findIndex(
+          (pr) =>
+            pr.product_type === this.formDataObj.current_subType && pr.broken
+        )
       if (this.there_is_product_type) {
         if (val) {
           this.hidePacketField = true
           this.formDataObj.singan = true
 
           if (indexOfBrokenExistingProductType > -1) {
-            this.formDataObj.totalArea = this.edit_batch_of_product[indexOfBrokenExistingProductType].total_area
-            this.formDataObj.overPacketNumberOfItems = this.edit_batch_of_product[indexOfBrokenExistingProductType].total_number_of_over_packet
-            this.formDataObj.numberOfPacket = this.edit_batch_of_product[indexOfBrokenExistingProductType].total_number_of_packets
-            this.formDataObj.totalNumberOfItem = this.edit_batch_of_product[indexOfBrokenExistingProductType].total_number_of_items
+            this.formDataObj.totalArea =
+              this.edit_batch_of_product[
+                indexOfBrokenExistingProductType
+              ].total_area
+            this.formDataObj.overPacketNumberOfItems =
+              this.edit_batch_of_product[
+                indexOfBrokenExistingProductType
+              ].total_number_of_over_packet
+            this.formDataObj.numberOfPacket =
+              this.edit_batch_of_product[
+                indexOfBrokenExistingProductType
+              ].total_number_of_packets
+            this.formDataObj.totalNumberOfItem =
+              this.edit_batch_of_product[
+                indexOfBrokenExistingProductType
+              ].total_number_of_items
           } else {
             this.editing_same_type = false
             this.formDataObj.totalArea = ''
@@ -796,10 +942,18 @@ export default {
             this.formDataObj.totalNumberOfItem = ''
           }
 
-          this.formDataObj.numberOfItems = this.edit_batch_of_product[indexOfExistingProductType].number_of_items
-          this.formDataObj.weightOfPacket = this.edit_batch_of_product[indexOfExistingProductType].wight_of_one_packet
-          this.formDataObj.base_price = this.edit_batch_of_product[indexOfExistingProductType].base_price
-          this.formDataObj.base_priceBy = this.edit_batch_of_product[indexOfExistingProductType].price_by
+          this.formDataObj.numberOfItems =
+            this.edit_batch_of_product[
+              indexOfExistingProductType
+            ].number_of_items
+          this.formDataObj.weightOfPacket =
+            this.edit_batch_of_product[
+              indexOfExistingProductType
+            ].wight_of_one_packet
+          this.formDataObj.base_price =
+            this.edit_batch_of_product[indexOfExistingProductType].base_price
+          this.formDataObj.base_priceBy =
+            this.edit_batch_of_product[indexOfExistingProductType].price_by
         } else {
           this.setIfAlreadyEnteredType(this.formDataObj.current_subType)
           this.hidePacketField = false
@@ -871,34 +1025,52 @@ export default {
       return (this.currentType.height * this.currentType.width) / 10000.0
     },
     areaOfOnePacket() {
-      return parseFloat(((
-        ((this.currentType.height * this.currentType.width) / 10000.0) *
-        this.formDataObj.numberOfItems
-      )).toFixed(4))
+      return parseFloat(
+        (
+          ((this.currentType.height * this.currentType.width) / 10000.0) *
+          this.formDataObj.numberOfItems
+        ).toFixed(4)
+      )
     },
     wightOfOneItem() {
       return (
         this.formDataObj.weightOfPacket / this.formDataObj.numberOfItems
       ).toFixed(2)
-    }, totalWeight() {
+    },
+    totalWeight() {
       return (this.wightOfOneItem() * this.totalNumberOfItems()).toFixed(2)
     },
     totalAreaChanged() {
-      this.formDataObj.totalNumberOfItem = parseFloat((this.formDataObj.totalArea / this.areaOfOneItem()).toFixed(2))
-      this.formDataObj.numberOfPacket = parseInt((this.formDataObj.totalNumberOfItem / this.formDataObj.numberOfItems).toFixed(2))
+      this.formDataObj.totalNumberOfItem = parseFloat(
+        (this.formDataObj.totalArea / this.areaOfOneItem()).toFixed(2)
+      )
+      this.formDataObj.numberOfPacket = parseInt(
+        (
+          this.formDataObj.totalNumberOfItem / this.formDataObj.numberOfItems
+        ).toFixed(2)
+      )
     },
     changedTotalNumber(num) {
       console.log('and total number triggers', num)
       this.formDataObj.totalNumberOfItem = Number(num)
-      this.formDataObj.numberOfPacket = parseInt(this.formDataObj.totalNumberOfItem / this.formDataObj.numberOfItems)
-      this.formDataObj.overPacketNumberOfItems = this.formDataObj.totalNumberOfItem % this.formDataObj.numberOfItems
+      this.formDataObj.numberOfPacket = parseInt(
+        this.formDataObj.totalNumberOfItem / this.formDataObj.numberOfItems
+      )
+      this.formDataObj.overPacketNumberOfItems =
+        this.formDataObj.totalNumberOfItem % this.formDataObj.numberOfItems
       console.log(this.formDataObj.numberOfPacket)
-      this.formDataObj.totalArea = parseFloat((this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4))
+      this.formDataObj.totalArea = parseFloat(
+        (this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4)
+      )
     },
     changedTotalPacketNumber(num) {
       this.formDataObj.numberOfPacket = Number(num)
-      this.formDataObj.totalNumberOfItem = this.formDataObj.numberOfItems * this.formDataObj.numberOfPacket + this.formDataObj.overPacketNumberOfItems
-      this.formDataObj.totalArea = parseFloat((this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4))
+      this.formDataObj.totalNumberOfItem =
+        this.formDataObj.numberOfItems * this.formDataObj.numberOfPacket +
+        this.formDataObj.overPacketNumberOfItems
+      this.formDataObj.totalArea = parseFloat(
+        (this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4)
+      )
     },
     totalNumberOfItems() {
       return (this.formDataObj.totalArea / this.areaOfOneItem()).toFixed(3)
@@ -910,17 +1082,31 @@ export default {
     },
     getDate(d) {
       const date = new Date(d)
-      return `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`
+      return `${
+        date.getMonth() + 1
+      } / ${date.getDate()} / ${date.getFullYear()}`
     },
     notCompletePacketItems() {
-      return (this.formDataObj.totalNumberOfItem) % this.formDataObj.numberOfItems
+      return (
+        this.formDataObj.totalNumberOfItem % this.formDataObj.numberOfItems
+      )
     },
     notCompletePacketItem(num) {
       this.formDataObj.numberOfItems = Number(this.formDataObj.numberOfItems)
-      this.formDataObj.overPacketNumberOfItems = Number(num) > this.formDataObj.numberOfItems ? this.formDataObj.numberOfItems : Number(num)
-      if (this.formDataObj.numberOfPacket || this.formDataObj.numberOfPacket === 0) {
-        this.formDataObj.totalNumberOfItem = this.formDataObj.numberOfPacket * this.formDataObj.numberOfItems + this.formDataObj.overPacketNumberOfItems
-        this.formDataObj.totalArea = parseFloat((this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4))
+      this.formDataObj.overPacketNumberOfItems =
+        Number(num) > this.formDataObj.numberOfItems
+          ? this.formDataObj.numberOfItems
+          : Number(num)
+      if (
+        this.formDataObj.numberOfPacket ||
+        this.formDataObj.numberOfPacket === 0
+      ) {
+        this.formDataObj.totalNumberOfItem =
+          this.formDataObj.numberOfPacket * this.formDataObj.numberOfItems +
+          this.formDataObj.overPacketNumberOfItems
+        this.formDataObj.totalArea = parseFloat(
+          (this.formDataObj.totalNumberOfItem * this.areaOfOneItem()).toFixed(4)
+        )
       }
     },
     getTargetDate(type) {
@@ -928,6 +1114,8 @@ export default {
       if (this.edit_batch_of_product.length > 0) {
         typeObj = this.edit_batch_of_product[0]
       }
+
+      // Coder's crossroad
 
       if (typeObj) {
         this.isTargetSet = true
@@ -947,7 +1135,9 @@ export default {
       this.REMOVE_FROM_NEW_BATCH(ind)
     },
     setIfAlreadyEnteredType(type_id) {
-      const typeObj = this.edit_batch_of_product.find(pr => pr.product_type === type_id)
+      const typeObj = this.edit_batch_of_product.find(
+        (pr) => pr.product_type === type_id
+      )
       if (typeObj) {
         this.editing_same_type = true
         console.log('editing_same_type')
@@ -958,7 +1148,8 @@ export default {
         this.formDataObj.weightOfPacket = typeObj.wight_of_one_packet
         this.formDataObj.numberOfItems = typeObj.number_of_items
         this.formDataObj.totalArea = typeObj.total_area
-        this.formDataObj.overPacketNumberOfItems = typeObj.total_number_of_over_packet
+        this.formDataObj.overPacketNumberOfItems =
+          typeObj.total_number_of_over_packet
         this.formDataObj.numberOfPacket = typeObj.total_number_of_packets
         this.formDataObj.totalNumberOfItem = typeObj.total_number_of_items
         // this.currentType = {}
@@ -1023,7 +1214,10 @@ export default {
         })
     },
     packetSizeChanged(num) {
-      console.log('this.formDataObj.numberOfItems', this.formDataObj.numberOfItems)
+      console.log(
+        'this.formDataObj.numberOfItems',
+        this.formDataObj.numberOfItems
+      )
       if (num && this.formDataObj.totalNumberOfItem) {
         this.changedTotalNumber(this.formDataObj.totalNumberOfItem)
         this.totalWeight()
