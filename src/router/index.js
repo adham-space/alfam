@@ -14,70 +14,70 @@ import information from './modules/information'
 import storeRouter from './modules/archive'
 import othersRouter from './modules/others'
 
-export const constantRoutes = [
-  {
-    path: '/redirect',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index')
-      }
-    ]
-  },
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-  {
-    path: '/auth-redirect',
-    component: () => import('@/views/login/auth-redirect'),
-    hidden: true
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/error-page/404'),
-    hidden: true
-  },
-  {
-    path: '/401',
-    component: () => import('@/views/error-page/401'),
-    hidden: true
-  },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
-      }
-    ]
-  }
+export const constantRoutes = [{
+  path: '/redirect',
+  component: Layout,
+  hidden: true,
+  children: [{
+    path: '/redirect/:path(.*)',
+    component: () =>
+      import ('@/views/redirect/index')
+  }]
+},
+{
+  path: '/login',
+  component: () =>
+    import ('@/views/login/index'),
+  hidden: true
+},
+{
+  path: '/auth-redirect',
+  component: () =>
+    import ('@/views/login/auth-redirect'),
+  hidden: true
+},
+{
+  path: '/404',
+  component: () =>
+    import ('@/views/error-page/404'),
+  hidden: true
+},
+{
+  path: '/401',
+  component: () =>
+    import ('@/views/error-page/401'),
+  hidden: true
+},
+{
+  path: '/',
+  component: Layout,
+  redirect: '/dashboard',
+  children: [{
+    path: 'dashboard',
+    component: () =>
+      import ('@/views/dashboard/index'),
+    name: 'Dashboard',
+    meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+  }]
+},
+{
+  path: '/profile',
+  component: Layout,
+  redirect: '/profile/index',
+  hidden: true,
+  children: [{
+    path: 'index',
+    component: () =>
+      import ('@/views/profile/index'),
+    name: 'Profile',
+    meta: { title: 'Profile', icon: 'user', noCache: true }
+  }]
+}
 ]
 /**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
+     * asyncRoutes
+     * the routes that need to be dynamically loaded based on user roles
+     */
 export const asyncRoutes = [
   othersRouter,
   storeRouter,
@@ -88,7 +88,7 @@ export const asyncRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 const createRouter = () => new Router({
-  mode: 'history', // require service support
+  // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
