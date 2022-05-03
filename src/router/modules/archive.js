@@ -7,29 +7,31 @@ const storeRouter = {
   redirect: 'noRedirect',
   name: 'Store archive',
   meta: {
-    roles: ['admin', 'zavsklad'],
+    roles: ['admin', 'seller', 'zavsklad'],
     title: 'База',
     icon: 'el-icon-pie-chart'
   },
-  children: [
-    {
-      path: 'archive',
-      component: () => import('@/views/store/archive/index'),
-      name: 'Archive',
-      meta: { title: 'Архив', noCache: false }
-    },
-    {
-      path: 'inventars',
-      component: () => import('@/views/store/inventars/index'),
-      name: 'Inventars',
-      meta: { title: 'Инвентаризация', noCache: false }
-    },
-    {
-      path: 'all-orders',
-      component: () => import('@/views/store/ordersList/index'),
-      name: 'Commertias',
-      meta: { title: 'Коммерциялар', noCache: false }
-    }
+  children: [{
+    path: 'archive',
+    component: () =>
+      import ('@/views/store/archive/index'),
+    name: 'Archive',
+    meta: { title: 'Архив', noCache: false, roles: ['admin'] }
+  },
+  {
+    path: 'inventars',
+    component: () =>
+      import ('@/views/store/inventars/index'),
+    name: 'Inventars',
+    meta: { title: 'Инвентаризация', noCache: false, roles: ['admin', 'seller', 'zavsklad'] }
+  },
+  {
+    path: 'all-orders',
+    component: () =>
+      import ('@/views/store/ordersList/index'),
+    name: 'Commertias',
+    meta: { title: 'Коммерциялар', noCache: false, roles: ['admin', 'zavsklad'] }
+  }
   ]
 }
 export default storeRouter

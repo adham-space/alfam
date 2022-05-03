@@ -7,20 +7,17 @@
           v-model="fromDate"
           style="margin-right: 0.5em"
           type="datetime"
-          placeholder="Dan"
+          placeholder="Дан"
           default-time="12:00:00"
         />
         <el-date-picker
           v-model="toDate"
           style="margin-right: 0.5em"
           type="datetime"
-          placeholder="Gacha"
+          placeholder="Гача"
           default-time="12:00:00"
         />
-        <el-button
-          icon="el-icon-search"
-          style="border: 1px solid transparent"
-        />
+        <el-button icon="el-icon-search" style="border: 1px solid transparent" />
       </el-col>
       <el-col
         :span="19"
@@ -44,33 +41,11 @@
             <!-- eslint-disable-next-line -->
             <template slot-scope="scope">
               <div class="inner-table">
-                <el-table
-                  :data="scope.row.products"
-                  :show-header="true"
-                  style="width: 80%"
-                  stripe
-                >
-                  <el-table-column
-                    label="КАФЕЛНИ КОДИ"
-                    prop="code"
-                    fixed="left"
-                    align="center"
-                  />
-                  <el-table-column
-                    label="СПЕЦИФИКАЦИЯСИ"
-                    prop="type_name"
-                    align="center"
-                  />
-                  <el-table-column
-                    label="ТОВАРНИ РАЗМЕРИ"
-                    prop="size"
-                    align="center"
-                  />
-                  <el-table-column
-                    label="ТОВАРНИ РАСМИ"
-                    prop="photo"
-                    align="center"
-                  >
+                <el-table :data="scope.row.products" :show-header="true" style="width: 80%" stripe>
+                  <el-table-column label="КАФЕЛНИ КОДИ" prop="code" fixed="left" align="center" />
+                  <el-table-column label="СПЕЦИФИКАЦИЯСИ" prop="type_name" align="center" />
+                  <el-table-column label="ТОВАРНИ РАЗМЕРИ" prop="size" align="center" />
+                  <el-table-column label="ТОВАРНИ РАСМИ" prop="photo" align="center">
                     <!-- eslint-disable-next-line  -->
                     <template slot-scope="scope">
                       <el-image
@@ -81,74 +56,31 @@
                       />
                     </template>
                   </el-table-column>
-                  <el-table-column
-                    label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
-                    align="center"
-                  >
-                    <el-table-column
-                      label="ПОЧКАСИДИГИ (м2)"
-                      align="center"
-                      prop="area_of_one_packet"
-                    />
-                    <el-table-column
-                      label="1-ДОНАСИНИ (м2)"
-                      prop="area_of_an_item"
-                      align="center"
-                    />
-                    <el-table-column
-                      align="center"
-                      prop="number_of_items"
-                      label="УМУМИЙ ДОНАСИ"
-                    />
-                    <el-table-column
-                      label="ПОЧКАСИДИГИ (КГ)"
-                      align="center"
-                      prop="wight_of_one_packet"
-                    />
-                    <el-table-column
-                      label="1-ДОНАСИНИ  (КГ)"
-                      align="center"
-                      prop="weight_of_an_item"
-                    />
+                  <el-table-column label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ" align="center">
+                    <el-table-column label="ПОЧКАСИДИГИ (м2)" align="center" prop="area_of_one_packet" />
+                    <el-table-column label="1-ДОНАСИНИ (м2)" prop="area_of_an_item" align="center" />
+                    <el-table-column align="center" prop="number_of_items" label="УМУМИЙ ДОНАСИ" />
+                    <el-table-column label="ПОЧКАСИДИГИ (КГ)" align="center" prop="wight_of_one_packet" />
+                    <el-table-column label="1-ДОНАСИНИ  (КГ)" align="center" prop="weight_of_an_item" />
                   </el-table-column>
                 </el-table>
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            width="160"
-            align="center"
-            prop="order_name"
-            label="Инвойс №"
-          />
-          <el-table-column
-            width="170"
-            align="center"
-            prop="product"
-            label="Махсулот"
-          />
+          <el-table-column width="160" align="center" prop="order_name" label="Инвойс №" />
+          <el-table-column width="170" align="center" prop="product" label="Махсулот" />
           <el-table-column width="170" align="center">
             <template slot="header">
-              <span>Умумий м<sup>2</sup></span>
+              <span>
+                Умумий м
+                <sup>2</sup>
+              </span>
             </template>
             <template slot-scope="scope">
               <el-popover placement="right" trigger="hover">
-                <el-table
-                  :show-header="false"
-                  :data="gridDataArea(scope.row.products)"
-                >
-                  <el-table-column
-                    align="center"
-                    width="120"
-                    property="name"
-                    label="name"
-                  />
-                  <el-table-column
-                    align="center"
-                    width="100"
-                    property="value"
-                    label="value"
-                  />
+                <el-table :show-header="false" :data="gridDataArea(scope.row.products)">
+                  <el-table-column align="center" width="120" property="name" label="name" />
+                  <el-table-column align="center" width="100" property="value" label="value" />
                 </el-table>
                 <el-button slot="reference" type="text">
                   {{
@@ -163,26 +95,15 @@
           <el-table-column width="170" align="center" label="Умумий донаси">
             <template slot-scope="scope">
               <el-popover placement="right" trigger="hover">
-                <el-table
-                  :show-header="false"
-                  :data="gridData(scope.row.products)"
-                >
-                  <el-table-column
-                    align="center"
-                    width="120"
-                    property="name"
-                    label="name"
-                  />
-                  <el-table-column
-                    align="center"
-                    width="100"
-                    property="value"
-                    label="value"
-                  />
+                <el-table :show-header="false" :data="gridData(scope.row.products)">
+                  <el-table-column align="center" width="120" property="name" label="name" />
+                  <el-table-column align="center" width="100" property="value" label="value" />
                 </el-table>
-                <el-button slot="reference" type="text">{{
-                  getTotalNumber(scope.row.products).item_num
-                }}</el-button>
+                <el-button slot="reference" type="text">
+                  {{
+                    getTotalNumber(scope.row.products).item_num
+                  }}
+                </el-button>
               </el-popover>
             </template>
           </el-table-column>
@@ -193,39 +114,24 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center" prop="last_sum" label="Кассаси">
+          <el-table-column v-if="roles[0] === 'admin'" align="center" prop="last_sum" label="Кассаси">
             <template slot-scope="scope">
               <el-popover placement="right" trigger="hover">
-                <el-table
-                  :show-header="false"
-                  :data="gridDataPrice(scope.row.products)"
-                >
-                  <el-table-column
-                    align="center"
-                    width="120"
-                    property="name"
-                    label="name"
-                  />
-                  <el-table-column
-                    align="center"
-                    width="100"
-                    property="value"
-                    label="value"
-                  >
+                <el-table :show-header="false" :data="gridDataPrice(scope.row.products)">
+                  <el-table-column align="center" width="120" property="name" label="name" />
+                  <el-table-column align="center" width="100" property="value" label="value">
                     <!-- eslint-disable-next-line -->
                     <template slot-scope="scope">
-                      <span> {{ parseFloat(scope.row.value.toFixed(4)) }}</span>
+                      <span>{{ parseFloat(scope.row.value.toFixed(4)) }}</span>
                     </template>
                   </el-table-column>
                 </el-table>
-                <el-button slot="reference" type="text">
-                  {{ parseFloat(scope.row.last_sum.toFixed(4)) }}
-                </el-button>
+                <el-button slot="reference" type="text">{{ parseFloat(scope.row.last_sum.toFixed(4)) }}</el-button>
               </el-popover>
             </template>
           </el-table-column>
 
-          <el-table-column
+          <!-- <el-table-column
             width="180"
             align="center"
             prop="customer"
@@ -234,23 +140,23 @@
             <template slot-scope="scope">
               {{ `${scope.row.customer.name}` }}
             </template>
-          </el-table-column>
-          <el-table-column
-            width="180"
-            align="center"
-            prop="driver"
-            label="Ҳайдовчи"
-          >
+          </el-table-column>-->
+          <el-table-column width="180" align="center" prop="upload_cost" label="Умумий пагрузка пули">
             <template slot-scope="scope">
-              {{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}
+              {{
+                toThousandFilter(
+                  scope.row.upload_cost *
+                    parseFloat(
+                      getTotalAre(scope.row.products).packTotalArea.toFixed(4)
+                    )
+                )
+              }}
             </template>
           </el-table-column>
-          <el-table-column
-            v-if="roles.includes('admin')"
-            width="180"
-            align="center"
-            label="Ходим"
-          >
+          <el-table-column width="180" align="center" prop="driver" label="Ҳайдовчи">
+            <template slot-scope="scope">{{ `${scope.row.driver.firstName} ${scope.row.driver.lastName}` }}</template>
+          </el-table-column>
+          <el-table-column v-if="roles.includes('admin')" width="180" align="center" label="Ходим">
             <template slot-scope="scope">
               {{
                 scope.row.user.stuff.firstName +
@@ -260,47 +166,30 @@
             </template>
           </el-table-column>
 
-          <el-table-column width="120" align="center" label="Касса">
+          <el-table-column v-if="roles[0] === 'admin'" width="120" align="center" label="Касса">
             <template slot-scope="scope">
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.did_kassa ? 'Очиқ' : 'Ёпилган'"
+                :content="scope.row.did_kassa ? 'Ёпилган' : 'Очиқ'"
                 placement="left-start"
               >
-                <i
-                  v-if="scope.row.did_kassa"
-                  style="color: red"
-                  class="el-icon-minus"
-                />
+                <i v-if="scope.row.did_kassa === false" style="color: red" class="el-icon-minus" />
                 <i v-else style="color: green" class="el-icon-check" />
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column
-            width="180"
-            align="center"
-            label="Вақти"
-            fixed="right"
-          >
-            <template slot-scope="scope">
-              {{ new Date(scope.row.createdAt).toLocaleString("uz-UZ") }}
-            </template>
+          <el-table-column width="180" align="center" label="Бошланғич вақти" fixed="right">
+            <template slot-scope="scope">{{ new Date(scope.row.time).toLocaleString("uz-UZ") }}</template>
+          </el-table-column>
+          <el-table-column width="200" align="center" label="Охириги ўзгарган вақти" fixed="right">
+            <template slot-scope="scope">{{ new Date(scope.row.updatedAt).toLocaleString("uz-UZ") }}</template>
           </el-table-column>
         </el-table>
       </el-col>
     </el-row>
-    <el-dialog
-      title=""
-      :visible.sync="showImageDilog"
-      append-to-body
-      width="40%"
-    >
-      <el-image
-        style="width: 100%; height: 90%"
-        :src="imageUrl"
-        fit="scale-down"
-      />
+    <el-dialog title :visible.sync="showImageDilog" append-to-body width="40%">
+      <el-image style="width: 100%; height: 90%" :src="imageUrl" fit="scale-down" />
     </el-dialog>
   </el-col>
 </template>
@@ -310,6 +199,7 @@
 import { mapMutations, mapState, mapActions } from 'vuex'
 // import request from '@/utils/request'
 // import { Message } from 'element-ui'
+import { toThousandFilter } from '@/filters/index'
 export default {
   name: 'OrderInventar',
   components: {
@@ -354,10 +244,13 @@ export default {
       'GET_CURRENT_ORDER_COMMERTIA',
       'DO_KASSA_COMMERTIA'
     ]),
+    toThousandFilter(n) {
+      return toThousandFilter(n)
+    },
     rowChosen(row) {
       this.SET_ORDER(row)
       this.get_inner_table_data({
-        time: row.createdAt,
+        time: row.time,
         _id: row.customer._id
       }).then(() => {
         this.SET_CURRENT_ORDER_HEADER(row)

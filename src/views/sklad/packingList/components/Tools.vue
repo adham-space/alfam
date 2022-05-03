@@ -2,12 +2,7 @@
   <div class="tools-wrapper">
     <p>Буюртма №: {{ order.order_name }}</p>
 
-    <el-form
-      ref="toolBarFormRef"
-      :model="toolBarForm"
-      :rules="rules"
-      style="width: 100%"
-    >
+    <el-form ref="toolBarFormRef" :model="toolBarForm" :rules="rules" style="width: 100%">
       <el-form-item prop="currentProduct" label="Махсулот">
         <el-select
           v-model="toolBarForm.currentProduct"
@@ -30,16 +25,14 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="isSample">
-        <el-checkbox
-          v-model="toolBarForm.isSample"
-          style="width: 100%"
-          @change="sampleStateChanged"
-        >Образец</el-checkbox>
+        <el-checkbox v-model="toolBarForm.isSample" style="width: 100%" @change="sampleStateChanged">Образец
+        </el-checkbox>
       </el-form-item>
-      <el-form-item v-if="!toolBarForm.isSample" prop="withBorken">
+      <el-form-item prop="withBorken">
         <el-checkbox
           v-model="toolBarForm.withBorken"
           style="width: 100%"
+          :disabled="toolBarForm.isSample"
           @change="brokenStateChanged"
         >Синганлари билан</el-checkbox>
       </el-form-item>
@@ -48,27 +41,21 @@
           v-model="toolBarForm.currentcustomer"
           class="tools-wrapper-item"
           style="width: 100%"
+          filterable
           placeholder="Диллер танланг"
           @change="customerChanged"
         >
-          <el-option value="addNewItemDiller" style="padding: 0">
-            <el-button
-              style="border: 1px solid transparent; width: 100%; margin: 0"
-              icon="el-icon-plus"
-            >Янги диллер</el-button>
+          <el-option value="Янги диллерни қўшинг" style="padding: 0">
+            <el-button style="border: 1px solid transparent; width: 100%; margin: 0" icon="el-icon-plus">Янги диллер
+            </el-button>
           </el-option>
-          <el-option
-            v-for="(pr, i) in shops_for_packinglist"
-            :key="i"
-            :label="pr.name"
-            :value="pr._id"
-          />
+          <el-option v-for="(pr, i) in shops_for_packinglist" :key="i" :label="pr.name" :value="pr._id" />
           <!-- <el-option :value="'addNewItemCustomer'" style="padding: 0">
             <el-button
               style="border: 1px solid transparent; width: 100%; margin: 0"
               icon="el-icon-plus"
             >Янги харидор</el-button>
-          </el-option> -->
+          </el-option>-->
         </el-select>
       </el-form-item>
 
@@ -81,18 +68,11 @@
           placeholder="Дўкон"
           @change="shopChanged"
         >
-          <el-option :value="'addNewItemDiller'" style="padding: 0">
-            <el-button
-              style="border: 1px solid transparent; width: 100%; margin: 0"
-              icon="el-icon-plus"
-            >Янги диллер</el-button>
+          <el-option :value="'Янги диллерни қўшинг'" style="padding: 0">
+            <el-button style="border: 1px solid transparent; width: 100%; margin: 0" icon="el-icon-plus">Янги диллер
+            </el-button>
           </el-option>
-          <el-option
-            v-for="(pr, i) in all_shops"
-            :key="i"
-            :label="pr.name"
-            :value="pr._id"
-          />
+          <el-option v-for="(pr, i) in all_shops" :key="i" :label="pr.name" :value="pr._id" />
         </el-select>
       </el-form-item>
       <!-- end of: if is sample then show shops list-->
@@ -106,12 +86,7 @@
           clearable
           @change="timeChanged"
         >
-          <el-option
-            v-for="time in times"
-            :key="time"
-            :label="new Date(time).toLocaleString('uz-UZ')"
-            :value="time"
-          />
+          <el-option v-for="time in times" :key="time" :label="new Date(time).toLocaleString('uz-UZ')" :value="time" />
         </el-select>
       </el-form-item>
 
@@ -134,15 +109,15 @@
           v-model="toolBarForm.currentDriver"
           class="tools-wrapper-item"
           style="width: 100%"
+          filterable
           placeholder="Ҳайдовчи"
           @change="currentDriverChanged"
         >
-          <el-option
-            v-for="(pr, i) in drivers"
-            :key="i"
-            :label="pr.firstName + ' ' + pr.lastName"
-            :value="pr._id"
-          />
+          <el-option value="Янги ҳайдовчи" style="padding: 0">
+            <el-button style="border: 1px solid transparent; width: 100%; margin: 0" icon="el-icon-plus">Янги ҳайдовчи
+            </el-button>
+          </el-option>
+          <el-option v-for="(pr, i) in drivers" :key="i" :label="pr.firstName + ' ' + pr.lastName" :value="pr._id" />
         </el-select>
       </el-form-item>
 
@@ -164,24 +139,11 @@
         </p>
       </el-form-item>
 
-      <el-form-item
-        v-if="!toolBarForm.isSample"
-        label="Қарзгами?"
-        prop="isDebt"
-      >
-        <el-switch
-          v-model="toolBarForm.isDebt"
-          active-color="#13ce66"
-          inactive-color=""
-          @change="setIsDebt"
-        />
+      <el-form-item v-if="!toolBarForm.isSample" label="Қарзгами?" prop="isDebt">
+        <el-switch v-model="toolBarForm.isDebt" active-color="#13ce66" inactive-color @change="setIsDebt" />
       </el-form-item>
 
-      <el-form-item
-        v-if="toolBarForm.isDebt"
-        label="Қарзни қайтариш санаси"
-        prop="debtDate"
-      >
+      <el-form-item v-if="toolBarForm.isDebt" label="Қарзни қайтариш санаси" prop="debtDate">
         <el-date-picker
           v-model="toolBarForm.debtDate"
           type="date"
@@ -193,11 +155,7 @@
         />
       </el-form-item>
 
-      <el-form-item
-        v-if="toolBarForm.isDebt"
-        label="Қарзни изоҳи"
-        prop="debtDescription"
-      >
+      <el-form-item v-if="toolBarForm.isDebt" label="Қарзни изоҳи" prop="debtDescription">
         <el-input
           v-model="toolBarForm.debtDescription"
           style="margin-bottom: 1em"
@@ -208,19 +166,13 @@
       </el-form-item>
     </el-form>
     <div class="order-action-btn">
-      <el-button
-        type="primary"
-        :disabled="order_saving"
-        :loading="order_saving"
-        @click="validateOrder()"
-      >Сохранить</el-button>
+      <el-button type="primary" :disabled="order_saving" :loading="order_saving" @click="validateOrder()">Сохранить
+      </el-button>
       <el-button type="danger" @click="reset_all()">Отменить</el-button>
     </div>
     <!-- <AddCustomerDialog :dialog-visible="customerAddDailog" @closeDialog="closeForm()" /> -->
-    <AddDillerDialog
-      :dialog-visible="dillerAddDailog"
-      @closeDialog="closeForm()"
-    />
+    <AddDillerDialog :dialog-visible="dillerAddDailog" @closeDialog="closeForm()" />
+    <add :dialog-visible="addDialog" @closeDialog="addDialog = false; toolBarForm.currentDriver = ''" />
   </div>
 </template>
 <script>
@@ -228,13 +180,16 @@ import { mapMutations, mapActions, mapState } from 'vuex'
 // import AddCustomerDialog from '@/views/information/customers/components/addCustomer.vue'
 import AddDillerDialog from '@/views/information/other_shops/components/add.vue'
 import request from '@/utils/request'
+import add from '../../../information/drivers/components/add.vue'
+
 import { Message } from 'element-ui'
 import tools_mixin from './mixins/tools.mixin'
 import { toThousandFilter } from '@/filters'
 export default {
   components: {
     // AddCustomerDialog,
-    AddDillerDialog
+    AddDillerDialog,
+    add
   },
   mixins: [tools_mixin],
   props: {
@@ -253,6 +208,7 @@ export default {
     customerAddDailog: false,
     dillerAddDailog: false,
     shops_for_packinglist: [],
+    addDialog: false,
     times: []
   }),
   computed: {
@@ -295,10 +251,11 @@ export default {
   },
   methods: {
     async getTimes() {
+      this.times = []
       try {
         console.log('asdasd', this.toolBarForm)
         const { data } = await request({
-          url: '/orders/get-partner-order-times-with-product-bantch',
+          url: '/orders/get-partner-order-times-with-product-bantch-1',
           params: {
             batch: this.toolBarForm.currentProduct[0],
             product_id: this.toolBarForm.currentProduct[1],
@@ -307,9 +264,9 @@ export default {
         })
         console.log(
           'times: ',
-          new Date(data[0].createdAt).toLocaleString('uz-UZ')
+          data
         )
-        this.times = data.map((time) => time.createdAt)
+        this.times = data.map(({ time }) => time)
         console.log('actual times', this.times)
       } catch (error) {
         console.error(error)
@@ -344,8 +301,7 @@ export default {
           const d = new Date()
           this.SET_ORDER({
             key: 'order_name',
-            value: `ALFAM-${res.data[0].count + 1}-${d.getDate()}/${
-              d.getMonth() + 1
+            value: `ALFAM-${res.data[0].count + 1}-${d.getDate()}/${d.getMonth() + 1
             }/${d.getFullYear()}`
           })
         })
@@ -367,7 +323,8 @@ export default {
               this.saveOrder()
             } else {
               this.$notify({
-                message: 'Check table, there should not be empty, make them 0',
+                message:
+                  'Жадвални текширинг, бўш бўлмаслиги керак, уларни 0-га тенг қилинг',
                 type: 'error',
                 duration: 0
               })
@@ -388,18 +345,20 @@ export default {
           .then(() => {
             this.order_saving = false
             Message({
-              message: 'Order successfully saved',
+              message: 'Заказ мувоффақиятли сақланди',
               type: 'success',
               duration: 3000
             })
             this.reset_all()
             this.$emit('closeNotification')
             this.getOrderCount()
+            this.$router.go()
           })
           .catch((err) => {
+            console.error(err)
             this.order_saving = false
             Message({
-              message: err.response.data,
+              message: 'Заказ сақлашда ҳатолик',
               type: 'error',
               duration: 3000
             })
@@ -437,6 +396,8 @@ export default {
       this.SET_ORDER({ key: 'includes_brokens', value: val })
     },
     sampleStateChanged(val) {
+      this.toolBarForm.withBorken = true
+      this.brokenStateChanged(true)
       this.SET_ORDER({ key: 'isSample', value: val })
     },
     procedureChanged(val) {
@@ -455,10 +416,14 @@ export default {
       this.SET_ORDER({ key: 'upload_cost', value: parseFloat(val) })
     },
     currentDriverChanged(val) {
-      this.SET_ORDER({ key: 'driver', value: val })
+      if (val === 'Янги ҳайдовчи') {
+        this.addDialog = true
+      } else {
+        this.SET_ORDER({ key: 'driver', value: val })
+      }
     },
     customerChanged(val) {
-      if (val === 'addNewItemDiller') {
+      if (val === 'Янги диллерни қўшинг') {
         this.dillerAddDailog = true
       } else {
         this.SET_ORDER({ key: 'customer', value: val })
@@ -467,7 +432,7 @@ export default {
       }
     },
     shopChanged(val) {
-      if (val === 'addNewItemDiller') {
+      if (val === 'Янги диллерни қўшинг') {
         this.dillerAddDailog = true
       } else {
         this.SET_ORDER({ key: 'shop', value: val })
@@ -553,6 +518,5 @@ export default {
   border-spacing: 5px;
 }
 
-.order-action-btn {
-}
+.order-action-btn {}
 </style>

@@ -18,24 +18,24 @@ export default {
 }
 </script>
 <style>
-    .stuffs-body {
-        background-color: rgb(243, 243, 243);
-        height: calc(100vh - 89px);
-        width: 100%;
-        padding: 1rem;
-    }
+.stuffs-body {
+  /* background-color: rgb(243, 243, 243); */
+  height: calc(100vh - 89px);
+  width: 100%;
+  padding: 1rem;
+}
 
-    .stuffs-page-body {
-        background-color: white;
-        border-radius: 8px;
-    }
-    .stuffs-page-body {
-        margin-top: 1rem;
-        height: calc(100vh - 6rem - 89px);
-    }
-    .pgntion {
-        height: 3.5rem;
-        display: flex;
-        align-items: center;
-    }
+.stuffs-page-body {
+  background-color: white;
+  border-radius: 8px;
+}
+.stuffs-page-body {
+  margin-top: 1rem;
+  height: calc(100vh - 6rem - 89px);
+}
+.pgntion {
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+}
 </style>

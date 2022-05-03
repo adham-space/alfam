@@ -1,7 +1,11 @@
 <template>
   <el-row :gutter="10" class="stepOne">
     <el-col :offset="2" :span="20">
-      <el-input v-model="name" placeholder="Махсулот номи" @change="nameChanging" />
+      <el-input
+        v-model="name"
+        placeholder="Махсулот номи"
+        @change="nameChanging"
+      />
     </el-col>
     <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="newType">
@@ -91,7 +95,7 @@ export default {
     checkAndStoreToLocalHost(name) {
       const types = JSON.parse(localStorage.getItem('types'))
       if (types) {
-        const indexOfType = types.findIndex(t => t.type_name === name)
+        const indexOfType = types.findIndex((t) => t.type_name === name)
         if (indexOfType === -1) {
           types.push({
             id: types[types.length - 1].id + 1,
@@ -104,14 +108,17 @@ export default {
     workWithLocalStorage() {
       const lcs = localStorage.getItem('types')
       if (lcs === null) {
-        localStorage.setItem('types', JSON.stringify([
-          { id: 0, type_name: 'ОЧИ' },
-          { id: 1, type_name: 'ТЎҚИ' },
-          { id: 2, type_name: 'ДЕКОР' },
-          { id: 3, type_name: 'СИГАРА' },
-          { id: 4, type_name: 'ПОЛ' },
-          { id: 5, type_name: 'ФРИЗ' }
-        ]))
+        localStorage.setItem(
+          'types',
+          JSON.stringify([
+            { id: 0, type_name: 'ОЧИ' },
+            { id: 1, type_name: 'ТЎҚИ' },
+            { id: 2, type_name: 'ДЕКОР' },
+            { id: 3, type_name: 'СИГАРА' },
+            { id: 4, type_name: 'ПОЛ' },
+            { id: 5, type_name: 'ФРИЗ' }
+          ])
+        )
         this.types = [
           { id: 0, type_name: 'ОЧИ' },
           { id: 1, type_name: 'ТЎҚИ' },
@@ -144,7 +151,7 @@ export default {
     },
     addNewType() {
       const nm = this.typeObject.name + ''
-      const indexOfType = this.types.findIndex(t => t.type_name === nm)
+      const indexOfType = this.types.findIndex((t) => t.type_name === nm)
       if (indexOfType === -1) {
         if (this.types.length === 0) {
           this.types.push({ id: 0, type_name: nm })
@@ -168,7 +175,8 @@ export default {
     saveEdit(name) {
       this.editing.status = false
       const index = this.types.findIndex(
-        (item) => item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
+        (item) =>
+          item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
       )
       this.types[index].type_name = this.editedType + ''
       this.editedType = ''
@@ -176,7 +184,8 @@ export default {
     },
     deleteThis(name) {
       const index = this.types.findIndex(
-        (item) => item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
+        (item) =>
+          item.type_name.toLowerCase().trim() === name.toLowerCase().trim()
       )
       this.types.splice(index, 1)
       this.$store.commit('newProduct/SET_TYPES', this.types)
@@ -189,7 +198,7 @@ export default {
 .stepOne {
   /* border: 1px solid red; */
   height: 100%;
-    background-color: white;
+  background-color: white;
   overflow-y: auto;
 }
 .newType {

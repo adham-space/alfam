@@ -1,11 +1,7 @@
 <template>
   <el-row :gutter="15" class="packing-list-body">
     <el-col :span="18" style="height: 100%; ">
-      <Table
-        ref="packingListTableRef"
-        :broken="broken"
-        @calculateTotalPrice="calculateTotalPrice"
-      />
+      <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
     <el-col :span="6" style="height: 100%; overflow-y: auto;   ">
       <Tools
@@ -69,10 +65,10 @@ export default {
 </script>
 
 <style>
-  .packing-list-body {
-   height: calc(100vh - 50px);
-   padding: 1em;
-   /* background-color: #fcf5ef; */
-   background-color: #dae2de;
-  }
+.packing-list-body {
+  height: calc(100vh - 50px);
+  padding: 1em;
+  /* background-color: #fcf5ef; */
+  background-color: #dae2de;
+}
 </style>

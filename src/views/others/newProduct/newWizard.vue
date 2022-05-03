@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="10" class="left-side">
+  <el-col :span="14" :offset="4" class="left-side">
     <h3 style="text-align: center; color: gray">Янги махсулот қўшиш</h3>
     <form-wizard
       ref="FormWizardRef"
@@ -18,6 +18,9 @@
       </tab-content>
       <tab-content :lazy="true" class="tb-cnt" title="Турларни детализацияси">
         <stepTwo />
+      </tab-content>
+      <tab-content :lazy="true" class="tb-cnt" title="Упаковка детализатсияси">
+        <stepFour />
       </tab-content>
       <tab-content :lazy="true" class="tb-cnt" title="Ревизия">
         <stepThree />
@@ -64,6 +67,7 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import stepOne from './stepOne'
 import stepTwo from './stepTwo'
 import stepThree from './stepThree'
+import stepFour from './stepFour.vue'
 import { mapActions, mapState } from 'vuex'
 import { Message } from 'element-ui'
 export default {
@@ -73,7 +77,8 @@ export default {
     TabContent,
     stepOne,
     stepTwo,
-    stepThree
+    stepThree,
+    stepFour
   },
   props: {
     normal: {
@@ -88,10 +93,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('newProduct', ['types', 'product_name'])
+    ...mapState('others/newProduct', ['types', 'product_name'])
   },
   methods: {
-    ...mapActions('newProduct', ['UPLOAD_IMAGES', 'UPLOAD_TYPES']),
+    ...mapActions('others/newProduct', ['UPLOAD_IMAGES', 'SAVE_PRODUCTS']),
     async onComplete() {
       try {
         this.finishing = true
@@ -105,8 +110,8 @@ export default {
         if (main_size_counter === 1) {
           for (let i = 0; i < this.types.length; i++) {
             const formData = new FormData()
+            console.log('this.types[i].photo', this.types[i].photo.raw.name)
             formData.append('image', this.types[i].photo.raw)
-            // console.log("this.types[i].photo", this.types[i].photo);
 
             const filePath = await this.UPLOAD_IMAGES({
               name: this.types[i].photo.raw.name,
@@ -118,13 +123,6 @@ export default {
               filePath.data.signedRequest
             )
 
-            // let results3 = await axios({
-            //   url: filePath.data.signedRequest,
-            //   method: 'PUT',
-            //   data: formData,
-            //   headers: { 'Content-Type': 'multipart/form-data' }
-            // })
-            // console.log("result s3", filePath)
             this.types[i].photo_path = filePath.data.path
           }
 
@@ -133,9 +131,7 @@ export default {
             product_types: this.types
           }
 
-          // / count mains if there is no any so count is = 0
-
-          await this.UPLOAD_TYPES(dataObj)
+          await this.SAVE_PRODUCTS(dataObj)
           Message({
             message: 'Янги махсулот мувоффақиятли яратилди',
             duration: 3000,
@@ -156,8 +152,9 @@ export default {
         }
       } catch (error) {
         this.finishing = false
+        console.log(error)
         Message({
-          message: 'Махсулот яратишда хатолик бор, текшириб кўринг',
+          message: error,
           type: 'error',
           duration: 2000
         })

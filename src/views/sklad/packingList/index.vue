@@ -4,7 +4,14 @@
       <Table ref="packingListTableRef" :broken="broken" @calculateTotalPrice="calculateTotalPrice" />
     </el-col>
     <el-col :span="6" style="height: 100%; overflow-y: auto;   ">
-      <Tools :is-table-valid="isTableValid" :total-price="totalPrice" @checkTable="checkTableValididty()" @closeNotification="closeNotification_" @totalPriceChanged="totalPriceChanged" @brokenState="changedBrokenState" />
+      <Tools
+        :is-table-valid="isTableValid"
+        :total-price="totalPrice"
+        @checkTable="checkTableValididty()"
+        @closeNotification="closeNotification_"
+        @totalPriceChanged="totalPriceChanged"
+        @brokenState="changedBrokenState"
+      />
     </el-col>
   </el-row>
 </template>
@@ -55,10 +62,10 @@ export default {
 </script>
 
 <style>
-  .packing-list-body {
-   height: calc(100vh - 50px);
-   padding: 1em;
-   /* background-color: #fcf5ef; */
-   background-color: #dae2de;
-  }
+.packing-list-body {
+  height: calc(100vh - 50px);
+  padding: 1em;
+  /* background-color: #fcf5ef; */
+  background-color: #dae2de;
+}
 </style>

@@ -20,100 +20,112 @@ export default {
         debtDescription: ''
       },
       rules: {
-        currentShop: [{
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (this.toolBarForm.isSample) {
-              if (value) {
-                cb()
+        currentShop: [
+          {
+            trigger: 'change',
+            validator: (rule, value, cb) => {
+              if (this.toolBarForm.isSample) {
+                if (value) {
+                  cb()
+                } else {
+                  cb(new Error('Дўконни танланг'))
+                }
               } else {
-                cb(new Error('Select shop'))
+                cb()
               }
-            } else {
-              cb()
             }
           }
-        }],
-        debtDate: [{
-
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (this.toolBarForm.isDebt) {
-              if (value) {
-                cb()
+        ],
+        debtDate: [
+          {
+            trigger: 'change',
+            validator: (rule, value, cb) => {
+              if (this.toolBarForm.isDebt) {
+                if (value) {
+                  cb()
+                } else {
+                  cb(new Error('Қарзни қайтариш курси'))
+                }
               } else {
-                cb(new Error('Select debt date'))
+                cb()
               }
-            } else {
-              cb()
             }
           }
-        }],
+        ],
 
-        totalPrice: [{
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (!this.toolBarForm.isSample) {
-              if (value !== '') {
-                cb()
-              } else {
-                cb(new Error('Enter price'))
-              }
-            } else cb()
+        totalPrice: [
+          {
+            trigger: 'change',
+            validator: (rule, value, cb) => {
+              if (!this.toolBarForm.isSample) {
+                if (value !== '') {
+                  cb()
+                } else {
+                  cb(new Error('Нархини киритинг'))
+                }
+              } else cb()
+            }
           }
-        }],
+        ],
 
-        currentDriver: [{
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (!this.toolBarForm.isSample) {
-              if (value) {
-                cb()
-              } else {
-                cb(new Error('Select driver'))
-              }
-            } else cb()
+        currentDriver: [
+          {
+            trigger: 'change',
+            validator: (rule, value, cb) => {
+              if (!this.toolBarForm.isSample) {
+                if (value) {
+                  cb()
+                } else {
+                  cb(new Error('Ҳайдовчини танланг'))
+                }
+              } else cb()
+            }
           }
-        }],
+        ],
 
-        currentStatus: [{
-          trigger: 'change',
-          validator: (rule, value, cb) => {
-            if (!this.toolBarForm.isSample) {
-              if (value) {
-                cb()
-              } else {
-                cb(new Error('Select action'))
-              }
-            } else cb()
+        currentStatus: [
+          {
+            trigger: 'change',
+            validator: (rule, value, cb) => {
+              if (!this.toolBarForm.isSample) {
+                if (value) {
+                  cb()
+                } else {
+                  cb(new Error('Жараённи танланг'))
+                }
+              } else cb()
+            }
           }
-        }],
+        ],
 
-        currentProduct: [{
-          trigger: 'change',
-          validator: (rules, value, cb) => {
-            if (!this.toolBarForm.isSample) {
-              if (value) {
-                cb()
-              } else {
-                cb(new Error('Select product'))
-              }
-            } else cb()
+        currentProduct: [
+          {
+            trigger: 'change',
+            validator: (rules, value, cb) => {
+              if (!this.toolBarForm.isSample) {
+                if (value) {
+                  cb()
+                } else {
+                  cb(new Error('Махсулотни танланг'))
+                }
+              } else cb()
+            }
           }
-        }],
-        currentcustomer: [{
-          trigger: 'change',
-          validator: (rules, value, cb) => {
-            if (!this.toolBarForm.isSample) {
-              if (value) {
-                cb()
-              } else {
-                cb(new Error('Select customer'))
-              }
-            } else cb()
+        ],
+        currentcustomer: [
+          {
+            trigger: 'change',
+            validator: (rules, value, cb) => {
+              if (!this.toolBarForm.isSample) {
+                if (value) {
+                  cb()
+                } else {
+                  cb(new Error('Харидорни танланг'))
+                }
+              } else cb()
+            }
           }
-        }]
-
+        ]
       }
     }
   },
@@ -124,12 +136,14 @@ export default {
         params: {
           id: this.toolBarForm.currentcustomer
         }
-      }).then(res => {
-        console.log('Current order', res)
-        this.action_of_customer = res.data === null ? -1 : res.data.action
-      }).catch(err => {
-        console.error(err)
       })
+        .then((res) => {
+          console.log('Current order', res)
+          this.action_of_customer = res.data === null ? -1 : res.data.action
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   }
 }

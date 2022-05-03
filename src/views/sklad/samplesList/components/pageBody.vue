@@ -13,139 +13,86 @@
         <!-- eslint-disable-next-line -->
         <template slot-scope="scope">
           <div class="inner-table">
-            <el-table
-              :data="scope.row.products"
-              :show-header="true"
-              style="width: 100%"
-              stripe
-            >
-              <el-table-column
-                label="Кафелни коди"
-                prop="code"
-                :min-width="150"
-                fixed="left"
-                align="center"
-              >
+            <el-table :data="scope.row.products" :show-header="true" style="width: 100%" stripe>
+              <el-table-column label="Кафелни коди" prop="code" :min-width="150" fixed="left" align="center">
                 <template slot-scope="scope">
                   {{
-                    productTypeMap[scope.row._id]
-                      ? productTypeMap[scope.row._id].code
-                      : scope.$index
+                      productTypeMap[scope.row._id]
+                        ? productTypeMap[scope.row._id].code
+                        : scope.$index
                   }}
                   {{ scope.row.broken ? "синган" : "" }}
                 </template>
               </el-table-column>
-              <el-table-column
-                label="Спецификацияси"
-                prop="type_name"
-                :min-width="180"
-                align="center"
-              >
+              <el-table-column label="Спецификацияси" prop="type_name" :min-width="180" align="center">
                 <template slot-scope="scope">
                   {{
-                    productTypeMap[scope.row._id]
-                      ? productTypeMap[scope.row._id].type_name
-                      : "" + scope.row.product_type
+                      productTypeMap[scope.row._id]
+                        ? productTypeMap[scope.row._id].type_name
+                        : "" + scope.row.product_type
                   }}
                 </template>
               </el-table-column>
-              <el-table-column
-                label="Товарни размери"
-                prop="size"
-                :min-width="180"
-                align="center"
-              >
+              <el-table-column label="Товарни размери" prop="size" :min-width="180" align="center">
                 <template slot-scope="scope">
                   {{
-                    productTypeMap[scope.row._id]
-                      ? productTypeMap[scope.row._id].size
-                      : ""
+                      productTypeMap[scope.row._id]
+                        ? productTypeMap[scope.row._id].size
+                        : ""
                   }}
                 </template>
               </el-table-column>
 
-              <el-table-column
-                label="Товарни расми"
-                prop="photo"
-                :min-width="160"
-                align="center"
-              >
+              <el-table-column label="Товарни расми" prop="photo" :min-width="160" align="center">
                 <!-- eslint-disable-next-line  -->
                 <template slot-scope="scope">
-                  <el-image
-                    style="width: 30px; height: 30px"
-                    :src="
-                      productTypeMap[scope.row._id]
-                        ? productTypeMap[scope.row._id].photo_path
-                        : ''
-                    "
-                    fit="scale-down"
-                    @click="
-                      openImg(
-                        productTypeMap[scope.row._id]
-                          ? productTypeMap[scope.row._id].photo_path
-                          : ''
-                      )
-                    "
-                  />
+                  <el-image style="width: 30px; height: 30px" :src="
+                    productTypeMap[scope.row._id]
+                      ? productTypeMap[scope.row._id].photo_path
+                      : ''
+                  " fit="scale-down" @click="
+  openImg(
+    productTypeMap[scope.row._id]
+      ? productTypeMap[scope.row._id].photo_path
+      : ''
+  )
+" />
                   <!-- <editImage /> -->
                 </template>
               </el-table-column>
-              <el-table-column
-                label="Касса нархи"
-                prop="total_area"
-                :min-width="160"
-                align="center"
-              >
+              <el-table-column label="Касса нархи" prop="total_area" :min-width="160" align="center">
                 <template slot-scope="scope">
                   {{ toThousandFilter(scope.row.base_price) }}
-                  <span v-if="!scope.row.price_by">(м<sup>2</sup>)</span>
+                  <span v-if="!scope.row.price_by">
+                    (м
+                    <sup>2</sup>)
+                  </span>
                   <span v-else>(дона)</span>
                 </template>
               </el-table-column>
-              <el-table-column
-                label="Умумий суммаси ($)"
-                :min-width="160"
-                align="center"
-              >
+              <el-table-column label="Умумий суммаси ($)" :min-width="160" align="center">
                 <template slot-scope="scope">
                   {{
-                    toThousandFilter((scope.row.price_by ?scope.row.item_num : scope.row.packTotalArea) * scope.row.base_price)
+                      toThousandFilter((scope.row.price_by ? scope.row.item_num : scope.row.packTotalArea) *
+                        scope.row.base_price)
                   }}
                 </template>
               </el-table-column>
-              <el-table-column
-                label="Умумий юзаси"
-                prop="total_area"
-                :min-width="160"
-                align="center"
-              >
-                <template slot-scope="scope">
-                  {{ toThousandFilter(scope.row.packTotalArea) }}
-                </template>
+              <el-table-column label="Умумий юзаси" prop="total_area" :min-width="160" align="center">
+                <template slot-scope="scope">{{ toThousandFilter(scope.row.packTotalArea) }}</template>
               </el-table-column>
-              <el-table-column
-                label="Умумий сони"
-                :min-width="160"
-                prop="total_number_of_items"
-                align="center"
-              >
-                <template slot-scope="scope">
-                  {{ toThousandFilter(scope.row.item_num) }}
-                </template>
+              <el-table-column label="Умумий сони" :min-width="160" prop="total_number_of_items" align="center">
+                <template slot-scope="scope">{{ toThousandFilter(scope.row.item_num) }}</template>
               </el-table-column>
 
-              <el-table-column
-                label="Умумий пакет / ортиқча сони"
-                prop="total_number_of_packets"
-                align="center"
-                :min-width="160"
-              >
+              <el-table-column label="Умумий пакет / ортиқча сони" prop="total_number_of_packets" align="center"
+                :min-width="160">
                 <template slot="header">
-                  <span
-                    >Умумий <br />пакет / ортиқча <br />
-                    сони</span
-                  >
+                  <span>
+                    Умумий
+                    <br />пакет / ортиқча
+                    <br />сони
+                  </span>
                 </template>
                 <template slot-scope="scope">
                   {{ toThousandFilter(scope.row.pack_num) }} /
@@ -153,195 +100,102 @@
                 </template>
               </el-table-column>
 
-              <el-table-column
-                label="УМУМИЙ ОҒИРЛИГИ"
-                :min-width="160"
-                prop="total_wight_of_packets"
-                align="center"
-              >
+              <el-table-column label="УМУМИЙ ОҒИРЛИГИ" :min-width="160" prop="total_wight_of_packets" align="center">
                 <template slot="header">
-                  <span
-                    >Умумий <br />
-                    оғирлиги</span
-                  >
+                  <span>
+                    Умумий
+                    <br />оғирлиги
+                  </span>
                 </template>
                 <template slot-scope="scope">
                   {{
-                    toThousandFilter(
-                      scope.row.weight_of_an_item * scope.row.item_num
-                    )
+                      toThousandFilter(
+                        scope.row.weight_of_an_item * scope.row.item_num
+                      )
                   }}
                 </template>
               </el-table-column>
-              <el-table-column
-                label="1-та почкадаги каличество ўлчов бирлиги"
-                align="center"
-              >
-                <el-table-column
-                  label="Почкасини (м2)"
-                  align="center"
-                  :min-width="160"
-                  prop="area_of_one_packet"
-                />
-                <el-table-column
-                  label="1-донасини (м2)"
-                  :min-width="160"
-                  prop="area_of_an_item"
-                  align="center"
-                />
-                <el-table-column
-                  align="center"
-                  prop="number_of_items"
-                  :min-width="160"
-                  label="Умумий донаси"
-                />
-                <el-table-column
-                  label="Почкасини (КГ)"
-                  align="center"
-                  :min-width="160"
-                  prop="wight_of_one_packet"
-                />
-                <el-table-column
-                  label="1-донасини  (КГ)"
-                  align="center"
-                  :min-width="160"
-                  prop="weight_of_an_item"
-                />
+              <el-table-column label="1-та почкадаги каличество ўлчов бирлиги" align="center">
+                <el-table-column label="Почкасини (м2)" align="center" :min-width="160" prop="area_of_one_packet" />
+                <el-table-column label="1-донасини (м2)" :min-width="160" prop="area_of_an_item" align="center" />
+                <el-table-column align="center" prop="number_of_items" :min-width="160" label="Умумий донаси" />
+                <el-table-column label="Почкасини (КГ)" align="center" :min-width="160" prop="wight_of_one_packet" />
+                <el-table-column label="1-донасини  (КГ)" align="center" :min-width="160" prop="weight_of_an_item" />
               </el-table-column>
             </el-table>
           </div>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="shop"
-        align="center"
-        label="Диллер/Дўкон"
-        :min-width="180"
-      >
+      <el-table-column prop="shop" align="center" label="Диллер/Дўкон" :min-width="180">
         <template slot-scope="scope">
-          <div v-if="scope.row.shop">
-            {{ scope.row.shop.name }}
-          </div>
-          <div v-else>
-            {{ scope.row.other_shop.name }}
-          </div>
+          <div v-if="scope.row.shop">{{ scope.row.shop.name }}</div>
+          <div v-else>{{ scope.row.other_shop.name }}</div>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="product"
-        align="center"
-        label="Махсулот"
-        :min-width="180"
-      >
+      <el-table-column prop="product" align="center" label="Махсулот" :min-width="180"></el-table-column>
+      <el-table-column prop="totalArea" align="center" label :min-width="180">
+        <template slot="header">
+          Умумий м
+          <sup>2</sup>
+        </template>
+        <template slot-scope="scope">{{ scope.row.totalArea ? scope.row.totalArea.toFixed(2) : "" }}</template>
       </el-table-column>
-      <el-table-column
-        prop="totalArea"
-        align="center"
-        label=""
-        :min-width="180"
-      >
-        <template slot="header"> Умумий м<sup>2</sup> </template>
+      <el-table-column label="Умумий суммаси" prop="total_area" :min-width="160" align="center">
+        <template slot-scope="scope">{{ toThousandFilter(scope.row.last_sum) }}</template>
+      </el-table-column>
+      <el-table-column :min-width="180" label="Образецга пул тўланди" prop="is_payed" align="center">
         <template slot-scope="scope">
-          {{ scope.row.totalArea ? scope.row.totalArea.toFixed(2) : "" }}
+          <el-checkbox :disabled="scope.row.is_payed" v-if="!paymentToggling || currentSample !== scope.row._id"
+            :value="scope.row.is_payed" @change="toggleIsPayedSample(scope.row)"></el-checkbox>
+          <i v-else-if="currentSample === scope.row._id" class="el-icon-loading"></i>
         </template>
       </el-table-column>
-      <el-table-column
-        label="Умумий суммаси"
-        prop="total_area"
-        :min-width="160"
-        align="center"
-      >
+      <el-table-column prop="totalNumber" align="center" label="Умумий донаси" :min-width="180">
+        <template slot-scope="scope">{{ scope.row.totalNumber }}</template>
+      </el-table-column>
+      <el-table-column prop="partiya" align="center" label="Партия" :min-width="180"></el-table-column>
+      <el-table-column prop="isReturned" align="center" label="Қайтарилди" :min-width="180">
         <template slot-scope="scope">
-          {{ toThousandFilter(scope.row.last_sum) }}
+          <el-checkbox :disabled="scope.row.isReturned" :value="scope.row.isReturned"
+            @change="doReturnSample(scope.row._id, scope.row)"></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="totalNumber"
-        align="center"
-        label="Умумий донаси"
-        :min-width="180"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.totalNumber }}
-        </template>
+      <el-table-column prop="createdAt" align="center" label="Берилган вақти" :min-width="180">
+        <template slot-scope="scope">{{ giveDate(scope.row.createdAt) }}</template>
       </el-table-column>
-      <el-table-column
-        prop="partiya"
-        align="center"
-        label="Партия"
-        :min-width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="isReturned"
-        align="center"
-        label="Қайтарилди"
-        :min-width="180"
-      >
-        <template slot-scope="scope">
-          <el-checkbox
-            :disabled="scope.row.isReturned"
-            :value="scope.row.isReturned"
-            @change="doReturnSample(scope.row._id, scope.row)"
-          ></el-checkbox>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="createdAt"
-        align="center"
-        label="Берилган вақти"
-        :min-width="180"
-      >
-        <template slot-scope="scope">
-          {{ giveDate(scope.row.createdAt) }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="updatedAt"
-        align="center"
-        label="Қайтарилган вақти"
-        :min-width="180"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.isReturned ? giveDate(scope.row.updatedAt) : "-" }}
-        </template>
+      <el-table-column prop="updatedAt" align="center" label="Қайтарилган вақти" :min-width="180">
+        <template slot-scope="scope">{{ scope.row.isReturned ? giveDate(scope.row.updatedAt) : "-" }}</template>
       </el-table-column>
     </el-table>
-    <div class="pgntion">
+    <!-- <div class="pgntion">
       <Pagination
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getList"
       />
-    </div>
-    <el-dialog
-      title=""
-      :visible.sync="showImageDilog"
-      append-to-body
-      width="40%"
-    >
-      <el-image
-        style="width: 100%; height: 90%"
-        :src="imageUrl"
-        fit="scale-down"
-      />
+    </div>-->
+    <el-dialog title :visible.sync="showImageDilog" append-to-body width="40%">
+      <el-image style="width: 100%; height: 90%" :src="imageUrl" fit="scale-down" />
     </el-dialog>
   </el-col>
 </template>
 
 <script>
-import Pagination from '@/components/Pagination'
+// import Pagination from '@/components/Pagination'
 import { mapActions, mapMutations, mapState } from 'vuex'
 import { toThousandFilter } from '@/filters/index'
+import request from '@/utils/request'
 export default {
   components: {
-    Pagination
+    // Pagination
   },
   data: () => ({
+    currentSample: '',
     baseApi: process.env.VUE_APP_BASE_API,
     showImageDilog: false,
     imageUrl: '',
+    paymentToggling: false,
     productTypeMap: [],
     resetKey: 101,
     listQuery: {
@@ -386,18 +240,55 @@ export default {
     ...mapMutations('samples', ['SET_QUERY']),
     ...mapActions('samples', ['GET_SAMPLES', 'DO_RETURN']),
     doReturnSample(val, row) {
-      this.$confirm(
-        `Сиз ${row.shop.name}-га берилган ${row.product} махсулот образецини қайтармоқчимисиз?`,
-        'Образецни қайтариш'
-      )
-        .then(() => {
-          this.DO_RETURN(val)
-            .then(() => {
-              this.GET_SAMPLES()
-            })
-            .catch((err) => console.error(err))
-        })
-        .catch(() => {})
+      if (row.shop) {
+        this.$confirm(
+          `Сиз ${row.shop.name}-га берилган ${row.product} махсулот образецини қайтармоқчимисиз?`,
+          'Образецни қайтариш'
+        )
+          .then(() => {
+            this.DO_RETURN(val)
+              .then(() => {
+                this.GET_SAMPLES()
+              })
+              .catch((err) => console.error(err))
+          })
+          .catch(() => { })
+      } else {
+        this.$confirm(
+          `Сиз ${row.other_shop.name}-га берилган ${row.product} махсулот образецини қайтармоқчимисиз?`,
+          'Образецни қайтариш'
+        )
+          .then(() => {
+            this.DO_RETURN(val)
+              .then(() => {
+                this.GET_SAMPLES()
+              })
+              .catch((err) => console.error(err))
+          })
+          .catch(() => { })
+      }
+    },
+    async toggleIsPayedSample(row) {
+      this.currentSample = row._id
+      this.$confirm('Ушбу образец учун пул тўланганлигини тасдиқласизми?', '', {
+        cancelButtonText: 'Йўқ',
+        confirmButtonText: 'Ҳа'
+      }).then(async() => {
+        try {
+          this.paymentToggling = true
+          await request({
+            url: '/products/sample-payment',
+            method: 'PUT',
+            data: {
+              _id: row._id
+            }
+          })
+          this.paymentToggling = false
+        } catch (error) {
+          console.error(error)
+          this.paymentToggling = false
+        }
+      })
     },
     openImg(url) {
       this.showImageDilog = true

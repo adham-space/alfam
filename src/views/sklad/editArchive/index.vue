@@ -2,11 +2,7 @@
   <el-row style="padding: 1em">
     <el-col :span="11" style="height: calc(100vh - 85px); overflow-y: auto">
       <el-form ref="storeFormRef" :model="formDataObj" :rules="rules">
-        <el-col
-          class="toolbar-store"
-          :lg="{ offset: 0, span: 24 }"
-          :md="{ offset: 0, span: 24 }"
-        >
+        <el-col class="toolbar-store" :lg="{ offset: 0, span: 24 }" :md="{ offset: 0, span: 24 }">
           <el-form-item prop="currentProduct">
             <el-select
               :value="formDataObj.currentProduct"
@@ -15,12 +11,7 @@
               placeholder="Махсулот номи"
               @change="currentProductIsGoingToChange"
             >
-              <el-option
-                v-for="type in products_types"
-                :key="type._id"
-                :label="type.product_name"
-                :value="type._id"
-              />
+              <el-option v-for="type in products_types" :key="type._id" :label="type.product_name" :value="type._id" />
             </el-select>
           </el-form-item>
           <el-form-item prop="current_subType">
@@ -39,11 +30,8 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="singan">
-            <el-checkbox
-              :value="formDataObj.singan"
-              style="margin-left: 1rem"
-              @change="changedBrokenState"
-            >Синган</el-checkbox>
+            <el-checkbox :value="formDataObj.singan" style="margin-left: 1rem" @change="changedBrokenState">Синган
+            </el-checkbox>
           </el-form-item>
         </el-col>
         <el-col :lg="{ offset: 0, span: 24 }" :md="{ offset: 0, span: 24 }">
@@ -54,30 +42,35 @@
             }}</span>
           </p>
         </el-col>
-        <el-col
-          class="store-bdy"
-          :lg="{ offset: 0, span: 24 }"
-          :md="{ offset: 0, span: 24 }"
-        >
+        <el-col class="store-bdy" :lg="{ offset: 0, span: 24 }" :md="{ offset: 0, span: 24 }">
           <el-card shadow="hover" class="box-card">
-            <div slot="header" class="clearfix">
+            <div
+              slot="header"
+              class="clearfix"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
               <span>1 ТА КАРОБКАНИ МАъЛУМОТИ</span>
+              <el-image
+                :preview-src-list="[
+                  !!currentType.photo_path ? currentType.photo_path : '',
+                ]"
+                :src="!!currentType.photo_path ? currentType.photo_path : ''"
+                style="width: 4em; height: 4em"
+              />
             </div>
             <div class="one-packet">
-              <span><span
-                      style="color: darkgray; margin-right: 1rem"
-                    >ДОНАСИНИ ЮЗАСИ: </span>{{
-                      Object.keys(currentType).length > 0 ? areaOfOneItem() : "_"
-                    }}
+              <span><span style="color: darkgray; margin-right: 1rem">ДОНАСИНИ ЮЗАСИ: </span>{{
+                Object.keys(currentType).length > 0 ? areaOfOneItem() : "_"
+              }}
                 <span style="color: darkgray">M<sup>2</sup></span></span>
 
               <div class="amountAndWeight">
-                <span
-                  style="margin-top: 1rem"
-                ><span
-                   style="color: darkgray; margin-right: 1rem"
-                 >1 КАРОБКАДАГИ ДОНАСИ:
-                 </span>
+                <span style="margin-top: 1rem"><span style="color: darkgray; margin-right: 1rem">1 КАРОБКАДАГИ ДОНАСИ:
+                                               </span>
                   <el-form-item prop="numberOfItems">
                     <el-input
                       v-model="formDataObj.numberOfItems"
@@ -86,13 +79,12 @@
                       type="number"
                       placeholder="Донаси"
                       @input="packetSizeChanged"
-                    /> </el-form-item></span>
-                <span
-                  style="margin-top: 1rem; margin-left: 1rem"
-                ><span
-                   style="color: darkgray; margin-right: 1rem"
-                 >1 ТА КАРОБКАНИНГ УМУМИЙ ОҒИРЛИГИ:
-                 </span>
+                    />
+                  </el-form-item>
+                </span>
+                <span style="margin-top: 1rem; margin-left: 1rem"><span style="color: darkgray; margin-right: 1rem">1 ТА
+                                                                    КАРОБКАНИНГ УМУМИЙ ОҒИРЛИГИ:
+                                                                  </span>
                   <el-form-item prop="weightOfPacket">
                     <el-input
                       v-model="formDataObj.weightOfPacket"
@@ -105,30 +97,20 @@
                   </el-form-item>
                 </span>
               </div>
-              <span
-                style="margin-top: 1rem"
-              ><span
-                 style="color: darkgray; margin-right: 1rem"
-               >1 ТА КАРОБКАНИНГ УМУМИЙ ЮЗАСИ: </span>{{
-                 formDataObj.numberOfItems === "" ? "_" : areaOfOnePacket()
-               }}
+              <span style="margin-top: 1rem"><span style="color: darkgray; margin-right: 1rem">1 ТА КАРОБКАНИНГ УМУМИЙ
+                                               ЮЗАСИ: </span>{{
+                                                 formDataObj.numberOfItems === "" ? "_" : areaOfOnePacket()
+                                               }}
                 <span style="color: darkgray">M<sup>2</sup></span></span>
-              <span
-                style="margin-top: 1rem"
-              ><span
-                 style="color: darkgray; margin-right: 1rem"
-               >1 ТА ДОНАСИНИ ОҒИРЛИГИ: </span>{{
-                 formDataObj.weightOfPacket === "" ? "_" : wightOfOneItem()
-               }}
+              <span style="margin-top: 1rem"><span style="color: darkgray; margin-right: 1rem">1 ТА ДОНАСИНИ ОҒИРЛИГИ:
+                                             </span>{{
+                                               formDataObj.weightOfPacket === "" ? "_" : wightOfOneItem()
+                                             }}
                 <span style="color: darkgray">Кг</span></span>
 
               <div class="amountAndWeight">
-                <span
-                  style="margin-top: 1rem"
-                ><span
-                   style="color: darkgray; margin-right: 1rem"
-                 >КАССА НАРХИ:
-                 </span>
+                <span style="margin-top: 1rem"><span style="color: darkgray; margin-right: 1rem">КАССА НАРХИ:
+                                               </span>
                   <el-form-item prop="base_price">
                     <el-input
                       v-model="formDataObj.base_price"
@@ -138,28 +120,19 @@
                     />
                   </el-form-item>
                 </span>
-                <span
-                  style="margin-top: 1rem; margin-left: 1rem"
-                ><span
-                   style="color: darkgray; margin-right: 1rem"
-                 >БЎЙИЧА:
-                 </span>
+                <span style="margin-top: 1rem; margin-left: 1rem"><span
+                                                                    style="color: darkgray; margin-right: 1rem"
+                                                                  >БЎЙИЧА:
+                                                                  </span>
                   <el-form-item prop="base_priceBy">
-                    <el-switch
-                      v-model="formDataObj.base_priceBy"
-                      :disabled="hidePacketField"
-                    />
+                    <el-switch v-model="formDataObj.base_priceBy" :disabled="hidePacketField" />
                     {{ base_priceByText }}
                   </el-form-item>
                 </span>
               </div>
               <div style="display: flex; align-items: center">
-                <span
-                  style="margin-top: 1rem"
-                ><span
-                   style="color: darkgray; margin-right: 1rem"
-                 >МАҚСАД:
-                 </span>
+                <span style="margin-top: 1rem"><span style="color: darkgray; margin-right: 1rem">МАҚСАД:
+                                               </span>
                   <el-form-item prop="target_date">
                     <el-date-picker
                       v-model="formDataObj.target_date"
@@ -188,9 +161,7 @@
 
             </el-form-item> -->
 
-              <span
-                style="color: darkgray; margin-right: 1rem"
-              >УМИМИЙ ЮЗАСИ:
+              <span style="color: darkgray; margin-right: 1rem">УМИМИЙ ЮЗАСИ:
               </span>
               <el-form-item prop="totalArea">
                 <el-input
@@ -201,9 +172,7 @@
                   @input="totalAreaChanged"
                 />
               </el-form-item>
-              <span
-                style="margin-top: 1rem"
-              ><span style="color: darkgray">УМИМИЙ ДОНАСИНИ СОНИ: </span>
+              <span style="margin-top: 1rem"><span style="color: darkgray">УМИМИЙ ДОНАСИНИ СОНИ: </span>
                 <el-form-item prop="totalNumberOfItem">
                   <el-input
                     :value="parseFloat(formDataObj.totalNumberOfItem)"
@@ -221,9 +190,9 @@
                 : "_"
             }} -->
               </span>
-              <span
-                style="margin-top: 1rem"
-              ><span style="color: darkgray">УМИМИЙ ПАКЕТЛАРИНИ СОНИ: </span><span :style="{ color: errorOccured ? 'red' : 'black' }">
+              <span style="margin-top: 1rem"><span style="color: darkgray">УМИМИЙ ПАКЕТЛАРИНИ СОНИ: </span><span
+                :style="{ color: errorOccured ? 'red' : 'black' }"
+              >
                 <div style="display: flex">
                   <el-form-item prop="numberOfPacket">
                     <el-input
@@ -268,9 +237,7 @@
                 </el-tooltip>
               </span>
 
-              <span
-                style="margin-top: 1rem"
-              ><span style="color: darkgray">УМИМИЙ ОҒИРЛИГИ: </span>{{
+              <span style="margin-top: 1rem"><span style="color: darkgray">УМИМИЙ ОҒИРЛИГИ: </span>{{
                 Object.keys(currentType).length > 0 &&
                   formDataObj.totalArea !== ""
                   ? totalWeight()
@@ -305,13 +272,7 @@
         @click="saveAllEditedToSklad()"
       >Сохранить</el-button>
       <el-table :key="currentTableKey" border :data="edit_batch_of_product">
-        <el-table-column
-          show-overflow-tooltip
-          align="center"
-          width="150"
-          label="Тури"
-          prop="product_type_name"
-        >
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Тури" prop="product_type_name">
           <template slot-scope="scope">
             {{
               getProductTypeName(scope.row.product_type) +
@@ -319,13 +280,7 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column
-          show-overflow-tooltip
-          align="center"
-          width="150"
-          label="Умумий юзаси"
-          prop="total_area"
-        />
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Умумий юзаси" prop="total_area" />
         <el-table-column
           show-overflow-tooltip
           align="center"
@@ -355,31 +310,13 @@
             <span>Пакетдан<br>ортиқча</span>
           </template>
         </el-table-column>
-        <el-table-column
-          show-overflow-tooltip
-          align="center"
-          width="150"
-          label="Касса нархи"
-          prop="base_price"
-        />
-        <el-table-column
-          show-overflow-tooltip
-          align="center"
-          width="150"
-          label="Бўйича"
-          prop="price_by"
-        >\
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Касса нархи" prop="base_price" />
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Бўйича" prop="price_by">\
           <template slot-scope="scope">
             {{ scope.row.price_by ? "Донаси" : "Юзаси (м2)" }}
           </template>
         </el-table-column>
-        <el-table-column
-          show-overflow-tooltip
-          align="center"
-          width="150"
-          label="Донасини юзаси"
-          prop="area_of_an_item"
-        >
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Донасини юзаси" prop="area_of_an_item">
           <template slot="header">
             <span>Донасини <br>
               юзаси</span>
@@ -431,13 +368,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column
-          show-overflow-tooltip
-          align="center"
-          width="150"
-          label="Мақсад"
-          prop="target_date"
-        >
+        <el-table-column show-overflow-tooltip align="center" width="150" label="Мақсад" prop="target_date">
           <template slot-scope="scope">
             {{ getDate(scope.row.target_date) }}
           </template>
@@ -456,21 +387,13 @@
         </el-table-column>
       </el-table>
     </el-col>
-    <el-dialog
-      align="center"
-      title=""
-      :visible.sync="product_changing_warnig"
-      width="30%"
-    >
+    <el-dialog align="center" title="" :visible.sync="product_changing_warnig" width="30%">
       <span>Сиз махсулотни ўзгартиряпсиз олдинги ўзгаришлар<br>ёъқотилади олдинги
         ўзгаришларни <br>
         сохранит қилинг ёки бу ўзгаришлар ўчиришга рухсат берасизми?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="donotDeleteCurrentWork()">Отмена</el-button>
-        <el-button
-          type="primary"
-          @click="deleteAllWorkAndSetNewProduct()"
-        >Тасдиқлаш</el-button>
+        <el-button type="primary" @click="deleteAllWorkAndSetNewProduct()">Тасдиқлаш</el-button>
       </span>
     </el-dialog>
   </el-row>
@@ -689,8 +612,7 @@ export default {
         })
       }
       console.log(this.formDataObj.singan ? 0 : 1)
-      return `${this.productName}-${this.typeName}-${this.todays_product_nums}${
-        this.formDataObj.singan ? '-broken' : ''
+      return `${this.productName}-${this.typeName}-${this.todays_product_nums}${this.formDataObj.singan ? '-broken' : ''
       }-${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     },
     subTypes() {
@@ -872,21 +794,19 @@ export default {
         if (
           this.edit_batch_of_product[current_edit_batch_of_product]
             .total_number_of_items -
-            total_number_of_items <=
-            0 ||
+          total_number_of_items <=
+          0 ||
           this.edit_batch_of_product[current_edit_batch_of_product]
             .total_number_of_items -
-            total_number_of_items <=
-            this.inventar[current_inventar].total_number_of_items
+          total_number_of_items <=
+          this.inventar[current_inventar].total_number_of_items
         ) {
           return true
         } else {
           Message({
-            message: `Инвентардаги махсулот миқдори камайтирилиган миқдордан кам қолган: Камайган миқдор: ${
-              this.edit_batch_of_product[current_edit_batch_of_product]
-                .total_number_of_items - total_number_of_items
-            } ва Инвентардаги миқдор: ${
-              this.inventar[current_inventar].total_number_of_items
+            message: `Инвентардаги махсулот миқдори камайтирилиган миқдордан кам қолган: Камайган миқдор: ${this.edit_batch_of_product[current_edit_batch_of_product]
+              .total_number_of_items - total_number_of_items
+            } ва Инвентардаги миқдор: ${this.inventar[current_inventar].total_number_of_items
             }`,
             type: 'error',
             duration: 3500
@@ -1082,8 +1002,7 @@ export default {
     },
     getDate(d) {
       const date = new Date(d)
-      return `${
-        date.getMonth() + 1
+      return `${date.getMonth() + 1
       } / ${date.getDate()} / ${date.getFullYear()}`
     },
     notCompletePacketItems() {
@@ -1197,7 +1116,7 @@ export default {
           this.editTarget = false
           this.SET_EDIT_BATCH_OF_PRODUCTS(-1)
           Message({
-            message: 'Махсулот мувоффақиятли edited',
+            message: 'Махсулот мувоффақиятли таҳрирланди',
             duration: 2000,
             type: 'success'
           })
@@ -1205,9 +1124,10 @@ export default {
           this.$router.push('/store/archive')
         })
         .catch((err) => {
+          console.error(err)
           this.isSaving = false
           Message({
-            message: 'Махсулот сақлашда хатолик: ' + err.response.data,
+            message: 'Махсулот сақлашда хатолик: ',
             duration: 4000,
             type: 'error'
           })
@@ -1252,9 +1172,11 @@ export default {
 .box-card {
   width: 100%;
 }
-.box-card > .el-card__header {
+
+.box-card>.el-card__header {
   height: 4rem;
 }
+
 .amountAndWeight {
   width: 100%;
   display: flex;

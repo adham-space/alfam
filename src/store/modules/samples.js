@@ -26,7 +26,7 @@ const state = {
     search_input: 'name',
     search_text: '',
     currentPage: 1,
-    perPage: 20,
+    perPage: 120,
     shop: '',
     return_status: 2
   },

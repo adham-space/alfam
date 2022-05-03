@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Add new user"
+    title="Фойдаланувчи қўшиш"
     :visible.sync="dialogVisible"
     width="50%"
     align="center"
@@ -12,11 +12,16 @@
       <el-form-item>
         <el-col :span="12">
           <el-form-item prop="stuffId">
-            <el-select v-model="newUser.stuffId" :loading="stuffLoading" style="width: 100%" placeholder="Stuff">
+            <el-select
+              v-model="newUser.stuffId"
+              :loading="stuffLoading"
+              style="width: 100%"
+              placeholder="Ҳодим"
+            >
               <el-option
                 v-for="stuff in stuffs"
                 :key="stuff._id"
-                :label="stuff.firstName + ' ' + stuff.lastName "
+                :label="stuff.firstName + ' ' + stuff.lastName"
                 :value="stuff._id"
               />
             </el-select>
@@ -24,7 +29,11 @@
         </el-col>
         <el-col :span="12">
           <el-form-item prop="roleId">
-            <el-select v-model="newUser.role" style="width: 100%" placeholder="Role">
+            <el-select
+              v-model="newUser.role"
+              style="width: 100%"
+              placeholder="Роли"
+            >
               <el-option label="admin" value="admin" />
               <el-option label="zav. sklad" value="zavsklad" />
               <el-option label="seller" value="seller" />
@@ -35,12 +44,15 @@
       <el-form-item>
         <el-col :span="12">
           <el-form-item prop="username">
-            <el-input v-model="newUser.username" placeholder="Username" />
+            <el-input v-model="newUser.username" placeholder="Логин" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="password">
-            <el-input v-model="newUser.password" placeholder="Temprary password" />
+            <el-input
+              v-model="newUser.password"
+              placeholder="Вақтинчалик парол"
+            />
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -48,15 +60,25 @@
         <el-col :span="12">
           <el-form-item prop="is_active">
             <div style="display: flex">
-              <el-checkbox v-model="newUser.is_active" :label="'Status' + (newUser.is_active ? ': active' : ': inactive')" />
+              <el-checkbox
+                v-model="newUser.is_active"
+                :label="
+                  'Статус' + (newUser.is_active ? ': active' : ': inactive')
+                "
+              />
             </div>
           </el-form-item>
         </el-col>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button :disabled="saving" @click="cancel()">Cancel</el-button>
-      <el-button :disabled="saving" :loading="saving" type="primary" @click="save()">Save</el-button>
+      <el-button :disabled="saving" @click="cancel()">Отменить</el-button>
+      <el-button
+        :disabled="saving"
+        :loading="saving"
+        type="primary"
+        @click="save()"
+      >Сохранить</el-button>
     </span>
   </el-dialog>
 </template>
@@ -86,11 +108,13 @@ export default {
   },
   mounted() {
     this.stuffLoading = true
-    this.GET_STUFFS().then(() => {
-      this.stuffLoading = false
-    }).catch(() => {
-      this.stuffLoading = false
-    })
+    this.GET_STUFFS()
+      .then(() => {
+        this.stuffLoading = false
+      })
+      .catch(() => {
+        this.stuffLoading = false
+      })
   },
   methods: {
     ...mapActions('users', ['ADD_USER']),
@@ -106,7 +130,7 @@ export default {
       }
     },
     save() {
-      this.$refs.newUserRef.validate(valid => {
+      this.$refs.newUserRef.validate((valid) => {
         if (valid) {
           this.saving = true
           this.ADD_USER({
@@ -115,22 +139,24 @@ export default {
             username: this.newUser.username,
             password: this.newUser.password,
             is_active: this.newUser.is_active
-          }).then(res => {
-            this.cancel()
-            this.saving = false
-            Message({
-              message: res.data,
-              type: 'success',
-              duration: 2000
-            })
-          }).catch(err => {
-            this.saving = false
-            Message({
-              message: err.response.data,
-              type: 'error',
-              duration: 2000
-            })
           })
+            .then(() => {
+              this.cancel()
+              this.saving = false
+              Message({
+                message: 'Янги фойдаланувчи яратилди',
+                type: 'success',
+                duration: 2000
+              })
+            })
+            .catch((err) => {
+              this.saving = false
+              Message({
+                message: err.response.data,
+                type: 'error',
+                duration: 2000
+              })
+            })
         } else {
           return false
         }
@@ -141,5 +167,4 @@ export default {
 </script>
 
 <style>
-
 </style>

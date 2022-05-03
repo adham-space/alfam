@@ -1,12 +1,11 @@
-
 import request from '@/utils/request'
 
 function uploadImages(data) {
   return request({
     url: '/products/upload-images',
     method: 'POST',
-    data,
-    headers: { 'Content-Type': 'multipart/form-data' }
+    data
+    // headers: { 'Content-Type': 'multipart/form-data' }
   })
 }
 
@@ -53,6 +52,7 @@ const mutations = {
 
 const actions = {
   UPLOAD_IMAGES(_, data) {
+    console.log('data', data)
     return new Promise((resolve, reject) => {
       uploadImages(data).then(res => {
         console.log('res', res.data)

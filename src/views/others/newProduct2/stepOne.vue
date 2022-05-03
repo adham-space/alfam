@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="10" class="stepOne">
-    <el-col :offset="2" :span="20" style="display: flex; column-gap: 1em">
+    <el-col :offset="2" :span="20" class="top-inputs">
       <el-select
         v-model="belongsTo"
         style="width: 49.5%"
@@ -19,17 +19,24 @@
           <span>{{ item.shop }}</span>
         </el-option>
         <el-option :value="'addNewItem'" style="padding: 0">
-          <el-button style="border: 1px solid transparent; width: 100%; margin: 0" icon="el-icon-plus" />
+          <el-button
+            style="border: 1px solid transparent; width: 100%; margin: 0"
+            icon="el-icon-plus"
+          />
         </el-option>
       </el-select>
-
-      <el-input v-model="name" placeholder="Махсулот номи" @change="nameChanging" />
+      <el-input
+        v-model="name"
+        style="width: 49.5%"
+        placeholder="Махсулот номи"
+        @change="nameChanging"
+      />
     </el-col>
     <el-col style="margin-top: 20px" :offset="2" :span="20">
       <div class="newType">
         <el-input
           v-model="typeObject.name"
-          style="width: 70%"
+          style="width: 90%"
           placeholder="Янги тури"
           @keyup.native.enter="addNewType()"
         />
@@ -42,7 +49,6 @@
           empty-text="Махсулот тури ҳали киритилмади"
           :show-header="false"
           :data="types"
-          height="100%"
           width="100%"
           border
         >
@@ -65,7 +71,12 @@
                 icon="el-icon-check"
                 @click="saveEdit(scope.row.type_name)"
               />
-              <el-button v-else type="text" icon="el-icon-edit" @click="editThis(scope.row)" />
+              <el-button
+                v-else
+                type="text"
+                icon="el-icon-edit"
+                @click="editThis(scope.row)"
+              />
             </template>
           </el-table-column>
           <el-table-column width="50" align="center">
@@ -82,6 +93,37 @@
         </el-table>
       </div>
     </el-col>
+
+    <el-dialog
+      title="Партнер қўшиш"
+      :visible.sync="openNewItemAddDialog"
+      width="35%"
+      align="center"
+    >
+      <el-row :gutter="10">
+        <el-col :span="12" style="margin-bottom: 10px">
+          <el-input v-model="newOther.firstName" placeholder="Исми" />
+        </el-col>
+        <el-col :span="12" style="margin-bottom: 10px">
+          <el-input v-model="newOther.lastName" placeholder="Фамиляси" />
+        </el-col>
+        <el-col :span="12">
+          <el-input v-model="newOther.shop" placeholder="Дўкон номи" />
+        </el-col>
+        <el-col :span="12">
+          <el-input v-model="newOther.phone" placeholder="Телефон рақами" />
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="danger" @click="cancel()">Отмена</el-button>
+        <el-button
+          :loading="saving"
+          :disabled="saving"
+          type="primary"
+          @click="save()"
+        >Сохранить</el-button>
+      </span>
+    </el-dialog>
   </el-row>
 </template>
 
@@ -92,7 +134,9 @@ import { Message } from 'element-ui'
 export default {
   data() {
     return {
+      saving: false,
       gettingOthers: false,
+      openNewItemAddDialog: false,
       belongsTo: '',
       newOther: {
         firstName: '',
@@ -101,7 +145,6 @@ export default {
         phone: ''
       },
       others: [],
-
       name: '',
       types: [],
       editing: {
@@ -112,11 +155,9 @@ export default {
         name: ''
       },
       editedType: ''
-
     }
   },
   mounted() {
-    this.workWithLocalStorage()
     this.gettingOthers = true
     this.getOthers()
   },
@@ -181,50 +222,9 @@ export default {
         this.SET_OTHER(v)
       }
     },
-    checkAndStoreToLocalHost(name) {
-      const types = JSON.parse(localStorage.getItem('types'))
-      if (types) {
-        const indexOfType = types.findIndex((t) => t.type_name === name)
-        if (indexOfType === -1) {
-          types.push({
-            id: types[types.length - 1].id + 1,
-            type_name: name
-          })
-          localStorage.setItem('types', JSON.stringify(types))
-        }
-      }
-    },
-    workWithLocalStorage() {
-      const lcs = localStorage.getItem('types')
-      if (lcs === null) {
-        localStorage.setItem(
-          'types',
-          JSON.stringify([
-            { id: 0, type_name: 'ОЧИ' },
-            { id: 1, type_name: 'ТЎҚИ' },
-            { id: 2, type_name: 'ДЕКОР' },
-            { id: 3, type_name: 'СИГАРА' },
-            { id: 4, type_name: 'ПОЛ' },
-            { id: 5, type_name: 'ФРИЗ' }
-          ])
-        )
-        this.types = [
-          { id: 0, type_name: 'ОЧИ' },
-          { id: 1, type_name: 'ТЎҚИ' },
-          { id: 2, type_name: 'ДЕКОР' },
-          { id: 3, type_name: 'СИГАРА' },
-          { id: 4, type_name: 'ПОЛ' },
-          { id: 5, type_name: 'ФРИЗ' }
-        ]
-        this.$store.commit('newProduct/SET_TYPES', this.types)
-      } else {
-        this.types = JSON.parse(localStorage.getItem('types'))
-        this.$store.commit('newProduct/SET_TYPES', this.types)
-      }
-    },
     reset() {
       this.name = ''
-      this.workWithLocalStorage()
+      this.types = []
       this.editing = {
         status: false,
         id: null
@@ -240,20 +240,16 @@ export default {
     },
     addNewType() {
       const nm = this.typeObject.name + ''
-      const indexOfType = this.types.findIndex((t) => t.type_name === nm)
-      if (indexOfType === -1) {
-        if (this.types.length === 0) {
-          this.types.push({ id: 0, type_name: nm })
-        } else {
-          this.checkAndStoreToLocalHost(nm)
-          this.types.push({
-            id: this.types[this.types.length - 1].id + 1,
-            type_name: nm
-          })
-        }
-        this.typeObject.name = ''
-        this.SET_TYPES(this.types)
+      if (this.types.length === 0) {
+        this.types.push({ id: 0, type_name: nm })
+      } else {
+        this.types.push({
+          id: this.types[this.types.length - 1].id + 1,
+          type_name: nm
+        })
       }
+      this.typeObject.name = ''
+      this.SET_TYPES(this.types)
     },
     editThis(row) {
       console.log('row: ', row)
@@ -287,13 +283,18 @@ export default {
 .stepOne {
   /* border: 1px solid red; */
   height: 100%;
-  background-color: white;
+  /* background-color: white; */
   overflow-y: auto;
+  display: flex;
+  flex-flow: column;
 }
-
 .newType {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.top-inputs {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

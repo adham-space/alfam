@@ -21,13 +21,13 @@ const state = {
     search_input: 'name',
     search_text: '',
     currentPage: 1,
-    perPage: 20
+    perPage: 50
   },
   queryParams: {
     search_input: 'name',
     search_text: '',
     currentPage: 1,
-    perPage: 20
+    perPage: 50
   },
   total: 0,
   total_archive: 0,
@@ -122,4 +122,3 @@ export default {
   mutations,
   actions
 }
-

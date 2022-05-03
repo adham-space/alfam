@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Add new customer"
+    title="Ҳаридор қўшиш"
     :visible.sync="dialogVisible"
     width="50%"
     align="center"
@@ -11,32 +11,32 @@
     <el-form ref="newCustomerRef" :model="newCustomer" :rules="rules">
       <el-form-item>
         <el-col :span="12">
-          <el-form-item prop="firstName">
-            <el-input v-model="newCustomer.firstName" placeholder="Enter firstName" />
+          <el-form-item prop="firstName" label="Исми">
+            <el-input v-model="newCustomer.firstName" placeholder="Исми" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="lastName">
-            <el-input v-model="newCustomer.lastName" placeholder="Enter lastName" />
+          <el-form-item prop="lastName" label="Фамиляси">
+            <el-input v-model="newCustomer.lastName" placeholder="Фамиляси" />
           </el-form-item>
         </el-col>
       </el-form-item>
       <el-form-item>
         <el-col :span="12">
-          <el-form-item prop="address">
-            <el-input v-model="newCustomer.address" placeholder="Enter address" />
+          <el-form-item prop="address" label="Аддресс">
+            <el-input v-model="newCustomer.address" placeholder="Аддресс" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="phon">
-            <el-input v-model="newCustomer.phone" placeholder="Enter phone" />
+          <el-form-item prop="phone" label="Тел. рақам">
+            <el-input v-model="newCustomer.phone" placeholder="Тел. рақам" />
           </el-form-item>
         </el-col>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button :disabled="saving" @click="cancel()">Cancel</el-button>
-      <el-button :disabled="saving" :loading="saving" type="primary" @click="save()">Save</el-button>
+      <el-button :disabled="saving" @click="cancel()">Отмена</el-button>
+      <el-button :disabled="saving" :loading="saving" type="primary" @click="save()">Сохранить</el-button>
     </span>
   </el-dialog>
 </template>
@@ -72,24 +72,25 @@ export default {
       }
     },
     save() {
-      this.$refs.newCustomerRef.validate(valid => {
+      this.$refs.newCustomerRef.validate((valid) => {
         if (valid) {
           this.saving = true
           request({
             url: '/info/add-customer',
             method: 'POST',
             data: this.newCustomer
-          }).then(() => {
-            this.saving = false
-            Message({
-              message: 'Success:  added new customer',
-              type: 'success',
-              duration: 2000
-            })
-            this.GET_CUSTOMERS()
-            this.cancel()
           })
-            .catch(err => {
+            .then(() => {
+              this.saving = false
+              Message({
+                message: 'Жараён мувоффақиятили бажарилди',
+                type: 'success',
+                duration: 2000
+              })
+              this.GET_CUSTOMERS()
+              this.cancel()
+            })
+            .catch((err) => {
               this.saving = false
               Message({
                 message: err.response.data,
@@ -107,5 +108,4 @@ export default {
 </script>
 
 <style>
-
 </style>

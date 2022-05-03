@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="10" class="stepOne">
     <el-col :span="24" class="step-header">
-      <h2>{{ product_name }}</h2>
+      <h2>{{ $store.state.newProduct.product_name }}</h2>
     </el-col>
     <el-col class="selectType" :span="24">
       <el-select
@@ -11,9 +11,9 @@
       >
         <el-option
           v-for="type in types"
-          :key="type.id"
+          :key="type._id"
           :label="type.type_name"
-          :value="type.id"
+          :value="type._id"
         />
       </el-select>
     </el-col>
@@ -46,30 +46,13 @@
               <el-input v-model="formTwo.width" placeholder="Энига (cм)" />
             </el-form-item>
           </el-col>
-          <el-col
-            :span="8"
-            style="height: 4.5rem; display: flex; align-items: flex-end"
-          >
+          <el-col :span="8" style="height: 4.5rem; display: flex; align-items: flex-end">
             <el-form-item label="">
               <el-checkbox v-model="formTwo.isMain">Асоосий размер</el-checkbox>
             </el-form-item>
           </el-col>
         </el-form-item>
       </el-form>
-
-      <el-upload
-        class="upload-demo"
-        action=""
-        :on-change="handleChange"
-        :on-remove="handleRemove"
-        :file-list="photo"
-        :limit="2"
-        list-type="picture"
-        :on-exceed="handleExceed"
-      >
-        <el-button size="small" type="primary">Расмни юклаш</el-button>
-        <div slot="tip" class="el-upload__tip" />
-      </el-upload>
     </el-col>
     <el-col
       style="display: flex; justify-content: center"
@@ -86,8 +69,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import { Message } from 'element-ui'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -95,8 +77,6 @@ export default {
       currentType: '',
       code: '',
       size: '',
-      photo: [],
-      last_changedId: -1,
       formTwo: {
         code: '',
         height: '',
@@ -106,95 +86,48 @@ export default {
     }
   },
   computed: {
-    ...mapState('others/newProduct', ['types', 'product_name']),
+    ...mapState('newProduct', ['types']),
     currentTypeName() {
-      return this.types.find((t) => t.id + '' === this.currentType + '') !==
+      return this.types.find((t) => t._id + '' === this.currentType + '') !==
         undefined
-        ? this.types.find((t) => t.id + '' === this.currentType + '').name
+        ? this.types.find((t) => t._id + '' === this.currentType + '').name
         : ''
     }
   },
   methods: {
-    ...mapMutations('others/newProduct', ['SET_NAME', 'SET_TYPE']),
     save() {
       const type = this.types.find(
-        (typ) => typ.id + '' === this.currentType + ''
+        (typ) => typ._id + '' === this.currentType + ''
       )
-      console.log('TYPE: ', type)
+      console.log('TYPE: ', this.formTwo)
       type.code = this.formTwo.code + ''
       type.height = parseFloat(this.formTwo.height)
       type.width = parseFloat(this.formTwo.width)
       type.size = `${type.height}*${type.width}`
       type.isMain = this.formTwo.isMain
-      type.photo = this.photo[0]
-      this.last_changedId = type.id
-      const index = this.types.findIndex((typ) => typ.id + '' === type.id + '')
-      const isThereTheCode = this.types.find(
-        (typ) => typ.id !== type.id && typ.code === type.code
-      )
-      if (isThereTheCode) {
-        Message({
-          message: 'Bir hil Kod Mumkin emas',
-          type: 'error',
-          duration: 3000
-        })
-      } else {
-        this.SET_TYPE({ index: index, type })
-
-        this.formTwo = {
-          id: '',
-          code: '',
-          height: '',
-          width: '',
-          isMain: false
-        }
-        this.photo = []
-        this.currentType = ''
+      const index = this.types.findIndex((typ) => typ._id + '' === type._id + '')
+      this.$store.commit('newProduct/SET_TYPE', { index: index, type })
+      this.formTwo = {
+        code: '',
+        height: '',
+        width: '',
+        isMain: false,
+        photo_path: type.photo_path
       }
-    },
-    handleChange(file, fileList) {
-      this.photo = [file]
-    },
-    handleRemove() {
-      this.photo = []
-    },
-    handleExceed(file, fileList) {
-      console.log()
-      this.photo = [fileList[0]]
+      this.currentType = ''
     },
     typeChoosen(val) {
-      console.log(val, 'type changed')
-      const type = this.types.find((typ) => typ.id === val)
-      console.log('types', type)
-      if (type && !!type.code === false) {
+      console.log(val)
+      const type = this.types.find((typ) => typ._id === val)
+      console.log('type', type)
+      if (type) {
         this.formTwo = {
-          id: type.id,
-          code: '',
-          height: '',
-          width: '',
-          isMain: false
+          code: type.code ? type.code : '',
+          height: type.height ? type.height : '',
+          width: type.width ? type.width : '',
+          isMain: type.isMain ? type.isMain : false,
+          photo_path: type.photo_path
         }
-        if (this.types.length >= 0 && this.last_changedId > -1) {
-          const type = this.types.find((ty) => ty.id === this.last_changedId)
-          console.log('last_changedId', this.last_changedId)
-          this.formTwo = {
-            id: type.id ? type.id : '',
-            code: type.code,
-            height: type.height,
-            width: type.width,
-            isMain: type.isMain
-          }
-        }
-        this.photo = type.photo ? [type.photo] : []
-      } else if (type && !!type.code === true) {
-        this.formTwo = {
-          id: type.id,
-          code: type.code,
-          height: type.height,
-          width: type.width,
-          isMain: type.isMain
-        }
-        this.photo = type.photo ? [type.photo] : []
       }
     }
   }

@@ -1,9 +1,9 @@
 <template>
   <el-col
-    :md="{span: 24}"
-    :lg="{span: 24}"
-    :sm="{span: 24}"
-    :xm="{span: 24}"
+    :md="{ span: 24 }"
+    :lg="{ span: 24 }"
+    :sm="{ span: 24 }"
+    :xm="{ span: 24 }"
     class="char-body-1st"
     style="margin-top: 10px"
   >
@@ -15,7 +15,10 @@
       :options="chartOptionsBar"
       :series="seriesBar"
     />
-    <div class="pagination" :style="{'left': '2%', 'width': '20rem', 'background-color': 'transparent'}">
+    <div
+      class="pagination"
+      :style="{ left: '2%', width: '20rem', 'background-color': 'transparent' }"
+    >
       <Pagination
         :total="total"
         :page.sync="listQuery.page"
@@ -24,7 +27,10 @@
         @pagination="getList"
       />
     </div>
-    <div class="select-size-wrapper-1" :style="currentSize !== '' ? {'right': '50%'}: {'right': '45%'}">
+    <div
+      class="select-size-wrapper-1"
+      :style="currentSize !== '' ? { right: '50%' } : { right: '45%' }"
+    >
       <el-select
         v-model="currentSize"
         clearable
@@ -41,7 +47,10 @@
           :value="size.size"
         />
       </el-select>
-      <i :style="gettingData ? {color: 'white'} : {color: 'transparent'}" class="el-icon-loading" />
+      <i
+        :style="gettingData ? { color: 'white' } : { color: 'transparent' }"
+        class="el-icon-loading"
+      />
     </div>
     <div v-if="currentSize !== ''" class="select-name-wrapper">
       <el-select
@@ -60,7 +69,12 @@
           :value="name"
         />
       </el-select>
-      <i :style="gettingDataByName ? {color: 'white'} : {color: 'transparent'}" class="el-icon-loading" />
+      <i
+        :style="
+          gettingDataByName ? { color: 'white' } : { color: 'transparent' }
+        "
+        class="el-icon-loading"
+      />
     </div>
   </el-col>
 </template>
@@ -112,10 +126,12 @@ export default {
             click: (chart, w, e) => {
               if (e.dataPointIndex >= 0) {
                 if (this.currentSize === '' && e.dataPointIndex >= 0) {
-                  this.currentSize = e.config.xaxis.categories[e.dataPointIndex]
+                  this.currentSize =
+                    e.config.xaxis.categories[e.dataPointIndex]
                   this.sizeChangedHandler(this.currentSize)
                 } else if (this.currentSize !== '' && this.currentName === '') {
-                  this.currentName = e.config.xaxis.categories[e.dataPointIndex]
+                  this.currentName =
+                    e.config.xaxis.categories[e.dataPointIndex]
                   this.nameChangedHandler(this.currentName)
                 }
               }
@@ -229,14 +245,21 @@ export default {
         this.chartOptionsBar.xaxis.categories = []
         chart1st.forEach((ch) => {
           if (product_name === '') {
+            console.log('ch.price_by', ch.price_by)
+
             this.total = res.data.length
-            this.seriesBarAll[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.seriesBarAll[0].data.push(
+              parseFloat(ch.total_cost.toFixed(2))
+            )
             this.categoriesAll.push(ch.product_name)
             // this.seriesBar[0].data.push(parseFloat((ch.total_cost).toFixed(2)))
             // this.chartOptionsBar.xaxis.categories.push(ch.product_name)
           } else {
             this.total = res.data.length
-            this.seriesBarAll[0].data.push(parseFloat(((ch.base_price * ch.total_area)).toFixed(2)))
+            console.log('ch.price_by', ch.price_by)
+            this.seriesBarAll[0].data.push(
+              parseFloat((ch.base_price * ch.total_area).toFixed(2))
+            )
             this.categoriesAll.push(ch.size + ' ' + ch.type_name)
 
             // this.seriesBar[0].data.push(parseFloat((ch.base_price * ch.total_area).toFixed(2)))
@@ -274,23 +297,34 @@ export default {
         const chart1st = res.data
         this.seriesBarAll[0].data = []
         this.categoriesAll = []
-        chart1st.forEach(ch => {
+        chart1st.forEach((ch) => {
+          console.log('cccc', ch)
           if (size === '') {
             this.total = res.data.length
-            this.seriesBarAll[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.seriesBarAll[0].data.push(
+              parseFloat(ch.total_cost.toFixed(2))
+            )
             this.categoriesAll.push(ch.size)
 
             // this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
             // this.chartOptionsBar.xaxis.categories.push(ch.size)
           } else {
             this.total = res.data.length
-            this.seriesBarAll[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
+            this.seriesBarAll[0].data.push(
+              parseFloat(ch.total_cost.toFixed(2))
+            )
             this.categoriesAll.push(ch.product_name)
 
             // this.seriesBar[0].data.push(parseFloat(ch.total_cost.toFixed(2)))
             // this.chartOptionsBar.xaxis.categories.push(ch.product_name)
           }
-          this.chartOptionsBar.subtitle.text = 'Жами: ' + toThousandFilter(parseFloat((this.seriesBar[0].data.reduce((a, b) => a + b, 0)).toFixed(2)))
+          this.chartOptionsBar.subtitle.text =
+            'Жами: ' +
+            toThousandFilter(
+              parseFloat(
+                this.seriesBar[0].data.reduce((a, b) => a + b, 0).toFixed(2)
+              )
+            )
         })
 
         // this.seriesBar[0].data = this.seriesBar[0].data.map(value => toThousandFilter(value))
@@ -303,18 +337,35 @@ export default {
       }
     },
     setWithPagination() {
-      this.$refs.totalCostRef.updateOptions({
-        subtitle: {
-          text: 'Жами: ' + toThousandFilter(this.seriesBarAll[0].data.reduce((a, b) => a + b, 0).toFixed(2))
+      this.$refs.totalCostRef.updateOptions(
+        {
+          subtitle: {
+            text:
+              'Жами: ' +
+              toThousandFilter(
+                this.seriesBarAll[0].data.reduce((a, b) => a + b, 0).toFixed(2)
+              )
+          },
+          xaxis: {
+            categories: this.categoriesAll.slice(
+              (this.listQuery.page - 1) * 15,
+              (this.listQuery.page - 1) * 15 + this.listQuery.limit
+            )
+          },
+          series: [
+            {
+              name: '',
+              data: this.seriesBarAll[0].data.slice(
+                (this.listQuery.page - 1) * 15,
+                (this.listQuery.page - 1) * 15 + this.listQuery.limit
+              )
+            }
+          ]
         },
-        xaxis: {
-          categories: this.categoriesAll.slice((this.listQuery.page - 1) * 15, (this.listQuery.page - 1) * 15 + this.listQuery.limit)
-        },
-        series: [{
-          name: '',
-          data: this.seriesBarAll[0].data.slice((this.listQuery.page - 1) * 15, (this.listQuery.page - 1) * 15 + this.listQuery.limit)
-        }]
-      }, false, true, false)
+        false,
+        true,
+        false
+      )
     }
   }
 }
@@ -335,5 +386,4 @@ export default {
   color: white !important;
   border: 1px solid transparent;
 }
-
 </style>

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Add new shop"
+    title="Дўкон қўшиш"
     :visible.sync="dialogVisible"
     width="50%"
     align="center"
@@ -12,7 +12,7 @@
       <el-form-item>
         <el-col :span="18">
           <el-form-item prop="name">
-            <el-input v-model="newShop.name" placeholder="Name" />
+            <el-input v-model="newShop.name" placeholder="Номи" />
           </el-form-item>
         </el-col>
         <!-- <el-col :span="6">
@@ -42,9 +42,7 @@ export default {
     }
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   methods: {
     ...mapActions('shops', ['GET_SHOPS']),
@@ -57,27 +55,29 @@ export default {
       }
     },
     save() {
-      this.$refs.newShopRef.validate(valid => {
+      this.$refs.newShopRef.validate((valid) => {
         if (valid) {
           request({
             url: 'info/add-shop',
             method: 'POST',
             data: this.newShop
-          }).then(res => {
-            this.cancel()
-            this.$notify({
-              message: res.data.message,
-              type: 'success',
-              duration: 2000
-            })
-            this.GET_SHOPS()
-          }).catch(err => {
-            this.$notify({
-              message: err.response.data,
-              type: 'success',
-              duration: 2000
-            })
           })
+            .then((res) => {
+              this.cancel()
+              this.$notify({
+                message: res.data.message,
+                type: 'success',
+                duration: 2000
+              })
+              this.GET_SHOPS()
+            })
+            .catch((err) => {
+              this.$notify({
+                message: err.response.data,
+                type: 'success',
+                duration: 2000
+              })
+            })
         } else {
           return false
         }
@@ -88,5 +88,4 @@ export default {
 </script>
 
 <style>
-
 </style>

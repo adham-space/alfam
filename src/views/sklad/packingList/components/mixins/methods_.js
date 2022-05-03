@@ -6,61 +6,69 @@ export default {
     ...mapMutations('products', ['SET_ORDER']),
 
     areaIsChanging(newArea, currentRow) {
-      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id && item.broken === currentRow.broken)
       // set new area to its object
+      this.currentProduct.packTotalArea = newArea
       if (newArea) {
-        newArea = parseFloat(newArea)
-        this.currentProduct.packTotalArea = this.truncateToDecimals(newArea, 4)
-        // get total item number it may decimal number
-        // let totalNumberOfItems = (newArea / this.currentProduct.area_of_an_item).toFixed(4)
-        let totalNumberOfItems = this.truncateToDecimals(newArea / this.currentProduct.area_of_an_item, 4)
-        // get error rate
-        // const errorRate = parseFloat((totalNumberOfItems - parseInt(totalNumberOfItems)).toFixed(4))
-        const errorRate = this.truncateToDecimals(parseFloat(totalNumberOfItems - parseInt(totalNumberOfItems)), 4)
-        totalNumberOfItems = Math.ceil(totalNumberOfItems)
-        // if error is less than or equal to 0.0001 is the right number of item otherwise it is bad area
-        if (errorRate <= 0.0001 && !!newArea) {
-        // then set total item number also
-          this.currentProduct.item_num = totalNumberOfItems
-          // then set number of complete packets
-          this.currentProduct.pack_num = parseInt(totalNumberOfItems / this.currentProduct.number_of_items)
-          // then set bumber of over full packet numbers
-          this.currentProduct.over_pack_num = parseInt(totalNumberOfItems % this.currentProduct.number_of_items)
-          // calculate price of product according to base_price
-          this.currentProduct.sum = parseInt(this.currentProduct.base_price * newArea)
-          // set weight
-          this.currentProduct.weight = this.truncateToDecimals(this.currentProduct.item_num * this.currentProduct.weight_of_an_item, 2)
-          this.calcPrice()
-          this.calculateTotalPrice()
-          this.checkPropotion()
-        } else {
-        // if wrong are then set to empty field
-          if (newArea === 0) {
-            this.currentProduct.item_num = 0
-            this.currentProduct.pack_num = 0
-            this.currentProduct.over_pack_num = 0
-            this.currentProduct.sum = 0
+        if (newArea[newArea.length - 2] !== '.' && newArea[newArea.length - 1] !== '0') {
+          newArea = parseFloat(newArea)
+          this.currentProduct.packTotalArea = this.truncateToDecimals(newArea, 4)
+          // get total item number it may decimal number
+          // let totalNumberOfItems = (newArea / this.currentProduct.area_of_an_item).toFixed(4)
+          let totalNumberOfItems = this.truncateToDecimals(newArea / this.currentProduct.area_of_an_item, 4)
+          // get error rate
+          // const errorRate = parseFloat((totalNumberOfItems - parseInt(totalNumberOfItems)).toFixed(4))
+          const errorRate = this.truncateToDecimals(parseFloat(totalNumberOfItems - parseInt(totalNumberOfItems)), 4)
+          totalNumberOfItems = Math.ceil(totalNumberOfItems)
+          // if error is less than or equal to 0.0001 is the right number of item otherwise it is bad area
+          if (errorRate <= 0.0001 && !!newArea) {
+            // then set total item number also
+            this.currentProduct.item_num = totalNumberOfItems
+            // then set number of complete packets
+            this.currentProduct.pack_num = parseInt(totalNumberOfItems / this.currentProduct.number_of_items)
+            // then set bumber of over full packet numbers
+            this.currentProduct.over_pack_num = parseInt(totalNumberOfItems % this.currentProduct.number_of_items)
+            // calculate price of product according to base_price
+            this.currentProduct.sum = parseInt(this.currentProduct.base_price * newArea)
+            // set weight
+            this.currentProduct.weight = this.truncateToDecimals(this.currentProduct.item_num * this.currentProduct.weight_of_an_item, 2)
+            this.calcPrice()
             this.calculateTotalPrice()
-            this.currentProduct.weight = 0
+            this.checkPropotion()
           } else {
-            this.currentProduct.item_num = ''
-            this.currentProduct.pack_num = ''
-            this.currentProduct.over_pack_num = ''
-            this.currentProduct.sum = 0
-            this.calculateTotalPrice()
-            this.currentProduct.weight = ''
+            // if wrong are then set to empty field
+            if (newArea === 0) {
+              this.currentProduct.item_num = 0
+              this.currentProduct.pack_num = 0
+              this.currentProduct.over_pack_num = 0
+              this.currentProduct.sum = 0
+              this.calculateTotalPrice()
+              this.currentProduct.weight = 0
+            } else {
+              this.currentProduct.item_num = ''
+              this.currentProduct.pack_num = ''
+              this.currentProduct.over_pack_num = ''
+              this.currentProduct.sum = 0
+              this.calculateTotalPrice()
+              this.currentProduct.weight = ''
+            }
           }
         }
       } else {
-        this.currentProduct.packTotalArea = newArea
+        if (newArea[newArea.length - 2] !== '.' && newArea[newArea.length - 1] !== '0') { this.currentProduct.packTotalArea = newArea }
       }
     },
 
     item_numIsChanging(newItemNum, currentRow) { // total item num is inserting
-      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id && item.broken === currentRow.broken)
       if (newItemNum) {
         this.currentProduct.item_num = parseInt(newItemNum)
         this.currentProduct.packTotalArea = this.truncateToDecimals(parseFloat(this.currentProduct.item_num * this.currentProduct.area_of_an_item), 4)
+        const fixed2 = parseFloat(this.currentProduct.packTotalArea.toFixed(2))
+        const errorFixed4 = Math.abs(parseFloat((fixed2 - this.currentProduct.packTotalArea).toFixed(4)))
+        if (errorFixed4 <= 0.0001) {
+          this.currentProduct.packTotalArea = fixed2
+        }
         this.currentProduct.pack_num = parseInt(this.currentProduct.item_num / this.currentProduct.number_of_items)
         this.currentProduct.over_pack_num = parseInt(this.currentProduct.item_num % this.currentProduct.number_of_items)
         this.calcPrice()
@@ -79,7 +87,7 @@ export default {
       }
     },
     pack_numIsChanging(newPacketNum, currentRow) { // packet_num is inserting
-      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id && item.broken === currentRow.broken)
       if (newPacketNum) {
         this.currentProduct.pack_num = parseInt(newPacketNum)
         this.currentProduct.item_num =
@@ -102,7 +110,7 @@ export default {
       }
     },
     over_pack_numIsChanging(newOverPacketNum, currentRow) { // over_packet items num calculation
-      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id && item.broken === currentRow.broken)
       if (newOverPacketNum) {
         this.currentProduct.over_pack_num = parseInt(newOverPacketNum) > this.currentProduct.number_of_items ? this.currentProduct.number_of_items : parseInt(newOverPacketNum)
         // calc item num
@@ -125,7 +133,7 @@ export default {
       }
     },
     base_priceIsChanging(base_price_changed, currentRow) { // area value is changing
-      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id && item.broken === currentRow.broken)
       if (base_price_changed) {
         this.currentProduct.base_price_changed = parseFloat(base_price_changed) // set new area to its object
         this.currentProduct.sum = parseFloat((this.currentProduct.base_price_changed * this.currentProduct.packTotalArea).toFixed(4))
@@ -180,7 +188,7 @@ export default {
     },
 
     calcPriceprice_byChanged(val, currentRow) {
-      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id)
+      this.currentProduct = this.tableDataComputed.find((item) => item._id === currentRow._id && item.broken === currentRow.broken)
       this.currentProduct.price_by = val
       this.calcPrice()
       this.calculateTotalPrice()

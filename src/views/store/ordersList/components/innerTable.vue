@@ -7,14 +7,14 @@
           v-model="fromDate"
           style="margin-right: 0.5em"
           type="datetime"
-          placeholder="Dan"
+          placeholder="Дан"
           default-time="12:00:00"
         />
         <el-date-picker
           v-model="toDate"
           style="margin-right: 0.5em"
           type="datetime"
-          placeholder="Gacha"
+          placeholder="Гача"
           default-time="12:00:00"
         />
         <el-button
@@ -177,6 +177,7 @@
           </el-table-column>
 
           <el-table-column
+            v-if="roles[0] === 'admin'"
             width="180"
             align="center"
             prop="last_sum"
@@ -249,12 +250,17 @@
             </template>
           </el-table-column>
 
-          <el-table-column width="120" align="center" label="Касса">
+          <el-table-column
+            v-if="roles[0] === 'admin'"
+            width="120"
+            align="center"
+            label="Касса"
+          >
             <template slot-scope="scope">
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.did_cassa ? 'Очиқ' : 'Ёпилган'"
+                :content="scope.row.did_cassa ? 'Ёпилган' : 'Очиқ'"
                 placement="left-start"
               >
                 <el-checkbox
@@ -265,6 +271,29 @@
               <!-- <el-tooltip v-else>
             <i class="el-icon-check" />
           </el-tooltip> -->
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            v-if="roles[0] === 'admin'"
+            width="250"
+            align="center"
+            label="Касса қилиниб бўлинган вақти"
+            prop="updatedAt"
+          >
+            <template slot-scope="scope">
+              {{ new Date(scope.row.updatedAt).toLocaleString("uz-UZ") }}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            align="center"
+            width="150"
+            label="Сотув вақти"
+            prop="createdAt"
+          >
+            <template slot-scope="scope">
+              {{ new Date(scope.row.createdAt).toLocaleString("uz-UZ") }}
             </template>
           </el-table-column>
 
@@ -381,7 +410,7 @@ export default {
       'DO_KASSA_COMMERTIA'
     ]),
     doKassaForNow(row) {
-      this.$confirm('Kassa qilishni tasdiqlang!', 'Kassa qilish').then(
+      this.$confirm('Касса қилишни тасдиқланг!', 'Касса қилиш').then(
         async() => {
           try {
             const { data } = await request({

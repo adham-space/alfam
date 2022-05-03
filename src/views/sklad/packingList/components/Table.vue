@@ -15,35 +15,14 @@
       border
       :summary-method="jamiSumma"
     >
-      <el-table-column
-        width="150"
-        label="КАФЕЛНИ КОДИ"
-        prop="code"
-        fixed="left"
-        align="center"
-      />
-      <el-table-column
-        width="150"
-        label="СПЕЦИФИКАЦИЯСИ"
-        prop="type_name"
-        align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.type_name + (scope.row.broken ? " - broken" : "") }}
-        </template>
+      <el-table-column width="150" label="КАФЕЛНИ КОДИ" prop="code" fixed="left" align="center" />
+      <el-table-column width="150" label="СПЕЦИФИКАЦИЯСИ" prop="type_name" align="center">
+        <template
+          slot-scope="scope"
+        >{{ scope.row.type_name + (scope.row.broken ? " - broken" : "") }}</template>
       </el-table-column>
-      <el-table-column
-        width="150"
-        label="ТОВАРНИ РАЗМЕРИ"
-        prop="size"
-        align="center"
-      />
-      <el-table-column
-        width="150"
-        label="ТОВАРНИ РАСМИ"
-        prop="photo"
-        align="center"
-      >
+      <el-table-column width="150" label="ТОВАРНИ РАЗМЕРИ" prop="size" align="center" />
+      <el-table-column width="150" label="ТОВАРНИ РАСМИ" prop="photo" align="center">
         <template slot-scope="scope">
           <el-image
             style="width: 30px; height: 30px"
@@ -53,13 +32,8 @@
           />
         </template>
       </el-table-column>
-      <el-table-column
-        v-if="order.action === 2"
-        width="100"
-        prop="isReturning"
-        align="center"
-      >
-        <template slot="header" slot-scope="">
+      <el-table-column v-if="order.action === 2" width="100" prop="isReturning" align="center">
+        <template slot="header" slot-scope>
           <span style="font-weight: bold">+ / -</span>
         </template>
         <template slot-scope="scope">
@@ -69,25 +43,12 @@
             :content="scope.row.isReturning ? 'To Remove' : 'To add'"
             placement="left"
           >
-            <el-switch
-              v-model="scope.row.isReturning"
-              active-color="#13ce66"
-              inactive-color=""
-            />
+            <el-switch v-model="scope.row.isReturning" active-color="#13ce66" inactive-color />
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column
-        width="300"
-        label="УМУМИЙ МИҚДОРНИ ЎЛЧОВ БИРЛИГИ"
-        align="center"
-      >
-        <el-table-column
-          width="150"
-          label="УМУМИЙ (м2)"
-          align="center"
-          prop="packTotalArea"
-        >
+      <el-table-column width="300" label="УМУМИЙ МИҚДОРНИ ЎЛЧОВ БИРЛИГИ" align="center">
+        <el-table-column width="150" label="УМУМИЙ (м2)" align="center" prop="packTotalArea">
           <template slot-scope="scope">
             <el-input
               size="small"
@@ -97,12 +58,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          width="150"
-          label="УМУМИЙ (ДОНАСИ)"
-          prop="item_num"
-          align="center"
-        >
+        <el-table-column width="150" label="УМУМИЙ (ДОНАСИ)" prop="item_num" align="center">
           <template slot-scope="scope">
             <div class="two-fields">
               <el-input
@@ -115,16 +71,22 @@
         </el-table-column>
       </el-table-column>
       <el-table-column width="155" align="center">
-        <template slot="header" slot-scope="">
-          <span>ТОВАРНИ УМУМИЙ</span><br>
-          <span>ПОЧКАСИНИЙ</span><br>
-          <span>(МИҚДОРИ)</span><br>
+        <template slot="header" slot-scope>
+          <span>ТОВАРНИ УМУМИЙ</span>
+          <br>
+          <span>ПОЧКАСИНИЙ</span>
+          <br>
+          <span>(МИҚДОРИ)</span>
+          <br>
         </template>
         <el-table-column width="178" align="center" prop="pack_num">
-          <template slot="header" slot-scope="">
-            <span>ТОВАРНИ УМУМИЙ</span><br>
-            <span>ДОНАСИНИ</span><br>
-            <span>(МИҚДОРИ)</span><br>
+          <template slot="header" slot-scope>
+            <span>ТОВАРНИ УМУМИЙ</span>
+            <br>
+            <span>ДОНАСИНИ</span>
+            <br>
+            <span>(МИҚДОРИ)</span>
+            <br>
           </template>
           <template slot-scope="scope">
             <div class="two-fields">
@@ -162,7 +124,7 @@
             <el-switch :value="scope.row.price_by" active-color="#13ce66" inactive-color="" @change="calcPriceprice_byChanged($event, scope.row)" />
           </el-tooltip>
         </template>
-      </el-table-column> -->
+      </el-table-column>-->
 
       <!-- <el-table-column
         width="120"
@@ -173,7 +135,7 @@
         <template slot-scope="scope">
           <span>{{ scope.row.base_price }}</span>
         </template>
-      </el-table-column> -->
+      </el-table-column>-->
 
       <!-- <el-table-column
         width="130"
@@ -187,7 +149,7 @@
         <template slot-scope="scope">
           {{ scope.row.sum_kassa.toFixed(2) }}
         </template>
-      </el-table-column> -->
+      </el-table-column>-->
 
       <!-- <el-table-column
         width="130"
@@ -207,7 +169,7 @@
             @input="base_priceIsChanging($event, scope.row)"
           />
         </template>
-      </el-table-column> -->
+      </el-table-column>-->
 
       <!-- <el-table-column
         width="130"
@@ -222,35 +184,17 @@
         <template slot-scope="scope">
           {{ scope.row.sum.toFixed(2) }}
         </template>
-      </el-table-column> -->
-      <el-table-column
-        width="150"
-        label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ"
-        prop="weight"
-        align="center"
-      />
-      <el-table-column
-        label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ"
-        align="center"
-      >
+      </el-table-column>-->
+      <el-table-column width="150" label="ТОВАРНИ УМУМИЙ КИЛОГРАММИ" prop="weight" align="center" />
+      <el-table-column label="1-ТА ПОЧКАДИГИ КОЛИЧЕСТВАНИ ЎЛЧОВ БИРЛИГИ" align="center">
         <el-table-column
           width="160"
           label="ПОЧКАСИДИГИ (м2)"
           align="center"
           prop="area_of_one_packet"
         />
-        <el-table-column
-          width="140"
-          label="1-ДОНАСИНИ (м2)"
-          prop="area_of_an_item"
-          align="center"
-        />
-        <el-table-column
-          align="center"
-          prop="number_of_items"
-          width="140"
-          label="УМУМИЙ ДОНАСИ"
-        />
+        <el-table-column width="140" label="1-ДОНАСИНИ (м2)" prop="area_of_an_item" align="center" />
+        <el-table-column align="center" prop="number_of_items" width="140" label="УМУМИЙ ДОНАСИ" />
         <el-table-column
           width="160"
           label="ПОЧКАСИДИГИ (КГ)"
@@ -265,18 +209,8 @@
         />
       </el-table-column>
     </el-table>
-    <el-dialog
-      top="1%"
-      title=""
-      :visible.sync="showImageDilog"
-      append-to-body
-      width="40%"
-    >
-      <el-image
-        style="width: 100%; height: 90%"
-        :src="imageUrl"
-        fit="scale-down"
-      />
+    <el-dialog top="1%" title :visible.sync="showImageDilog" append-to-body width="40%">
+      <el-image style="width: 100%; height: 90%" :src="imageUrl" fit="scale-down" />
     </el-dialog>
   </div>
 </template>

@@ -31,7 +31,7 @@ const state = {
     search_input: 1,
     search_text: '',
     currentPage: 1,
-    perPage: 20
+    perPage: 50
   },
   tableData: [],
   tblLoading: false,
@@ -96,4 +96,3 @@ export default {
   mutations,
   actions
 }
-

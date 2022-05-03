@@ -23,11 +23,13 @@
           </div>
           <div class="one-packet">
             <span>
+              <span style="color: darkgray; margin-right: 1rem">ДОНАСИНИ ЮЗАСИ:</span>
+              {{
+                Object.keys(currentType).length > 0 ? areaOfOneItem() : "_"
+              }}
               <span
-                style="color: darkgray; margin-right: 1rem"
-              >ДОНАСИНИ ЮЗАСИ:</span>
-              {{ Object.keys(currentType).length > 0 ? areaOfOneItem() : "_" }}
-              <span style="color: darkgray">
+                style="color: darkgray"
+              >
                 M
                 <sup>2</sup>
               </span>
@@ -35,9 +37,7 @@
 
             <div class="amountAndWeight">
               <span style="margin-top: 1rem">
-                <span
-                  style="color: darkgray; margin-right: 1rem"
-                >1 КАРОБКАДАГИ ДОНАСИ:</span>
+                <span style="color: darkgray; margin-right: 1rem">1 КАРОБКАДАГИ ДОНАСИ:</span>
                 <el-form-item prop="numberOfItems">
                   <el-input
                     v-model="formDataObj.numberOfItems"
@@ -48,9 +48,7 @@
                 </el-form-item>
               </span>
               <span style="margin-top: 1rem; margin-left: 1rem">
-                <span
-                  style="color: darkgray; margin-right: 1rem"
-                >1 ТА КАРОБКАНИНГ УМУМИЙ ОҒИРЛИГИ</span>
+                <span style="color: darkgray; margin-right: 1rem">1 ТА КАРОБКАНИНГ УМУМИЙ ОҒИРЛИГИ</span>
                 <el-form-item prop="weightOfPacket">
                   <el-input
                     v-model="formDataObj.weightOfPacket"
@@ -62,28 +60,26 @@
               </span>
             </div>
             <span style="margin-top: 1rem">
-              <span
-                style="color: darkgray; margin-right: 1rem"
-              >1 ТА КАРОБКАНИНГ УМУМИЙ ЮЗАСИ:</span>
+              <span style="color: darkgray; margin-right: 1rem">1 ТА КАРОБКАНИНГ УМУМИЙ ЮЗАСИ:</span>
               {{ formDataObj.numberOfItems === "" ? "_" : areaOfOnePacket() }}
-              <span style="color: darkgray">
+              <span
+                style="color: darkgray"
+              >
                 M
                 <sup>2</sup>
               </span>
             </span>
             <span style="margin-top: 1rem">
-              <span
-                style="color: darkgray; margin-right: 1rem"
-              >1 ТА ДОНАСИНИ ОҒИРЛИГИ:</span>
+              <span style="color: darkgray; margin-right: 1rem">1 ТА ДОНАСИНИ ОҒИРЛИГИ:</span>
               {{ formDataObj.weightOfPacket === "" ? "_" : wightOfOneItem() }}
-              <span style="color: darkgray">Kg</span>
+              <span
+                style="color: darkgray"
+              >Kg</span>
             </span>
 
             <div class="amountAndWeight">
               <span style="margin-top: 1rem">
-                <span
-                  style="color: darkgray; margin-right: 1rem"
-                >КАССА НАРХИ:</span>
+                <span style="color: darkgray; margin-right: 1rem">КАССА НАРХИ:</span>
                 <el-form-item prop="base_price">
                   <el-input
                     v-model="formDataObj.base_price"
@@ -106,6 +102,7 @@
               @click="savePacket()"
             >Сохранить</el-button>
           </div>
+
         </el-card>
       </el-col>
     </el-form>
@@ -269,7 +266,7 @@ export default {
     },
     setCurrentType(val) {
       this.formDataObj.singan = false
-      const pr = this.types.find((product) => product.id === val)
+      const pr = this.types.find(product => product.id === val)
       if (pr) {
         this.currentType = pr
         this.setCurrentCredentials(pr, val)

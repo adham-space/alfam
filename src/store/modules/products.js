@@ -59,6 +59,15 @@ function save_order_zavsklad(data) {
   })
 }
 
+function save_order_shop(data) {
+  return request({
+    url: '/orders/save-order-shop',
+    method: 'POST',
+    data,
+    timeout: 25 * 1000
+  })
+}
+
 function save_sample(data) {
   return request({
     url: '/orders/save-sample',
@@ -186,7 +195,8 @@ const mutations = {
         const pro_obj = {
           id: current_product[i]._id,
           is_broken: current_product[i].broken,
-          code: current_product[i].code + (current_product[i].broken ? '-1' : ''),
+          code:
+            current_product[i].code + (current_product[i].broken ? '-1' : ''),
           type_name: current_product[i].type_name,
           size: current_product[i].size,
           photo_path: current_product[i].photo_path,
@@ -262,7 +272,7 @@ const mutations = {
       )
       if (indexOfProduct !== -1) {
         state.product_with_types[indexOfProduct].base_price_changed =
-                    products[i].base_price_changed
+          products[i].base_price_changed
       }
     }
   }
@@ -311,6 +321,25 @@ const actions = {
               reject(err)
             })
         }
+      } else {
+        this.$notify({
+          message: 'You inserted wrong value to: ' + state.wrong_format_product
+        })
+      }
+    })
+  },
+  SAVE_ORDER_SHOP({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      // console.log('Is Sample:', state.order.isSample)
+      if (!state.wrong_format) {
+        save_order_shop(state.order)
+          .then((res) => {
+            commit('RESET_ORDER')
+            resolve()
+          })
+          .catch((err) => {
+            reject(err)
+          })
       } else {
         this.$notify({
           message: 'You inserted wrong value to: ' + state.wrong_format_product

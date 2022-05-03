@@ -39,7 +39,7 @@ const mutations = {
     { customer, product, order_name, currentDay }
   ) => {
     if (typeof customer !== "string") {
-      customer = customer.name;
+      customer = customer.firstName + " " + customer.lastName;
     }
     state.currentOrderHeader = {
       customer,
@@ -55,7 +55,7 @@ const actions = {
       commit("SET_LOADER", { name: "gettingPartners", value: true });
       request({
         method: "GET",
-        url: "/orders/commertia-partners",
+        url: "/orders/commertia-partners-shop",
         params: {
           date1: "",
           date2: "",
@@ -79,7 +79,7 @@ const actions = {
         commit("SET_LOADER", { name: "gettingOuterTable", value: true });
         const { data } = await request({
           method: "GET",
-          url: "/orders/get-outer-table-zavskald",
+          url: "/orders/get-outer-table-shop",
           params: {
             partner_id: id,
             day: state.currentOrderHeader.currentDay,
@@ -103,7 +103,7 @@ const actions = {
         commit("SET_LOADER", { name: "gettingInnerTable", value: true });
         const { data } = await request({
           method: "GET",
-          url: "/orders/get-partner-orders",
+          url: "/orders/get-partner-orders-shop",
           params: {
             time,
             partner_id: _id,

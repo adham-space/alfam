@@ -125,7 +125,7 @@ const actions = {
       set_order_status(data)
         .then((res) => {
           Message({
-            message: res.data,
+            message: 'Жараён мувоффақиятли якунланди',
             type: 'success',
             duration: 4000
           })
@@ -133,7 +133,7 @@ const actions = {
         })
         .catch((err) => {
           Message({
-            message: err.response.data,
+            message: 'Жараёнда хатолик юз берди',
             type: 'error',
             duration: 4000
           })

@@ -1,17 +1,13 @@
 <template>
   <div class="tools-wrapper">
-    <p><span>Инвойс №:</span><br> {{ order.order_name }}</p>
-    <el-form
-      ref="toolBarFormRef"
-      :model="toolBarForm"
-      :rules="rules"
-      style="width: 100%"
-    >
-      <el-form-item prop="currentProduct" label="Махсулот номи">
+    <p>Буюртма №: {{ order.order_name }}</p>
+
+    <el-form ref="toolBarFormRef" :model="toolBarForm" :rules="rules" style="width: 100%">
+      <el-form-item prop="currentProduct" label="Махсулот">
         <el-select
           v-model="toolBarForm.currentProduct"
           style="width: 100%; background-color: transparent"
-          placeholder="Махсулотни танланг"
+          placeholder="Махсулот"
           filterable
           @change="getProducts"
         >
@@ -19,15 +15,24 @@
             v-for="(pr, i) in batches"
             :key="i"
             style="background-color: transparent"
-            :label="pr.product"
-            :value="pr.product"
+            :label="
+              pr._product[0].title.split('-')[0] +
+                ' - ' +
+                pr._product[0].title.split('-')[2]
+            "
+            :value="pr._id"
           />
         </el-select>
       </el-form-item>
+      <!-- <el-form-item prop="isSample">
+        <el-checkbox v-model="toolBarForm.isSample" style="width: 100%" @change="sampleStateChanged">Образец
+        </el-checkbox>
+      </el-form-item> -->
       <el-form-item prop="withBorken">
         <el-checkbox
           v-model="toolBarForm.withBorken"
           style="width: 100%"
+          :disabled="toolBarForm.isSample"
           @change="brokenStateChanged"
         >Синганлари билан</el-checkbox>
       </el-form-item>
@@ -39,23 +44,41 @@
           placeholder="Клиентни танланг"
           @change="customerChanged"
         >
-          <el-option :value="'addNewItem'" style="padding: 0">
-            <el-button
-              style="border: 1px solid transparent; width: 100%; margin: 0"
-              icon="el-icon-plus"
-            />
+          <el-option :value="'Янги қлиентни қўшинг'" style="padding: 0">
+            <el-button style="border: 1px solid transparent; width: 100%; margin: 0" icon="el-icon-plus" />
           </el-option>
-          <el-option
-            v-for="(pr, i) in customers"
-            :key="i"
-            :label="pr.firstName + ' ' + pr.lastName"
-            :value="pr._id"
-          />
+          <el-option v-for="(pr, i) in customers" :key="i" :label="pr.firstName + ' ' + pr.lastName" :value="pr._id" />
 
         </el-select>
       </el-form-item>
 
-      <el-form-item prop="currentStatus">
+      <!-- if is sample then show shops list -->
+      <!-- <el-form-item v-if="toolBarForm.isSample" prop="currentShop">
+        <el-select v-model="toolBarForm.currentShop" class="tools-wrapper-item" style="width: 100%" placeholder="Дўкон"
+          @change="shopChanged">
+          <el-option :value="'Янги диллерни қўшинг'" style="padding: 0">
+            <el-button style="border: 1px solid transparent; width: 100%; margin: 0" icon="el-icon-plus">Янги диллер
+            </el-button>
+          </el-option>
+          <el-option v-for="(pr, i) in all_shops" :key="i" :label="pr.name" :value="pr._id" />
+        </el-select>
+      </el-form-item> -->
+      <!-- end of: if is sample then show shops list-->
+
+      <el-form-item v-if="!toolBarForm.isSample && times.length" prop="time">
+        <el-select
+          v-model="toolBarForm.time"
+          style="width: 100%"
+          class="tools-wrapper-item"
+          placeholder="Вақтни танланг"
+          clearable
+          @change="timeChanged"
+        >
+          <el-option v-for="time in times" :key="time" :label="new Date(time).toLocaleString('uz-UZ')" :value="time" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item v-if="!toolBarForm.isSample" prop="currentStatus">
         <el-select
           v-model="toolBarForm.currentStatus"
           style="width: 100%"
@@ -63,38 +86,45 @@
           placeholder="Жараённи танланг"
           @change="procedureChanged"
         >
-          <el-option label="Сотиб олиш" :value="1" />
-          <el-option label="Бартер (Алмаштириш)" :value="2" />
+          <el-option v-if="!toolBarForm.time" label="Сотиб олиш" :value="1" />
+          <el-option label="Сотув-2/Бартер (Алмаштириш)" :value="2" />
           <el-option label="Қайтариш" :value="3" />
         </el-select>
       </el-form-item>
 
-      <el-form-item prop="currentDriver">
+      <el-form-item v-if="!toolBarForm.isSample" prop="currentDriver">
         <el-select
           v-model="toolBarForm.currentDriver"
           class="tools-wrapper-item"
           style="width: 100%"
-          placeholder="Шоферни танланг"
+          filterable
+          placeholder="Ҳайдовчи"
           @change="currentDriverChanged"
         >
-          <el-option
-            v-for="(pr, i) in drivers"
-            :key="i"
-            :label="pr.firstName + ' ' + pr.lastName"
-            :value="pr._id"
-          />
+          <el-option value="Янги ҳайдовчи" style="padding: 0">
+            <el-button style="border: 1px solid transparent; width: 100%; margin: 0" icon="el-icon-plus">Янги ҳайдовчи
+            </el-button>
+          </el-option>
+          <el-option v-for="(pr, i) in drivers" :key="i" :label="pr.firstName + ' ' + pr.lastName" :value="pr._id" />
         </el-select>
       </el-form-item>
 
-      <el-form-item prop="costOfUpload">
+      <el-form-item v-if="!toolBarForm.isSample" prop="costOfUpload">
         <el-input
           v-model="toolBarForm.costOfUpload"
           type="number"
           class="tools-wrapper-item"
-          placeholder="Погрузка суммаси"
+          placeholder="Пагрузка пули"
           @change="costOfUploadChanging"
         />
-        <p>Пагрузка: {{ toThousandFilter(Math.ceil(total_Area_for_invoice * toolBarForm.costOfUpload)) }}</p>
+        <p>
+          Пагрузка:
+          {{
+            toThousandFilter(
+              Math.ceil(total_Area_for_invoice * toolBarForm.costOfUpload)
+            )
+          }}
+        </p>
       </el-form-item>
       <el-form-item prop="totalPrice" label="Скидка нархи (охирги нархи)">
         <el-input
@@ -106,36 +136,23 @@
         />
       </el-form-item>
 
-      <el-form-item label="Қазргами ?" prop="isDebt">
-        <el-switch
-          v-model="toolBarForm.isDebt"
-          active-color="#13ce66"
-          inactive-color=""
-          @change="setIsDebt"
-        />
+      <el-form-item v-if="!toolBarForm.isSample" label="Қарзгами?" prop="isDebt">
+        <el-switch v-model="toolBarForm.isDebt" active-color="#13ce66" inactive-color @change="setIsDebt" />
       </el-form-item>
 
-      <el-form-item
-        v-if="toolBarForm.isDebt"
-        label="Қазрни қайтариш санаси"
-        prop="debtDate"
-      >
+      <el-form-item v-if="toolBarForm.isDebt" label="Қарзни қайтариш санаси" prop="debtDate">
         <el-date-picker
           v-model="toolBarForm.debtDate"
           type="date"
           format="yyyy-MM-dd"
           value-format="timestamp"
           style="margin-bottom: 1em"
-          placeholder="Қазрни қайтариш санаси"
+          placeholder="Қарзни қайтариш санаси"
           @change="setReturnDebtDate"
         />
       </el-form-item>
 
-      <el-form-item
-        v-if="toolBarForm.isDebt"
-        label="Изоҳ"
-        prop="debtDescription"
-      >
+      <el-form-item v-if="toolBarForm.isDebt" label="Қарзни изоҳи" prop="debtDescription">
         <el-input
           v-model="toolBarForm.debtDescription"
           style="margin-bottom: 1em"
@@ -146,27 +163,30 @@
       </el-form-item>
     </el-form>
     <div class="order-action-btn">
-      <el-button
-        type="primary"
-        :disabled="order_saving"
-        :loading="order_saving"
-        @click="validateOrder()"
-      >Сохранить</el-button>
-      <el-button type="danger" @click="reset_all()">Отмена</el-button>
+      <el-button type="primary" :disabled="order_saving" :loading="order_saving" @click="validateOrder()">Сохранить
+      </el-button>
+      <el-button type="danger" @click="reset_all()">Отменить</el-button>
     </div>
-    <AddCustomerDialog :dialog-visible="customerAddDailog" @closeDialog="closeForm()" />
+    <!-- <AddCustomerDialog :dialog-visible="customerAddDailog" @closeDialog="closeForm()" /> -->
+    <AddDillerDialog :dialog-visible="customerAddDailog" @closeDialog="closeForm()" />
+    <add :dialog-visible="addDialog" @closeDialog="addDialog = false; toolBarForm.currentDriver = ''" />
   </div>
 </template>
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex'
-import AddCustomerDialog from '@/views/information/customers/components/addCustomer.vue'
+// import AddCustomerDialog from '@/views/information/customers/components/addCustomer.vue'
+import AddDillerDialog from '@/views/information/customers/components/addCustomer.vue'
 import request from '@/utils/request'
+import add from '../../information/drivers/components/add.vue'
+
 import { Message } from 'element-ui'
 import tools_mixin from './mixins/tools.mixin'
 import { toThousandFilter } from '@/filters'
 export default {
   components: {
-    AddCustomerDialog
+    // AddCustomerDialog,
+    AddDillerDialog,
+    add
   },
   mixins: [tools_mixin],
   props: {
@@ -182,10 +202,23 @@ export default {
   data: () => ({
     order_saving: false,
     batches: [],
-    customerAddDailog: false
+    customerAddDailog: false,
+    dillerAddDailog: false,
+    shops_for_packinglist: [],
+    addDialog: false,
+    times: []
   }),
   computed: {
-    ...mapState('products', ['products_types', 'product', 'order', 'total_Area_for_invoice']),
+    ...mapState('products', [
+      'products_types',
+      'product',
+      'order',
+      'total_Area_for_invoice'
+    ]),
+    ...mapState('shops', ['shops', 'shops_other']),
+    all_shops() {
+      return this.shops.concat(this.shops_other)
+    },
     drivers() {
       return this.$store.state.drivers.tableData
     },
@@ -198,8 +231,11 @@ export default {
     this.GET_PRODUCT_TYPES()
     this.GET_CUSTOMERS()
     this.GET_DRIVERS()
+    this.GET_SHOPS()
+    this.GET_SHOPS_OTHER()
+
     request({
-      url: '/products/get-batches-shop',
+      url: '/products/get-batches',
       method: 'GET'
     })
       .then((res) => {
@@ -211,30 +247,58 @@ export default {
       })
   },
   methods: {
+    async getTimes() {
+      this.times = []
+      try {
+        console.log('asdasd', this.toolBarForm)
+        const { data } = await request({
+          url: '/orders/get-partner-order-times-with-product-bantch-1-shop',
+          params: {
+            batch: this.toolBarForm.currentProduct[0],
+            product_id: this.toolBarForm.currentProduct[1],
+            customer: this.toolBarForm.currentcustomer
+          }
+        })
+        console.log(
+          'times: ',
+          data
+        )
+        this.times = data.map(({ time }) => time)
+        console.log('actual times', this.times)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    // closeForm() {
+    //   this.customerAddDailog = false
+    //   this.dillerAddDailog = false
+    //   this.SET_ORDER({ key: 'customer', value: '' })
+    //   this.toolBarForm.currentcustomer = ''
+    //   this.GET_CUSTOMERS()
+    // },
     toThousandFilter(num) {
       return toThousandFilter(num)
     },
     ...mapActions('products', [
       'GET_PRODUCT_TYPES',
       'GET_PRODUCT_BY_TYPE_ID',
-      'SAVE_ORDER',
-      'SET_ORDER_BASE_PRICE'
+      'SAVE_ORDER_SHOP'
     ]),
     ...mapActions('customers', ['GET_CUSTOMERS']),
+    ...mapActions('shops', ['GET_SHOPS', 'GET_SHOPS_OTHER']),
     ...mapActions('drivers', ['GET_DRIVERS']),
     ...mapMutations('products', ['SET_ORDER', 'PREPARE_ORDER']),
 
     getOrderCount() {
       request({
-        url: '/orders/get-order-count-for-today'
+        url: '/orders/get-order-count-for-today-commertia'
       })
         .then((res) => {
           console.log('orders', res.data)
           const d = new Date()
           this.SET_ORDER({
             key: 'order_name',
-            value: `ALFAM-${res.data === null ? 0 : res.data[0].count + 1}-${d.getDate()}/${
-              d.getMonth() + 1
+            value: `ALFAM-${res.data[0].count + 1}-${d.getDate()}/${d.getMonth() + 1
             }/${d.getFullYear()}`
           })
         })
@@ -256,7 +320,8 @@ export default {
               this.saveOrder()
             } else {
               this.$notify({
-                message: 'Check table, there should not be empty, make them 0',
+                message:
+                  'Жадвални текширинг, бўш бўлмаслиги керак, уларни 0-га тенг қилинг',
                 type: 'error',
                 duration: 0
               })
@@ -273,33 +338,27 @@ export default {
       this.order_saving = true
       this.PREPARE_ORDER()
       setTimeout(() => {
-        this.SAVE_ORDER()
+        this.SAVE_ORDER_SHOP()
           .then(() => {
             this.order_saving = false
             Message({
-              message: 'Order successfully saved',
+              message: 'Заказ мувоффақиятли сақланди',
               type: 'success',
               duration: 3000
             })
             this.reset_all()
             this.$emit('closeNotification')
             this.getOrderCount()
+            this.$router.go()
           })
           .catch((err) => {
+            console.error(err)
             this.order_saving = false
-            if (err.response.statusCode === 409) {
-              Message({
-                message: err.response.message,
-                type: 'error',
-                duration: 3500
-              })
-            } else {
-              Message({
-                message: err.response.data,
-                type: 'error',
-                duration: 3000
-              })
-            }
+            Message({
+              message: 'Заказ сақлашда ҳатолик',
+              type: 'error',
+              duration: 3000
+            })
           })
       }, 200)
     },
@@ -307,28 +366,42 @@ export default {
       this.SET_ORDER({ key: 'is_debt', value: val })
     },
     getProducts(val) {
-      const product = this.batches.find((batch) => batch.product.includes(val))
-      console.log('product: ', product)
-      this.SET_ORDER({ key: 'product', value: {
-        title: product.product,
-        product_id: product.product_id,
-        partiya: product.partiya
-      }})
-      this.GET_PRODUCT_BY_TYPE_ID({ product_id: product.product_id, partiya: product.partiya })
+      // this.others_list()
+      const { _product } = this.batches.find((batch) =>
+        batch._id[1].includes(val[1])
+      )
+      const title = _product[0].title.split('-')[0] + ' - ' + val[0]
+      this.SET_ORDER({
+        key: 'product',
+        value: {
+          title,
+          product_id: val[1],
+          partiya: val[0]
+        }
+      })
+      this.GET_PRODUCT_BY_TYPE_ID({ product_id: val[1], partiya: val[0] })
     },
 
     changebase_price(val) {
       // this is to change each item base price accordingly
       this.$emit('totalPriceChanged', val)
       this.toolBarForm.totalPrice = val
-      this.SET_ORDER({ key: 'last_sum', value: parseFloat(val) })
+      this.SET_ORDER({ key: 'last_sum', val })
     },
     brokenStateChanged(val) {
       this.$emit('brokenState', val)
       this.SET_ORDER({ key: 'includes_brokens', value: val })
     },
+    sampleStateChanged(val) {
+      this.toolBarForm.withBorken = true
+      this.brokenStateChanged(true)
+      this.SET_ORDER({ key: 'isSample', value: val })
+    },
     procedureChanged(val) {
       this.SET_ORDER({ key: 'action', value: val })
+    },
+    timeChanged(val) {
+      this.SET_ORDER({ key: 'time', value: val })
     },
     setReturnDebtDate(val) {
       this.SET_ORDER({ key: 'date_of_return_debt', value: val })
@@ -340,19 +413,19 @@ export default {
       this.SET_ORDER({ key: 'upload_cost', value: parseFloat(val) })
     },
     currentDriverChanged(val) {
-      this.SET_ORDER({ key: 'driver', value: val })
+      if (val === 'Янги ҳайдовчи') {
+        this.addDialog = true
+      } else {
+        this.SET_ORDER({ key: 'driver', value: val })
+      }
     },
     customerChanged(val) {
-      if (val === 'addNewItem') {
+      if (val === 'Янги қлиентни қўшинг') {
         this.customerAddDailog = true
       } else {
         this.SET_ORDER({ key: 'customer', value: val })
         this.getLastActionOfCustomer()
-        this.SET_ORDER_BASE_PRICE().then(res => {
-          if (!res) {
-            this.getProducts(this.toolBarForm.currentProduct)
-          }
-        })
+        this.getTimes()
       }
     },
     closeForm() {
@@ -361,6 +434,22 @@ export default {
       this.toolBarForm.currentcustomer = ''
       this.GET_CUSTOMERS()
     },
+    // customerChanged(val) {
+    //   if (val === 'Янги диллерни қўшинг') {
+    //     this.dillerAddDailog = true
+    //   } else {
+    //     this.SET_ORDER({ key: 'customer', value: val })
+    //     this.getLastActionOfCustomer()
+    //     this.getTimes()
+    //   }
+    // },
+    // shopChanged(val) {
+    //   if (val === 'Янги диллерни қўшинг') {
+    //     this.dillerAddDailog = true
+    //   } else {
+    //     this.SET_ORDER({ key: 'shop', value: val })
+    //   }
+    // },
     reset_all() {
       this.toolBarForm.withBorken = false
       this.toolBarForm.currentProduct = ''
@@ -375,6 +464,23 @@ export default {
       this.changebase_price(0)
       this.$refs.toolBarFormRef.resetFields()
     }
+    // others_list() {
+    //   // console.log('aa', this.toolBarForm.currentProduct[1])
+    //   request({
+    //     url: '/info/get-shops-list-upakovichniy-other',
+    //     params: {
+    //       product_id: this.toolBarForm.currentProduct[1]
+    //     },
+    //     method: 'GET'
+    //   })
+    //     .then((res) => {
+    //       this.shops_for_packinglist = res.data
+    //     })
+    //     .catch((err) => {
+    //       console.error(err)
+    //       this.shops_for_packinglist = []
+    //     })
+    // }
   }
 }
 </script>
@@ -424,6 +530,5 @@ export default {
   border-spacing: 5px;
 }
 
-.order-action-btn {
-}
+.order-action-btn {}
 </style>
